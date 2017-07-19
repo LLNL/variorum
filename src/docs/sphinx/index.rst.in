@@ -1,0 +1,62 @@
+========
+Variorum
+========
+
+A many-core capable lightweight in situ visualization and analysis infrastructure for multi-physics HPC simulations.
+
+Introduction
+============
+
+Variorum is a system designed to explore the in situ visualization and analysis needs of simulation code teams running multi-physics calculations on many-core HPC architectures. It provides rendering pipelines that can leverage both many-core CPUs and GPUs to render images of simulation meshes.
+
+Variorum focuses on ease of use and reduced integration burden for simulation code teams:
+
+- It does not require any GUI or system graphics libraries.
+- It includes integration examples which demonstrate how to use Variorum inside of three different HPC simulation proxy applications.
+- It provides a built-in web server that supports streaming rendered images directly to a web browser.
+
+Variorum Project Resources
+==========================
+
+**Online Documentation**
+
+http://software.llnl.gov/libvariorum
+
+**Githib Source Repo**
+
+http://github.com/llnl/variorum
+
+**Issue Tracker**
+
+http://github.com/llnl/variorum/issues
+
+Contributors
+============
+
+- Stephanie Labasan (LLNL)
+
+Variorum Documentation
+======================
+
+.. toctree::
+
+   Variorum
+   Licenses
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+Programming and APIs
+====================
+..  toctree::
+        :maxdepth: 2
+
+    programming/index
+
+**API Reference**. The `API Reference`_ is generated from the source.
+
+.. _`API Reference`: @CMAKE_CURRENT_BINARY_DIR@/../dox/html/index.html

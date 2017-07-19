@@ -1,0 +1,63 @@
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h.in"
+               "${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h")
+
+set(variorum_headers
+  config_architecture.h
+  msr_core.h
+  variorum.h
+  variorum_cpuid.h
+  variorum_error.h
+  )
+
+set(variorum_sources
+  config_architecture.c
+  msr_core.c
+  variorum.c
+  variorum_cpuid.c
+  variorum_error.c
+  )
+
+set(variorum_deps ""
+    CACHE INTERNAL ""
+  )
+
+set(variorum_includes
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+
+if(VARIORUM_WITH_INTEL)
+    add_subdirectory(Intel)
+    list(APPEND variorum_headers Intel/config_intel.h ${variorum_intel_headers})
+    list(APPEND variorum_sources Intel/config_intel.c)
+    list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_intel>)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+endif()
+
+if(BUILD_SHARED_LIBS)
+    add_library(variorum SHARED
+                ${variorum_sources}
+                ${variorum_headers}
+                ${variorum_deps})
+else()
+    add_library(variorum STATIC
+                ${variorum_sources}
+                ${variorum_headers}
+                ${variorum_deps})
+endif()
+
+target_link_libraries(variorum PUBLIC ${hwloc_library})
+
+install(TARGETS variorum
+        EXPORT  variorum
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION lib)
+
+set(variorum_install_headers
+    variorum.h
+  )
+
+install(FILES ${variorum_install_headers}
+        DESTINATION include)
+
+include_directories(${variorum_includes})

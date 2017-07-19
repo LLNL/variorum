@@ -1,0 +1,17 @@
+* Wed Jul 19 2017 Stephanie Labasan <labasan1@llnl.gov> v0.0.0
+- Initial release to libvariorum repo on internal Bitbucket.
+- Base Sphinx documentation taken from SDAV Alpine project. Still has some
+legacy info as an example..
+- Use Breathe to interpret Doxygen source code comments for documentation on
+Sphinx webpage.
+- Download and build hwloc dependency.
+- Include googletest in libvariorum source code and build dependency.
+- Include a couple googletests checking the presence, permissions, and validity
+of the msr and msr-safe drivers and the msr whitelist.
+- Include a host configuration file for LLNL's catalyst system using Intel's
+compilers to generate a CMakeCache.txt.
+- Add support for the following features: print/dump_power(),
+print/dump_counters(), print/dump_thermals(), print/dump_package_frequency(),
+print/dump_power_limits(), print_topology(), print_features().
+- Write examples for the above set of features.
+- Add offset lists for Ivy Bridge, Broadwell, and Kaby Lake.
