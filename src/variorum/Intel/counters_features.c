@@ -212,7 +212,6 @@ void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs, off_t msr_
     if (!init)
     {
         fprintf(writedest, "_FIXED_COUNTERS, Host, Thread, InstRet, UnhaltClkCycles, UnhaltRefCycles\n");
-        enable_fixed_counters(msrs_fixed_ctrs, msr_perf_global_ctrl, msr_fixed_counter_ctrl);
         init = 1;
     }
     variorum_set_topology(NULL, NULL, &nthreads);
@@ -327,7 +326,6 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs, off_t msr
 
     if (!init)
     {
-        enable_fixed_counters(msrs_fixed_ctrs, msr_perf_global_ctrl, msr_fixed_counter_ctrl);
         init = 1;
     }
     variorum_set_topology(NULL, NULL, &nthreads);
@@ -808,6 +806,7 @@ void dump_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel, off_t *
     if (!init)
     {
         fprintf(writedest, "_UNCORE_COUNTERS, Host, Socket, c0, c1, c2, c3\n");
+        enable_pcu(msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
@@ -827,6 +826,7 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel, off_t 
     gethostname(hostname, 1024);
 
     unc_counters_storage(&uc, msrs_pcu_pmon_ctrs);
+    enable_pcu(msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
     for (i = 0; i < nsockets; i++)
     {
         fprintf(writedest, "_UNCORE_COUNTERS Host: %s Socket: %d c0: %lx c1: %lx c2: %lx c3: %lx\n",
