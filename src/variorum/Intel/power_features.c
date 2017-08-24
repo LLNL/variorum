@@ -210,14 +210,14 @@ static int calc_package_rapl_limit(const unsigned socket, struct rapl_limit *lim
     /* If we have been given a lower rapl limit. */
     if (limit1 != NULL)
     {
-        if (limit1->bits)
+        if (limit1->translate_bits == 1)
         {
             if (calc_rapl_from_bits(socket, limit1, 0, msr))
             {
                 return -1;
             }
         }
-        else
+        else if (limit1->translate_bits == 0)
         {
             if (calc_rapl_bits(socket, limit1, 0, msr))
             {
@@ -228,14 +228,14 @@ static int calc_package_rapl_limit(const unsigned socket, struct rapl_limit *lim
     /* If we have been given an upper rapl limit. */
     if (limit2 != NULL)
     {
-        if (limit2->bits)
+        if (limit2->translate_bits == 1)
         {
             if (calc_rapl_from_bits(socket, limit2, 32, msr))
             {
                 return -1;
             }
         }
-        else
+        else if (limit2->translate_bits == 0)
         {
             if (calc_rapl_bits(socket, limit2, 32, msr))
             {
@@ -246,6 +246,30 @@ static int calc_package_rapl_limit(const unsigned socket, struct rapl_limit *lim
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "pkg calculated\n");
 #endif
+    return 0;
+}
+
+static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit, off_t msr)
+{
+    if (limit != NULL)
+    {
+        if (limit->translate_bits == 1)
+        {
+            if (calc_rapl_from_bits(socket, limit, 0, msr))
+            {
+                return -1;
+            }
+        }
+        else if (limit->translate_bits == 0)
+        {
+            printf("RRR bits = 0x%lx\n", limit->bits); 
+            if (calc_rapl_bits(socket, limit, 0, msr))
+            {
+                return -1;
+            }
+        }
+    }
+
     return 0;
 }
 
@@ -448,6 +472,28 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_
     }
 }
 
+void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+{
+    struct rapl_limit l1;
+    static int init_dump_dram_power_limit = 0;
+    char hostname[1024];
+    int nsockets;
+
+    variorum_set_topology(&nsockets, NULL, NULL);
+    gethostname(hostname, 1024);
+
+    if (!init_dump_dram_power_limit)
+    {
+        init_dump_dram_power_limit = 1;
+        fprintf(writedest, "_DRAM_POWER_LIMIT, Offset, Host, Socket, PowerLimBits, Watts, Seconds\n");
+    }
+
+    if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
+    {
+        fprintf(writedest, "_DRAM_POWER_LIMIT, 0x%lx, %s, %d, 0x%lx, %lf, %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+    }
+}
+
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
@@ -461,17 +507,43 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr
     }
 }
 
+void print_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+{
+    struct rapl_limit l1;
+    char hostname[1024];
+
+    gethostname(hostname, 1024);
+
+    if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
+    {
+        fprintf(writedest, "_DRAM_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim: %lfW SecTimeWin: %lf sec\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+    }
+}
+
 int get_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1, struct rapl_limit *limit2, off_t msr_power_limit, off_t msr_rapl_unit)
 {
     if (limit1 != NULL)
     {
         read_msr_by_coord(socket, 0, 0, msr_power_limit, &(limit1->bits));
+        limit1->translate_bits = 1;
     }
     if (limit2 != NULL)
     {
         read_msr_by_coord(socket, 0, 0, msr_power_limit, &(limit2->bits));
+        limit1->translate_bits = 1;
     }
     calc_package_rapl_limit(socket, limit1, limit2, msr_rapl_unit);
+    return 0;
+}
+
+int get_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit, off_t msr_power_limit, off_t msr_rapl_unit)
+{
+    if (limit != NULL)
+    {
+        read_msr_by_coord(socket, 0, 0, msr_power_limit, &(limit->bits));
+        limit->translate_bits = 1;
+    }
+    calc_dram_rapl_limit(socket, limit, msr_rapl_unit);
     return 0;
 }
 
@@ -486,6 +558,7 @@ int set_package_power_limit(const unsigned socket, int package_power_limit, off_
     limit1->watts = package_power_limit;
     limit1->seconds = 1;
     limit1->bits = 0;
+    limit1->translate_bits = 0;
 
     sockets_assert(&socket, __LINE__, __FILE__);
 
@@ -588,7 +661,7 @@ int rapl_storage(struct rapl_data **data)
     return 0;
 }
 
-int poll_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     int nsockets;
@@ -596,7 +669,7 @@ int poll_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
     variorum_set_topology(&nsockets, NULL, NULL);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (poll_rapl_data) socket=%lu\n", getenv("HOSTNAME"), __FILE__, __LINE__, nsockets);
+    fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%lu\n", getenv("HOSTNAME"), __FILE__, __LINE__, nsockets);
 #endif
 
     if (rapl == NULL)
@@ -609,7 +682,7 @@ int poll_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
 
     if (rapl == NULL)
     {
-        //variorum_error_handler("poll_rapl_data(): RAPL init failed or has not yet been called", LIBMSR_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __LINE__);
+        //variorum_error_handler("get_power(): RAPL init failed or has not yet been called", LIBMSR_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __LINE__);
         return -1;
     }
 
@@ -701,7 +774,7 @@ void print_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_uni
     gethostname(hostname, 1024);
     variorum_set_topology(&nsockets, NULL, NULL);
 
-    poll_rapl_data(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
     if (!init)
     {
@@ -735,7 +808,7 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
     gethostname(hostname, 1024);
     variorum_set_topology(&nsockets, NULL, NULL);
 
-    poll_rapl_data(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
     if (!init)
     {

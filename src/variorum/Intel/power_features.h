@@ -2,6 +2,7 @@
 #define POWER_FEATURES_H_INCLUDE
 
 #include <stdint.h>
+#include <stdio.h>
 #include <sys/types.h>
 
 #define UINT_MAX 4294967295U // taken from limits.h
@@ -53,6 +54,8 @@ struct rapl_limit
     double watts;
     /// @brief Time window in seconds.
     double seconds;
+    /// @brief Translate bits to fields or fields to bits.
+    int translate_bits;
 };
 
 /// @brief Structure containing power range info for RAPL usage for various
@@ -136,8 +139,10 @@ struct rapl_data
     uint64_t **dram_perf_count;
 };
 
+#if 0
 int get_package_power_limits(struct rapl_units *ru,
                              off_t msr);
+#endif
 
 int get_rapl_power_unit(struct rapl_units *ru,
                         off_t msr);
@@ -147,11 +152,21 @@ void dump_package_power_limit(FILE *writedest,
                               off_t msr_rapl_unit,
                               int socket);
 
+void dump_dram_power_limit(FILE *writedest,
+                           off_t msr_power_limit,
+                           off_t msr_rapl_unit,
+                           int socket);
+
 int get_package_rapl_limit(const unsigned socket,
                            struct rapl_limit *limit1,
                            struct rapl_limit *limit2,
                            off_t msr_power_limit,
                            off_t msr_rapl_unit);
+
+int get_dram_rapl_limit(const unsigned socket,
+                        struct rapl_limit *limit,
+                        off_t msr_power_limit,
+                        off_t msr_rapl_unit);
 
 void dump_rapl_power_unit(FILE *writedest,
                           off_t msr);
@@ -220,9 +235,9 @@ int read_rapl_data(off_t msr_rapl_unit,
 /// @param [in] msr_dram_energy_status Unique MSR address for MSR_DRAM_ENERGY_STATUS.
 ///
 /// @return 0 if successful, else -1 if rapl_storage() fails.
-int poll_rapl_data(off_t msr_rapl_unit,
-                   off_t msr_pkg_energy_status,
-                   off_t msr_dram_energy_status);
+int get_power(off_t msr_rapl_unit,
+              off_t msr_pkg_energy_status,
+              off_t msr_dram_energy_status);
 
 /// @brief Compute difference in readings taken at two instances in time.
 ///

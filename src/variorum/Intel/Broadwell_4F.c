@@ -85,6 +85,18 @@ int fm_06_4f_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
+            dump_dram_power_limit(stdout, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, socket);
+        }
+        else if (long_ver == 1)
+        {
+            print_dram_power_limit(stdout, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, socket);
+        }
+    }
+
+    for (socket = 0; socket < nsockets; socket++)
+    {
+        if (long_ver == 0)
+        {
             dump_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
         }
         else if (long_ver == 1)

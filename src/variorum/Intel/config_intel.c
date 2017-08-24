@@ -31,12 +31,12 @@ int set_intel_func_ptrs(void)
 {
     int err = 0;
 
-    // Decimal representation of 2A
+    // Decimal representation of 2A (Sandy Bridge)
     if (*g_platform.intel_arch == 42)
     {
         ;
     }
-    // Decimal representation of 3E
+    // Decimal representation of 3E (Ivy Bridge)
     else if (*g_platform.intel_arch == 62)
     {
         g_platform.dump_power_limits = fm_06_3e_get_power_limits;
@@ -47,7 +47,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_3e_get_clocks;
         g_platform.dump_power = fm_06_3e_get_power;
     }
-    // Decimal representation of 4F
+    // Decimal representation of 4F (Broadwell)
     else if (*g_platform.intel_arch == 79)
     {
         g_platform.dump_power_limits = fm_06_4f_get_power_limits;
@@ -58,7 +58,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_4f_get_clocks;
         g_platform.dump_power = fm_06_4f_get_power;
     }
-    // Decimal representation of 9E
+    // Decimal representation of 9E (Kaby Lake)
     else if (*g_platform.intel_arch == 158)
     {
         g_platform.dump_power_limits = fm_06_9e_get_power_limits;
