@@ -38,6 +38,12 @@ void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
         case VARIORUM_ERROR_INVAL:
             strncpy(msg, "_ERROR_VARIORUM_INVAL", size);
             break;
+        case VARIORUM_ERROR_UNSUPPORTED_PLATFORM:
+            strncpy(msg, "_ERROR_VARIORUM_UNSUPPORTED_PLATFORM", size);
+            break;
+        case VARIORUM_ERROR_UNSUPPORTED_ARCH:
+            strncpy(msg, "_ERROR_VARIORUM_UNSUPPORTED_ARCH", size);
+            break;
         default:
             strncpy(msg, "Unknown variorum error code.", size);
             break;

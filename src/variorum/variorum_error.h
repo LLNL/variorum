@@ -7,16 +7,18 @@
 
 enum variorum_error_e
 {
-    VARIORUM_ERROR_RUNTIME      = -1,
-    VARIORUM_ERROR_RAPL_INIT    = -2,
-    VARIORUM_ERROR_MSR_CLOSE    = -3,
-    VARIORUM_ERROR_MSR_READ     = -4,
-    VARIORUM_ERROR_ARRAY_BOUNDS = -5,
-    VARIORUM_ERROR_PLATFORM_ENV = -6,
-    VARIORUM_ERROR_MSR_MODULE   = -7,
-    VARIORUM_ERROR_MSR_WRITE    = -8,
-    VARIORUM_ERROR_MSR_BATCH    = -9,
-    VARIORUM_ERROR_INVAL        = -10
+    VARIORUM_ERROR_RUNTIME              = -1,
+    VARIORUM_ERROR_RAPL_INIT            = -2,
+    VARIORUM_ERROR_MSR_CLOSE            = -3,
+    VARIORUM_ERROR_MSR_READ             = -4,
+    VARIORUM_ERROR_ARRAY_BOUNDS         = -5,
+    VARIORUM_ERROR_PLATFORM_ENV         = -6,
+    VARIORUM_ERROR_MSR_MODULE           = -7,
+    VARIORUM_ERROR_MSR_WRITE            = -8,
+    VARIORUM_ERROR_MSR_BATCH            = -9,
+    VARIORUM_ERROR_INVAL                = -10,
+    VARIORUM_ERROR_UNSUPPORTED_PLATFORM = -11,
+    VARIORUM_ERROR_UNSUPPORTED_ARCH     = -12
 };
 
 void variorum_error_handler(const char *desc,

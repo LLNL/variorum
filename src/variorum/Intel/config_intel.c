@@ -6,6 +6,7 @@
 #include <IvyBridge_3E.h>
 #include <Broadwell_4F.h>
 #include <KabyLake_9E.h>
+#include <variorum_error.h>
 
 uint64_t *detect_intel_arch(void)
 {
@@ -34,7 +35,7 @@ int set_intel_func_ptrs(void)
     // Decimal representation of 2A (Sandy Bridge)
     if (*g_platform.intel_arch == 42)
     {
-        ;
+        return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
     // Decimal representation of 3E (Ivy Bridge)
     else if (*g_platform.intel_arch == 62)
@@ -68,6 +69,10 @@ int set_intel_func_ptrs(void)
         g_platform.dump_counters = fm_06_9e_get_counters;
         g_platform.dump_clocks = fm_06_9e_get_clocks;
         g_platform.dump_power = fm_06_9e_get_power;
+    }
+    else
+    {
+        return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
 
     return err;
