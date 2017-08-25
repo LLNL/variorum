@@ -48,6 +48,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_turbo = fm_06_2a_get_turbo_status;
         g_platform.enable_turbo = fm_06_2a_enable_turbo;
         g_platform.disable_turbo = fm_06_2a_disable_turbo;
+        g_platform.poll_power = fm_06_2a_poll_power;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
@@ -62,6 +63,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_turbo = fm_06_3e_get_turbo_status;
         g_platform.enable_turbo = fm_06_3e_enable_turbo;
         g_platform.disable_turbo = fm_06_3e_disable_turbo;
+        g_platform.poll_power = fm_06_3e_poll_power;
     }
     // Haswell 06_3F
     else if (*g_platform.intel_arch == FM_06_3F)
@@ -76,6 +78,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_turbo = fm_06_3f_get_turbo_status;
         g_platform.enable_turbo = fm_06_3f_enable_turbo;
         g_platform.disable_turbo = fm_06_3f_disable_turbo;
+        g_platform.poll_power = fm_06_3f_poll_power;
     }
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
@@ -90,6 +93,7 @@ int set_intel_func_ptrs(void)
         g_platform.dump_turbo = fm_06_4f_get_turbo_status;
         g_platform.enable_turbo = fm_06_4f_enable_turbo;
         g_platform.disable_turbo = fm_06_4f_disable_turbo;
+        g_platform.poll_power = fm_06_4f_poll_power;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
@@ -104,6 +108,7 @@ int set_intel_func_ptrs(void)
         //g_platform.dump_turbo = fm_06_55_get_turbo_status;
         //g_platform.enable_turbo = fm_06_55_enable_turbo;
         //g_platform.disable_turbo = fm_06_55_disable_turbo;
+        g_platform.poll_power = fm_06_55_poll_power;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
@@ -118,6 +123,7 @@ int set_intel_func_ptrs(void)
         //g_platform.dump_turbo = fm_06_9e_get_turbo_status;
         //g_platform.enable_turbo = fm_06_9e_enable_turbo;
         //g_platform.disable_turbo = fm_06_9e_disable_turbo;
+        g_platform.poll_power = fm_06_9e_poll_power;
     }
     else
     {

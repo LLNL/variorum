@@ -5,6 +5,7 @@ set(variorum_headers
   config_architecture.h
   msr_core.h
   variorum.h
+  variorum_timers.h
   variorum_cpuid.h
   variorum_error.h
   )
@@ -13,6 +14,7 @@ set(variorum_sources
   config_architecture.c
   msr_core.c
   variorum.c
+  variorum_timers.c
   variorum_cpuid.c
   variorum_error.c
   )

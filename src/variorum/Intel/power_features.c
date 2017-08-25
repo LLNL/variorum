@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +9,7 @@
 #include <config_architecture.h>
 #include <msr_core.h>
 #include <variorum_error.h>
+#include <variorum_timers.h>
 
 static int translate(const unsigned socket, uint64_t *bits, double *units, int type, off_t msr)
 {
@@ -307,11 +309,6 @@ static void create_rapl_data_batch(struct rapl_data *rapl, off_t msr_pkg_energy_
     //}
 }
 
-int get_pkg_power_limits(struct rapl_units *ru, off_t msr)
-{
-    return 0;
-}
-
 int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
 {
     static int init_get_rapl_power_unit = 0;
@@ -529,7 +526,7 @@ int get_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1, str
     if (limit2 != NULL)
     {
         read_msr_by_coord(socket, 0, 0, msr_power_limit, &(limit2->bits));
-        limit1->translate_bits = 1;
+        limit2->translate_bits = 1;
     }
     calc_package_rapl_limit(socket, limit1, limit2, msr_rapl_unit);
     return 0;
@@ -681,7 +678,7 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_e
 
     if (rapl == NULL)
     {
-        //variorum_error_handler("get_power(): RAPL init failed or has not yet been called", LIBMSR_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __LINE__);
+        variorum_error_handler("RAPL storage failed", VARIORUM_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
 
@@ -962,4 +959,58 @@ int read_rapl_data(off_t msr_rapl_power_unit, off_t msr_pkg_energy_status, off_t
     }
     init = 1;
     return 0;
+}
+
+void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dram_power_limit, off_t msr_rapl_unit, off_t msr_package_energy_status, off_t msr_dram_energy_status)
+{
+    // The length of the rlim array assumes dual socket system.
+    static struct rapl_limit rlim[6];
+    static struct rapl_data *rapl = NULL;
+    static int init_get_power_data = 0;
+    static int nsockets;
+    char hostname[1024];
+    int i;
+    int rlim_idx = 0;
+
+    variorum_set_topology(&nsockets, NULL, NULL);
+    gethostname(hostname, 1024);
+
+    get_power(msr_rapl_unit, msr_package_energy_status, msr_dram_energy_status);
+
+    if (!init_get_power_data)
+    {
+        init_get_power_data = 1;
+        rapl_storage(&rapl);
+
+        fprintf(writedest, "_POWMON time ");
+        for (i = 0; i < nsockets; i++)
+        {
+            fprintf(writedest, "pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts ", i, i, i, i, i);
+            get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
+            get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
+            rlim_idx += 3;
+            // rlim[0] = first socket, power limit 1
+            // rlim[1] = first socket, power limit 2
+            // rlim[2] = first socket, dram power limit
+            // rlim[3] = second socket, power limit 1
+            // rlim[4] = second socket, power limit 2
+            // rlim[5] = second socket, dram power limit
+            
+            // This code assumed dual socket system.
+            //get_package_rapl_limit(0, &(rlim[0]), &(rlim[1]), msr_pkg_power_limit, msr_rapl_unit);
+            //get_package_rapl_limit(1, &(rlim[2]), &(rlim[3]), msr_pkg_power_limit, msr_rapl_unit);
+            //get_dram_rapl_limit(0, &(rlim[4]), msr_dram_power_limit, msr_rapl_unit);
+            //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
+        }
+        fprintf(writedest, "\n");
+    }
+
+    rlim_idx = 0;
+    fprintf(writedest, "_POWMON %ld ", now_ms());
+    for (i = 0; i < nsockets; i++)
+    {
+        fprintf(writedest, "%lf %lf %lf %lf %lf ", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
+        rlim_idx += 3;
+    }
+    fprintf(writedest, "\n");
 }

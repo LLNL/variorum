@@ -244,6 +244,13 @@ int get_power(off_t msr_rapl_unit,
               off_t msr_pkg_energy_status,
               off_t msr_dram_energy_status);
 
+void get_all_power_data(FILE *writedest,
+                        off_t msr_pkg_power_limit,
+                        off_t msr_dram_power_limit,
+                        off_t msr_rapl_unit,
+                        off_t msr_package_energy_status,
+                        off_t msr_dram_energy_status);
+
 /// @brief Compute difference in readings taken at two instances in time.
 ///
 /// @return 0 if successful, else -1 if rapl_storage() fails.

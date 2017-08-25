@@ -18,6 +18,7 @@ set(BASIC_EXAMPLES
   ex-print-power
   ex-dump-hyperthreading
   ex-dump-turbo
+  ex-poll-power
 )
 
 foreach(EXAMPLE ${BASIC_EXAMPLES})

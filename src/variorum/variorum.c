@@ -21,6 +21,27 @@ int tester(void)
     return err;
 }
 
+int poll_power(void)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    err = g_platform.poll_power();
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 int dump_power_limits(void)
 {
     int err = 0;
