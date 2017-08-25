@@ -10,7 +10,7 @@ version 0.0.0
 
 Last Update
 -----------
-19 July 2017
+25 August 2017
 
 
 Webpages
@@ -46,7 +46,9 @@ some features may be missing from client products.
 
 Supported Architectures:
 
+	2A (Sandy Bridge)
 	3E (Ivy Bridge)
+	3E (Haswell)
 	4F (Broadwell)
 	9E (Kaby Lake)
 
@@ -58,6 +60,16 @@ Testing
 -------
 From within the build directory, tests can be executed with the
 `make test` target.
+
+
+Support Additionala Intel Platforms
+-----------------------------------
+1) Under `Intel/` directory, create a `.h` and `.c` header and source file for the
+respective platform. This will contain features specific to that platform,
+which may or may not exist in previous generations. 
+2) Modify `Intel/config_intel.c` to set the function pointers for the
+respective platform.
+3) Include the new header file in `Intel/config_architecture.h`.
 
 
 Notes

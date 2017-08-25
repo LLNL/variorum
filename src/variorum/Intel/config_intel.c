@@ -4,7 +4,9 @@
 #include <config_intel.h>
 #include <config_architecture.h>
 #include <IvyBridge_3E.h>
+#include <SandyBridge_2A.h>
 #include <Broadwell_4F.h>
+#include <Haswell_3F.h>
 #include <KabyLake_9E.h>
 #include <variorum_error.h>
 
@@ -35,7 +37,13 @@ int set_intel_func_ptrs(void)
     // Sandy Bridge 06_2A
     if (*g_platform.intel_arch == FM_06_2A)
     {
-        return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
+        g_platform.dump_power_limits = fm_06_2a_get_power_limits;
+        g_platform.set_each_package_power_limit = fm_06_2a_set_power_limits;
+        g_platform.print_features = fm_06_2a_get_features;
+        g_platform.dump_thermals = fm_06_2a_get_thermals;
+        g_platform.dump_counters = fm_06_2a_get_counters;
+        g_platform.dump_clocks = fm_06_2a_get_clocks;
+        g_platform.dump_power = fm_06_2a_get_power;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
@@ -58,6 +66,17 @@ int set_intel_func_ptrs(void)
         g_platform.dump_counters = fm_06_4f_get_counters;
         g_platform.dump_clocks = fm_06_4f_get_clocks;
         g_platform.dump_power = fm_06_4f_get_power;
+    }
+    //Haswell 06_3F
+    else if (*g_platform.intel_arch == FM_06_3F)
+    {
+        g_platform.dump_power_limits = fm_06_3f_get_power_limits;
+        g_platform.set_each_package_power_limit = fm_06_3f_set_power_limits;
+        g_platform.print_features = fm_06_3f_get_features;
+        g_platform.dump_thermals = fm_06_3f_get_thermals;
+        g_platform.dump_counters = fm_06_3f_get_counters;
+        g_platform.dump_clocks = fm_06_3f_get_clocks;
+        g_platform.dump_power = fm_06_3f_get_power;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
