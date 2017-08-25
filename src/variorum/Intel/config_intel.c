@@ -32,13 +32,13 @@ int set_intel_func_ptrs(void)
 {
     int err = 0;
 
-    // Decimal representation of 2A (Sandy Bridge)
-    if (*g_platform.intel_arch == 42)
+    // Sandy Bridge 06_2A
+    if (*g_platform.intel_arch == FM_06_2A)
     {
         return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
-    // Decimal representation of 3E (Ivy Bridge)
-    else if (*g_platform.intel_arch == 62)
+    // Ivy Bridge 06_3E
+    else if (*g_platform.intel_arch == FM_06_3E)
     {
         g_platform.dump_power_limits = fm_06_3e_get_power_limits;
         g_platform.set_each_package_power_limit = fm_06_3e_set_power_limits;
@@ -48,8 +48,8 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_3e_get_clocks;
         g_platform.dump_power = fm_06_3e_get_power;
     }
-    // Decimal representation of 4F (Broadwell)
-    else if (*g_platform.intel_arch == 79)
+    // Broadwell 06_4F
+    else if (*g_platform.intel_arch == FM_06_4F)
     {
         g_platform.dump_power_limits = fm_06_4f_get_power_limits;
         g_platform.set_each_package_power_limit = fm_06_4f_set_power_limits;
@@ -59,8 +59,8 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_4f_get_clocks;
         g_platform.dump_power = fm_06_4f_get_power;
     }
-    // Decimal representation of 9E (Kaby Lake)
-    else if (*g_platform.intel_arch == 158)
+    // Kaby Lake 06_9E
+    else if (*g_platform.intel_arch == FM_06_9E)
     {
         g_platform.dump_power_limits = fm_06_9e_get_power_limits;
         g_platform.set_each_package_power_limit = fm_06_9e_set_power_limits;
