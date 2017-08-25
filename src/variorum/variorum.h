@@ -4,6 +4,10 @@
 /// @brief Test for memory leaks.
 int tester(void);
 
+/// @brief Collect power limits and energy usage for both the package and DRAM
+/// domains.
+int poll_power(void);
+
 /********************/
 /* Set Power Limits */
 /********************/

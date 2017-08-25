@@ -92,4 +92,6 @@ int fm_06_4f_disable_turbo(void);
 
 int fm_06_4f_get_turbo_status(void);
 
+int fm_06_4f_poll_power(void);
+
 #endif

@@ -30,6 +30,8 @@ endif()
 ### Add our examples
 add_subdirectory(examples)
 
+add_subdirectory(powmon)
+
 ### Add documentation targets
 if(BUILD_DOCS)
     include(CMake/SetupDocs.cmake)

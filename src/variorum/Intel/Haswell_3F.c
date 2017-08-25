@@ -270,3 +270,11 @@ int fm_06_3f_get_turbo_status(void)
 
     return 0;
 }
+
+int fm_06_3f_poll_power(void)
+{
+    printf("Running %s\n", __FUNCTION__);
+
+    get_all_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+    return 0;
+}
