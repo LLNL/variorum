@@ -229,7 +229,7 @@ int variorum_set_func_ptrs()
 }
 #endif
 
-#if 0
+#if 0 /* Do not want to make 95% of users know how to use this */
 struct *platform make_arch(enum arch_e arch)
 {
     struct platform *platform_ptr;
@@ -252,9 +252,7 @@ struct *platform make_arch(enum arch_e arch)
 
     return platform_ptr;
 };
-#endif
 
-#if 0 /* Do not want to make 95% of users know how to use this */
 /// Front-facing APIs
 struct platform *platform_ptr = make_arch(HASWELL);
 #endif

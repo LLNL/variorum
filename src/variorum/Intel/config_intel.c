@@ -8,6 +8,7 @@
 #include <Broadwell_4F.h>
 #include <Haswell_3F.h>
 #include <KabyLake_9E.h>
+#include <Skylake_55.h>
 #include <variorum_error.h>
 
 uint64_t *detect_intel_arch(void)
@@ -88,6 +89,17 @@ int set_intel_func_ptrs(void)
         g_platform.dump_counters = fm_06_9e_get_counters;
         g_platform.dump_clocks = fm_06_9e_get_clocks;
         g_platform.dump_power = fm_06_9e_get_power;
+    }
+    // Skylake 06_55
+    else if (*g_platform.intel_arch == FM_06_55)
+    {
+        g_platform.dump_power_limits = fm_06_55_get_power_limits;
+        g_platform.set_each_package_power_limit = fm_06_55_set_power_limits;
+        g_platform.print_features = fm_06_55_get_features;
+        g_platform.dump_thermals = fm_06_55_get_thermals;
+        g_platform.dump_counters = fm_06_55_get_counters;
+        g_platform.dump_clocks = fm_06_55_get_clocks;
+        g_platform.dump_power = fm_06_55_get_power;
     }
     else
     {

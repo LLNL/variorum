@@ -45,6 +45,7 @@ enum intel_arch_e
     FM_06_4F = 79,  // Broadwell
     FM_06_56 = 86,  // Broadwell
     FM_06_4E = 78,  // Skylake
+    FM_06_55 = 85,  // Skylake
     FM_06_5E = 94,  // Skylake
     FM_06_8E = 142, // Kaby Lake
     FM_06_9E = 158, // Kaby Lake
