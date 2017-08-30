@@ -81,6 +81,7 @@ enum libmsr_data_type_e
     USR_BATCH9 = 27,
     /// @brief User-defined batch MSR data.
     USR_BATCH10 = 28,
+    PLATFORM_INFO = 29,
 };
 
 /// @brief Enum encompassing batch operations.

@@ -75,12 +75,12 @@ struct platform
     /// @return Error code.
     int (*dump_power_limits)(int long_ver);
 
-    /// @brief Function pointer to set a power limit to each package.
+    /// @brief Function pointer to set a power limit to each socket.
     ///
-    /// @param [in] package_power_limit Desired package power limit in Watts.
+    /// @param [in] socket_power_limit Desired socket power limit in Watts.
     ///
     /// @return Error code.
-    int (*set_each_package_power_limit)(int package_power_limit);
+    int (*set_each_socket_power_limit)(int socket_power_limit);
 
     /// @brief Function pointer to print the feature set.
     ///

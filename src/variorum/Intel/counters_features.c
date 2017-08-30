@@ -1,15 +1,15 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/time.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include <counters_features.h>
 #include <config_architecture.h>
 #include <msr_core.h>
-#include <variorum_error.h>
 #include <variorum_cpuid.h>
+#include <variorum_error.h>
 
 int cpuid_num_pmc(void)
 {

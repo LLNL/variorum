@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include <variorum.h>
 #include <config_architecture.h>
+#include <variorum.h>
 
 int tester(void)
 {
@@ -105,7 +105,7 @@ int print_topology(void)
     return err;
 }
 
-int set_each_package_power_limit(int package_power_limit)
+int set_each_socket_power_limit(int socket_power_limit)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -113,7 +113,7 @@ int set_each_package_power_limit(int package_power_limit)
     {
         return -1;
     }
-    err = g_platform.set_each_package_power_limit(package_power_limit);
+    err = g_platform.set_each_socket_power_limit(socket_power_limit);
     if (err)
     {
         return -1;
@@ -231,7 +231,7 @@ int print_counters(void)
     return err;
 }
 
-int dump_package_frequency(void)
+int dump_clock_speed(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -252,7 +252,7 @@ int dump_package_frequency(void)
     return err;
 }
 
-int print_package_frequency(void)
+int print_clock_speed(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);

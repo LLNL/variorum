@@ -12,8 +12,8 @@ set(BASIC_EXAMPLES
   ex-set-power-limits
   ex-dump-counters
   ex-print-counters
-  ex-dump-package-frequency
-  ex-print-package-frequency
+  ex-dump-clock-speed
+  ex-print-clock-speed
   ex-dump-power
   ex-print-power
 )

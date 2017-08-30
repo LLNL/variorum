@@ -203,10 +203,10 @@ void dump_power_data(FILE *writedest,
                      off_t msr_dram_energy_status);
 
 void print_power_data(FILE *writedest,
-                     off_t msr_power_limit,
-                     off_t msr_rapl_unit,
-                     off_t msr_pkg_energy_status,
-                     off_t msr_dram_energy_status);
+                      off_t msr_power_limit,
+                      off_t msr_rapl_unit,
+                      off_t msr_pkg_energy_status,
+                      off_t msr_dram_energy_status);
 
 /// @brief Store the RAPL data on the heap.
 ///

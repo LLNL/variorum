@@ -5,8 +5,8 @@
 #include <hwloc.h>
 
 #include <config_architecture.h>
-#include <variorum_error.h>
 #include <variorum_config.h>
+#include <variorum_error.h>
 #ifdef VARIORUM_WITH_INTEL
 #include <config_intel.h>
 #include <msr_core.h>

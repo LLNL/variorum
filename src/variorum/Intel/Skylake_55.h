@@ -3,9 +3,11 @@
 
 #include <sys/types.h>
 
-/// @brief List of unique addresses for Kaby Lake Family/Model 9E.
+/// @brief List of unique addresses for Skylake Family/Model 55H.
 struct skylake_55_offsets
 {
+    /// @brief Address for MSR_PLATFORM_INFO.
+    const off_t msr_platform_info;
     /// @brief Address for IA32_TIME_STAMP_COUNTER.
     const off_t ia32_time_stamp_counter;
     /// @brief Address for IA32_PERF_CTL.
@@ -28,7 +30,7 @@ struct skylake_55_offsets
     const off_t msr_turbo_ratio_limit1;
     /// @brief Address for TURBO_RATIO_LIMIT2.
     const off_t msr_turbo_ratio_limit2;
-        /// @brief Address for IA32_PACKAGE_THERM_STATUS.
+    /// @brief Address for IA32_PACKAGE_THERM_STATUS.
     const off_t ia32_package_therm_status;
     /// @brief Address for IA32_PACKAGE_THERM_INTERRUPT.
     const off_t ia32_package_therm_interrupt;

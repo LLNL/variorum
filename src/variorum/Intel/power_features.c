@@ -1,8 +1,8 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <power_features.h>
 #include <config_architecture.h>
@@ -262,7 +262,6 @@ static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
         }
         else if (limit->translate_bits == 0)
         {
-            printf("RRR bits = 0x%lx\n", limit->bits); 
             if (calc_rapl_bits(socket, limit, 0, msr))
             {
                 return -1;

@@ -7,12 +7,12 @@ int tester(void);
 /********************/
 /* Set Power Limits */
 /********************/
-/// @brief Set identical power limits to all packages within the node.
+/// @brief Set identical power limits to all sockets within the node.
 ///
-/// @param [in] package_power_limit Desired power limit for each package.
+/// @param [in] socket_power_limit Desired power limit for each socket.
 ///
 /// @return Error code.
-int set_each_package_power_limit(int package_power_limit);
+int set_each_socket_power_limit(int socket_power_limit);
 
 ///// @brief Set a power limit to the node.
 /////
@@ -87,13 +87,13 @@ int dump_power(void);
 //  long format.
 ///
 /// @return Error code.
-int print_package_frequency(void);
+int print_clock_speed(void);
 
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// CSV format.
 ///
 /// @return Error code.
-int dump_package_frequency(void);
+int dump_clock_speed(void);
 
 ///// @todo Print discrete frequencies from P0 to Pn?
 /////

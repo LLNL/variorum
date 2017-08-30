@@ -1,15 +1,15 @@
 #include <stdio.h>
 
 #include <Haswell_3F.h>
+#include <clocks_features.h>
 #include <config_architecture.h>
+#include <counters_features.h>
 #include <power_features.h>
 #include <thermal_features.h>
-#include <counters_features.h>
-#include <clocks_features.h>
 
 static struct haswell_3f_offsets msrs =
 {
-    //Only a subset of MSR whitelist
+    .msr_platform_info            = 0xCE,
     .ia32_time_stamp_counter      = 0x10,
     .ia32_perf_ctl                = 0x199,
     .ia32_perf_status             = 0x198,
@@ -199,11 +199,11 @@ int fm_06_3f_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status);
+        dump_clocks_data_core(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
     }
     else if (long_ver == 1)
     {
-        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status);
+        print_clocks_data_core(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
     }
     return 0;
 }

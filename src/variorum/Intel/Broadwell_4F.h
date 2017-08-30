@@ -3,9 +3,11 @@
 
 #include <sys/types.h>
 
-/// @brief List of unique addresses for Broadwell Family/Model 4F.
+/// @brief List of unique addresses for Broadwell Family/Model 4FH.
 struct broadwell_4f_offsets
 {
+    /// @brief Address for MSR_PLATFORM_INFO.
+    const off_t msr_platform_info;
     /// @brief Address for IA32_TIME_STAMP_COUNTER.
     const off_t ia32_time_stamp_counter;
     /// @brief Address for IA32_PERF_CTL.

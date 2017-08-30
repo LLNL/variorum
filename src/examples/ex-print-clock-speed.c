@@ -6,10 +6,13 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = dump_package_frequency();
+    ret = print_clock_speed();
     if (ret != 0)
     {
-        printf("Dump package frequency failed!\n");
+        printf("Print clock speed failed!\n");
     }
+#ifdef SECOND_RUN
+    ret = print_clock_speed();
+#endif
     return ret;
 }

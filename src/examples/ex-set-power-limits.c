@@ -16,13 +16,13 @@ int main(int argc, char **argv)
     else if (argc == 2)
     {
         pkg_pow_lim = atoi(argv[1]);
-        printf("Setting each package to %dW.\n", pkg_pow_lim);
+        printf("Setting each socket to %dW.\n", pkg_pow_lim);
     }
 
-    ret = set_each_package_power_limit(pkg_pow_lim);
+    ret = set_each_socket_power_limit(pkg_pow_lim);
     if (ret != 0)
     {
-        printf("Set each package power limit failed!\n");
+        printf("Set each socket power limit failed!\n");
     }
     printf("\n");
     ret = dump_power_limits();

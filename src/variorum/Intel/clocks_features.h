@@ -90,6 +90,20 @@ void dump_clocks_data(FILE *writedest,
                       off_t msr_tsc,
                       off_t msr_perf_status);
 
+void dump_clocks_data_socket(FILE *writedest,
+                             off_t msr_aperf,
+                             off_t msr_mperf,
+                             off_t msr_tsc,
+                             off_t msr_perf_status,
+                             off_t msr_platform_info);
+
+void dump_clocks_data_core(FILE *writedest,
+                           off_t msr_aperf,
+                           off_t msr_mperf,
+                           off_t msr_tsc,
+                           off_t msr_perf_status,
+                           off_t msr_platform_info);
+
 /// @brief Print clocks data in long format.
 ///
 /// @param [in] writedest File stream where output will be written to.
@@ -102,6 +116,20 @@ void print_clocks_data(FILE *writedest,
                        off_t msr_mperf,
                        off_t msr_tsc,
                        off_t msr_perf_status);
+
+void print_clocks_data_socket(FILE *writedest,
+                              off_t msr_aperf,
+                              off_t msr_mperf,
+                              off_t msr_tsc,
+                              off_t msr_perf_status,
+                              off_t msr_platform_info);
+
+void print_clocks_data_core(FILE *writedest,
+                            off_t msr_aperf,
+                            off_t msr_mperf,
+                            off_t msr_tsc,
+                            off_t msr_perf_status,
+                            off_t msr_platform_info);
 
 ///// @brief Print current p-state.
 /////
