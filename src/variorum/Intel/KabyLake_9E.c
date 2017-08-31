@@ -193,11 +193,11 @@ int fm_06_9e_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_clocks_data_core(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
+        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, CORE);
     }
     else if (long_ver == 1)
     {
-        print_clocks_data_core(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
+        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, CORE);
     }
     return 0;
 }

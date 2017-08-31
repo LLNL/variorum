@@ -19,6 +19,7 @@
 /// Example: MASK_RANGE(17,4,2) --> 17&24 = b10001 & b11000 = b10000
 #define MASK_VAL(x,m,n) (((uint64_t)(x)&MASK_RANGE((m),(n)))>>(n))
 
+/// @brief List of different granularities of control.
 enum ctl_domains_e
 {
     THREAD,
@@ -30,6 +31,7 @@ enum ctl_domains_e
     SHARED // MSR or bit field in an MSR governs the operation of both processor cores.
 };
 
+/// @brief List of Intel family and models.
 enum intel_arch_e
 {
     FM_06_2D = 45,  // Ivy Bridge-E

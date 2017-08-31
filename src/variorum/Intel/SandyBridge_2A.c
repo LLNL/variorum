@@ -189,11 +189,11 @@ int fm_06_2a_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_clocks_data_socket(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
+        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, SOCKET);
     }
     else if (long_ver == 1)
     {
-        print_clocks_data_socket(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info);
+        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, SOCKET);
     }
     return 0;
 }

@@ -2,6 +2,7 @@
 #define CLOCKS_FEATURES_H_INCLUDE
 
 #include <stdint.h>
+#include <config_architecture.h>
 
 ///// @brief Structure containing data for IA32_CLOCK_MODULATION.
 /////
@@ -84,25 +85,15 @@ void perf_storage(struct perf_data **pd,
 /// @param [in] msr_mperf Unique MSR address for IA32_MPERF.
 /// @param [in] msr_tsc Unique MSR address for IA32_TIME_STAMP_COUNTER.
 /// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
+/// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
+/// @param [in] control_domain Specific granularity of control.
 void dump_clocks_data(FILE *writedest,
                       off_t msr_aperf,
                       off_t msr_mperf,
                       off_t msr_tsc,
-                      off_t msr_perf_status);
-
-void dump_clocks_data_socket(FILE *writedest,
-                             off_t msr_aperf,
-                             off_t msr_mperf,
-                             off_t msr_tsc,
-                             off_t msr_perf_status,
-                             off_t msr_platform_info);
-
-void dump_clocks_data_core(FILE *writedest,
-                           off_t msr_aperf,
-                           off_t msr_mperf,
-                           off_t msr_tsc,
-                           off_t msr_perf_status,
-                           off_t msr_platform_info);
+                      off_t msr_perf_status,
+                      off_t msr_platform_info,
+                      enum ctl_domains_e control_domain);
 
 /// @brief Print clocks data in long format.
 ///
@@ -111,25 +102,15 @@ void dump_clocks_data_core(FILE *writedest,
 /// @param [in] msr_mperf Unique MSR address for IA32_MPERF.
 /// @param [in] msr_tsc Unique MSR address for IA32_TIME_STAMP_COUNTER.
 /// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
+/// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
+/// @param [in] control_domain Specific granularity of control.
 void print_clocks_data(FILE *writedest,
                        off_t msr_aperf,
                        off_t msr_mperf,
                        off_t msr_tsc,
-                       off_t msr_perf_status);
-
-void print_clocks_data_socket(FILE *writedest,
-                              off_t msr_aperf,
-                              off_t msr_mperf,
-                              off_t msr_tsc,
-                              off_t msr_perf_status,
-                              off_t msr_platform_info);
-
-void print_clocks_data_core(FILE *writedest,
-                            off_t msr_aperf,
-                            off_t msr_mperf,
-                            off_t msr_tsc,
-                            off_t msr_perf_status,
-                            off_t msr_platform_info);
+                       off_t msr_perf_status,
+                       off_t msr_platform_info,
+                       enum ctl_domains_e control_domain);
 
 ///// @brief Print current p-state.
 /////
