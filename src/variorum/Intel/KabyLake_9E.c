@@ -55,11 +55,7 @@ static struct kabylake_9e_offsets msrs =
     .ia32_perfevtsel_counters[4]  = 0x18A,
     .ia32_perfevtsel_counters[5]  = 0x18B,
     .ia32_perfevtsel_counters[6]  = 0x18C,
-    .ia32_perfevtsel_counters[7]  = 0x18D,
-    .msrs_pcu_pmon_evtsel[0]      = 0xC30,
-    .msrs_pcu_pmon_evtsel[1]      = 0xC31,
-    .msrs_pcu_pmon_evtsel[2]      = 0xC32,
-    .msrs_pcu_pmon_evtsel[3]      = 0xC33
+    .ia32_perfevtsel_counters[7]  = 0x18D
 };
 
 int fm_06_9e_get_power_limits(int long_ver)
