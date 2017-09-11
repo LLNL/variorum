@@ -57,6 +57,17 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_3e_get_clocks;
         g_platform.dump_power = fm_06_3e_get_power;
     }
+    // Haswell 06_3F
+    else if (*g_platform.intel_arch == FM_06_3F)
+    {
+        g_platform.dump_power_limits = fm_06_3f_get_power_limits;
+        g_platform.set_each_socket_power_limit = fm_06_3f_set_power_limits;
+        g_platform.print_features = fm_06_3f_get_features;
+        g_platform.dump_thermals = fm_06_3f_get_thermals;
+        g_platform.dump_counters = fm_06_3f_get_counters;
+        g_platform.dump_clocks = fm_06_3f_get_clocks;
+        g_platform.dump_power = fm_06_3f_get_power;
+    }
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
     {
@@ -68,16 +79,16 @@ int set_intel_func_ptrs(void)
         g_platform.dump_clocks = fm_06_4f_get_clocks;
         g_platform.dump_power = fm_06_4f_get_power;
     }
-    //Haswell 06_3F
-    else if (*g_platform.intel_arch == FM_06_3F)
+    // Skylake 06_55
+    else if (*g_platform.intel_arch == FM_06_55)
     {
-        g_platform.dump_power_limits = fm_06_3f_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_3f_set_power_limits;
-        g_platform.print_features = fm_06_3f_get_features;
-        g_platform.dump_thermals = fm_06_3f_get_thermals;
-        g_platform.dump_counters = fm_06_3f_get_counters;
-        g_platform.dump_clocks = fm_06_3f_get_clocks;
-        g_platform.dump_power = fm_06_3f_get_power;
+        g_platform.dump_power_limits = fm_06_55_get_power_limits;
+        g_platform.set_each_socket_power_limit = fm_06_55_set_power_limits;
+        g_platform.print_features = fm_06_55_get_features;
+        g_platform.dump_thermals = fm_06_55_get_thermals;
+        g_platform.dump_counters = fm_06_55_get_counters;
+        g_platform.dump_clocks = fm_06_55_get_clocks;
+        g_platform.dump_power = fm_06_55_get_power;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
@@ -89,17 +100,6 @@ int set_intel_func_ptrs(void)
         g_platform.dump_counters = fm_06_9e_get_counters;
         g_platform.dump_clocks = fm_06_9e_get_clocks;
         g_platform.dump_power = fm_06_9e_get_power;
-    }
-    // Skylake 06_55
-    else if (*g_platform.intel_arch == FM_06_55)
-    {
-        g_platform.dump_power_limits = fm_06_55_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_55_set_power_limits;
-        g_platform.print_features = fm_06_55_get_features;
-        g_platform.dump_thermals = fm_06_55_get_thermals;
-        g_platform.dump_counters = fm_06_55_get_counters;
-        g_platform.dump_clocks = fm_06_55_get_clocks;
-        g_platform.dump_power = fm_06_55_get_power;
     }
     else
     {
