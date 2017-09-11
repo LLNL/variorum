@@ -314,3 +314,29 @@ int print_power(void)
     }
     return err;
 }
+
+int dump_hyperthreading(void)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    int hyperthreading = (g_platform.num_threads_per_core == 1) ? 0 : 1;
+    if (hyperthreading == 1)
+    {
+        fprintf(stdout, "  Hyperthreading:       Enabled\n");
+        fprintf(stdout, "  Num Thread Per Core:  %d\n", g_platform.num_threads_per_core);
+    }
+    else
+    {
+        fprintf(stdout, "  Hyperthreading:       Disabled\n");
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}

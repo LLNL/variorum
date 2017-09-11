@@ -99,12 +99,12 @@ int dump_clock_speed(void);
 /////
 ///// @return Error code.
 //int print_available_frequencies(void);
-//
-///// @todo Print if hyperthreading is enabled or disabled.
-/////
-///// @return Error code.
-//int print_hyperthreading(void);
-//
+
+/// @brief Print if hyperthreading is enabled or disabled.
+///
+/// @return Error code.
+int dump_hyperthreading(void);
+
 ///// @todo Print discrete frequencies in turbo range (i.e., max turbo ratio)?
 /////
 ///// @return Error code.
@@ -132,20 +132,9 @@ int print_features(void);
 /////
 ///// @return Error code.
 //int disable_turbo(void);
-//
-///// @brief Enable hyperthreading.
-/////
-///// @return Error code.
-//int enable_hyperthreading(void);
-//
-///// @brief Disable hyperthreading.
-/////
-///// @return Error code.
-//int disable_hyperthreading(void);
 
 ///* Do we need these? */
 //int dump_cap_package_frequency(void);
-//int dump_hyperthreading(void);
 //int dump_available_frequencies(void);
 //int dump_turbo(void);
 
