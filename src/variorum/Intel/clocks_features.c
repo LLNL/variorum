@@ -74,6 +74,10 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
         perf_storage(&pd, msr_perf_status);
         if (control_domains == SOCKET)
         {
+            fprintf(writedest, "_CLOCKS_DATA | hostname | socket | aperf | mperf | tsc | curr_freq_mhz | avg_freq_mhz\n");
+        }
+        else if (control_domains == CORE)
+        {
             fprintf(writedest, "_CLOCKS_DATA | hostname | socket | core | thread_phy | thread_log | aperf | mperf | tsc | curr_freq_mhz | avg_freq_mhz\n");
         }
         init = 1;
