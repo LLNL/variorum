@@ -157,6 +157,11 @@ void dump_dram_power_limit(FILE *writedest,
                            off_t msr_rapl_unit,
                            int socket);
 
+void print_dram_power_limit(FILE *writedest,
+                            off_t msr_power_limit,
+                            off_t msr_rapl_unit,
+                            int socket);
+
 int get_package_rapl_limit(const unsigned socket,
                            struct rapl_limit *limit1,
                            struct rapl_limit *limit2,
@@ -247,10 +252,6 @@ int delta_rapl_data(void);
 #endif
 
 ///* power_features.h */
-//void dram_power_limit(enum ctl_domains_e d,
-//                      int id,
-//                      off_t msr,
-//                      double *val);
 //void pkg_energy_status(enum ctl_domains_e d,
 //                       int id,
 //                       off_t msr,

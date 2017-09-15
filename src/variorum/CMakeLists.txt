@@ -46,6 +46,7 @@ else()
 endif()
 
 target_link_libraries(variorum PUBLIC ${hwloc_library})
+target_link_libraries(variorum PUBLIC m)
 
 install(TARGETS variorum
         EXPORT  variorum
