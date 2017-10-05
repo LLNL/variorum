@@ -86,4 +86,10 @@ int fm_06_2a_get_clocks(int long_ver);
 
 int fm_06_2a_get_power(int long_ver);
 
+int fm_06_2a_enable_turbo(void);
+
+int fm_06_2a_disable_turbo(void);
+
+int fm_06_2a_get_turbo_status(void);
+
 #endif

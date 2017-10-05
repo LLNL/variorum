@@ -120,22 +120,27 @@ int print_topology(void);
 /// @return Error code.
 int print_features(void);
 
+/// @brief Print if turbo is enabled or disabled.
+///
+/// @return Error code.
+int dump_turbo(void);
+
 ///***************************/
 ///* Enable/Disable Features */
 ///***************************/
 ///// @brief Enable turbo feature.
 /////
 ///// @return Error code.
-//int enable_turbo(void);
+int enable_turbo(void);
 //
 ///// @brief Disable turbo feature.
 /////
 ///// @return Error code.
-//int disable_turbo(void);
+int disable_turbo(void);
 
 ///* Do we need these? */
 //int dump_cap_package_frequency(void);
 //int dump_available_frequencies(void);
-//int dump_turbo(void);
+
 
 #endif
