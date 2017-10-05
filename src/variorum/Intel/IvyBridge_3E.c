@@ -228,3 +228,33 @@ int fm_06_3e_get_power(int long_ver)
     }
     return 0;
 }
+
+int fm_06_3e_enable_turbo(void)
+{
+    printf("Running %s\n", __FUNCTION__);
+
+    unsigned int turbo_mode_disable_bit = 38;
+    set_turbo_on(msrs.ia32_misc_enable, turbo_mode_disable_bit);
+
+    return 0;
+}
+
+int fm_06_3e_disable_turbo(void)
+{
+    printf("Running %s\n", __FUNCTION__);
+
+    unsigned int turbo_mode_disable_bit = 38;
+    set_turbo_off(msrs.ia32_misc_enable, turbo_mode_disable_bit);
+
+    return 0;
+}
+
+int fm_06_3e_get_turbo_status(void)
+{
+    printf("Running %s\n", __FUNCTION__);
+
+    unsigned int turbo_mode_disable_bit = 38;
+    dump_turbo_status(stdout, msrs.ia32_misc_enable, turbo_mode_disable_bit);
+
+    return 0;
+}

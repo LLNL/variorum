@@ -84,7 +84,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
     }
     read_batch(CLOCKS_DATA);
     read_batch(PERF_DATA);
-    
+
     switch(control_domains)
     {
     case SOCKET:

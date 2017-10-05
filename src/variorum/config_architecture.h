@@ -51,7 +51,7 @@ enum intel_arch_e
     FM_06_5E = 94,  // Skylake
     FM_06_8E = 142, // Kaby Lake
     FM_06_9E = 158, // Kaby Lake
-    FM_06_57 = 87   // Xeon Phi
+    FM_06_57 = 87   // Knights Landing
 };
 
 /// @brief Mapping topology information.
@@ -120,6 +120,21 @@ struct platform
     ///
     /// @return Error code.
     int (*dump_power)(int long_ver);
+
+    /// @brief Function pointer to enable turbo.
+    ///
+    /// @return Error code.
+    int (*enable_turbo)(void);
+
+    /// @brief Function pointer to disable turbo.
+    ///
+    /// @return Error code.
+    int (*disable_turbo)(void);
+
+    /// @brief Function pointer to get print turbo data.
+    ///
+    /// @return Error code.
+    int (*dump_turbo)(void);
 
     /******************************/
     /* Platform-Specific Topology */
