@@ -9,7 +9,7 @@ set(BASIC_TESTS
 
 message(STATUS "Adding variorum unit tests")
 foreach(TEST ${BASIC_TESTS})
-    message(STATUS " [*] Adding Unit Test: ${TEST}")
+    message(STATUS " [*] Adding unit test: ${TEST}")
     add_executable(${TEST} ${TEST}.cpp)
     ### Command target_compile_options() is available since CMake v2.8.12
     if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} EQUAL 2.8.12 OR
