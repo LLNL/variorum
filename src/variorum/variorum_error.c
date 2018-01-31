@@ -44,6 +44,9 @@ void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
         case VARIORUM_ERROR_UNSUPPORTED_ARCH:
             strncpy(msg, "_ERROR_VARIORUM_UNSUPPORTED_ARCH", size);
             break;
+        case VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR:
+            strncpy(msg, "_ERROR_VARIORUM_UNINITIALIZED_FUNC_PTR", size);
+            break;
         default:
             strncpy(msg, "Unknown variorum error code.", size);
             break;

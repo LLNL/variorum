@@ -190,4 +190,6 @@ int variorum_set_func_ptrs(void);
 
 int variorum_detect_arch(void);
 
+void variorum_init_func_ptrs(void);
+
 #endif

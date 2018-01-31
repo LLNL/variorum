@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
+#include <variorum_error.h>
 
 int tester(void)
 {
@@ -27,6 +29,11 @@ int dump_power_limits(void)
     {
         return -1;
     }
+    if (g_platform.dump_power_limits == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_power_limits(0);
     if (err)
     {
@@ -46,6 +53,11 @@ int print_power_limits(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.dump_power_limits == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.dump_power_limits(1);
@@ -113,6 +125,11 @@ int set_each_socket_power_limit(int socket_power_limit)
     {
         return -1;
     }
+    if (g_platform.set_each_socket_power_limit == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.set_each_socket_power_limit(socket_power_limit);
     if (err)
     {
@@ -132,6 +149,11 @@ int print_features(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.print_features == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.print_features();
@@ -155,6 +177,11 @@ int dump_thermals(void)
     {
         return -1;
     }
+    if (g_platform.dump_thermals == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_thermals(0);
     if (err)
     {
@@ -174,6 +201,11 @@ int print_thermals(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.dump_thermals == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.dump_thermals(1);
@@ -197,6 +229,11 @@ int dump_counters(void)
     {
         return -1;
     }
+    if (g_platform.dump_counters == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_counters(0);
     if (err)
     {
@@ -216,6 +253,11 @@ int print_counters(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.dump_counters == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.dump_counters(1);
@@ -239,6 +281,11 @@ int dump_clock_speed(void)
     {
         return -1;
     }
+    if (g_platform.dump_clocks == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_clocks(0);
     if (err)
     {
@@ -258,6 +305,11 @@ int print_clock_speed(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.dump_clocks == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.dump_clocks(1);
@@ -281,6 +333,11 @@ int dump_power(void)
     {
         return -1;
     }
+    if (g_platform.dump_power == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_power(0);
     if (err)
     {
@@ -300,6 +357,11 @@ int print_power(void)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.dump_power == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.dump_power(1);
@@ -349,6 +411,11 @@ int dump_turbo(void)
     {
         return -1;
     }
+    if (g_platform.dump_turbo == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.dump_turbo();
     if (err)
     {
@@ -371,6 +438,11 @@ int enable_turbo(void)
 	{
 		return -1;
 	}
+    if (g_platform.enable_turbo == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
 	err = g_platform.enable_turbo();
 	if (err)
 	{
@@ -392,6 +464,11 @@ int disable_turbo(void)
 	{
 		return -1;
 	}
+    if (g_platform.disable_turbo == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
 	err = g_platform.disable_turbo();
 	if (err)
 	{
