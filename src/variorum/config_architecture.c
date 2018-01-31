@@ -17,6 +17,8 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     int err = 0;
     printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
 
+    variorum_init_func_ptrs();
+
     err = variorum_get_topology();
     if (err)
     {
@@ -171,6 +173,20 @@ int variorum_get_topology(void)
         hwloc_topology_destroy(topology);
     }
     return 0;
+}
+
+void variorum_init_func_ptrs()
+{
+    g_platform.dump_power_limits = NULL;
+    g_platform.set_each_socket_power_limit = NULL;
+    g_platform.print_features = NULL;
+    g_platform.dump_thermals = NULL;
+    g_platform.dump_counters = NULL;
+    g_platform.dump_clocks = NULL;
+    g_platform.dump_power = NULL;
+    g_platform.enable_turbo = NULL;
+    g_platform.disable_turbo = NULL;
+    g_platform.dump_turbo = NULL;
 }
 
 int variorum_set_func_ptrs()
