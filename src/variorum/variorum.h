@@ -6,7 +6,7 @@ int tester(void);
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
-int poll_power(void);
+int poll_power(FILE *output);
 
 /********************/
 /* Set Power Limits */
