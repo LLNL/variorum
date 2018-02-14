@@ -27,12 +27,5 @@ message(STATUS " [*] Adding demoapp: power_wrapper_dynamic")
 add_executable(power_wrapper_dynamic ${power_wrapper_dynamic_sources})
 target_link_libraries(power_wrapper_dynamic variorum ${variorum_deps})
 
-install(TARGETS powmon EXPORT variorum
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install(TARGETS power_wrapper_static EXPORT variorum
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install(TARGETS power_wrapper_dynamic EXPORT variorum
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-
 include_directories(${CMAKE_SOURCE_DIR}/variorum
                     ${CMAKE_SOURCE_DIR}/variorum/Intel)

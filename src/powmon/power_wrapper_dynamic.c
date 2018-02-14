@@ -59,6 +59,7 @@ static double min_watts = 1024.0;
 
 static unsigned long start;
 static unsigned long end;
+static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static double watt_cap = 0.0;
 static volatile int poll_num = 0;

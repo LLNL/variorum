@@ -63,8 +63,8 @@ static double min_watts = 1024.0;
 /*************************/
 static unsigned long start;
 static unsigned long end;
-static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
+static FILE *logfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;
@@ -127,16 +127,15 @@ int main(int argc, char **argv)
         gethostname(hostname,64);
 
         char *fname;
-        //asprintf(&fname, "%s.power.dat", hostname);
+        asprintf(&fname, "%s.powmon.dat", hostname);
 
-        //logfd = open(fname, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
-        //if (logfd < 0)
-        //{
-        //    printf("Fatal Error: %s on %s cannot open the appropriate fd.\n", argv[0], hostname);
-        //    return 1;
-        //}
-        //logfile = fdopen(logfd, "w");
-        //fprintf(logfile, "time pkg_joules0 pkg_joules1 pkg_limwatts0 pkg_limwatts1 dram_joules0 dram_joules1 instr0 instr1 core0 core1\n");
+        logfd = open(fname, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
+        if (logfd < 0)
+        {
+            printf("Fatal Error: %s on %s cannot open the appropriate fd.\n", argv[0], hostname);
+            return 1;
+        }
+        logfile = fdopen(logfd, "w");
 
         /* Start power measurement thread. */
         pthread_t mthread;
@@ -164,7 +163,7 @@ int main(int argc, char **argv)
         end = now_ms();
 
         /* Output summary data. */
-        asprintf(&fname, "%s.power.summary", hostname);
+        asprintf(&fname, "%s.powmon.summary", hostname);
 
         logfd = open(fname, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
         if (logfd < 0)

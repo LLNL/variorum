@@ -21,7 +21,7 @@ int tester(void)
     return err;
 }
 
-int poll_power(void)
+int poll_power(FILE *output)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -29,7 +29,7 @@ int poll_power(void)
     {
         return -1;
     }
-    err = g_platform.poll_power();
+    err = g_platform.poll_power(output);
     if (err)
     {
         return -1;

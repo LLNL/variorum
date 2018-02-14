@@ -66,7 +66,7 @@ struct map
 /// The intersection of all features on all platforms.
 struct platform
 {
-    int (*poll_power)(void);
+    int (*poll_power)(FILE *output);
 
     /***********************************/
     /* Feature-Based Function Pointers */
