@@ -76,6 +76,7 @@ static int running = 1;
 
 int main(int argc, char **argv)
 {
+#if 0
     const char *usage = "\n"
                         "NAME\n"
                         "  powmon - Package and DRAM power monitor\n"
@@ -118,6 +119,7 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
+#endif
 
     if (highlander())
     {
@@ -138,15 +140,19 @@ int main(int argc, char **argv)
         logfile = fdopen(logfd, "w");
 
         /* Start power measurement thread. */
+        pthread_attr_t mattr;
         pthread_t mthread;
+        pthread_attr_init(&mattr);
+        pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
-        pthread_create(&mthread, NULL, power_measurement, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
 
         /* Fork. */
         pid_t app_pid = fork();
         if (app_pid == 0)
         {
             /* I'm the child. */
+            printf("FOO %s\n", argv[1]);
             execvp(argv[1], &argv[1]);
             printf("fork failure\n");
             return 1;
@@ -182,6 +188,8 @@ int main(int argc, char **argv)
 
         shmctl(shmid, IPC_RMID, NULL);
         shmdt(shmseg);
+
+        pthread_attr_destroy(&mattr);
     }
     else
     {
@@ -191,6 +199,7 @@ int main(int argc, char **argv)
         {
             /* I'm the child. */
             execvp(argv[1], &argv[1]);
+            printf("BAR %s\n", argv[1]);
             printf("Fork failure\n");
             return 1;
         }
