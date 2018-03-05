@@ -15,7 +15,9 @@
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 {
     int err = 0;
+#ifdef VARIORUM_LOG
     printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
+#endif
 
     variorum_init_func_ptrs();
 
@@ -43,8 +45,9 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
 int variorum_exit(const char *filename, const char *func_name, int line_num)
 {
     int err = 0;
-
+#ifdef VARIORUM_LOG
     printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
+#endif
 
 #ifdef VARIORUM_WITH_INTEL
     err = finalize_msr();
@@ -83,7 +86,9 @@ int variorum_detect_arch(void)
     return VARIORUM_ERROR_UNSUPPORTED_ARCH;
 #endif
 
+#ifdef VARIORUM_LOG
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
+#endif
     return 0;
 }
 

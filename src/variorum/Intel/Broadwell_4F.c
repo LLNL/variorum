@@ -69,7 +69,9 @@ int fm_06_4f_get_power_limits(int long_ver)
     int nsockets, ncores, nthreads;
     variorum_set_topology(&nsockets, &ncores, &nthreads);
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -125,7 +127,9 @@ int fm_06_4f_set_power_limits(int package_power_limit)
     int nsockets, ncores, nthreads;
     variorum_set_topology(&nsockets, &ncores, &nthreads);
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -136,7 +140,9 @@ int fm_06_4f_set_power_limits(int package_power_limit)
 
 int fm_06_4f_get_features(void)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     fprintf(stdout, "msr_platform_info            = 0x%lx\n", msrs.msr_platform_info);
     fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n", msrs.ia32_time_stamp_counter);
@@ -194,7 +200,9 @@ int fm_06_4f_get_features(void)
 
 int fm_06_4f_get_thermals(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -209,7 +217,9 @@ int fm_06_4f_get_thermals(int long_ver)
 
 int fm_06_4f_get_counters(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -224,7 +234,9 @@ int fm_06_4f_get_counters(int long_ver)
 
 int fm_06_4f_get_clocks(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -239,7 +251,9 @@ int fm_06_4f_get_clocks(int long_ver)
 
 int fm_06_4f_get_power(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -256,7 +270,9 @@ int fm_06_4f_enable_turbo(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
     set_turbo_on(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -266,7 +282,9 @@ int fm_06_4f_disable_turbo(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
     set_turbo_off(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -276,7 +294,9 @@ int fm_06_4f_get_turbo_status(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
     dump_turbo_status(stdout, msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -284,7 +304,9 @@ int fm_06_4f_get_turbo_status(void)
 
 int fm_06_4f_poll_power(FILE *output)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     get_all_power_data(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     return 0;

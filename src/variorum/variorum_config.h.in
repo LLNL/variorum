@@ -5,5 +5,7 @@
 #cmakedefine VARIORUM_WITH_AMD   @VARIORUM_WITH_AMD@
 #cmakedefine VARIORUM_WITH_IBM   @VARIORUM_WITH_IBM@
 #cmakedefine VARIORUM_WITH_GPU   @VARIORUM_WITH_GPU@
+#cmakedefine VARIORUM_DEBUG      @VARIORUM_DEBUG@
+#cmakedefine VARIORUM_LOG        @VARIORUM_LOG@
 
 #endif
