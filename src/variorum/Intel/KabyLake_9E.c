@@ -64,7 +64,9 @@ int fm_06_9e_get_power_limits(int long_ver)
     int nsockets, ncores, nthreads;
     variorum_set_topology(&nsockets, &ncores, &nthreads);
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -108,7 +110,9 @@ int fm_06_9e_set_power_limits(int package_power_limit)
     int nsockets, ncores, nthreads;
     variorum_set_topology(&nsockets, &ncores, &nthreads);
 
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -119,7 +123,9 @@ int fm_06_9e_set_power_limits(int package_power_limit)
 
 int fm_06_9e_get_features(void)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     fprintf(stdout, "msr_platform_info            = 0x%lx\n", msrs.msr_platform_info);
     fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n", msrs.ia32_time_stamp_counter);
@@ -173,7 +179,9 @@ int fm_06_9e_get_features(void)
 
 int fm_06_9e_get_thermals(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -188,7 +196,9 @@ int fm_06_9e_get_thermals(int long_ver)
 
 int fm_06_9e_get_counters(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -203,7 +213,9 @@ int fm_06_9e_get_counters(int long_ver)
 
 int fm_06_9e_get_clocks(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -218,7 +230,9 @@ int fm_06_9e_get_clocks(int long_ver)
 
 int fm_06_9e_get_power(int long_ver)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
     if (long_ver == 0)
     {
@@ -231,10 +245,12 @@ int fm_06_9e_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_9e_poll_power(void)
+int fm_06_9e_poll_power(FILE *output)
 {
+#ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
+#endif
 
-    get_all_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+    get_all_power_data(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     return 0;
 }

@@ -88,6 +88,6 @@ int fm_06_55_get_clocks(int long_ver);
 
 int fm_06_55_get_power(int long_ver);
 
-int fm_06_55_poll_power(void);
+int fm_06_55_poll_power(FILE *output);
 
 #endif
