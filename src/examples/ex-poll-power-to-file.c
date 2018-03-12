@@ -1,8 +1,10 @@
+#define _GNU_SOURCE
+
 #include <fcntl.h>
-#include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include <variorum.h>
 
@@ -32,20 +34,20 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    gethostname(hostname, 1024); 
+    gethostname(hostname, 1024);
     ret = asprintf(&fname, "%s.powmon.dat", hostname);
     if (ret < 0)
-    {   
+    {
         printf("Fatal Error: Cannot allocate memory for fname.\n");
-        return 1;  
-    }   
+        return 1;
+    }
 
     int logfd = open(fname, O_WRONLY|O_CREAT|O_EXCL|O_NDELAY, S_IRUSR|S_IWUSR);
     if (logfd < 0)
-    {   
+    {
         printf("Fatal Error: %s on %s cannot open the appropriate fd.\n", argv[0], hostname);
         return 1;
-    }   
+    }
     FILE *logfile = fdopen(logfd, "w");
 
     ret = poll_power(logfile);

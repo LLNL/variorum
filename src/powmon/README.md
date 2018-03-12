@@ -1,6 +1,6 @@
 POWMON
 ======
-This directory contains three libmsr-based power monitors.
+This directory contains three libvariorum-based power monitors.
 
 powmon
 ------

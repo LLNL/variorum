@@ -964,7 +964,8 @@ int read_rapl_data(off_t msr_rapl_power_unit, off_t msr_pkg_energy_status, off_t
 void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dram_power_limit, off_t msr_rapl_unit, off_t msr_package_energy_status, off_t msr_dram_energy_status)
 {
     // The length of the rlim array assumes dual socket system.
-    static struct rapl_limit rlim[6];
+    static struct rapl_limit *rlim;
+    //static struct rapl_limit rlim[6];
     static struct rapl_data *rapl = NULL;
     static int init_get_power_data = 0;
     static int nsockets;
@@ -980,12 +981,20 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
     if (!init_get_power_data)
     {
         init_get_power_data = 1;
+
+        rlim = (struct rapl_limit *) malloc(sizeof(struct rapl_limit) * nsockets * 3);
+        if (rlim == NULL)
+        {
+            printf("malloc of size %d failed!\n", nsockets * 3);
+            exit(1);
+        }
+
         rapl_storage(&rapl);
 
-        fprintf(writedest, "_POWMON time");
+        fprintf(writedest, "_POWMON | time");
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest, " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts", i, i, i, i, i);
+            fprintf(writedest, " | pkg%d_joules | pkg%d_lim1watts | pkg%d_lim2watts | dram%d_joules | dram%d_limwatts", i, i, i, i, i);
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
             rlim_idx += 3;
@@ -1006,10 +1015,10 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
     }
 
     rlim_idx = 0;
-    fprintf(writedest, "_POWMON %ld", now_ms());
+    fprintf(writedest, "_POWMON | %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
+        fprintf(writedest, " | %lf | %lf | %lf | %lf | %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
         rlim_idx += 3;
     }
     fprintf(writedest, "\n");
