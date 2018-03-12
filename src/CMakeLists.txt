@@ -32,6 +32,7 @@ endif()
 ### Add our examples
 add_subdirectory(examples)
 
+### Add powmon sampler
 add_subdirectory(powmon)
 
 ### Add documentation targets

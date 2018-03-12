@@ -44,11 +44,13 @@ int init_data(void)
 
 void take_measurement(void)
 {
+#if 0
     uint64_t instr0 = 0;
     uint64_t instr1 = 0;
     uint64_t core0 = 0;
     uint64_t core1 = 0;
     double rapl_data[10];
+#endif
     pthread_mutex_lock(&mlock);
 
     /* RAPL reads. */
