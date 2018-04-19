@@ -68,6 +68,8 @@ struct platform
 {
     int (*poll_power)(FILE *output);
 
+    int (*monitoring)(FILE *output);
+
     /***********************************/
     /* Feature-Based Function Pointers */
     /***********************************/

@@ -42,6 +42,27 @@ int poll_power(FILE *output)
     return err;
 }
 
+int monitoring(FILE *output)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    err = g_platform.monitoring(output);
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 int dump_power_limits(void)
 {
     int err = 0;

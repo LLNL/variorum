@@ -94,4 +94,5 @@ int fm_06_3f_get_turbo_status(void);
 
 int fm_06_3f_poll_power(FILE *output);
 
+int fm_06_3f_monitoring(FILE *output);
 #endif

@@ -8,6 +8,8 @@ int tester(void);
 /// domains.
 int poll_power(FILE *output);
 
+int monitoring(FILE *output);
+
 /********************/
 /* Set Power Limits */
 /********************/
