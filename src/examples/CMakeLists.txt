@@ -20,6 +20,7 @@ set(BASIC_EXAMPLES
   ex-dump-turbo
   ex-poll-power-to-file
   ex-poll-power-to-stdout
+  ex-monitoring-to-file
 )
 
 foreach(EXAMPLE ${BASIC_EXAMPLES})

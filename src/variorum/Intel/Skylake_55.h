@@ -90,4 +90,6 @@ int fm_06_55_get_power(int long_ver);
 
 int fm_06_55_poll_power(FILE *output);
 
+int fm_06_55_monitoring(FILE *output);
+
 #endif
