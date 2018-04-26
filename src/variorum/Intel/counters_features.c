@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+#include <clocks_features.h>
 #include <counters_features.h>
 #include <config_architecture.h>
 #include <msr_core.h>
@@ -836,12 +837,14 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel, off_t 
     }
 }
 
-void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dram_power_limit, off_t msr_rapl_unit, off_t msr_package_energy_status, off_t msr_dram_energy_status, off_t *msrs_fixed_ctrs, off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl)
+void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dram_power_limit, off_t msr_rapl_unit, off_t msr_package_energy_status, off_t msr_dram_energy_status, off_t *msrs_fixed_ctrs, off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc)
 {
     // The length of the rlim array assumes dual socket system.
-    static struct rapl_limit rlim[6];
+    static struct rapl_limit *rlim;
+    //static struct rapl_limit rlim[6];
     static struct rapl_data *rapl = NULL;
     static struct fixed_counter *c0, *c1, *c2;
+    static struct clocks_data *cd;
     static int init_get_power_data = 0;
     static int nsockets, nthreads;
     char hostname[1024];
@@ -856,14 +859,23 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t 
     if (!init_get_power_data)
     {
         init_get_power_data = 1;
+
+        rlim = (struct rapl_limit *) malloc(sizeof(struct rapl_limit) * nsockets * 3);
+        if (rlim == NULL)
+        {
+            printf("malloc of size %d failed!\n", nsockets * 3);
+            exit(1);
+        }
+
         rapl_storage(&rapl);
         fixed_counter_storage(&c0, &c1, &c2, msrs_fixed_ctrs);
         enable_fixed_counters(msrs_fixed_ctrs, msr_perf_global_ctrl, msr_fixed_counter_ctrl);
+        clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
 
-        fprintf(writedest, "_POWMON time");
+        fprintf(writedest, "_POWMON | time");
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest, " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts", i, i, i, i, i);
+            fprintf(writedest, " | pkg%d_joules | pkg%d_lim1watts | pkg%d_lim2watts | dram%d_joules | dram%d_limwatts", i, i, i, i, i);
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
             rlim_idx += 3;
@@ -882,24 +894,25 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t 
         }
         for (i = 0; i < nthreads; i++)
         {
-            fprintf(writedest, " InstRet%d UnhaltClkCycles%d UnhaltRefCycles%d", i, i, i);
+            fprintf(writedest, " | InstRet%d | UnhaltClkCycles%d | UnhaltRefCycles%d | APERF%d | MPERF%d | TSC%d", i, i, i, i, i, i);
         }
         fprintf(writedest, "\n");
     }
 
     read_batch(FIXED_COUNTERS_DATA);
+    read_batch(CLOCKS_DATA);
 
     rlim_idx = 0;
-    fprintf(writedest, "_POWMON %ld", now_ms());
+    fprintf(writedest, "_POWMON | %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
+        fprintf(writedest, " | %lf | %lf | %lf | %lf | %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
         rlim_idx += 3;
     }
 
     for (i = 0; i < nthreads; i++)
     {
-        fprintf(writedest, " %lu %lu %lu", *c0->value[i], *c1->value[i], *c2->value[i]);
+        fprintf(writedest, " | %lu | %lu | %lu | %lu | %lu | %lu", *c0->value[i], *c1->value[i], *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
     }
     fprintf(writedest, "\n");
 }
