@@ -366,6 +366,9 @@ void get_all_power_data_fixed(FILE *writedest,
                               off_t msr_dram_energy_status,
                               off_t *msrs_fixed_ctrs,
                               off_t msr_perf_global_ctrl,
-                              off_t msr_fixed_counter_ctrl);
+                              off_t msr_fixed_counter_ctrl,
+                              off_t msr_aperf,
+                              off_t msr_mperf,
+                              off_t msr_tsc);
 
 #endif

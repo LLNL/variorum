@@ -6,8 +6,18 @@ int tester(void);
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
+///
+/// @param [in] output Location for output.
+///
+/// @return Error code.
 int poll_power(FILE *output);
 
+/// @brief Collect power limits and energy usage for both the package and DRAM
+/// domains, fixed counters, TSC, APERF, and MPERF.
+///
+/// @param [in] output Location for output.
+///
+/// @return Error code.
 int monitoring(FILE *output);
 
 /********************/
@@ -147,6 +157,5 @@ int disable_turbo(void);
 ///* Do we need these? */
 //int dump_cap_package_frequency(void);
 //int dump_available_frequencies(void);
-
 
 #endif
