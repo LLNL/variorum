@@ -253,7 +253,7 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
-breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/../dox/xml" }
+breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/docs/dox/xml" }
 breathe_default_project = "variorum"
 
 try:
