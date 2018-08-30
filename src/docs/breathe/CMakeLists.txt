@@ -8,7 +8,7 @@ ExternalProject_Add(breathe
   SOURCE_DIR ${PROJECT_BINARY_DIR}/thirdparty_builtin/breathe
   PREFIX ${PROJECT_BINARY_DIR}/thirdparty_builtin/breathe-prefix
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND make
+  BUILD_COMMAND make SPHINXBUILD=${SPHINX_EXECUTABLE}
   INSTALL_COMMAND ""
   BUILD_IN_SOURCE 1
 )
