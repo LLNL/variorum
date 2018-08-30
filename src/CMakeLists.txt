@@ -17,10 +17,6 @@ include(CMake/Setup3rdParty.cmake)
 
 include(CMake/SetupTests.cmake)
 
-### Necessary for ExternalProject_Add
-include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
-include(CMake/SetupExternalProjects.cmake)
-
 add_subdirectory(thirdparty_builtin)
 
 ### Add our libs

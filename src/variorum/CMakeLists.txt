@@ -23,6 +23,7 @@ set(variorum_deps ""
 
 set(variorum_includes
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${HWLOC_INCLUDE_DIRS}
   )
 
 if(VARIORUM_WITH_INTEL)
@@ -45,7 +46,7 @@ else()
                 ${variorum_deps})
 endif()
 
-target_link_libraries(variorum PUBLIC ${hwloc_library})
+target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
 target_link_libraries(variorum PUBLIC m)
 
 install(TARGETS variorum

@@ -1,5 +1,9 @@
-find_package(Doxygen)
-include(CMake/thirdparty/FindSphinx.cmake)
+include(CMake/thirdparty/SetupHwloc.cmake)
+
+if(BUILD_DOCS)
+    find_package(Doxygen)
+    include(CMake/thirdparty/FindSphinx.cmake)
+endif()
 
 if(ENABLE_TESTS)
     add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
