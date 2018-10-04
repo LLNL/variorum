@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include <variorum.h>
 
 int main(int argc, char **argv)
