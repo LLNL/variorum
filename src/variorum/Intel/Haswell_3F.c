@@ -4,6 +4,7 @@
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
+#include <misc_features.h>
 #include <power_features.h>
 #include <thermal_features.h>
 
