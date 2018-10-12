@@ -462,12 +462,12 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_
     if (!init_dump_package_power_limit)
     {
         init_dump_package_power_limit = 1;
-        fprintf(writedest, "_PKG_POWER_LIMITS | Offset | Host | Socket | PowerLimBits | Watts1 | Seconds1 | Watts2 | Seconds2\n");
+        fprintf(writedest, "_PACKAGE_POWER_LIMITS | Offset | Host | Socket | PowerLimBits | Watts1 | Seconds1 | Watts2 | Seconds2\n");
     }
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PKG_POWER_LIMITS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
+        fprintf(writedest, "_PACKAGE_POWER_LIMITS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
     }
 }
 
@@ -502,7 +502,7 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PKG_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim1: %lfW SecTimeWin1: %lf sec WattsPowerLim2: %lfW SecTimeWin2: %lf sec\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
+        fprintf(writedest, "_PACKAGE_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim1: %lfW SecTimeWin1: %lf sec WattsPowerLim2: %lfW SecTimeWin2: %lf sec\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
     }
 }
 
@@ -787,7 +787,7 @@ void print_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_uni
 #ifdef VARIORUM_DEBUG
         fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4lf\n", i, *rapl->pkg_bits[i], rapl->pkg_joules[i]);
 #endif
-        fprintf(writedest, "_PKG_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i], rapl->pkg_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
         fprintf(writedest, "_DRAM_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i], rapl->dram_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
@@ -812,13 +812,13 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
     if (!init)
     {
         gettimeofday(&start, NULL);
-        fprintf(writedest, "_PKG_ENERGY_STATUS | Offset | Host | Socket | Bits | Joules | Watts | Elapsed | Timestamp\n");
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS | Offset | Host | Socket | Bits | Joules | Watts | Elapsed | Timestamp\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_PKG_ENERGY_STATUS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n",
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i], rapl->pkg_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
     }
 

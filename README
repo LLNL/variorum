@@ -10,7 +10,7 @@ version 0.0.0
 
 Last Update
 -----------
-17 July 2018
+12 October 2018
 
 
 Webpages
@@ -22,9 +22,8 @@ https://github.com/llnl/libvariorum
 Overview
 --------
 
-Libvariorum provides an interface to accessing the model-specific registers (MSRs)
-on Intel platforms, which provide privileged functionality for monitoring and
-controlling various CPU features.
+Libvariorum provides general interfaces to provide privileged functionality for
+monitoring and controlling various hardware-level features.
 
 
 Installation
@@ -50,8 +49,8 @@ compilers, and paths to hwloc installs. These can be used by adding
 `-C ../host-configs/your-local-configuration-file.cmake` to the CMake command.
 
 Currently supported architectures are Intel Xeons (server processors). The
-library technically supports all processors based on these architectures, but
-some features may be missing from client products.
+library technically supports all Intel processors based on these architectures,
+but some features may vary between platforms.
 
 Supported Architectures:
 
@@ -68,8 +67,27 @@ or `/proc/cpuinfo` (note that it will not be in hexadecimal).
 
 Testing
 -------
-From within the build directory, tests can be executed with the `make test`
-target.
+From within the build directory, unit tests can be executed with the following
+target:
+
+    $ make test
+
+Please report any failed tests to labasan1@llnl.gov.
+
+
+Examples
+--------
+For sample code, see the `examples/` directory.
+
+
+Documentation
+-------------
+From within the build directory, documentation can be built with the following
+target:
+
+    $ make docs
+
+Additionally, `BUILD_DOCS=ON` in `CMakeLists.txt`.
 
 
 Support Additional Intel Platforms
@@ -95,8 +113,6 @@ If you need PCI configuration register (CSR) support in Libvariorum, you MUST
 have CSR-SAFE installed. This code is not currently on Github -- you will need
 to request it.
 
-For sample code, see the `examples/` directory.
-
 
 Bug Tracker
 -----------
@@ -118,7 +134,7 @@ the years. See the current list in the `AUTHORS` file. Please contact the
 developers to have your name added to the list.
 
 
-Release
+License
 -------
 
 This has not been released yet.
