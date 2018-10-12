@@ -1,0 +1,24 @@
+LIBVARIORUM UNIT TESTS
+======================
+
+t_msr_driver.cpp
+----------------
+Test stock msr driver. Check that the driver exists on each processor. Check if
+the msr driver is owned by root. Check that the user has read and write
+permissions on the driver. Do the same check for the group.
+
+t_msr_safe_driver.cpp
+---------------------
+Test LLNL's msr-safe driver. Check that the driver exists on each processor.
+Check if the msr-safe driver group owner is not root. Check that the group has
+read and write permissions on the driver.
+
+t_msr_whitelist.cpp
+-------------------
+Test LLNL's msr-whitelist device file. Check that the device exists. Check that
+world has read (and no write) permissions. Check that the whitelist file is not
+empty.
+
+t_variorum_test.cpp
+-------------------
+Boilerplate test.
