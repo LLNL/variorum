@@ -34,6 +34,7 @@
 
 #define _GNU_SOURCE
 
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
@@ -80,37 +81,38 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "  power_wrapper_static - Package and DRAM power\n"
-                        "  monitor, adjusting the power cap stepwise every\n"
-                        "  500 ms.\n"
+                        "    power_wrapper_static - monitor power and statically enforce power cap\n"
+                        "\n"
                         "SYNOPSIS\n"
-                        "  %s [--help | -h] [-c] -w -a \"<executable> <args> ...\"\n"
+                        "    power_wrapper_static [--help | -h] [-c] -w pcap -a \"executable [exec-args]\"\n"
+                        "\n"
                         "OVERVIEW\n"
-                        "  Power_wrapper_static is a utility for setting a\n"
-                        "  power cap, and sampling and printing the power\n"
-                        "  consumption (for package and DRAM) and power limit\n"
-                        "  per socket in a node.\n"
+                        "    Power_wrapper_static is a utility for setting a package-level power cap, and\n"
+                        "    sampling and printing the power usage (for package and DRAM) and power\n"
+                        "    limits per socket in a node.\n"
+                        "\n"
                         "OPTIONS\n"
-                        "  --help | -h\n"
-                        "      Display this help information, then exit.\n"
-                        "  -a\n"
-                        "      Application and arguments in quotes.\n"
-                        "  -w\n"
-                        "      Package power cap (integer).\n"
-                        "  -c\n"
-                        "      Remove stale shared memory.\n"
+                        "    --help | -h\n"
+                        "        Display this help information, then exit.\n"
+                        "\n"
+                        "    -a \"executable [exec-args]\"\n"
+                        "        Application and arguments surrounded by quotes\n"
+                        "\n"
+                        "    -w pcap\n"
+                        "        Package-level power cap (integer).\n"
+                        "\n"
+                        "    -c\n"
+                        "        Remove stale shared memory.\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
                           strncmp(argv[1], "-h", strlen("-h")) == 0 )))
     {
-        printf(usage, argv[0]);
+        printf(usage);
         return 0;
     }
 
     int opt;
-    int app_flag = 0;
-    int watts_flag = 0;
     char *app;
     char **arg = NULL;
 
@@ -123,32 +125,27 @@ int main(int argc, char **argv)
                 printf("Exiting power_wrapper_static...\n");
                 return 0;
             case 'a':
-                app_flag = 1;
                 app = optarg;
                 break;
             case 'w':
-                watts_flag = 1;
                 watt_cap = atoi(optarg);
                 break;
             case '?':
-                fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
-                fprintf(stderr, usage, argv[0]);
-                return 1;
-            default:
+                if (optopt == 'w' || optopt == 'a')
+                {
+                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                }
+                else if (isprint(optopt))
+                {
+                    fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
+                }
+                else
+                {
+                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                }
+                fprintf(stderr, usage);
                 return 1;
         }
-    }
-    if (app_flag == 0)
-    {
-        fprintf(stderr, "\nError: must specify \"-a\"\n");
-        fprintf(stderr, usage, argv[0]);
-        return 1;
-    }
-    if (watts_flag == 0)
-    {
-        fprintf(stderr, "\nError: must specify \"-w\"\n");
-        fprintf(stderr, usage, argv[0]);
-        return 1;
     }
 
     char *app_split = strtok(app, " ");
@@ -184,7 +181,7 @@ int main(int argc, char **argv)
         char hostname[64];
         gethostname(hostname, 64);
 
-        asprintf(&fname_dat, "%s.power.dat", hostname);
+        asprintf(&fname_dat, "%s.powmon.dat", hostname);
 
         logfd = open(fname_dat, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
         if (logfd < 0)
