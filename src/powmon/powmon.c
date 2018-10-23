@@ -34,6 +34,7 @@
 
 #define _GNU_SOURCE
 
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
@@ -79,31 +80,34 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "  powmon - Package and DRAM power monitor\n"
+                        "    powmon - package and DRAM power monitor\n"
+                        "\n"
                         "SYNOPSIS\n"
-                        "  %s [--help | -h] [-c] -a \"<executable> <args> ...\"\n"
+                        "    powmon [--help | -h] [-c] -a \"executable [exec-args]\"\n"
+                        "\n"
                         "OVERVIEW\n"
-                        "  Powmon is a utility for sampling and printing the\n"
-                        "  power consumption (for package and DRAM) and power\n"
-                        "  limit per socket in a node.\n"
+                        "    Powmon is a utility for sampling and printing the power usage (for package\n"
+                        "    and DRAM) and power limits per socket in a node\n"
+                        "\n"
                         "OPTIONS\n"
-                        "  --help | -h\n"
-                        "      Display this help information, then exit.\n"
-                        "  -a\n"
-                        "      Application and arguments in quotes.\n"
-                        "  -c\n"
-                        "      Remove stale shared memory.\n"
+                        "    --help | -h\n"
+                        "        Display this help information, then exit.\n"
+                        "\n"
+                        "    -a \"executable [exec-args]\"\n"
+                        "        Application and arguments surrounded by quotes\n"
+                        "\n"
+                        "    -c\n"
+                        "        Remove stale shared memory.\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
                           strncmp(argv[1], "-h", strlen("-h")) == 0 )))
     {
-        printf(usage, argv[0]);
+        printf(usage);
         return 0;
     }
 
     int opt;
-    int app_flag = 0;
     char *app;
     char **arg = NULL;
 
@@ -116,22 +120,26 @@ int main(int argc, char **argv)
                 printf("Exiting powmon...\n");
                 return 0;
             case 'a':
-                app_flag = 1;
                 app = optarg;
                 break;
             case '?':
-                fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
-                fprintf(stderr, usage, argv[0]);
+                if (optopt == 'a')
+                {
+                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                }
+                else if (isprint(optopt))
+                {
+                    fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
+                }
+                else
+                {
+                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                }
+                fprintf(stderr, usage);
                 return 1;
             default:
                 return 1;
         }
-    }
-    if (app_flag == 0)
-    {
-        fprintf(stderr, "\nError: must specify \"-a\"\n");
-        fprintf(stderr, usage, argv[0]);
-        return 1;
     }
 
     char *app_split = strtok(app, " ");

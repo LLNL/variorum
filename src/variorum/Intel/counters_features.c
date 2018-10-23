@@ -885,7 +885,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t 
             // rlim[3] = second socket, power limit 1
             // rlim[4] = second socket, power limit 2
             // rlim[5] = second socket, dram power limit
-            
+
             // This code assumed dual socket system.
             //get_package_rapl_limit(0, &(rlim[0]), &(rlim[1]), msr_pkg_power_limit, msr_rapl_unit);
             //get_package_rapl_limit(1, &(rlim[2]), &(rlim[3]), msr_pkg_power_limit, msr_rapl_unit);
