@@ -1,29 +1,28 @@
 LIBVARIORUM
 ===========
 
-Welcome to Libvariorum, a friendly (well, friendlier) interface to many of the
-model-specific registers in Intel processors. Now with PCI configuration
-register support for some Intel hardware.
+Welcome to libvariorum, a friendly (well, friendlier) interface to monitor and
+control various features across multiple hardware architectures.
 
 version 0.0.0
 
 
 Last Update
 -----------
-12 October 2018
+26 October 2018
 
 
 Webpages
 --------
-http://software.llnl.gov/libvariorum <br>
-https://github.com/llnl/libvariorum
+https://lc.llnl.gov/bitbucket/projects/VAR/repos/libvariorum/browse
 
 
 Overview
 --------
 
 Libvariorum provides general interfaces to provide privileged functionality for
-monitoring and controlling various hardware-level features.
+monitoring and controlling various hardware-level features of multiple hardware
+architectures.
 
 
 Installation
@@ -43,11 +42,30 @@ the installation is as follows:
 Note that libvariorum depends on hwloc. The build system will first check for a
 specified local hwloc install, then it will check for a pre-installed hwloc.
 If it can find neither, it will clone and build hwloc from source (will fail on
-machines without internet access). We provide configuration files for specific
-systems to pre-populate the cache. This configuration file will define various
-compilers, and paths to hwloc installs. These can be used by adding
-`-C ../host-configs/your-local-configuration-file.cmake` to the CMake command.
+machines without internet access).
 
+By default `BUILD_DOCS=ON`, so the build system looks for `Doxygen`, `Sphinx`,
+and `Breathe`. If you do not want to include these dependencies, simply toggle
+`BUILD_DOCS=OFF` in `CMakeCache.txt` or run the `CMake` command as follows:
+
+    $ cmake -DCMAKE_INSTALL_PREFIX=../install -DBUILD_DOCS=OFF ../src
+
+
+CMake Host Config Files
+-----------------------
+We provide configuration files for specific systems to pre-populate the cache.
+This configuration file will define various compilers, and paths to hwloc
+installs. These can be used as follows:
+
+    $ cd libvariorum/
+    $ mkdir build && mkdir install
+    $ cd build/
+    $ cmake -C ../host-configs/your-local-configuration-file.cmake ../src
+    $ make
+    
+
+Platform Support
+----------------
 Currently supported architectures are Intel Xeons (server processors). The
 library technically supports all Intel processors based on these architectures,
 but some features may vary between platforms.
@@ -109,10 +127,6 @@ easier to use our own [MSR-SAFE](https://github.com/LLNL/msr-safe) kernel
 module, but running as root (or going through the bother of adding the
 capabilities to the binaries) is another option.
 
-If you need PCI configuration register (CSR) support in Libvariorum, you MUST
-have CSR-SAFE installed. This code is not currently on Github -- you will need
-to request it.
-
 
 Bug Tracker
 -----------
@@ -129,12 +143,11 @@ Stephanie Labasan, Developer, <labasan1@llnl.gov>
 
 Please feel free to contact the developers with any questions or feedback.
 
-We are collecting names of those who have previously contributed to libmsr over
-the years. See the current list in the `AUTHORS` file. Please contact the
-developers to have your name added to the list.
+We collect names of those who have contributed to libvariorum over
+the years. See the current list in the `AUTHORS` file.
 
 
 License
 -------
 
-This has not been released yet.
+This has not been released publicly yet.
