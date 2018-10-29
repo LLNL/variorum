@@ -901,6 +901,12 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t 
 
     read_batch(FIXED_COUNTERS_DATA);
     read_batch(CLOCKS_DATA);
+    rlim_idx = 0;
+    for (i = 0; i < nsockets; i++)
+    {
+        get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
+        get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
+    }
 
     rlim_idx = 0;
     fprintf(writedest, "_POWMON | %ld", now_ms());
