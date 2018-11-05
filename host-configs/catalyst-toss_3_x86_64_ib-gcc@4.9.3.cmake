@@ -7,9 +7,8 @@ set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc/gcc-4.9.3/bin/g++" CACHE PATH "")
 # fortran compiler
 set(CMAKE_Fortran_COMPILER  "/usr/tce/packages/gcc/gcc-4.9.3/bin/gfortran" CACHE PATH "")
 
-set(BUILD_DOCS ON CACHE PATH "")
-set(BUILD_TESTING ON CACHE PATH "")
-set(ENABLE_TESTS ON CACHE PATH "")
+set(BUILD_DOCS ON CACHE BOOL "")
+set(BUILD_TESTS ON CACHE BOOL "")
 
 #SPHINX documentation building
 set("SPHINX_EXECUTABLE" "/usr/bin/sphinx-build" CACHE PATH "")
