@@ -4,8 +4,7 @@ project(variorum C CXX)
 
 option(BUILD_SHARED_LIBS   "Build shared libraries"      ON)
 option(BUILD_DOCS          "Build documentation"         ON)
-option(BUILD_TESTING       "Test build"                  ON)
-option(ENABLE_TESTS        "Build tests"                 ON)
+option(BUILD_TESTS         "Build tests"                 ON)
 option(VARIORUM_WITH_INTEL "Support Intel architectures" ON)
 option(VARIORUM_WITH_AMD   "Support AMD architectures"   ON)
 option(VARIORUM_WITH_IBM   "Support IBM architectures"   ON)
@@ -25,7 +24,7 @@ add_subdirectory(thirdparty_builtin)
 add_subdirectory(variorum)
 
 ### Add our tests
-if(ENABLE_TESTS)
+if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 

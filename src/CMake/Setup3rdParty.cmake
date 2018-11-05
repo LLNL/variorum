@@ -5,7 +5,7 @@ if(BUILD_DOCS)
     include(CMake/thirdparty/FindSphinx.cmake)
 endif()
 
-if(ENABLE_TESTS)
+if(BUILD_TESTS)
     add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
     ################################
     # Enable GTest
