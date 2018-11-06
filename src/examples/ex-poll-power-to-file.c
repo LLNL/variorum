@@ -9,7 +9,7 @@
 #include <variorum.h>
 
 #ifdef SECOND_RUN
-inline double do_work(int input)
+static inline double do_work(int input)
 {
     int i;
     double result = (double)input;
