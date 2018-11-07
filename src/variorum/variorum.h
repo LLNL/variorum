@@ -100,7 +100,7 @@ int dump_power(void);
 //int dump_cap_frequency(void);
 
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
-//  long format.
+/// long format.
 ///
 /// @return Error code.
 int print_clock_speed(void);
@@ -111,20 +111,15 @@ int print_clock_speed(void);
 /// @return Error code.
 int dump_clock_speed(void);
 
-///// @todo Print discrete frequencies from P0 to Pn?
-/////
-///// @return Error code.
-//int print_available_frequencies(void);
+/// @todo Print discrete frequencies from P0 to Pn.
+///
+/// @return Error code.
+int print_available_frequencies(void) { return 0; };
 
 /// @brief Print if hyperthreading is enabled or disabled.
 ///
 /// @return Error code.
 int dump_hyperthreading(void);
-
-///// @todo Print discrete frequencies in turbo range (i.e., max turbo ratio)?
-/////
-///// @return Error code.
-//int print_turbo(void);
 
 /// @brief Print architecture toplogy in long format.
 ///
@@ -136,22 +131,24 @@ int print_topology(void);
 /// @return Error code.
 int print_features(void);
 
-/// @brief Print if turbo is enabled or disabled.
+/// @brief Print if turbo is enabled or disabled. If enabled, then print
+/// discrete frequencies in turbo range (i.e., max turbo ratio).
 ///
 /// @return Error code.
 int dump_turbo(void);
+//int print_turbo(void);
 
-///***************************/
-///* Enable/Disable Features */
-///***************************/
-///// @brief Enable turbo feature.
-/////
-///// @return Error code.
+/***************************/
+/* Enable/Disable Features */
+/***************************/
+/// @brief Enable turbo feature.
+///
+/// @return Error code.
 int enable_turbo(void);
-//
-///// @brief Disable turbo feature.
-/////
-///// @return Error code.
+
+/// @brief Disable turbo feature.
+///
+/// @return Error code.
 int disable_turbo(void);
 
 ///* Do we need these? */
