@@ -906,6 +906,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit, off_t 
     {
         get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
         get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
+        rlim_idx += 3;
     }
 
     rlim_idx = 0;
