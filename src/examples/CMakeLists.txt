@@ -21,6 +21,7 @@ set(BASIC_EXAMPLES
   ex-poll-power-to-file
   ex-poll-power-to-stdout
   ex-monitoring-to-file
+  ex-set-cpu-clock-speed
 )
 
 message(STATUS "Adding variorum examples")

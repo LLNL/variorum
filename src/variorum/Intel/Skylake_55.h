@@ -92,4 +92,6 @@ int fm_06_55_poll_power(FILE *output);
 
 int fm_06_55_monitoring(FILE *output);
 
+int fm_06_55_set_frequency(int core_freq_mhz);
+
 #endif

@@ -88,6 +88,8 @@ struct platform
     /// @return Error code.
     int (*set_each_socket_power_limit)(int socket_power_limit);
 
+    int (*set_each_core_frequency)(int core_freq_mhz);
+
     /// @brief Function pointer to print the feature set.
     ///
     /// @return Error code.

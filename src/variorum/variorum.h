@@ -44,6 +44,13 @@ int set_each_socket_power_limit(int socket_power_limit);
 ///// @return Error code.
 //int set_each_gpu_power_limit(int gpu_power_limit);
 
+/// @brief Set identical CPU frequencies to all cores within a socket.
+///
+/// @param [in] core_freq_mhz Desired CPU frequency for each core in MHz.
+///
+/// @return Error code.
+int set_each_core_frequency(int cpu_freq_mhz);
+
 /************************/
 /* Print/Dump Functions */
 /************************/

@@ -185,6 +185,32 @@ int set_each_socket_power_limit(int socket_power_limit)
     return err;
 }
 
+int set_each_core_frequency(int core_freq_mhz)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    if (g_platform.set_each_core_frequency == NULL)
+    {
+        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    err = g_platform.set_each_core_frequency(core_freq_mhz);
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 int print_features(void)
 {
     int err = 0;

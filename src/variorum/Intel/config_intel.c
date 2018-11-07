@@ -50,6 +50,7 @@ int set_intel_func_ptrs(void)
         g_platform.disable_turbo = fm_06_2a_disable_turbo;
         g_platform.poll_power = fm_06_2a_poll_power;
         g_platform.monitoring = fm_06_2a_monitoring;
+        //g_platform.set_each_core_frequency = fm_06_2a_set_frequency;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
@@ -66,6 +67,7 @@ int set_intel_func_ptrs(void)
         g_platform.disable_turbo = fm_06_3e_disable_turbo;
         g_platform.poll_power = fm_06_3e_poll_power;
         g_platform.monitoring = fm_06_3e_monitoring;
+        //g_platform.set_each_core_frequency = fm_06_3e_set_frequency;
     }
     // Haswell 06_3F
     else if (*g_platform.intel_arch == FM_06_3F)
@@ -82,6 +84,7 @@ int set_intel_func_ptrs(void)
         g_platform.disable_turbo = fm_06_3f_disable_turbo;
         g_platform.poll_power = fm_06_3f_poll_power;
         g_platform.monitoring = fm_06_3f_monitoring;
+        //g_platform.set_each_core_frequency = fm_06_3f_set_frequency;
     }
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
@@ -98,6 +101,7 @@ int set_intel_func_ptrs(void)
         g_platform.disable_turbo = fm_06_4f_disable_turbo;
         g_platform.poll_power = fm_06_4f_poll_power;
         g_platform.monitoring = fm_06_4f_monitoring;
+        //g_platform.set_each_core_frequency = fm_06_4f_set_frequency;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
@@ -114,6 +118,7 @@ int set_intel_func_ptrs(void)
         //g_platform.disable_turbo = fm_06_55_disable_turbo;
         g_platform.poll_power = fm_06_55_poll_power;
         g_platform.monitoring = fm_06_55_monitoring;
+        g_platform.set_each_core_frequency = fm_06_55_set_frequency;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
