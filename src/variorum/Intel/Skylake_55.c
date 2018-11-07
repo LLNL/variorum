@@ -264,3 +264,16 @@ int fm_06_55_monitoring(FILE *output)
     get_all_power_data_fixed(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status, msrs.ia32_fixed_counters, msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
     return 0;
 }
+
+int fm_06_55_set_frequency(int core_freq_mhz)
+{
+    int nsockets, ncores, nthreads;
+    variorum_set_topology(&nsockets, &ncores, &nthreads);
+
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    set_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status, msrs.ia32_perf_ctl);
+    return 0;
+}

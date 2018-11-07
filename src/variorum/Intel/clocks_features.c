@@ -34,6 +34,37 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf, o
     }
 }
 
+void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status, off_t msr_perf_ctl, enum ctl_domains_e control_domains)
+{
+    static int init = 0;
+    static struct perf_data d;
+    int nsockets, ncores, nthreads;
+
+    variorum_set_topology(&nsockets, &ncores, &nthreads);
+
+    if (!init)
+    {
+        init = 1;
+        switch(control_domains)
+        {
+        case SOCKET:
+            d.perf_ctl = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+            allocate_batch(PERF_CTRL, 2UL * nsockets);
+            load_socket_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+            break;
+        case CORE:
+            d.perf_ctl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
+            allocate_batch(PERF_CTRL, 2UL * nthreads);
+            load_thread_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+            break;
+        }
+    }
+    if (pd != NULL)
+    {
+        *pd = &d;
+    }
+}
+
 void perf_storage(struct perf_data **pd, off_t msr_perf_status)
 {
     static struct perf_data d;
@@ -237,6 +268,51 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t 
 //    }
 //}
 
+void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain, off_t msr_perf_status, off_t msr_perf_ctl)
+{
+    int nsockets, ncores, nthreads;
+    int i;
+    static struct perf_data *pd;
+    static int init = 0;
+
+    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    if (!init)
+    {
+        init = 1;
+        perf_storage_temp(&pd, msr_perf_status, msr_perf_ctl, domain);
+    }
+
+    switch(domain)
+    {
+    case SOCKET:
+        printf("Set frequencies per socket\n");
+        for (i = 0; i < nsockets; i++)
+        {
+            *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
+        }
+        write_batch(PERF_CTRL);
+        break;
+    case CORE:
+        printf("Set frequencies per core\n");
+        for (i = 0; i < nthreads; i++)
+        {
+            *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
+        }
+#if VARIORUM_DEBUG
+        printf("PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
+#endif
+        write_batch(PERF_CTRL);
+        read_batch(PERF_CTRL);
+#if VARIORUM_DEBUG
+        printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
+#endif
+        break;
+    default:
+        fprintf(stderr, "Not a valid control domain.\n");
+        break;
+    }
+}
+
 //void set_p_state(unsigned socket, uint64_t pstate)
 //{
 //    static uint64_t procs = 0;
@@ -258,7 +334,7 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t 
 //    printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *cd->perf_ctl[socket]);
 //#endif
 //}
-//
+
 //void dump_clock_mod(struct clock_mod *s, FILE *writedest)
 //{
 //    double percent = 0.0;

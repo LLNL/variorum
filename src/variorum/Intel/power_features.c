@@ -699,7 +699,7 @@ int delta_rapl_data(void)
         {
             return -1;
         }
-        for (i = 0; i < nsockets; i++);
+        for (i = 0; i < nsockets; i++)
         {
             rapl->pkg_watts[i] = 0.0;
             rapl->pkg_joules[i] = 0.0;
