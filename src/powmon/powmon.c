@@ -103,7 +103,7 @@ int main(int argc, char **argv)
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
                           strncmp(argv[1], "-h", strlen("-h")) == 0 )))
     {
-        printf(usage);
+        printf("%s", usage);
         return 0;
     }
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
             case '?':
                 if (optopt == 'a')
                 {
-                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
                 }
                 else if (isprint(optopt))
                 {
@@ -133,9 +133,9 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                    fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
                 }
-                fprintf(stderr, usage);
+                fprintf(stderr, "%s", usage);
                 return 1;
             default:
                 return 1;
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     int i;
     for (i = 0; i < (n_spaces+1); ++i)
     {
-        printf ("arg[%d] = %s\n", i, arg[i]);
+        printf("arg[%d] = %s\n", i, arg[i]);
     }
 #endif
 
