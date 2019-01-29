@@ -110,6 +110,7 @@ int main(int argc, char **argv)
     int opt;
     char *app;
     char **arg = NULL;
+    int set_app = 0;
 
     while ((opt = getopt(argc, argv, "ca:")) != -1)
     {
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
                 return 0;
             case 'a':
                 app = optarg;
+                set_app = 1;
                 break;
             case '?':
                 if (optopt == 'a')
@@ -140,6 +142,13 @@ int main(int argc, char **argv)
             default:
                 return 1;
         }
+    }
+
+    if (!set_app)
+    {
+        printf("Error: Must specify -a flag with application and arguments in quotes.\n");
+        printf("%s", usage);
+        return 0;
     }
 
     char *app_split = strtok(app, " ");
