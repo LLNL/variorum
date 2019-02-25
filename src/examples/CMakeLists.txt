@@ -34,6 +34,7 @@ set(BASIC_EXAMPLES
     variorum-set-gpu-power-ratio-example
     variorum-set-node-power-limit-example
     variorum-set-socket-power-limits-example
+    variorum-print-available-frequencies-example
 )
 
 message(STATUS "Adding variorum examples")
