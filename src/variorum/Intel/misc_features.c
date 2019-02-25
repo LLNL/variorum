@@ -11,34 +11,410 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
-int get_max_non_turbo_ratio(off_t msr_platform_info)
+/* 02/25/19 SB
+ * This format will be used moving forward for Xeon
+ * I am currently batching the read of the turbo ratio limit, which is per
+ * socket. Should we be? May be too much overhead. Is it necessary to read off
+ * both sockets?"
+ */
+int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
     static int nsockets = 0;
-    static uint64_t **val = NULL;
+    static uint64_t **raw_val = NULL;
     int max_non_turbo_ratio;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
     {
-        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(PLATFORM_INFO, nsockets);
-        load_socket_batch(msr_platform_info, val, PLATFORM_INFO);
+        load_socket_batch(msr_platform_info, raw_val, PLATFORM_INFO);
         init = 1;
     }
 
-    read_batch(PLATFORM_INFO);
-    max_non_turbo_ratio = (int)(MASK_VAL(*val[0], 15, 8));
+    int err = read_batch(PLATFORM_INFO);
+    if (err)
+    {
+        variorum_error_handler("Batch read error", VARIORUM_ERROR_MSR_BATCH,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    max_non_turbo_ratio = (int)(MASK_VAL(*raw_val[0], 15, 8));
     /// Do sockets match?
     if (nsockets != 1)
     {
-        if (max_non_turbo_ratio != (int)(MASK_VAL(*val[1], 15, 8)))
+        if (max_non_turbo_ratio != (int)(MASK_VAL(*raw_val[1], 15, 8)))
         {
             return VARIORUM_ERROR_INVAL;
         }
     }
     /// 100 MHz multiplier
-    return max_non_turbo_ratio * 100;
+    *val = max_non_turbo_ratio * 100;
+    return 0;
+}
+
+/* 02/25/19 SB
+ * This format will be used moving forward for Xeon
+ * I am currently batching the read of the turbo ratio limit, which is per
+ * socket. Should we be? May be too much overhead. Is it necessary to read off
+ * both sockets?"
+ */
+int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **raw_val = NULL;
+    int max_efficiency_ratio;
+    int socket;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+    if (!init)
+    {
+        raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(MAX_EFFICIENCY, nsockets);
+        load_socket_batch(msr_platform_info, raw_val, MAX_EFFICIENCY);
+        init = 1;
+    }
+
+    int err = read_batch(MAX_EFFICIENCY);
+    if (err)
+    {
+        variorum_error_handler("Batch read error", VARIORUM_ERROR_MSR_BATCH,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    max_efficiency_ratio = (int)(MASK_VAL(*raw_val[0], 47, 40));
+    /// Do sockets match?
+    if (nsockets != 1)
+    {
+        if (max_efficiency_ratio != (int)(MASK_VAL(*raw_val[1], 47, 40)))
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+    /// 100 MHz multiplier
+    *val = max_efficiency_ratio * 100;
+    return 0;
+}
+
+
+/* 02/25/19 SB
+ * This format will be used moving forward for Xeon
+ * I am currently batching the read of the turbo ratio limit, which is per
+ * socket. Should we be? May be too much overhead. Is it necessary to read off
+ * both sockets?"
+ */
+int get_min_operating_ratio(off_t msr_platform_info, int *val)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **raw_val = NULL;
+    int min_operating_ratio;
+    int socket;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+    if (!init)
+    {
+        raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(MIN_OPERATING_RATIO, nsockets);
+        load_socket_batch(msr_platform_info, raw_val, MIN_OPERATING_RATIO);
+        init = 1;
+    }
+
+    int err = read_batch(MIN_OPERATING_RATIO);
+    if (err)
+    {
+        variorum_error_handler("Batch read error", VARIORUM_ERROR_MSR_BATCH,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    min_operating_ratio = (int)(MASK_VAL(*raw_val[0], 55, 48));
+    /// Do sockets match?
+    if (nsockets != 1)
+    {
+        if (min_operating_ratio != (int)(MASK_VAL(*raw_val[1], 55, 48)))
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+    /// 100 MHz multiplier
+    *val = min_operating_ratio * 100;
+    return 0;
+}
+
+int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **val = NULL;
+    int socket, ncores, nbits;
+
+    variorum_get_topology(&nsockets, &ncores, NULL);
+    if (!init)
+    {
+        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        init = 1;
+    }
+
+    read_batch(TURBO_RATIO_LIMIT);
+
+    if (nsockets != 1)
+    {
+        if (*val[0] != *val[1])
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+
+    int core = 1;
+    for (nbits = 0; nbits < 64; nbits += 8)
+    {
+        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+        core += 1;
+        if (core > ncores)
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
+
+
+/* 02/25/19 SB
+ * This format will be used moving forward for Xeon
+ * I am currently batching the read of the turbo ratio limit, which is per
+ * socket. Should we be? May be too much overhead. Is it necessary to read off
+ * both sockets?"
+ */
+int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
+                           off_t msr_turbo_ratio_limit1)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **val = NULL;
+    static uint64_t **val2 = NULL;
+    int socket, ncores, nbits;
+
+    variorum_get_topology(&nsockets, &ncores, NULL);
+    if (!init)
+    {
+        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
+        init = 1;
+    }
+
+    read_batch(TURBO_RATIO_LIMIT);
+    read_batch(TURBO_RATIO_LIMIT1);
+
+    /// Do sockets match?
+    if (nsockets != 1)
+    {
+        if (*val[0] != *val[1] || *val2[0] != *val2[1])
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+
+    int core = 1;
+    for (nbits = 0; nbits < 64; nbits += 8)
+    {
+        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+        core += 1;
+        if (core > ncores)
+        {
+            break;
+        }
+    }
+    for (nbits = 0; nbits < 64; nbits += 8)
+    {
+        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+                                              nbits)) * 100);
+        core += 1;
+        if (core >= ncores)
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
+
+int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
+                               off_t msr_turbo_ratio_limit_cores)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **val = NULL;
+    static uint64_t **val2 = NULL;
+    int socket, ncores, nbits;
+
+    variorum_get_topology(&nsockets, &ncores, NULL);
+    if (!init)
+    {
+        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        allocate_batch(TURBO_RATIO_LIMIT_CORES, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        load_socket_batch(msr_turbo_ratio_limit_cores, val2, TURBO_RATIO_LIMIT_CORES);
+        init = 1;
+    }
+
+    read_batch(TURBO_RATIO_LIMIT);
+    read_batch(TURBO_RATIO_LIMIT_CORES);
+
+    /// Do sockets match?
+    if (nsockets != 1)
+    {
+        if (*val[0] != *val[1] || *val2[0] != *val2[1])
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+
+    int core;
+    for (nbits = 0; nbits < 64; nbits += 8)
+    {
+        core = (int)(MASK_VAL(*val2[0], nbits + 7, nbits));
+        if (core > ncores)
+        {
+            break;
+        }
+        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+    }
+
+    return 0;
+}
+
+//int config_tdp(int nlevels, off_t msr_config_tdp_level1,
+//               off_t msr_config_tdp_level2, off_t msr_config_tdp_nominal)
+int config_tdp(int nlevels, off_t msr_config_tdp_level)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **l = NULL;
+    int level;
+    int socket;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+    if (!init)
+    {
+        l = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TDP_CONFIG, nsockets);
+        load_socket_batch(msr_config_tdp_level, l, TDP_CONFIG);
+        init = 1;
+    }
+
+    int err = read_batch(TDP_CONFIG);
+    if (err)
+    {
+        variorum_error_handler("Batch read error", VARIORUM_ERROR_MSR_BATCH,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+
+    level = (int)(MASK_VAL(*l[0], 23, 16));
+    if (nsockets != 1)
+    {
+        if (level != (int)(MASK_VAL(*l[1], 23, 16)))
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+    if (nlevels == 2)
+    {
+        printf("AVX512  = %d MHz\n", level * 100);
+    }
+    else if (nlevels == 1)
+    {
+        printf("AVX     = %d MHz\n", level * 100);
+    }
+
+    return 0;
+}
+
+/* HSX/BDX define 2 turbo schedules: AVX and non-AVX
+ * SKX defines 3 turbo schedules: AVX512, AVX, and non-AVX
+ * PLATFORM_INFO bits [34:33] shows how many alternative TDP definitions are
+ * defined by default
+ *   - 00 only base TDP
+ *   - 01 one alternative definition
+ *   - 02 two alternative definitions
+ *   - 03 reserved
+ *
+ * CONFIG_TDP_LEVEL1 649H and CONFIG_TDP_LEVEL2 64AH bits [23:16] define the
+ * ratio
+ */
+int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
+                   off_t *msr_config_tdp_l2, off_t *msr_config_tdp_nominal)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **val, **l1, **l2 = NULL;
+    int socket;
+    uint64_t nominal;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+    if (!init)
+    {
+        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TDP_DEFS, nsockets);
+        load_socket_batch(*msr_platform_info, val, TDP_DEFS);
+        init = 1;
+    }
+
+    /* P0n
+     * ...
+     * P01
+     * P1
+     * ...
+     * Pn
+     * PAVX2
+     * PAVX512
+     */
+    int err = read_batch(TDP_DEFS);
+    if (err)
+    {
+        variorum_error_handler("Batch read error", VARIORUM_ERROR_MSR_BATCH,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+
+    /* PLATFORM_INFO [34:33] indicate number of configurable TDP levels on
+     * Ivy Bridge and later
+     */
+    int nvalues = (int)(MASK_VAL(*val[0], 34, 33));
+    int max_non_turbo_ratio;
+    switch (nvalues)
+    {
+        case 2:
+            config_tdp(2, *msr_config_tdp_l2);
+        case 1:
+            config_tdp(1, *msr_config_tdp_l1);
+        case 0:
+            // Read 648h = normal P1
+            /// @todo Should we be reading from PLATFORM_INFO or CONFIG_TDP_NOMINAL 0x648?
+            err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
+            if (!err)
+            {
+                printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
+            }
+            break;
+        case 3:
+            // Reserved
+            break;
+    }
 }
 
 /// For socket level

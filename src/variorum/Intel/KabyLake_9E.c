@@ -24,7 +24,10 @@ static struct kabylake_9e_offsets msrs =
     .ia32_misc_enable             = 0x1A0,
     .msr_temperature_target       = 0x1A2,
     .msr_turbo_ratio_limit        = 0x1AD,
-    .msr_turbo_ratio_limit1       = 0x1AE,
+    .msr_turbo_ratio_limit_cores  = 0x1AE,
+    .msr_config_tdp_level1        = 0x649,
+    .msr_config_tdp_level2        = 0x64A,
+    .msr_config_tdp_nominal       = 0x648,
     .ia32_package_therm_status    = 0x1B1,
     .ia32_package_therm_interrupt = 0x1B2,
     .ia32_fixed_counters[0]       = 0x309,
@@ -153,8 +156,8 @@ int fm_06_9e_get_features(void)
             msrs.msr_temperature_target);
     fprintf(stdout, "msr_turbo_ratio_limit        = 0x%lx\n",
             msrs.msr_turbo_ratio_limit);
-    fprintf(stdout, "msr_turbo_ratio_limit1       = 0x%lx\n",
-            msrs.msr_turbo_ratio_limit1);
+    fprintf(stdout, "msr_turbo_ratio_limit_cores  = 0x%lx\n",
+            msrs.msr_turbo_ratio_limit_cores);
     fprintf(stdout, "ia32_package_therm_status    = 0x%lx\n",
             msrs.ia32_package_therm_status);
     fprintf(stdout, "ia32_package_therm_interrupt = 0x%lx\n",
@@ -333,5 +336,18 @@ int fm_06_9e_monitoring(FILE *output)
                              msrs.msr_dram_energy_status, msrs.ia32_fixed_counters,
                              msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf,
                              msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
+    return 0;
+}
+
+int fm_06_9e_get_frequencies(void)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    get_available_frequencies_skx(stdout, &msrs.msr_platform_info,
+                                  &msrs.msr_turbo_ratio_limit, &msrs.msr_turbo_ratio_limit_cores,
+                                  &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2,
+                                  &msrs.msr_config_tdp_nominal);
     return 0;
 }

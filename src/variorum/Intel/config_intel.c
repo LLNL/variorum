@@ -10,6 +10,7 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <SandyBridge_2A.h>
+#include <SandyBridge_2D.h>
 #include <IvyBridge_3E.h>
 #include <Broadwell_4F.h>
 #include <Haswell_3F.h>
@@ -49,6 +50,10 @@ int gpu_power_ratio_unimplemented(int long_ver)
     return 0;
 }
 
+/* 02/25/2019 SB
+ *    If implementation is identical, have function pointer use the same function.
+ *    If it is different, implement a new function.
+ */
 int set_intel_func_ptrs(void)
 {
     int err = 0;
@@ -74,7 +79,28 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_2a_poll_power;
         g_platform.variorum_monitoring = fm_06_2a_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //fm_06_2a_set_frequency;
+        //    fm_06_2a_set_frequency;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_2a_get_frequencies;
+    }
+    else if (*g_platform.intel_arch == FM_06_2D)
+    {
+        g_platform.variorum_dump_power_limits = fm_06_2d_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_2d_set_power_limits;
+        g_platform.variorum_print_features = fm_06_2d_get_features;
+        g_platform.variorum_dump_thermals = fm_06_2d_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_2d_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_2d_get_clocks;
+        g_platform.variorum_dump_power = fm_06_2d_get_power;
+        g_platform.variorum_dump_turbo = fm_06_2d_get_turbo_status;
+        g_platform.variorum_enable_turbo = fm_06_2d_enable_turbo;
+        g_platform.variorum_disable_turbo = fm_06_2d_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_2d_poll_power;
+        g_platform.variorum_monitoring = fm_06_2d_monitoring;
+        //g_platform.variorum_cap_each_core_frequency =
+        //    fm_06_2d_set_frequency;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_2d_get_frequencies;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
@@ -93,7 +119,9 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_3e_poll_power;
         g_platform.variorum_monitoring = fm_06_3e_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //fm_06_3e_set_frequency;
+        //    fm_06_3e_set_frequency;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_3e_get_frequencies;
     }
     // Haswell 06_3F
     else if (*g_platform.intel_arch == FM_06_3F)
@@ -112,7 +140,9 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_3f_poll_power;
         g_platform.variorum_monitoring = fm_06_3f_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //fm_06_3f_set_frequency;
+        //    fm_06_3f_set_frequency;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_3f_get_frequencies;
     }
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
@@ -131,11 +161,13 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_4f_poll_power;
         g_platform.variorum_monitoring = fm_06_4f_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //fm_06_4f_set_frequency;
+        //    fm_06_4f_set_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_4f_get_node_power_json;
         g_platform.variorum_set_best_effort_node_power_limit =
             fm_06_4f_set_best_effort_node_power_limit;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_4f_get_frequencies;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
@@ -154,6 +186,8 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_55_poll_power;
         g_platform.variorum_monitoring = fm_06_55_monitoring;
         g_platform.variorum_cap_each_core_frequency = fm_06_55_set_frequency;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_55_get_frequencies;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
@@ -171,6 +205,8 @@ int set_intel_func_ptrs(void)
         //g_platform.variorum_disable_turbo = fm_06_9e_disable_turbo;
         g_platform.variorum_poll_power = fm_06_9e_poll_power;
         g_platform.variorum_monitoring = fm_06_9e_monitoring;
+        g_platform.variorum_print_available_frequencies =
+            fm_06_9e_get_frequencies;
     }
     else
     {

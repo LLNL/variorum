@@ -6,6 +6,8 @@
 // Necessary for pread & pwrite.
 #define _XOPEN_SOURCE 500
 
+#define USE_MSR_SAFE_BEFORE_1_5_0
+
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/ioctl.h>
@@ -207,10 +209,11 @@ static int do_batch_op(int batchnum, int type)
         {
             if (batch->ops[i].err)
             {
-                fprintf(stderr, "CPU %d, RDMSR 0x%x, ERR (%s)\n", batch->ops[i].cpu,
+                fprintf(stderr, "    CPU %3d, MSR 0x%x, ERR (%s)\n", batch->ops[i].cpu,
                         batch->ops[i].msr, strerror(batch->ops[i].err));
             }
         }
+        return res;
     }
 #ifdef BATCH_DEBUG
     int k;
@@ -636,7 +639,8 @@ int load_thread_batch(off_t msr, uint64_t **val, int batchnum)
 
 int read_batch(const int batchnum)
 {
-    return do_batch_op(batchnum, BATCH_READ);
+    int err = do_batch_op(batchnum, BATCH_READ);
+    return err;
 }
 
 int write_batch(const int batchnum)

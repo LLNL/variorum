@@ -3,13 +3,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-#ifndef SKYLAKE_55_H_INCLUDE
-#define SKYLAKE_55_H_INCLUDE
+#ifndef SANDYBRIDGE_2D_H_INCLUDE
+#define SANDYBRIDGE_2D_H_INCLUDE
 
 #include <sys/types.h>
 
-/// @brief List of unique addresses for Skylake Family/Model 55H.
-struct skylake_55_offsets
+/// @brief List of unique addresses for Sandy Bridge Family/Model 2DH.
+struct sandybridge_2d_offsets
 {
     /// @brief Address for MSR_PLATFORM_INFO.
     off_t msr_platform_info;
@@ -31,8 +31,8 @@ struct skylake_55_offsets
     off_t msr_temperature_target;
     /// @brief Address for TURBO_RATIO_LIMIT.
     off_t msr_turbo_ratio_limit;
-    /// @brief Address for TURBO_RATIO_LIMIT_CORES.
-    off_t msr_turbo_ratio_limit_cores;
+    /// @brief Address for TURBO_RATIO_LIMIT1.
+    off_t msr_turbo_ratio_limit1;
     /// @brief Address for IA32_PACKAGE_THERM_STATUS.
     off_t ia32_package_therm_status;
     /// @brief Address for IA32_PACKAGE_THERM_INTERRUPT.
@@ -75,31 +75,32 @@ struct skylake_55_offsets
     off_t ia32_perfevtsel_counters[8];
     /// @brief Array of unique addresses for pmon evtsel.
     off_t msrs_pcu_pmon_evtsel[4];
-    off_t msr_config_tdp_level1;
-    off_t msr_config_tdp_level2;
-    off_t msr_config_tdp_nominal;
 };
 
-int fm_06_55_get_power_limits(int long_ver);
+int fm_06_2d_get_power_limits(int long_ver);
 
-int fm_06_55_set_power_limits(int package_power_limit);
+int fm_06_2d_set_power_limits(int package_power_limit);
 
-int fm_06_55_get_features(void);
+int fm_06_2d_get_features(void);
 
-int fm_06_55_get_thermals(int long_ver);
+int fm_06_2d_get_thermals(int long_ver);
 
-int fm_06_55_get_counters(int long_ver);
+int fm_06_2d_get_counters(int long_ver);
 
-int fm_06_55_get_clocks(int long_ver);
+int fm_06_2d_get_clocks(int long_ver);
 
-int fm_06_55_get_power(int long_ver);
+int fm_06_2d_get_power(int long_ver);
 
-int fm_06_55_poll_power(FILE *output);
+int fm_06_2d_enable_turbo(void);
 
-int fm_06_55_monitoring(FILE *output);
+int fm_06_2d_disable_turbo(void);
 
-int fm_06_55_set_frequency(int core_freq_mhz);
+int fm_06_2d_get_turbo_status(void);
 
-int fm_06_55_get_frequencies(void);
+int fm_06_2d_poll_power(FILE *output);
+
+int fm_06_2d_monitoring(FILE *output);
+
+int fm_06_2d_get_frequencies(void);
 
 #endif

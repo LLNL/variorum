@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <SandyBridge_2A.h>
+#include <SandyBridge_2D.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
@@ -15,7 +15,7 @@
 #include <thermal_features.h>
 #include <variorum_error.h>
 
-static struct sandybridge_2a_offsets msrs =
+static struct sandybridge_2d_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
     .ia32_time_stamp_counter      = 0x10,
@@ -26,6 +26,7 @@ static struct sandybridge_2a_offsets msrs =
     .ia32_misc_enable             = 0x1A0,
     .msr_temperature_target       = 0x1A2,
     .msr_turbo_ratio_limit        = 0x1AD,
+    .msr_turbo_ratio_limit1       = 0x1AE,
     .ia32_package_therm_status    = 0x1B1,
     .ia32_package_therm_interrupt = 0x1B2,
     .ia32_fixed_counters[0]       = 0x309,
@@ -59,7 +60,7 @@ static struct sandybridge_2a_offsets msrs =
     .ia32_perfevtsel_counters[7]  = 0x18D,
 };
 
-int fm_06_2a_get_power_limits(int long_ver)
+int fm_06_2d_get_power_limits(int long_ver)
 {
     int socket;
     int nsockets, ncores, nthreads;
@@ -121,7 +122,7 @@ int fm_06_2a_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_2a_set_power_limits(int package_power_limit)
+int fm_06_2d_set_power_limits(int package_power_limit)
 {
     int socket;
     int nsockets, ncores, nthreads;
@@ -139,7 +140,7 @@ int fm_06_2a_set_power_limits(int package_power_limit)
     return 0;
 }
 
-int fm_06_2a_get_features(void)
+int fm_06_2d_get_features(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -162,6 +163,8 @@ int fm_06_2a_get_features(void)
             msrs.msr_temperature_target);
     fprintf(stdout, "msr_turbo_ratio_limit        = 0x%lx\n",
             msrs.msr_turbo_ratio_limit);
+    fprintf(stdout, "msr_turbo_ratio_limit1       = 0x%lx\n",
+            msrs.msr_turbo_ratio_limit1);
     fprintf(stdout, "ia32_package_therm_status    = 0x%lx\n",
             msrs.ia32_package_therm_status);
     fprintf(stdout, "ia32_package_therm_interrupt = 0x%lx\n",
@@ -225,7 +228,7 @@ int fm_06_2a_get_features(void)
     return 0;
 }
 
-int fm_06_2a_get_thermals(int long_ver)
+int fm_06_2d_get_thermals(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -244,7 +247,7 @@ int fm_06_2a_get_thermals(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_counters(int long_ver)
+int fm_06_2d_get_counters(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -267,7 +270,7 @@ int fm_06_2a_get_counters(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_clocks(int long_ver)
+int fm_06_2d_get_clocks(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -288,7 +291,7 @@ int fm_06_2a_get_clocks(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_power(int long_ver)
+int fm_06_2d_get_power(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -307,7 +310,7 @@ int fm_06_2a_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_2a_enable_turbo(void)
+int fm_06_2d_enable_turbo(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -319,7 +322,7 @@ int fm_06_2a_enable_turbo(void)
     return 0;
 }
 
-int fm_06_2a_disable_turbo(void)
+int fm_06_2d_disable_turbo(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -331,7 +334,7 @@ int fm_06_2a_disable_turbo(void)
     return 0;
 }
 
-int fm_06_2a_get_turbo_status(void)
+int fm_06_2d_get_turbo_status(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -343,7 +346,7 @@ int fm_06_2a_get_turbo_status(void)
     return 0;
 }
 
-int fm_06_2a_poll_power(FILE *output)
+int fm_06_2d_poll_power(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -355,7 +358,7 @@ int fm_06_2a_poll_power(FILE *output)
     return 0;
 }
 
-int fm_06_2a_monitoring(FILE *output)
+int fm_06_2d_monitoring(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -369,7 +372,7 @@ int fm_06_2a_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_2a_get_frequencies(void)
+int fm_06_2d_get_frequencies(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -378,6 +381,7 @@ int fm_06_2a_get_frequencies(void)
     get_available_frequencies(stdout, &msrs.msr_platform_info,
                               &msrs.msr_turbo_ratio_limit, NULL,
                               NULL, NULL, NULL);
+
     //    /* Turbo Range
     //     * Default ratio for 1C Max Turbo == P01
     //     * All core turbo == P0n

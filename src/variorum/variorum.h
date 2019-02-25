@@ -163,6 +163,11 @@ int variorum_print_verbose_gpu_utilization(void);
 /// @return Error code.
 int variorum_print_gpu_utilization(void);
 
+/// @brief Print list of available frequencies from p-states, turbo, AVX, etc. ranges.
+///
+/// @return Error code.
+int variorum_print_available_frequencies(void);
+
 /***************************/
 /* Enable/Disable Features */
 /***************************/
