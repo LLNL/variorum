@@ -7,6 +7,9 @@ set(powmon_sources
   highlander.c
   powmon.c
 )
+
+message(STATUS "Adding variorum demoapps")
+
 message(STATUS " [*] Adding demoapp: powmon")
 add_executable(powmon ${powmon_sources})
 target_link_libraries(powmon variorum ${variorum_deps})

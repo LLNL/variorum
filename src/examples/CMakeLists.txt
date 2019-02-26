@@ -23,6 +23,7 @@ set(BASIC_EXAMPLES
   ex-monitoring-to-file
 )
 
+message(STATUS "Adding variorum examples")
 foreach(EXAMPLE ${BASIC_EXAMPLES})
     message(STATUS " [*] Adding example: ${EXAMPLE}")
     add_executable(${EXAMPLE} ${EXAMPLE}.c)
