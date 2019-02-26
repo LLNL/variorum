@@ -22,6 +22,13 @@ endmacro()
 if(VARIORUM_WITH_INTEL)
     message(STATUS "Building support for Intel architectures (VARIORUM_WITH_INTEL == ON)")
 endif()
+if(VARIORUM_WITH_IBM)
+    message(STATUS "Building support for IBM architectures (VARIORUM_WITH_IBM == ON)")
+endif()
+
+if(BUILD_DOCS)
+    message(STATUS "Building documentation (BUILD_DOCS == ON)")
+endif()
 
 ################################
 # Shared vs Static Libs
