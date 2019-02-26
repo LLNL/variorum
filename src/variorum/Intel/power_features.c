@@ -128,38 +128,34 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const
      * conversion.
      */
     translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-#if 0
-    if (offset >= 32)
-    {
-        seconds_bits = (uint64_t)limit->seconds; // unit is milliseconds
-        //translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD);
-    }
-    else
-    {
-        translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-    }
-#endif
+//    if (offset >= 32)
+//    {
+//        seconds_bits = (uint64_t)limit->seconds; // unit is milliseconds
+//        //translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD);
+//    }
+//    else
+//    {
+//        translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
+//    }
     /* There is only 1 translation for watts (so far). */
     translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr);
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts, watts_bits);
     fprintf(stderr, "Converted %lf seconds into %lx bits.\n", limit->seconds, seconds_bits);
 #endif
-#if 0
-    /* Check to make sure the watts value does not overflow the bit field. */
-    if (watts_bits & 0xFFFFFFFFFFFF8000)
-    {
-        variorum_error_handler("Translation from bits to values failed", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    watts_bits <<= 0 + offset;
-    /* Check to make sure the seconds value does not overflow the bit field. */
-    if (seconds_bits & 0xFFFFFFFFFFFFFF80)
-    {
-        variorum_error_handler("Seconds value is too large", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-#endif
+//    /* Check to make sure the watts value does not overflow the bit field. */
+//    if (watts_bits & 0xFFFFFFFFFFFF8000)
+//    {
+//        variorum_error_handler("Translation from bits to values failed", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+//        return -1;
+//    }
+//    watts_bits <<= 0 + offset;
+//    /* Check to make sure the seconds value does not overflow the bit field. */
+//    if (seconds_bits & 0xFFFFFFFFFFFFFF80)
+//    {
+//        variorum_error_handler("Seconds value is too large", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+//        return -1;
+//    }
     seconds_bits <<= 17 + offset;
     limit->bits |= watts_bits;
     limit->bits |= seconds_bits;
@@ -189,16 +185,14 @@ static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit, 
     // If the offset is > 31 (we are writing the upper PKG limit), then no
     // translation needed
     ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
-#if 0
-    if (offset < 32)
-    {
-        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
-    }
-    else
-    {
-        limit->seconds = seconds_bits;
-    }
-#endif
+//    if (offset < 32)
+//    {
+//        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
+//    }
+//    else
+//    {
+//        limit->seconds = seconds_bits;
+//    }
     if (ret < 0)
     {
         variorum_error_handler("Translation from bits to values failed", VARIORUM_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
@@ -354,21 +348,19 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
 #endif
     }
 
-#if 0
-    /* Check consistency between packages. */
-    uint64_t *tmp = (uint64_t *) libmsr_calloc(sockets, sizeof(uint64_t));
-    for (i = 0; i < sockets; i++)
-    {
-        read_msr_by_coord(i, 0, 0, MSR_RAPL_POWER_UNIT, tmp);
-        double energy = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 12, 8)));
-        double seconds = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 19, 16)));
-        double power = ((1.0)/((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3, 0)))));
-        if (energy != ru[i].joules || power != ru[i].watts || seconds != ru[i].seconds)
-        {
-            variorum_error_handler("Inconsistent rapl power units across packages", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        }
-    }
-#endif
+//    /* Check consistency between packages. */
+//    uint64_t *tmp = (uint64_t *) libmsr_calloc(sockets, sizeof(uint64_t));
+//    for (i = 0; i < sockets; i++)
+//    {
+//        read_msr_by_coord(i, 0, 0, MSR_RAPL_POWER_UNIT, tmp);
+//        double energy = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 12, 8)));
+//        double seconds = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 19, 16)));
+//        double power = ((1.0)/((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3, 0)))));
+//        if (energy != ru[i].joules || power != ru[i].watts || seconds != ru[i].seconds)
+//        {
+//            variorum_error_handler("Inconsistent rapl power units across packages", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+//        }
+//    }
     return 0;
 }
 

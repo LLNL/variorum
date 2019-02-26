@@ -175,69 +175,67 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t 
     }
 }
 
-#if 0
-void print_clocks_data_socket(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
-{
-    static struct clocks_data *cd;
-    static struct perf_data *pd;
-    int i, j, k;
-    int idx;
-    int nsockets, ncores, nthreads;
-    char hostname[1024];
-    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
-
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
-    gethostname(hostname, 1024);
-
-    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
-    perf_storage(&pd, msr_perf_status);
-    read_batch(CLOCKS_DATA);
-    read_batch(PERF_DATA);
-    for (i = 0; i < nsockets; i++)
-    {
-        for (j = 0; j < ncores/nsockets; j+=ncores/nsockets)
-        {
-            for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
-            {
-                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
-                        hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
-            }
-        }
-    }
-}
-
-void print_clocks_data_core(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
-{
-    static struct clocks_data *cd;
-    static struct perf_data *pd;
-    int i, j, k;
-    int idx;
-    int nsockets, ncores, nthreads;
-    char hostname[1024];
-    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
-
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
-    gethostname(hostname, 1024);
-
-    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
-    perf_storage(&pd, msr_perf_status);
-    read_batch(CLOCKS_DATA);
-    read_batch(PERF_DATA);
-    for (i = 0; i < nsockets; i++)
-    {
-        for (j = 0; j < ncores/nsockets; j++)
-        {
-            for (k = 0; k < nthreads/ncores; k++)
-            {
-                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
-                        hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
-            }
-        }
-    }
-}
-#endif
+//void print_clocks_data_socket(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
+//{
+//    static struct clocks_data *cd;
+//    static struct perf_data *pd;
+//    int i, j, k;
+//    int idx;
+//    int nsockets, ncores, nthreads;
+//    char hostname[1024];
+//    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
+//
+//    variorum_set_topology(&nsockets, &ncores, &nthreads);
+//    gethostname(hostname, 1024);
+//
+//    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
+//    perf_storage(&pd, msr_perf_status);
+//    read_batch(CLOCKS_DATA);
+//    read_batch(PERF_DATA);
+//    for (i = 0; i < nsockets; i++)
+//    {
+//        for (j = 0; j < ncores/nsockets; j+=ncores/nsockets)
+//        {
+//            for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
+//            {
+//                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
+//                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
+//                        hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+//            }
+//        }
+//    }
+//}
+//
+//void print_clocks_data_core(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
+//{
+//    static struct clocks_data *cd;
+//    static struct perf_data *pd;
+//    int i, j, k;
+//    int idx;
+//    int nsockets, ncores, nthreads;
+//    char hostname[1024];
+//    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
+//
+//    variorum_set_topology(&nsockets, &ncores, &nthreads);
+//    gethostname(hostname, 1024);
+//
+//    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
+//    perf_storage(&pd, msr_perf_status);
+//    read_batch(CLOCKS_DATA);
+//    read_batch(PERF_DATA);
+//    for (i = 0; i < nsockets; i++)
+//    {
+//        for (j = 0; j < ncores/nsockets; j++)
+//        {
+//            for (k = 0; k < nthreads/ncores; k++)
+//            {
+//                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
+//                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
+//                        hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+//            }
+//        }
+//    }
+//}
 
 //void set_p_state(unsigned socket, uint64_t pstate)
 //{

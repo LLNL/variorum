@@ -14,7 +14,7 @@
 #endif
 
 /// @brief Enum encompassing type of data being read to/written from MSRs.
-enum libmsr_data_type_e
+enum libvariorum_data_type_e
 {
     /// @brief Energy, time, and power measurements of various RAPL power
     /// domains.
@@ -85,7 +85,7 @@ enum libmsr_data_type_e
 };
 
 /// @brief Enum encompassing batch operations.
-enum libmsr_batch_op_type_e
+enum libvariorum_batch_op_type_e
 {
     /// @brief Load batch operation.
     BATCH_LOAD,

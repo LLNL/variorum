@@ -154,92 +154,90 @@ int dump_turbo_status(FILE *writedest, off_t msr_misc_enable, unsigned int turbo
     return ret;
 }
 
-#if 0
-/// For core level
-int set_turbo_on_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
-{
-	int ret = 0;
-	uint64_t mask = 0;
-	uint64_t msr_val = 0;
-	/// Creates mask for turbo disable bit according to the architecture offset given.
-	mask |= 1LL << turbo_mode_disable_bit;
-	ret = read_msr_by_coord(socket, 0, 0, msr_misc_enable, &msr_val);
-
-	/// Does the msr value have the Turbo disable bit on?
-	if (msr_val == (msr_val | mask))
-	{
-		uint64_t write_val = msr_val & ~mask;
-		//fprintf(stdout, "Socket %i: Turning Turbo on\n", socket);
-		//fprintf(stdout, "Value trying to be written to MSR %i: 0x%lx\n", msr_misc_enable, write_val);
-		ret += write_msr_by_coord(socket, 0, 0, msr_misc_enable, write_val);
-	}
-	if (ret)
-	{
-		fprintf(stderr, "Socket %i: Error Reading/Writing Turbo MSR\n", socket);
-	}
-	else
-	{
-		fprintf(stdout, "Socket %i: Turbo Enabled\n", socket);
-	}
-	return ret;
-}
-
-int set_turbo_off_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
-{
-	int ret = 0;
-	uint64_t mask = 0;
-	uint64_t msr_val = 0;
-    /// Creates mask for turbo disable bit according to the architecture offset
-    /// given.
-	//fprintf(stdout, "MSR Misc Enable value: %lx\n", msr_misc_enable);
-	mask |= 1LL << turbo_mode_disable_bit;
-	ret = read_msr_by_coord(socket, 0, 0, msr_misc_enable, &msr_val);
-
-	/// Does the msr value have the Turbo disable bit off?
-	if (msr_val != (msr_val | mask))
-	{
-		uint64_t write_val = msr_val | mask;
-		//fprintf(stdout, "Socket %i: Turning Turbo off\n", socket);
-		//fprintf(stdout, "Value trying to be written to MSR %i: 0x%lx\n", msr_misc_enable, write_val);
-		ret += write_msr_by_coord(socket, 0, 0, msr_misc_enable, write_val);
-	}
-	if (ret)
-	{
-		fprintf(stderr, "Socket %i: Error Reading/Writing Turbo MSR\n", socket);
-	}
-	else
-	{
-		fprintf(stdout, "Socket %i: Turbo Disabled\n", socket);
-	}
-	return ret;
-}
-
-int get_turbo_status_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
-{
-    /// Function returns:
-    /// 1 if Turbo is enabled
-    /// 0 if Turbo is DISabled
-    /// -1 if there was an error
-    int ret = 0;
-    uint64_t mask = 0;
-    uint64_t msr_val = 0;
-
-    mask |= 1LL << turbo_mode_disable_bit;
-    ret = read_msr_by_coord(socket, core, 0, msr_misc_enable, &msr_val);
-    if (ret)
-    {
-        fprintf(stderr, "Socket %d, Core %d: ERROR! Could not read msr 0x%lx", socket, core, msr_misc_enable);
-        return -1;
-    }
-    if (msr_val == (msr_val | mask))
-    {
-        //fprintf(stdout, "Socket %i, Core %d: Turbo is DISabled", socket, core);
-        return 0;
-    }
-    else
-    {
-        //fprintf(stdout, "Socket %i, Core %d: Turbo is enabled", socket, core);
-        return 1;
-    }
-}
-#endif
+///// For core level
+//int set_turbo_on_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//{
+//	int ret = 0;
+//	uint64_t mask = 0;
+//	uint64_t msr_val = 0;
+//	/// Creates mask for turbo disable bit according to the architecture offset given.
+//	mask |= 1LL << turbo_mode_disable_bit;
+//	ret = read_msr_by_coord(socket, 0, 0, msr_misc_enable, &msr_val);
+//
+//	/// Does the msr value have the Turbo disable bit on?
+//	if (msr_val == (msr_val | mask))
+//	{
+//		uint64_t write_val = msr_val & ~mask;
+//		//fprintf(stdout, "Socket %i: Turning Turbo on\n", socket);
+//		//fprintf(stdout, "Value trying to be written to MSR %i: 0x%lx\n", msr_misc_enable, write_val);
+//		ret += write_msr_by_coord(socket, 0, 0, msr_misc_enable, write_val);
+//	}
+//	if (ret)
+//	{
+//		fprintf(stderr, "Socket %i: Error Reading/Writing Turbo MSR\n", socket);
+//	}
+//	else
+//	{
+//		fprintf(stdout, "Socket %i: Turbo Enabled\n", socket);
+//	}
+//	return ret;
+//}
+//
+//int set_turbo_off_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//{
+//	int ret = 0;
+//	uint64_t mask = 0;
+//	uint64_t msr_val = 0;
+//    /// Creates mask for turbo disable bit according to the architecture offset
+//    /// given.
+//	//fprintf(stdout, "MSR Misc Enable value: %lx\n", msr_misc_enable);
+//	mask |= 1LL << turbo_mode_disable_bit;
+//	ret = read_msr_by_coord(socket, 0, 0, msr_misc_enable, &msr_val);
+//
+//	/// Does the msr value have the Turbo disable bit off?
+//	if (msr_val != (msr_val | mask))
+//	{
+//		uint64_t write_val = msr_val | mask;
+//		//fprintf(stdout, "Socket %i: Turning Turbo off\n", socket);
+//		//fprintf(stdout, "Value trying to be written to MSR %i: 0x%lx\n", msr_misc_enable, write_val);
+//		ret += write_msr_by_coord(socket, 0, 0, msr_misc_enable, write_val);
+//	}
+//	if (ret)
+//	{
+//		fprintf(stderr, "Socket %i: Error Reading/Writing Turbo MSR\n", socket);
+//	}
+//	else
+//	{
+//		fprintf(stdout, "Socket %i: Turbo Disabled\n", socket);
+//	}
+//	return ret;
+//}
+//
+//int get_turbo_status_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//{
+//    /// Function returns:
+//    /// 1 if Turbo is enabled
+//    /// 0 if Turbo is DISabled
+//    /// -1 if there was an error
+//    int ret = 0;
+//    uint64_t mask = 0;
+//    uint64_t msr_val = 0;
+//
+//    mask |= 1LL << turbo_mode_disable_bit;
+//    ret = read_msr_by_coord(socket, core, 0, msr_misc_enable, &msr_val);
+//    if (ret)
+//    {
+//        fprintf(stderr, "Socket %d, Core %d: ERROR! Could not read msr 0x%lx", socket, core, msr_misc_enable);
+//        return -1;
+//    }
+//    if (msr_val == (msr_val | mask))
+//    {
+//        //fprintf(stdout, "Socket %i, Core %d: Turbo is DISabled", socket, core);
+//        return 0;
+//    }
+//    else
+//    {
+//        //fprintf(stdout, "Socket %i, Core %d: Turbo is enabled", socket, core);
+//        return 1;
+//    }
+//}

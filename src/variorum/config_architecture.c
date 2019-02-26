@@ -156,24 +156,20 @@ int variorum_get_topology(void)
             get_children_per_core(topology, obj, obj->depth, core_depth, pu_depth, i);
         }
 
-#if 0
-        printf("confirm map contents\n");
-        for (i = 0; i < g_platform.total_threads; i++)
-        {
-            printf("idx %d = %d\n", i, g_platform.map_pu_to_core[i].physical_core_idx);
-        }
-#endif
+//        printf("confirm map contents\n");
+//        for (i = 0; i < g_platform.total_threads; i++)
+//        {
+//            printf("idx %d = %d\n", i, g_platform.map_pu_to_core[i].physical_core_idx);
+//        }
 
-#if 0
-        set = hwloc_topology_get_allowed_cpuset(topology);
-        hwloc_bitmap_foreach_begin(i, set)
-        {
-            obj = hwloc_get_pu_obj_by_os_index(topology, i);
-            printf("RRR i=%u logical_index=%u depth=%u sibling_rank=%u os_index=%u arity=%u\n",
-                   i, obj->logical_index, obj->depth, obj->sibling_rank, obj->os_index, obj->arity);
-        }
-        hwloc_bitmap_foreach_end();
-#endif
+//        set = hwloc_topology_get_allowed_cpuset(topology);
+//        hwloc_bitmap_foreach_begin(i, set)
+//        {
+//            obj = hwloc_get_pu_obj_by_os_index(topology, i);
+//            printf("RRR i=%u logical_index=%u depth=%u sibling_rank=%u os_index=%u arity=%u\n",
+//                   i, obj->logical_index, obj->depth, obj->sibling_rank, obj->os_index, obj->arity);
+//        }
+//        hwloc_bitmap_foreach_end();
 
         hwloc_topology_destroy(topology);
     }
@@ -216,64 +212,62 @@ int variorum_set_func_ptrs()
     return err;
 }
 
-#if 0
-//setfixedcounters = fixed_ctr0,
-//featureC = ?? /* does not have max non turbo ratio */
-}
-};
-#endif
+////setfixedcounters = fixed_ctr0,
+////featureC = ?? /* does not have max non turbo ratio */
+//}
+//};
 
 #if 0 /* To implement later */
-/* Sandy Bridge: 06_2D, 06_2A */
-{
-    dump_power_limits = therm_status
-                        //setfixedcounters = fixed_ctr0,
-                        //setpowerlimit = perf_status
-                        //featureC = ?? /* does not have max non turbo ratio */
-}
-/* Haswell, Haswell-E: 06_3C, 06_45, 06_46, 06_3F */
-{
-    getfixedcounters = max_non_turbo_ratio;
-},
-/* Broadwell: 06_3D, 06_47, 06_4F, 06_56 */
-{
-    getfixedcounters = max_non_turbo_ratio;
-}
-/* Skylake: 06_4E, 06_5E */
-{
-}
-/* Kaby Lake: 06_8E, 06_9E */
-{
-}
-/* Xeon Phi: 06_57 */
-{
-}
+///* Sandy Bridge: 06_2D, 06_2A */
+//{
+//    dump_power_limits = therm_status
+//                        //setfixedcounters = fixed_ctr0,
+//                        //setpowerlimit = perf_status
+//                        //featureC = ?? /* does not have max non turbo ratio */
+//}
+///* Haswell, Haswell-E: 06_3C, 06_45, 06_46, 06_3F */
+//{
+//    getfixedcounters = max_non_turbo_ratio;
+//},
+///* Broadwell: 06_3D, 06_47, 06_4F, 06_56 */
+//{
+//    getfixedcounters = max_non_turbo_ratio;
+//}
+///* Skylake: 06_4E, 06_5E */
+//{
+//}
+///* Kaby Lake: 06_8E, 06_9E */
+//{
+//}
+///* Xeon Phi: 06_57 */
+//{
+//}
 #endif
 
 #if 0 /* Do not want to make 95% of users know how to use this */
-struct *platform make_arch(enum arch_e arch)
-{
-    struct platform *platform_ptr;
-    if (arch == SANDY_BRIDGE)
-    {
-        platform_ptr = &allplatforms[0];
-    }
-    else if (arch == IVY_BRIDGE)
-    {
-        platform_ptr = &allplatforms[1];
-    }
-    else if (arch == HASWELL)
-    {
-        platform_ptr = &allplatforms[2];
-    }
-    else if (arch == BROADWELL)
-    {
-        platform_ptr = &allplatforms[3];
-    }
-
-    return platform_ptr;
-};
-
-/// Front-facing APIs
-struct platform *platform_ptr = make_arch(HASWELL);
+//struct *platform make_arch(enum arch_e arch)
+//{
+//    struct platform *platform_ptr;
+//    if (arch == SANDY_BRIDGE)
+//    {
+//        platform_ptr = &allplatforms[0];
+//    }
+//    else if (arch == IVY_BRIDGE)
+//    {
+//        platform_ptr = &allplatforms[1];
+//    }
+//    else if (arch == HASWELL)
+//    {
+//        platform_ptr = &allplatforms[2];
+//    }
+//    else if (arch == BROADWELL)
+//    {
+//        platform_ptr = &allplatforms[3];
+//    }
+//
+//    return platform_ptr;
+//};
+//
+///// Front-facing APIs
+//struct platform *platform_ptr = make_arch(HASWELL);
 #endif

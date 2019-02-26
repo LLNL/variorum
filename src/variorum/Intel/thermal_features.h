@@ -309,90 +309,88 @@ void get_temp_target(struct msr_temp_target *s,
 void get_therm_stat(struct therm_stat *s,
                     off_t msr);
 
-#if 0
-/// @brief Store the package-level thermal control data on the heap.
-///
-/// @param [out] thermctlref Pointer to data for package-level thermal control.
-///
-/// @return 0 if successful.
-int therm2_ctl_storage(uint64_t **thermctlref);
-
-/// @brief Read value of the MSR_THERM2_CTL register.
-///
-/// @return 0 if successful, else 1 if read_msr_by_coord() fails.
-int get_pkg_therm2_ctl(void);
-
-/// @brief Print out control settings for Thermal Monitor #2.
-///
-/// @param [in] writedest File stream where output will be written to.
-///
-/// @return 0 if successful, else return a value less than 0 if
-/// therm2_ctl_storage() fails.
-int dump_therm2_ctl(FILE *writedest);
-
-/// @brief Set value for IA32_THERM_STATUS across all cores.
-///
-/// @param [in] s Data for per-core thermal status.
-void set_therm_stat(struct therm_stat *s);
-
-/// @brief Set value for IA32_PACKAGE_THERM_STATUS across all sockets.
-///
-/// @param [in] s Data for package-level thermal status.
-void set_pkg_therm_stat(struct pkg_therm_stat *s);
-
-/// @brief Print detailed thermal status and interrupt data.
-///
-/// @param [in] writedest File stream where output will be written to.
-void dump_therm_data_verbose(FILE *writedest);
-
-/// @brief Store the per-core thermal interrupt data on the heap.
-///
-/// @param [out] ti Pointer to data for per-core thermal interrupts.
-void store_therm_interrupt(struct therm_interrupt **ti);
-
-/// @brief Store the package-level thermal interrupt data on the heap.
-///
-/// @param [out] pi Pointer to data for package-level thermal interrupts.
-void store_pkg_therm_interrupt(struct pkg_therm_interrupt **pi);
-
-/// @brief Read value of the IA32_THERM_INTERRUPT register and translate bit
-/// fields to human-readable values.
-///
-/// @param [out] s Data for per-core thermal interrupts.
-void get_therm_interrupt(struct therm_interrupt *s);
-
-/// @brief Read value of the IA32_PACKAGE_THERM_INTERRUPT register and
-/// translate bit fields to human-readable values.
-///
-/// @param [out] s Data for package-level thermal interrupts.
-void get_pkg_therm_interrupt(struct pkg_therm_interrupt *s);
-
-/// @brief Set value for IA32_THERM_INTERRUPT across all cores.
-///
-/// @param [in] s Data for per-core thermal interrupts.
-void set_therm_interrupt(struct therm_interrupt *s);
-
-/// @brief Set value for IA32_PACKAGE_THERM_INTERRUPT across all sockets.
-///
-/// @param [in] s Data for package-level thermal interrupts.
-void set_pkg_therm_interrupt(struct pkg_therm_interrupt *s);
-
-/// @brief Print the label for the abbreviated thermal status and interrupt
-/// data printout.
-///
-/// @param [in] writedest File stream where output will be written to.
-void dump_therm_data_terse_label(FILE *writedest);
-
-/// @brief Print abbreviated thermal status and interrupt data.
-///
-/// @param [in] writedest File stream where output will be written to.
-void dump_therm_data_terse(FILE *writedest);
-
-/// @brief Print the label for the detailed thermal status and interrupt data
-/// printout.
-///
-/// @param [in] writedest File stream where output will be written to.
-void dump_therm_data_verbose_label(FILE *writedest);
-#endif
+///// @brief Store the package-level thermal control data on the heap.
+/////
+///// @param [out] thermctlref Pointer to data for package-level thermal control.
+/////
+///// @return 0 if successful.
+//int therm2_ctl_storage(uint64_t **thermctlref);
+//
+///// @brief Read value of the MSR_THERM2_CTL register.
+/////
+///// @return 0 if successful, else 1 if read_msr_by_coord() fails.
+//int get_pkg_therm2_ctl(void);
+//
+///// @brief Print out control settings for Thermal Monitor #2.
+/////
+///// @param [in] writedest File stream where output will be written to.
+/////
+///// @return 0 if successful, else return a value less than 0 if
+///// therm2_ctl_storage() fails.
+//int dump_therm2_ctl(FILE *writedest);
+//
+///// @brief Set value for IA32_THERM_STATUS across all cores.
+/////
+///// @param [in] s Data for per-core thermal status.
+//void set_therm_stat(struct therm_stat *s);
+//
+///// @brief Set value for IA32_PACKAGE_THERM_STATUS across all sockets.
+/////
+///// @param [in] s Data for package-level thermal status.
+//void set_pkg_therm_stat(struct pkg_therm_stat *s);
+//
+///// @brief Print detailed thermal status and interrupt data.
+/////
+///// @param [in] writedest File stream where output will be written to.
+//void dump_therm_data_verbose(FILE *writedest);
+//
+///// @brief Store the per-core thermal interrupt data on the heap.
+/////
+///// @param [out] ti Pointer to data for per-core thermal interrupts.
+//void store_therm_interrupt(struct therm_interrupt **ti);
+//
+///// @brief Store the package-level thermal interrupt data on the heap.
+/////
+///// @param [out] pi Pointer to data for package-level thermal interrupts.
+//void store_pkg_therm_interrupt(struct pkg_therm_interrupt **pi);
+//
+///// @brief Read value of the IA32_THERM_INTERRUPT register and translate bit
+///// fields to human-readable values.
+/////
+///// @param [out] s Data for per-core thermal interrupts.
+//void get_therm_interrupt(struct therm_interrupt *s);
+//
+///// @brief Read value of the IA32_PACKAGE_THERM_INTERRUPT register and
+///// translate bit fields to human-readable values.
+/////
+///// @param [out] s Data for package-level thermal interrupts.
+//void get_pkg_therm_interrupt(struct pkg_therm_interrupt *s);
+//
+///// @brief Set value for IA32_THERM_INTERRUPT across all cores.
+/////
+///// @param [in] s Data for per-core thermal interrupts.
+//void set_therm_interrupt(struct therm_interrupt *s);
+//
+///// @brief Set value for IA32_PACKAGE_THERM_INTERRUPT across all sockets.
+/////
+///// @param [in] s Data for package-level thermal interrupts.
+//void set_pkg_therm_interrupt(struct pkg_therm_interrupt *s);
+//
+///// @brief Print the label for the abbreviated thermal status and interrupt
+///// data printout.
+/////
+///// @param [in] writedest File stream where output will be written to.
+//void dump_therm_data_terse_label(FILE *writedest);
+//
+///// @brief Print abbreviated thermal status and interrupt data.
+/////
+///// @param [in] writedest File stream where output will be written to.
+//void dump_therm_data_terse(FILE *writedest);
+//
+///// @brief Print the label for the detailed thermal status and interrupt data
+///// printout.
+/////
+///// @param [in] writedest File stream where output will be written to.
+//void dump_therm_data_verbose_label(FILE *writedest);
 
 #endif

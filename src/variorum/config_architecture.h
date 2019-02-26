@@ -169,9 +169,9 @@ struct platform
 };
 
 #if 0 /* To implement later */
-    void (*set_fixed_counters)();
-    void (*get_performance_counters)();
-    void (*set_performance_counters)();
+//    void (*set_fixed_counters)();
+//    void (*get_performance_counters)();
+//    void (*set_performance_counters)();
 #endif
 
 struct platform g_platform;
