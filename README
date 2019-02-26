@@ -9,7 +9,7 @@ version 0.0.0
 
 Last Update
 -----------
-26 October 2018
+26 February 2019
 
 
 Webpages
@@ -62,7 +62,7 @@ installs. These can be used as follows:
     $ cd build/
     $ cmake -C ../host-configs/your-local-configuration-file.cmake ../src
     $ make
-    
+
 
 Platform Support
 ----------------
@@ -90,7 +90,7 @@ target:
 
     $ make test
 
-Please report any failed tests to labasan1@llnl.gov.
+Please report any failed tests to brink2@llnl.gov.
 
 
 Examples
@@ -139,7 +139,7 @@ Contact
 -------
 
 Barry Rountree, Project Lead, <rountree@llnl.gov> <br>
-Stephanie Labasan, Developer, <labasan1@llnl.gov>
+Stephanie Brink, Developer, <brink2@llnl.gov>
 
 Please feel free to contact the developers with any questions or feedback.
 
