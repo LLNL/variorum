@@ -38,9 +38,7 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum, 
         fprintf(stderr, "BATCH: initializing batch ops\n");
 #endif
         arrsize = (batchnum + 1 > arrsize ? batchnum + 1 : arrsize);
-#if 0
-        printf("QQQ arrsize %d\n", arrsize);
-#endif
+//        printf("QQQ arrsize %d\n", arrsize);
         batch = (struct msr_batch_array *) calloc(arrsize, sizeof(struct msr_batch_array));
         size = (unsigned *) calloc(arrsize, sizeof(unsigned));
         for (i = 0; i < arrsize; i++)
@@ -74,9 +72,7 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum, 
     if (opssize != NULL)
     {
         *opssize = &size[batchnum];
-#if 0
-        printf("opssize = %d\n", **opssize);
-#endif
+//        printf("opssize = %d\n", **opssize);
     }
     return 0;
 }
@@ -86,7 +82,7 @@ static int compatibility_batch(int batchnum, int type)
     struct msr_batch_array *batch = NULL;
     int i;
 
-    fprintf(stderr, "Warning: <libmsr> No /dev/cpu/msr_batch, using compatibility batch: compatibility_batch(): %s: %s:%s::%d\n", strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "Warning: <libvariorum> No /dev/cpu/msr_batch, using compatibility batch: compatibility_batch(): %s: %s:%s::%d\n", strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
     if (batch_storage(&batch, batchnum, NULL))
     {
         return -1;
@@ -128,13 +124,11 @@ static int *core_fd(const int dev_idx)
         free(variorum_error_msg);
         return &(file_descriptors[dev_idx]);
     }
-#if 0
-    if (dev_idx == nthreads)
-    {
-        free(variorum_error_msg);
-        return file_descriptors;
-    }
-#endif
+//    if (dev_idx == nthreads)
+//    {
+//        free(variorum_error_msg);
+//        return file_descriptors;
+//    }
     sprintf(variorum_error_msg, "Array reference %d out of bounds (max: %d)", dev_idx, nthreads);
     variorum_error_handler(variorum_error_msg, VARIORUM_ERROR_ARRAY_BOUNDS, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
     free(variorum_error_msg);
@@ -266,14 +260,14 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
     {
         if (stat(filename, &statbuf))
         {
-            fprintf(stderr, "Warning: <libmsr> Could not stat %s: stat_module(): %s: %s:%s::%d\n", filename, strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
+            fprintf(stderr, "Warning: <libvariorum> Could not stat %s: stat_module(): %s: %s:%s::%d\n", filename, strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
             *kerneltype = 1;
             free(variorum_error_msg);
             return -1;
         }
         if (!(statbuf.st_mode & S_IRUSR) || !(statbuf.st_mode & S_IWUSR))
         {
-            fprintf(stderr, "Warning: <libmsr> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+            fprintf(stderr, "Warning: <libvariorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
             *kerneltype = 1;
             free(variorum_error_msg);
             return -1;
@@ -284,7 +278,7 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
     }
     if (stat(filename, &statbuf))
     {
-        fprintf(stderr, "Warning: <libmsr> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+        fprintf(stderr, "Warning: <libvariorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
         if (*kerneltype)
         {
             /* Could not find any msr module so exit. */
