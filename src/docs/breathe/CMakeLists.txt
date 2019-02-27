@@ -1,8 +1,9 @@
 include(ExternalProject)
 
-message(STATUS " [+] Adding external project: breathe")
+message(STATUS "Adding external project: breathe@f61dc50")
 ExternalProject_Add(breathe
   GIT_REPOSITORY https://github.com/michaeljones/breathe.git
+  GIT_TAG f61dc50
   UPDATE_COMMAND ""
   PATCH_COMMAND ""
   SOURCE_DIR ${PROJECT_BINARY_DIR}/thirdparty_builtin/breathe
