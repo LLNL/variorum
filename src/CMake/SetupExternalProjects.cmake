@@ -1,5 +1,4 @@
 include(ExternalProject)
-message(STATUS " [+] Adding external project: hwloc")
 ExternalProject_Add(libhwloc
   GIT_REPOSITORY https://github.com/open-mpi/hwloc.git
   UPDATE_COMMAND ""
@@ -21,8 +20,3 @@ set(HWLOC_LIBRARY
   CACHE INTERNAL "")
 
 include_directories(${HWLOC_INCLUDE_DIRS})
-
-#ExternalProject_Add_Step(libhwloc CopyToLib
-#  COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_BINARY_DIR}/thirdparty_builtin/libhwloc-prefix/lib/ ${CMAKE_INSTALL_PREFIX}/lib/hwloc
-#  DEPENDEES install
-#)

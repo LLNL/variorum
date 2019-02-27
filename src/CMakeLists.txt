@@ -20,6 +20,12 @@ include(CMake/SetupTests.cmake)
 
 add_subdirectory(thirdparty_builtin)
 
+### Add documentation targets
+if(BUILD_DOCS)
+    include(CMake/SetupDocs.cmake)
+    add_subdirectory(docs)
+endif()
+
 ### Add our libs
 add_subdirectory(variorum)
 
@@ -33,12 +39,6 @@ add_subdirectory(examples)
 
 ### Add powmon sampler
 add_subdirectory(powmon)
-
-### Add documentation targets
-if(BUILD_DOCS)
-    include(CMake/SetupDocs.cmake)
-    add_subdirectory(docs)
-endif()
 
 ### Create CMake importable exports
 install(EXPORT variorum DESTINATION cmake)
