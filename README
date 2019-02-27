@@ -85,11 +85,7 @@ or `/proc/cpuinfo` (note that it will not be in hexadecimal).
 
 Testing
 -------
-From within the build directory, unit tests can be executed with the following
-target:
-
-    $ make test
-
+From within the build directory, unit tests can be executed individually.
 Please report any failed tests to brink2@llnl.gov.
 
 
