@@ -7,7 +7,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-sys.path.append("@CMAKE_CURRENT_BINARY_DIR@/../../thirdparty_builtin/breathe")
+#sys.path.append("@CMAKE_CURRENT_BINARY_DIR@/../../thirdparty_builtin/breathe")
 
 # -- General configuration ------------------------------------------------
 
@@ -22,8 +22,8 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'breathe'
+    'sphinx.ext.mathjax'#,
+#    'breathe'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -40,7 +40,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Variorum'
-copyright = u'2012-2017, LLNS'
+copyright = u'2012-2019, LLNS'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -253,7 +253,7 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
-breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/docs/dox/xml" }
+#breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/docs/dox/xml" }
 breathe_default_project = "variorum"
 
 try:
