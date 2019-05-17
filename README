@@ -1,7 +1,7 @@
-LIBVARIORUM
-===========
+VARIORUM
+========
 
-Welcome to libvariorum, a friendly (well, friendlier) interface to monitor and
+Welcome to Variorum, a friendly (well, friendlier) interface to monitor and
 control various features across multiple hardware architectures.
 
 version 0.0.0
@@ -20,7 +20,7 @@ https://lc.llnl.gov/bitbucket/projects/VAR/repos/libvariorum/browse
 Overview
 --------
 
-Libvariorum provides general interfaces to provide privileged functionality for
+Variorum provides general interfaces to provide privileged functionality for
 monitoring and controlling various hardware-level features of multiple hardware
 architectures.
 
@@ -29,7 +29,7 @@ Installation
 ------------
 
 Installation is simple. You will need [CMAKE](http://www.cmake.org) version 2.8
-or higher and GCC. Libvariorum does not support in-source builds. In most cases,
+or higher and GCC. Variorum does not support in-source builds. In most cases,
 the installation is as follows:
 
     $ cd libvariorum/
@@ -39,7 +39,7 @@ the installation is as follows:
     $ make
     $ make install
 
-Note that libvariorum depends on hwloc. The build system will first check for a
+Note that Variorum depends on hwloc. The build system will first check for a
 specified local hwloc install, then it will check for a pre-installed hwloc.
 If it can find neither, it will clone and build hwloc from source (will fail on
 machines without internet access).
@@ -139,11 +139,14 @@ Stephanie Brink, Developer, <brink2@llnl.gov>
 
 Please feel free to contact the developers with any questions or feedback.
 
-We collect names of those who have contributed to libvariorum over
+We collect names of those who have contributed to Variorum over
 the years. See the current list in the `AUTHORS` file.
 
 
 License
 -------
 
-This has not been released publicly yet.
+Variorum is released under the GPLv3 license. For more details, see the [LICENSE](./LICENSE)
+file.
+
+LLNL-CODE-XXXXXX
