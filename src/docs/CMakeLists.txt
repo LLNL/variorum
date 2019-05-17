@@ -1,5 +1,5 @@
 if(SPHINX_FOUND AND DOXYGEN_FOUND)
-    add_subdirectory(breathe)
-    add_subdirectory(dox)
+    #add_subdirectory(breathe)
+    #add_subdirectory(dox)
     add_subdirectory(sphinx)
 endif()

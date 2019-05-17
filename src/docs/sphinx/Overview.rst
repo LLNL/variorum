@@ -1,79 +1,42 @@
-Alpine Overview
+Variorum Overview
 =================
 
-This overview was distilled from `Alpine: A Batch In Situ Visualization and Analysis Infrastructure for Multi-Physics Simulation Codes <http://dl.acm.org/citation.cfm?id=2828625>`_ . This paper was presented at the `ISAV 2015 Workshop <http://vis.lbl.gov/Events/ISAV-2015/>`_, held in conjunction with SC 15, on November 16th 2015 in Austin, TX, USA.
+Variorum is an evolution of an existing open-source library developed at LLNL
+known as ``libmsr``. Variorum is a production-grade software infrastructure for
+exposing low-level control (and monitoring) of a system's underlying hardware
+features through a secure whitelist mechanism. It can easily be extended to
+different hardware devices, as well as different generations within a
+particular device. More specifically, Variorum's flexible design supports a set
+of features that may exist on one generation of hardware, but not on another.
 
 Requirements
--------------------
-To guide the development of Alpine, we focused on a set of important in situ visualization and analysis requirements extracted from our interactions and experiences with several simulation code teams. Here are Alpine's requirements broken out into three broader categories:
+------------
+To guide the development of Variorum, we focused on a set of important
+requirements extracted from our learnings with the development of ``libmsr``.
+Here are Variorum's requirements:
 
-Support a diverse set of simulations on many-core architectures.
-  - Support execution on many-core architectures
-  - Support  usage  within  a  batch  environment (i.e.,no simulation user involvement once the simulation has begun running).
-  - Support the four most common languages used by simulation code teams:  C, C++, Python, and Fortran.
-  - Support for multiple data models, including uniform, rectilinear, and unstructured grids.
+Create device-agnostic APIs.
+  * We do not want to require the user to have to know or understand how to interface with each device. The library is built for a target architecture, which may be heterogeneous, and can collect data from each device through a single front-facing interface.
 
-Provide a streamlined interface to improve usability.
-  - Provide  straight  forward  data  ownership  semantics between simulation routines and visualization and analysis routines
-  - Provide a low-barrier to entry with respect to developer time for integration.
-  - Ease-of-use in terms of directing visualization and analysis actions to occur during runtime.
-  - Ease-of-use in terms of consuming visualization results, including delivery mechanisms both for images on a file system and for streaming to a web browser.
+Provide a simple interface.
+  * We want users and tool developers to not only collect information from the underlying hardware, but also to have the ability to control various features from user space with a whitelist. Traditionally, control over some processor features, such as applying a power cap, is limited to those with privileged access. At LLNL, we developed an open-source kernel module known as ``msr-safe`` as a means of providing access to Intel-specific features and controls from user space by whitelisting MSRs. With Variorum, we plan to provide similar access to other hardware devices through a safe and secure model similar to msr-safe.
 
-Minimize  the  resource  impacts  on  host  simulations.
-  - Synchronous in situ processing, meaning that visualization and analysis routines can directly access the memory of a simulation code.
-  - Efficient execution times that do not significantly slow down overall simulation time.
-  - Minimal memory usage, including zero-copy usage when bringing data from simulation routines to visualization and analysis routines.
-
-
-System Architecture
--------------------
-The Alpine sytem architecture is composed of several components:
-  * **Conduit**: `Conduit <http://software.llnl.gov/conduit/>`_  is used to describe and pass in-core mesh data and pipeline options from the simulation code to Alpine.
-  * **In Situ Pipelines**: Alpine contains a number of in situ pipelines that implement simple analysis, rendering, and I/O operations on the mesh data published to Alpine. At a high level, a pipeline is responsible for consuming the simulation data that is described using the Conduit Mesh Blueprint and performing a number of actions defined within Conduit Nodes, which create some form of output.
-  * **Data Adapters**: Simulation mesh data is described using Conduit's `Mesh Blueprint <http://software.llnl.gov/conduit/blueprint_mesh.html>`_, which outlines a set of conventions to describe different types of mesh-based scientific data. Alpine provides internal Data Adaptors that convert Mesh Blueprint data into a more a more specific data model, such as VTK-m's data model. Alpine will always zero-copy simulation data when possible. To simplify memory ownership semantics, the data provided to Alpine via Conduit Nodes is considered to be owned by the by the simulation.
-  * **IceT**: Alpine uses IceT for scalable distributed memory parallel image compositing.
-  * **Embedded Web Server**: Alpine can stream images rendered from a running simulation to a web browser using the Conduit Relay's embedded web-server.
+Ease in extending to new devices and generations within a device.
+  * Variorum makes it easy to support new features, deprecate old features among generations of devices, and adapt features that may have different domains of control from one generation to another (i.e., sockets, cores, threads).
 
 
 System Diagram
 --------------
-..  image:: images/AlpineSystemDiagram.png
+..  image:: images/VariorumSystemDesign.png
     :height: 600px
     :align: center
 
 
-Pipelines
------------------
-  Alpine can be configured with one or more of the following pipelines.
-  When multiple pipelines are built with Alpine, available pipelines can be selected at runtime.
-  A pipeline has three main functions: consume simulation data, perfrom analysis (optional), and output data.
-  Data describing the simulation mesh is sent to the pipeline within a Conduit Node which is formatted according to `Conduit Blueprint <http://software.llnl.gov/conduit/blueprint.html>`_.
-  Once the data is in a compatible format, the pipeline can optionally perfrom some analysis operations, and then output the results.
-  Currently, the VTK-m pipeline output images to either the file system or to the web browser, and the HDF5 pipeline creates and HDF5 file.
+Dependencies
+------------
 
-
-
-
-VTK-m
-"""""
-  VTK-m v1.0 is a header only library (future versions will exist as a static or shared library) that uses a data-parallel programming model.
-  VTK-m was created from the merging of three efforts: DAX, EAVL, and PISTON.
-  While VTK-m's main focus is on scientific visualization, it can be used as a general purpose library for execution of supported architectures.
-  It uses template-meta programming to provide flexible and performant execution, and VTK-m is currently under active development.
-  The current version of Alpine uses the tagged 1.0 release that can be found at `Kitware <https://gitlab.kitware.com/vtk/vtk-m>`_ and the user guide can be found at `m.vtk.org <http://m.vtk.org/images/c/c8/VTKmUsersGuide.pdf>`_.
-
-  Supported operations:
-
-  - Structured volume rendering
-  - Ray tracing
-
-  Access to VTK-m filters are coming in a future release.
-
-
-Blueprint HDF5
+hwloc (Required)
 """"""""""""""""
-  This pipeline saves published mesh data to a set of hdf5 files that can be read by the  `VisIt  <https://wci.llnl.gov/simulation/computer-codes/visit/>`_ Blueprint plugin (planned to be released with VisIt 2.13).
-
-Empty
-"""""
-  The empty pipeline contains all the boilerplate code needed to started implementing a custom pipeline and is meant to serve as a staring place for those that wish to create a pipeline from scratch.
+`hwloc <https://www.open-mpi.org/projects/hwloc/>`_ is an open-source project
+providing a portable abstraction of the hierarchical topology of modern
+architectures.
