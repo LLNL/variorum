@@ -60,6 +60,8 @@ static double max_watts = 0.0;
 static double min_watts = 1024.0;
 #endif
 
+#define FASTEST_SAMPLE_INTERVAL_MS 50
+
 /*************************/
 /* HW Counter Structures */
 /*************************/
@@ -80,24 +82,31 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "    powmon - package and DRAM power monitor\n"
+                        "    powmon - Intel Package and DRAM power monitor\n"
                         "\n"
                         "SYNOPSIS\n"
-                        "    powmon [--help | -h] [-c] -a \"executable [exec-args]\"\n"
+                        "    powmon [--help | -h] [OPTIONS]... -a \"executable [<exec-args>]\"\n"
                         "\n"
                         "OVERVIEW\n"
                         "    Powmon is a utility for sampling and printing the power usage (for package\n"
                         "    and DRAM) and power limits per socket in a node\n"
                         "\n"
+                        "REQUIRED\n"
+                        "    -a \"executable [<exec-args>]\"\n"
+                        "        Application and arguments surrounded by quotes\n"
+                        "\n"
                         "OPTIONS\n"
                         "    --help | -h\n"
                         "        Display this help information, then exit.\n"
                         "\n"
-                        "    -a \"executable [exec-args]\"\n"
-                        "        Application and arguments surrounded by quotes\n"
-                        "\n"
                         "    -c\n"
                         "        Remove stale shared memory.\n"
+                        "\n"
+                        "    -p path_to_trace\n"
+                        "        Path to store application trace.\n"
+                        "\n"
+                        "    -i ms_intervalon"
+                        "        Sampling interval in milliseconds.\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
@@ -111,8 +120,11 @@ int main(int argc, char **argv)
     char *app;
     char **arg = NULL;
     int set_app = 0;
+    char *logpath = NULL;
+    // Default sampling interval in milliseconds
+    unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
 
-    while ((opt = getopt(argc, argv, "ca:")) != -1)
+    while ((opt = getopt(argc, argv, "ca:p:i:")) != -1)
     {
         switch(opt)
         {
@@ -123,6 +135,17 @@ int main(int argc, char **argv)
             case 'a':
                 app = optarg;
                 set_app = 1;
+                break;
+            case 'p':
+                logpath = strdup(optarg);
+                break;
+            case 'i':
+                sample_interval = atol(optarg);
+                if (sample_interval > FASTEST_SAMPLE_INTERVAL_MS)
+                {
+                    printf("Warning: Specified sample interval (-i) is faster than default. Setting to default sampling interval of %d milliseconds.\n", FASTEST_SAMPLE_INTERVAL_MS);
+                    sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+                }
                 break;
             case '?':
                 if (optopt == 'a')
@@ -184,7 +207,16 @@ int main(int argc, char **argv)
         char hostname[64];
         gethostname(hostname,64);
 
-        asprintf(&fname_dat, "%s.powmon.dat", hostname);
+        if (logpath)
+        {
+            /* Output trace data into the specified location. */
+            asprintf(&fname_dat, "%s/%s.powmon.dat", logpath, hostname);
+        }
+        else
+        {
+            /* Output trace data into the default location. */
+            asprintf(&fname_dat, "%s.powmon.dat", hostname);
+        }
 
         logfd = open(fname_dat, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
         if (logfd < 0)
@@ -199,13 +231,22 @@ int main(int argc, char **argv)
             return 1;
         }
 
+        if (logpath)
+        {
+            printf("Trace and summary files will be dumped in %s/\n", logpath);
+        }
+        else
+        {
+            printf("Trace and summary files will be dumped in ./\n");
+        }
+
         /* Start power measurement thread. */
         pthread_attr_t mattr;
         pthread_t mthread;
         pthread_attr_init(&mattr);
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
-        pthread_create(&mthread, &mattr, power_measurement, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, (void *) &sample_interval);
 
         /* Fork. */
         pid_t app_pid = fork();
@@ -234,8 +275,16 @@ int main(int argc, char **argv)
         take_measurement();
         end = now_ms();
 
-        /* Output summary data. */
-        asprintf(&fname_summary, "%s.powmon.summary", hostname);
+        if (logpath)
+        {
+            /* Output summary data into the specified location. */
+            asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
+        }
+        else
+        {
+            /* Output summary data into the default location. */
+            asprintf(&fname_summary, "%s.powmon.summary", hostname);
+        }
 
         logfd = open(fname_summary, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
         if (logfd < 0)
@@ -280,7 +329,7 @@ int main(int argc, char **argv)
         highlander_wait();
     }
 
-    printf("Output Files\n"
+    printf("Output Files:\n"
            "  %s\n"
            "  %s\n\n", fname_dat, fname_summary);
     highlander_clean();

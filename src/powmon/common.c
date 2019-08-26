@@ -84,9 +84,12 @@ void take_measurement(void)
 void *power_measurement(void *arg)
 {
     struct mstimer timer;
+    unsigned long sample_interval = *(unsigned long *)arg;
     // According to the Intel docs, the counter wraps at most once per second.
-    // 50 ms should be short enough to always get good information.
-    init_msTimer(&timer, 50);
+    // 50 ms should be short enough to always get good information (this is
+    // default).
+    printf("Using sampling interval of: %ld ms\n", sample_interval);
+    init_msTimer(&timer, sample_interval);
     start = now_ms();
 
     timer_sleep(&timer);
