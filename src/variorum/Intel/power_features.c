@@ -128,34 +128,38 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const
      * conversion.
      */
     translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-//    if (offset >= 32)
-//    {
-//        seconds_bits = (uint64_t)limit->seconds; // unit is milliseconds
-//        //translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD);
-//    }
-//    else
-//    {
-//        translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-//    }
+    if (offset >= 32)
+    {
+        seconds_bits = (uint64_t)limit->seconds; // unit is milliseconds
+        //translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD);
+    }
+    else
+    {
+        translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
+    }
     /* There is only 1 translation for watts (so far). */
     translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr);
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts, watts_bits);
     fprintf(stderr, "Converted %lf seconds into %lx bits.\n", limit->seconds, seconds_bits);
 #endif
-//    /* Check to make sure the watts value does not overflow the bit field. */
-//    if (watts_bits & 0xFFFFFFFFFFFF8000)
-//    {
-//        variorum_error_handler("Translation from bits to values failed", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-//        return -1;
-//    }
-//    watts_bits <<= 0 + offset;
-//    /* Check to make sure the seconds value does not overflow the bit field. */
-//    if (seconds_bits & 0xFFFFFFFFFFFFFF80)
-//    {
-//        variorum_error_handler("Seconds value is too large", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-//        return -1;
-//    }
+    /* Check to make sure the specified watts is not larger than the allowed
+     * (15 bits). */
+    if ((double)watts_bits > (pow(2,15))-1)
+    {
+        variorum_error_handler("Power limit is too large", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    watts_bits <<= 0 + offset;
+    // @todo Bounds check for time window still needs work.
+    ///* Check to make sure the specified time window is not larger
+    // * than allowed (7 bits). */
+    //if ((double)seconds_bits > (pow(2,7)-1))
+    //{
+    //    libmsr_error_handler("calc_rapl_bits(): Time window value is too large", LIBMSR_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __LINE__);
+    //    return -1;
+    //}
+
     seconds_bits <<= 17 + offset;
     limit->bits |= watts_bits;
     limit->bits |= seconds_bits;
@@ -280,6 +284,7 @@ static void create_rapl_data_batch(struct rapl_data *rapl, off_t msr_pkg_energy_
     rapl->old_pkg_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->old_pkg_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->pkg_delta_joules = (double *) calloc(nsockets, sizeof(double));
+    rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(double));
     rapl->pkg_watts = (double *) calloc(nsockets, sizeof(double));
     load_socket_batch(msr_pkg_energy_status, rapl->pkg_bits, RAPL_DATA);
 
@@ -675,15 +680,15 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_e
     }
 
     read_rapl_data(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
-    delta_rapl_data();
+    delta_rapl_data(msr_rapl_unit);
 
     return 0;
 }
 
-int delta_rapl_data(void)
+int delta_rapl_data(off_t msr_rapl_unit)
 {
     /* The energy status register holds 32 bits, this is max unsigned int. */
-    static double max_joules = UINT_MAX / 65536; // This fixed wraparound problem
+    static double max_joules = UINT_MAX;
     static int init = 0;
     static int nsockets = 0;
     static struct rapl_data *rapl;
@@ -718,13 +723,25 @@ int delta_rapl_data(void)
     for (i = 0; i < nsockets; i++)
     {
         /* Check to see if there was wraparound and use corresponding translation. */
-        if (rapl->pkg_joules[i] - rapl->old_pkg_joules[i] < 0)
+        if ((double)*rapl->pkg_bits[i] - (double)rapl->old_pkg_bits[i] < 0)
         {
-            rapl->pkg_delta_joules[i] = (rapl->pkg_joules[i] + max_joules) - rapl->old_pkg_joules[i];
+            rapl->pkg_delta_bits[i] = (uint64_t)((*rapl->pkg_bits[i] + (uint64_t)max_joules) - rapl->old_pkg_bits[i]);
+            translate(i, &rapl->pkg_delta_bits[i], &rapl->pkg_delta_joules[i], BITS_TO_JOULES, msr_rapl_unit);
+#ifdef VARIORUM_DEBUG
+            fprintf(stderr, "OVF pkg%d new=0x%lx old=0x%lx -> %lf\n", i, *rapl->pkg_bits[i], rapl->old_pkg_bits[i], rapl->pkg_delta_joules[i]);
+#endif
         }
         else
         {
             rapl->pkg_delta_joules[i] = rapl->pkg_joules[i] - rapl->old_pkg_joules[i];
+#ifdef VARIORUM_DEBUG
+            fprintf(stderr, "pkg%d pkg_joules[%d] = %lf, old_pkg_joules[%d] = %lf, pkg_delta_joules[%d] = %lf\n", s, s, rapl->pkg_joules[s], s, rapl->old_pkg_joules[s], s, rapl->pkg_delta_joules[s]);
+#endif
+        }
+        /* This case should not happen. */
+        if (rapl->pkg_delta_joules[i] < 0)
+        {
+            variorum_error_handler("Energy used since last same is negative", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         }
         if (rapl->dram_joules[i] - rapl->old_dram_joules[i] < 0)
         {
@@ -862,7 +879,7 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
 //    return 0;
 //}
 
-int read_rapl_data(off_t msr_rapl_power_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
@@ -899,6 +916,10 @@ int read_rapl_data(off_t msr_rapl_power_unit, off_t msr_pkg_energy_status, off_t
     if (init)
     {
         rapl->elapsed = (rapl->now.tv_sec - rapl->old_now.tv_sec) + (rapl->now.tv_usec - rapl->old_now.tv_usec)/1000000.0;
+        /* This case should not happen. */
+        if (rapl->elapsed < 0) {
+            variorum_error_handler("Elapsed time since last sample is negative", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        }
         for (i = 0; i < nsockets; i++)
         {
 #ifdef VARIORUM_DEBUG
@@ -938,8 +959,8 @@ int read_rapl_data(off_t msr_rapl_power_unit, off_t msr_pkg_energy_status, off_t
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: (read_rapl_data): translating pkg\n");
 #endif
-        translate(i, rapl->pkg_bits[i], &rapl->pkg_joules[i], BITS_TO_JOULES, msr_rapl_power_unit);
-        translate(i, rapl->dram_bits[i], &rapl->dram_joules[i], BITS_TO_JOULES_DRAM, msr_rapl_power_unit);
+        translate(i, rapl->pkg_bits[i], &rapl->pkg_joules[i], BITS_TO_JOULES, msr_rapl_unit);
+        translate(i, rapl->dram_bits[i], &rapl->dram_joules[i], BITS_TO_JOULES_DRAM, msr_rapl_unit);
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: socket %d\n", i);
         fprintf(stderr, "DEBUG: elapsed %f\n", rapl->elapsed);
