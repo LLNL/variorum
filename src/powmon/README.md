@@ -1,6 +1,6 @@
 POWMON
 ======
-This directory contains three libvariorum-based power monitors. The resulting
+This directory contains three Variorum-based power monitors. The resulting
 data is written to two files:
 * hostname.powmon.dat
 * hostname.powmon.summary
