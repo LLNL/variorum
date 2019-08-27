@@ -9,7 +9,7 @@
 #define STD_ENERGY_UNIT 65536.0
 
 /// @brief Enum encompassing unit conversion types.
-enum libvariorum_unit_conversions_e
+enum variorum_unit_conversions_e
 {
     /// @brief Decode raw bits into Watts.
     BITS_TO_WATTS,
