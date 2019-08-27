@@ -108,6 +108,7 @@ struct rapl_data
     /// @brief Difference in package-level energy usage between two data
     /// measurements.
     double *pkg_delta_joules;
+    uint64_t *pkg_delta_bits;
     /// @brief Package-level power consumption (in Watts) derived by dividing
     /// difference in package-level energy usage by time elapsed between data
     /// measurements.
@@ -254,7 +255,7 @@ void get_all_power_data(FILE *writedest,
 /// @brief Compute difference in readings taken at two instances in time.
 ///
 /// @return 0 if successful, else -1 if rapl_storage() fails.
-int delta_rapl_data(void);
+int delta_rapl_data(off_t msr_rapl_unit);
 
 #endif
 
