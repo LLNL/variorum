@@ -44,22 +44,9 @@
 
 Variorum API
 ============
+
 The top-level API for Variorum consists of the following calls:
 
 .. literalinclude:: ../../variorum/variorum.h
    :language: c
 
-Example Program
----------------
-The example below gets the thermal temperatures before and after running some
-application.
-
-.. code-block:: c
-
-    int main(int argc, char **argv)
-    {
-        dump_thermals();
-        my_prog();
-        dump_thermals();
-        return 0;
-    }

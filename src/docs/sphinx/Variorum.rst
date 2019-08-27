@@ -7,3 +7,4 @@ Variorum User Documentation
    Overview
    BuildingVariorum
    VariorumAPI
+   Examples
