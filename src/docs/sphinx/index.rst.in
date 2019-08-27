@@ -2,25 +2,35 @@
 Variorum
 ========
 
-A many-core capable lightweight in situ visualization and analysis infrastructure for multi-physics HPC simulations.
+An extensible vendor-neutral library for exposing performance montoring and
+control capabilities of low-level hardware knobs.
 
 Introduction
 ============
 
-Variorum is a system designed to explore the in situ visualization and analysis needs of simulation code teams running multi-physics calculations on many-core HPC architectures. It provides rendering pipelines that can leverage both many-core CPUs and GPUs to render images of simulation meshes.
+Variorum is an extensible library for exposing monitor and control capabilities
+of low-level hardware knobs. Variorum provides vendor-neutral APIs such that
+the user can query or control hardware knobs without needing to know the
+underlying vendor’s implementation. These APIs enable HPC application
+developers to gain a better understanding of performance through various
+metrics for the devices contained within the node. Additionally, the APIs may
+enable system software to control hardware knobs to optimize for a particular
+goal.
 
-Variorum focuses on ease of use and reduced integration burden for simulation code teams:
+Variorum focuses on ease of use and reduced integration burden for code teams:
 
-- It does not require any GUI or system graphics libraries.
-- It includes integration examples which demonstrate how to use Variorum inside of three different HPC simulation proxy applications.
-- It provides a built-in web server that supports streaming rendered images directly to a web browser.
+- It includes examples which demonstrate how to use Variorum in a stand-alone
+  program.
+- It includes an example performance analysis sampler that runs alongside the
+  application.
+
 
 Variorum Project Resources
 ==========================
 
 **Online Documentation**
 
-http://software.llnl.gov/libvariorum
+http://software.llnl.gov/variorum
 
 **Githib Source Repo**
 
@@ -33,14 +43,25 @@ http://github.com/llnl/variorum/issues
 Contributors
 ============
 
-- Stephanie Labasan (LLNL)
+- Peter Bailey
+- Stephanie Brink (LLNL)
+- Daniel Ellsworth
+- Aniruddha Marathe (LLNL)
+- Lauren Morita
+- Tapasya Patki (LLNL)
+- Barry Rountree (LLNL)
+- Kathleen Shoga (LLNL)
+- Scott Walker
 
 Variorum Documentation
 ======================
 
 .. toctree::
 
+   QuickStart
    Variorum
+   Releases
+   Publications
    Licenses
 
 Indices and tables
@@ -49,14 +70,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Programming and APIs
-====================
-..  toctree::
-        :maxdepth: 2
-
-    programming/index
-
-**API Reference**. The `API Reference`_ is generated from the source.
-
-.. _`API Reference`: @CMAKE_CURRENT_BINARY_DIR@/../dox/html/index.html

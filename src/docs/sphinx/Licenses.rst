@@ -43,7 +43,12 @@
 .. ############################################################################
 
 License Info
-================================
+============
+
+Variorum Notice
+---------------
+
+.. include:: ../../../NOTICE
 
 Variorum License
 ----------------
@@ -62,11 +67,10 @@ C and C++ Libraries
 Build System
 """"""""""""
 - *CMake*: http://www.cmake.org/licensing/ (BSD Style License)
-- *Spack*: http://software.llnl.gov/spack (LGPL License)
+- *Spack*: http://software.llnl.gov/spack (MIT/Apache License)
 
 Documentation
 """""""""""""
 - *sphinx*: http://sphinx-doc.org/ (BSD Style License)
 - *breathe*: https://github.com/michaeljones/breathe (BSD Style License)
 - *rtd sphinx theme*: https://github.com/snide/sphinx_rtd_theme/blob/master/LICENSE (MIT License)
-

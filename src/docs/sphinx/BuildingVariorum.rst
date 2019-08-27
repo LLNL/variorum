@@ -46,6 +46,11 @@
 Building Variorum
 =================
 
+This page provides details on how to build Variorum from source.
+
+For the shortest path, see :doc:`QuickStart`.
+
+
 Overview
 --------
 
@@ -54,15 +59,22 @@ Building Variorum creates the libvariorum library.
 
 The build dependencies for a minimal build require the following:
 
-    * C++
+    * C
     * hwloc
 
 
 Build Dependencies
 ------------------
 
+Variorum
+^^^^^^^^
+
+    * hwloc
+
 hwloc (Required)
 """"""""""""""""
+
+No dependencies.
 
 
 Getting Started
@@ -71,7 +83,7 @@ Clone the Variorum repo from GitHub:
 
 .. code:: bash
 
-    git clone https://lc.llnl.gov/bitbucket/scm/var/libvariorum.git
+    git clone https://lc.llnl.gov/bitbucket/scm/var/variorum.git
 
 
 Build, test, and install Variorum:
@@ -90,18 +102,21 @@ Build Options
 
 Variorum's build system supports the following CMake options:
 
-* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built. *(default = ON)*
-* **ENABLE_TESTS** - Controls if unit tests are built. *(default = ON)*
+* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ). *(default = ON)*
 
-* **ENABLE_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ). *(default = ON)*
+* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built. *(default = ON)*
+
+* **BUILD_TESTS** - Controls if unit tests are built. *(default = ON)*
 
 * **HWLOC_DIR** - Path to an HWLOC install.
 
-* **SPHINX_EXECUTABLE** - Path to a Sphinx binary *(required for documentation)*.
+* **SPHINX_EXECUTABLE** - Path to sphinx-build binary *(required for documentation)*.
 
-* **VARIORUM_DEBUG** - Enable Variorum debug statements *(default = OFF)*.
+* **VARIORUM_DEBUG** - Enable Variorum debug statements, useful if values are
+  not translating correctly *(default = OFF)*.
 
-* **VARIORUM_LOG** - Enable Variorum log statements *(default = OFF)*.
+* **VARIORUM_LOG** - Enable Variorum log statements, useful for tracking what
+  code path is being taken *(default = OFF)*.
 
 * **VARIORUM_AMD** - Enable Variorum build for AMD architecture *(default = ON)*.
 
@@ -114,7 +129,7 @@ Variorum's build system supports the following CMake options:
 
 Host Config Files
 -----------------
-To handle build options, third party library paths, etc we rely on CMake's
+To handle build options, third party library paths, etc., we rely on CMake's
 initial-cache file mechanism.
 
 
