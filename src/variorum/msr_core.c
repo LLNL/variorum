@@ -82,7 +82,7 @@ static int compatibility_batch(int batchnum, int type)
     struct msr_batch_array *batch = NULL;
     int i;
 
-    fprintf(stderr, "Warning: <libvariorum> No /dev/cpu/msr_batch, using compatibility batch: compatibility_batch(): %s: %s:%s::%d\n", strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "Warning: <variorum> No /dev/cpu/msr_batch, using compatibility batch: compatibility_batch(): %s: %s:%s::%d\n", strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
     if (batch_storage(&batch, batchnum, NULL))
     {
         return -1;
@@ -260,14 +260,14 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
     {
         if (stat(filename, &statbuf))
         {
-            fprintf(stderr, "Warning: <libvariorum> Could not stat %s: stat_module(): %s: %s:%s::%d\n", filename, strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
+            fprintf(stderr, "Warning: <variorum> Could not stat %s: stat_module(): %s: %s:%s::%d\n", filename, strerror(errno), getenv("HOSTNAME"), __FILE__, __LINE__);
             *kerneltype = 1;
             free(variorum_error_msg);
             return -1;
         }
         if (!(statbuf.st_mode & S_IRUSR) || !(statbuf.st_mode & S_IWUSR))
         {
-            fprintf(stderr, "Warning: <libvariorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+            fprintf(stderr, "Warning: <variorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
             *kerneltype = 1;
             free(variorum_error_msg);
             return -1;
@@ -278,7 +278,7 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
     }
     if (stat(filename, &statbuf))
     {
-        fprintf(stderr, "Warning: <libvariorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+        fprintf(stderr, "Warning: <variorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n", getenv("HOSTNAME"), __FILE__, __LINE__);
         if (*kerneltype)
         {
             /* Could not find any msr module so exit. */
