@@ -11,7 +11,7 @@ Introduction
 Variorum is an extensible library for exposing monitor and control capabilities
 of low-level hardware knobs. Variorum provides vendor-neutral APIs such that
 the user can query or control hardware knobs without needing to know the
-underlying vendor’s implementation. These APIs enable HPC application
+underlying vendor's implementation. These APIs enable HPC application
 developers to gain a better understanding of performance through various
 metrics for the devices contained within the node. Additionally, the APIs may
 enable system software to control hardware knobs to optimize for a particular

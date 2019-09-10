@@ -148,4 +148,6 @@ the years. See the current list in the `AUTHORS` file.
 Variorum is released under the MIT license. For more details, see the
 [LICENSE](./LICENSE) and [NOTICE](./NOTICE) files.
 
+SPDX-License-Identifier: MIT
+
 `LLNL-CODE-789253`
