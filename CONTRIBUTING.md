@@ -1,9 +1,9 @@
 CONTRIBUTING
 ============
 
-This file will describe how to provide feedback to the libvariorum project.
+This file will describe how to provide feedback to the Variorum project.
 
-The libvariorum project updates the `dev` branch frequently. Use this
+The Variorum project updates the `dev` branch frequently. Use this
 branch to get the latest changes and to create new feature branches. Tagged
 releases will be pushed to the `master` branch.
 
@@ -12,7 +12,7 @@ Change Requests
 ---------------
 
 The easiest way to contribute a change request is to make all of your changes on
-a new branch in a fork of libvariorum. Make sure your `dev` is up-to-date and
+a new branch in a fork of Variorum. Make sure your `dev` is up-to-date and
 create a new branch off of it. We ask that you name the branches starting with
 your <username>-descriptive_branch_name>, so we can track who owns the branch
 and the feature.
