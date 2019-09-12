@@ -1,5 +1,8 @@
 # VARIORUM
 
+[![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=master)](https://travis-ci.com/LLNL/variorum)
+[![Read the Docs](http://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
+
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
 interfaces for several features in hardware architectures.
 
@@ -8,7 +11,7 @@ version 0.1.0
 
 Last Update
 -----------
-27 August 2019
+12 September 2019
 
 
 Webpages
