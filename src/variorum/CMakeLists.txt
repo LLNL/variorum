@@ -3,7 +3,6 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h.in"
 
 set(variorum_headers
   config_architecture.h
-  msr_core.h
   variorum.h
   variorum_timers.h
   variorum_error.h
@@ -11,7 +10,6 @@ set(variorum_headers
 
 set(variorum_sources
   config_architecture.c
-  msr_core.c
   variorum.c
   variorum_timers.c
   variorum_error.c
@@ -36,7 +34,7 @@ endif()
 
 if(VARIORUM_WITH_IBM)
     add_subdirectory(IBM)
-    list(APPEND variorum_headers IBM/config_ibm.h ${variorum_intel_headers})
+    list(APPEND variorum_headers IBM/config_ibm.h ${variorum_ibm_headers})
     list(APPEND variorum_sources IBM/config_ibm.c)
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_ibm>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/IBM)

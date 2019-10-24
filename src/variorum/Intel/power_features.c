@@ -740,7 +740,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
         {
             rapl->pkg_delta_joules[i] = rapl->pkg_joules[i] - rapl->old_pkg_joules[i];
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "pkg%d pkg_joules[%d] = %lf, old_pkg_joules[%d] = %lf, pkg_delta_joules[%d] = %lf\n", s, s, rapl->pkg_joules[s], s, rapl->old_pkg_joules[s], s, rapl->pkg_delta_joules[s]);
+            fprintf(stderr, "pkg%d pkg_joules[%d] = %lf, old_pkg_joules[%d] = %lf, pkg_delta_joules[%d] = %lf\n", i, i, rapl->pkg_joules[i], i, rapl->old_pkg_joules[i], i, rapl->pkg_delta_joules[i]);
 #endif
         }
         /* This case should not happen. */

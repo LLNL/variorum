@@ -43,6 +43,7 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
         variorum_error_handler("Cannot detect architecture", err, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return err;
     }
+    printf("AFTER DETECT ARCH");
     err = variorum_set_func_ptrs();
     if (err)
     {
@@ -74,7 +75,7 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 #endif
 #ifdef VARIORUM_WITH_AMD
     free(g_platform.amd_arch);
-#endif 
+#endif
 #ifdef VARIORUM_WITH_IBM
     free(g_platform.ibm_arch);
 #endif
@@ -100,13 +101,22 @@ int variorum_detect_arch(void)
     //g_platform.gpu_arch = detect_gpu_arch();
 #endif
 
-if (g_platform.intel_arch == NULL && g_platform.amd_arch ==NULL && 
-        g_platform.ibm_arch == NULL && g_platform.gpu_arch == NULL) 
-    return VARIORUM_ERROR_UNSUPPORTED_ARCH;
-
-#ifdef VARIORUM_LOG
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
 #endif
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_IBM)
+    printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
+#endif
+
+    if (g_platform.intel_arch == NULL &&
+        g_platform.amd_arch   == NULL &&
+        g_platform.ibm_arch   == NULL &&
+        g_platform.gpu_arch   == NULL)
+    {
+        variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return VARIORUM_ERROR_UNSUPPORTED_ARCH;
+    }
+
     return 0;
 }
 
@@ -226,14 +236,13 @@ int variorum_set_func_ptrs()
         return err;
     }
 #endif
-
 #ifdef VARIORUM_WITH_IBM
-   err = set_ibm_func_ptrs();  
-#else
-   variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-   return VARIORUM_ERROR_RUNTIME;
+    err = set_ibm_func_ptrs();
+    if (err)
+    {
+        return err;
+    }
 #endif
-   return err;
 }
 
 ////setfixedcounters = fixed_ctr0,
