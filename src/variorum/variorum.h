@@ -32,14 +32,22 @@ int monitoring(FILE *output);
 /// @return Error code.
 int set_each_socket_power_limit(int socket_power_limit);
 
+///// @brief Set a power limit to the node and verify if it was set correctly (10ms delay).
+/////
+///// @param [in] node_power_limit Desired power limit for the node.
+/////
+///// @return Error code.
+int set_and_verify_node_power_limit(int node_power_limit);
+
 ///// @brief Set a power limit to the node.
 /////
 ///// @param [in] node_power_limit Desired power limit for the node.
 /////
 ///// @return Error code.
-//int set_node_power_limit(int node_power_limit);
+int set_node_power_limit(int node_power_limit);
+
 //
-///// @brief Set a power limit to the node domain.
+///// @brief Set a power limit to the gpu domain.
 /////
 ///// @param [in] gpu_power_limit Desired power limit for each GPU.
 /////

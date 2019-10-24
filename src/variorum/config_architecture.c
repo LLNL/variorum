@@ -12,9 +12,14 @@
 #include <config_architecture.h>
 #include <variorum_config.h>
 #include <variorum_error.h>
+
 #ifdef VARIORUM_WITH_INTEL
 #include <config_intel.h>
 #include <msr_core.h>
+#endif
+
+#ifdef VARIORUM_WITH_IBM
+#include <config_ibm.h>
 #endif
 
 int variorum_enter(const char *filename, const char *func_name, int line_num)
@@ -66,11 +71,14 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 
 #ifdef VARIORUM_WITH_INTEL
     free(g_platform.intel_arch);
-#elif VARIORUM_WITH_AMD
+#endif
+#ifdef VARIORUM_WITH_AMD
     free(g_platform.amd_arch);
-#elif VARIORUM_WITH_IBM
+#endif 
+#ifdef VARIORUM_WITH_IBM
     free(g_platform.ibm_arch);
-#elif VARIORUM_WITH_GPU
+#endif
+#ifdef VARIORUM_WITH_GPU
     free(g_platform.gpu_arch);
 #endif
 
@@ -81,15 +89,20 @@ int variorum_detect_arch(void)
 {
 #ifdef VARIORUM_WITH_INTEL
     g_platform.intel_arch = detect_intel_arch();
-#elif VARIORUM_WITH_AMD
-    //g_platform.amd_arch = detect_amd_arch();
-#elif VARIORUM_WITH_IBM
-    //g_platform.amd_arch = detect_ibm_arch();
-#elif VARIORUM_WITH_GPU
-    //g_platform.amd_arch = detect_gpu_arch();
-#else
-    return VARIORUM_ERROR_UNSUPPORTED_ARCH;
 #endif
+#ifdef VARIORUM_WITH_AMD
+    //g_platform.amd_arch = detect_amd_arch();
+#endif
+#ifdef VARIORUM_WITH_IBM
+    g_platform.ibm_arch = detect_ibm_arch();
+#endif
+#ifdef VARIORUM_WITH_GPU
+    //g_platform.gpu_arch = detect_gpu_arch();
+#endif
+
+if (g_platform.intel_arch == NULL && g_platform.amd_arch ==NULL && 
+        g_platform.ibm_arch == NULL && g_platform.gpu_arch == NULL) 
+    return VARIORUM_ERROR_UNSUPPORTED_ARCH;
 
 #ifdef VARIORUM_LOG
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
@@ -184,6 +197,8 @@ int variorum_get_topology(void)
 void variorum_init_func_ptrs()
 {
     g_platform.dump_power_limits = NULL;
+    g_platform.set_node_power_limit = NULL;
+    g_platform.set_and_verify_node_power_limit = NULL;
     g_platform.set_each_socket_power_limit = NULL;
     g_platform.print_features = NULL;
     g_platform.dump_thermals = NULL;
@@ -210,11 +225,15 @@ int variorum_set_func_ptrs()
     {
         return err;
     }
-#else
-    variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-    return VARIORUM_ERROR_RUNTIME;
 #endif
-    return err;
+
+#ifdef VARIORUM_WITH_IBM
+   err = set_ibm_func_ptrs();  
+#else
+   variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+   return VARIORUM_ERROR_RUNTIME;
+#endif
+   return err;
 }
 
 ////setfixedcounters = fixed_ctr0,

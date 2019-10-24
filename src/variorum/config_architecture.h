@@ -59,6 +59,11 @@ enum intel_arch_e
     FM_06_57 = 87   // Knights Landing
 };
 
+enum ibm_arch_w
+{
+    POWER9 = 9	//Power9, note: we need to find architecture detection info here. 
+};
+
 /// @brief Mapping topology information.
 struct map
 {
@@ -85,6 +90,20 @@ struct platform
     ///
     /// @return Error code.
     int (*dump_power_limits)(int long_ver);
+
+    /// @brief Function pointer to set a power limit on the node.
+    ///
+    /// @param [in] node_power_limit Desired node power limit in Watts.
+    ///
+    /// @return Error code.
+    int (*set_node_power_limit)(int node_power_limit);
+
+    /// @brief Function pointer to set a power limit to each node and then verify that the cap was set correctly.
+    ///
+    /// @param [in] node_power_limit Desired node power limit in Watts.
+    ///
+    /// @return Error code.
+    int (*set_and_verify_node_power_limit)(int node_power_limit);
 
     /// @brief Function pointer to set a power limit to each socket.
     ///
