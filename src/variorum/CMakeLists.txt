@@ -6,7 +6,6 @@ set(variorum_headers
   msr_core.h
   variorum.h
   variorum_timers.h
-  variorum_cpuid.h
   variorum_error.h
   )
 
@@ -15,7 +14,6 @@ set(variorum_sources
   msr_core.c
   variorum.c
   variorum_timers.c
-  variorum_cpuid.c
   variorum_error.c
   )
 
@@ -34,6 +32,14 @@ if(VARIORUM_WITH_INTEL)
     list(APPEND variorum_sources Intel/config_intel.c)
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_intel>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+endif()
+
+if(VARIORUM_WITH_IBM)
+    add_subdirectory(IBM)
+    list(APPEND variorum_headers IBM/config_ibm.h ${variorum_intel_headers})
+    list(APPEND variorum_sources IBM/config_ibm.c)
+    list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_ibm>)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/IBM)
 endif()
 
 if(BUILD_SHARED_LIBS)

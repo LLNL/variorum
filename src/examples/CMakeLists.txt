@@ -23,7 +23,8 @@ set(BASIC_EXAMPLES
     ex-print-verbose-power
     ex-print-verbose-thermals
     ex-set-cpu-clock-speed
-    ex-set-power-limits
+    ex-set-node-power-limit
+    ex-set-socket-power-limits
 )
 
 message(STATUS "Adding variorum examples")
