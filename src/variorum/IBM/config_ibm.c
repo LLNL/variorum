@@ -26,6 +26,7 @@ int set_ibm_func_ptrs(void)
         g_platform.dump_power_limits = p9_get_power_limits;
         g_platform.set_node_power_limit = p9_set_power_limit;
         g_platform.set_and_verify_node_power_limit = p9_set_and_verify_power_limit;
+        g_platform.monitoring = p9_monitoring;
     }
     else
     {

@@ -43,7 +43,6 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
         variorum_error_handler("Cannot detect architecture", err, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return err;
     }
-    printf("AFTER DETECT ARCH");
     err = variorum_set_func_ptrs();
     if (err)
     {
