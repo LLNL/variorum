@@ -22,7 +22,9 @@ set(BASIC_EXAMPLES
     ex-print-verbose-power-limits
     ex-print-verbose-power
     ex-print-verbose-thermals
+    ex-set-and-verify-node-power-limit
     ex-set-cpu-clock-speed
+    ex-set-gpu-power-ratio
     ex-set-node-power-limit
     ex-set-socket-power-limits
 )

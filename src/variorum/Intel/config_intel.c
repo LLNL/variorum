@@ -36,9 +36,23 @@ uint64_t *detect_intel_arch(void)
     //return (((rax >> 28) & 0x0F)+((rax >> 8) & 0x0F) << 8) | ((rax >> 12) & 0xF0)+((rax >> 4) & 0xF);
 }
 
+int gpu_power_ratio_unimplemented(int long_ver)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    printf("GPU power ratio is not available on Intel platforms.\n");
+    return -1;
+}
+
 int set_intel_func_ptrs(void)
 {
     int err = 0;
+
+    // GPU power ratio doesn't apply to Intel architectures.
+    // So specify a common function that exits with a log message.
+    g_platform.set_gpu_power_ratio = gpu_power_ratio_unimplemented;
 
     // Sandy Bridge 06_2A
     if (*g_platform.intel_arch == FM_06_2A)

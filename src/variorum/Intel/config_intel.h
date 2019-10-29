@@ -12,4 +12,6 @@ uint64_t *detect_intel_arch(void);
 
 int set_intel_func_ptrs(void);
 
+int gpu_power_ratio_unimplemented(int long_ver);
+
 #endif

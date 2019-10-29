@@ -208,6 +208,7 @@ void variorum_init_func_ptrs()
     g_platform.dump_power_limits = NULL;
     g_platform.set_node_power_limit = NULL;
     g_platform.set_and_verify_node_power_limit = NULL;
+    g_platform.set_gpu_power_ratio = NULL;
     g_platform.set_each_socket_power_limit = NULL;
     g_platform.print_features = NULL;
     g_platform.dump_thermals = NULL;

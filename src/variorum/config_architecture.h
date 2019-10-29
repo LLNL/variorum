@@ -107,6 +107,15 @@ struct platform
     /// @return Error code.
     int (*set_and_verify_node_power_limit)(int node_power_limit);
 
+    /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
+    ///
+    /// @param [in] gpu_power_ratio Desired power ratio (percentage) for the processor and GPU.
+    ///
+    /// @note Only valid on IBM P9 systems for now. Same ratio will be set on both sockets.
+    ///
+    /// @return Error code.
+    int (*set_gpu_power_ratio)(int gpu_power_ratio);
+
     /// @brief Function pointer to set a power limit to each socket.
     ///
     /// @param [in] socket_power_limit Desired socket power limit in Watts.

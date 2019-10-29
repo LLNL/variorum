@@ -32,27 +32,28 @@ int monitoring(FILE *output);
 /// @return Error code.
 int set_each_socket_power_limit(int socket_power_limit);
 
-///// @brief Set a power limit to the node and verify if it was set correctly (10ms delay).
-/////
-///// @param [in] node_power_limit Desired power limit for the node.
-/////
-///// @return Error code.
+/// @brief Set a power limit to the node and verify if it was set correctly (10ms delay).
+///
+/// @param [in] node_power_limit Desired power limit for the node.
+///
+/// @return Error code.
 int set_and_verify_node_power_limit(int node_power_limit);
 
-///// @brief Set a power limit to the node.
-/////
-///// @param [in] node_power_limit Desired power limit for the node.
-/////
-///// @return Error code.
+/// @brief Set a power limit to the node.
+///
+/// @param [in] node_power_limit Desired power limit for the node.
+///
+/// @return Error code.
 int set_node_power_limit(int node_power_limit);
 
-//
-///// @brief Set a power limit to the gpu domain.
-/////
-///// @param [in] gpu_power_limit Desired power limit for each GPU.
+/// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
+///
+/// @param [in] gpu_power_ratio Desired power ratio (percentage) for the processor and GPU.
+///
+/// @note Only valid on IBM P9 systems for now. Same ratio will be set on both sockets.
 /////
 ///// @return Error code.
-//int set_each_gpu_power_limit(int gpu_power_limit);
+int set_gpu_power_ratio(int gpu_power_ratio);
 
 /// @brief Set identical CPU frequencies to all cores within a socket.
 ///
@@ -60,6 +61,13 @@ int set_node_power_limit(int node_power_limit);
 ///
 /// @return Error code.
 int set_each_core_frequency(int cpu_freq_mhz);
+
+///// @brief Set a power limit to the gpu domain.
+/////
+///// @param [in] gpu_power_limit Desired power limit for each GPU.
+/////
+///// @return Error code.
+//int set_each_gpu_power_limit(int gpu_power_limit);
 
 /*******************/
 /* Print Functions */
