@@ -4,14 +4,13 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum User Documentation
-===========================
+Variorum Supported Architectures
+================================
+
+These are the currently supported architectures in Variorum.
 
 .. toctree::
    :maxdepth: 2
 
-   Overview
-   BuildingVariorum
-   Examples
-   VariorumAPI
-   VariorumDevel
+   IBM
+   Intel

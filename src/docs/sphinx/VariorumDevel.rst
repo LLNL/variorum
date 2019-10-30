@@ -4,14 +4,12 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum User Documentation
-===========================
+Variorum Developer Documentation
+================================
+
+Patki: Update with your experience/process here.
 
 .. toctree::
    :maxdepth: 2
 
-   Overview
-   BuildingVariorum
-   Examples
-   VariorumAPI
-   VariorumDevel
+   HWArchitectures

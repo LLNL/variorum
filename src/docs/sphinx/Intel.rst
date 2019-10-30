@@ -4,14 +4,7 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum User Documentation
-===========================
+Intel Overview
+==============
 
-.. toctree::
-   :maxdepth: 2
-
-   Overview
-   BuildingVariorum
-   Examples
-   VariorumAPI
-   VariorumDevel
+Intel architecture specifics
