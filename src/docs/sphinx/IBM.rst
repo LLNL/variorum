@@ -4,14 +4,8 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum User Documentation
-===========================
+IBM Overview
+============
 
-.. toctree::
-   :maxdepth: 2
-
-   Overview
-   BuildingVariorum
-   Examples
-   VariorumAPI
-   VariorumDevel
+Patki: Update with your IBM notes. Feel free to make headers and sections as
+you see fit.
