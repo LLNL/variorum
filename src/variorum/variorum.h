@@ -61,72 +61,72 @@ int set_each_core_frequency(int cpu_freq_mhz);
 // SPDX-License-Identifier: MIT
 
 
-/************************/
-/* Print/Dump Functions */
-/************************/
+/*******************/
+/* Print Functions */
+/*******************/
 /// @brief Print power limits for all known domains in long format.
 ///
 /// @return Error code.
-int print_power_limits(void);
+int print_verbose_power_limits(void);
 
 /// @brief Print power limits for all known domains in CSV format.
 ///
 /// @return Error code.
-int dump_power_limits(void);
+int print_power_limits(void);
 
 /// @brief Print thermal data in long format.
 ///
 /// @return Error code.
-int print_thermals(void);
+int print_verbose_thermals(void);
 
 /// @brief Print thermal data in CSV format.
 ///
 /// @return Error code.
-int dump_thermals(void);
+int print_thermals(void);
 
 /// @brief Print performance counter data in long format.
 ///
 /// @return Error code.
-int print_counters(void);
+int print_verbose_counters(void);
 
 /// @brief Print performance counter data in CSV format.
 ///
 /// @return Error code.
-int dump_counters(void);
+int print_counters(void);
 
 /// @brief Print energy and power usage data in long format.
 ///
 /// @return Error code.
-int print_power(void);
+int print_verbose_power(void);
 
 /// @brief Print energy and power usage data in CSV format.
 ///
 /// @return Error code.
-int dump_power(void);
+int print_power(void);
 
 ///// @brief Print desired frequency setting (i.e., upper bound on the operating
 ///// frequency; the processor may grant up to this frequency) in long format.
 /////
 ///// @return Error code.
-//int print_cap_frequency(void);
+//int print_verbose_cap_frequency(void);
 //
 ///// @brief Print desired frequency setting (i.e., upper bound on the operating
 ///// frequency; the processor may grant up to this frequency) in CSV format.
 /////
 ///// @return Error code.
-//int dump_cap_frequency(void);
+//int print_cap_frequency(void);
 
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// long format.
 ///
 /// @return Error code.
-int print_clock_speed(void);
+int print_verbose_clock_speed(void);
 
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// CSV format.
 ///
 /// @return Error code.
-int dump_clock_speed(void);
+int print_clock_speed(void);
 
 /// @todo Print discrete frequencies from P0 to Pn.
 ///
@@ -136,7 +136,7 @@ int print_available_frequencies(void) { return 0; };
 /// @brief Print if hyperthreading is enabled or disabled.
 ///
 /// @return Error code.
-int dump_hyperthreading(void);
+int print_hyperthreading(void);
 
 /// @brief Print architecture toplogy in long format.
 ///
@@ -152,8 +152,7 @@ int print_features(void);
 /// discrete frequencies in turbo range (i.e., max turbo ratio).
 ///
 /// @return Error code.
-int dump_turbo(void);
-//int print_turbo(void);
+int print_turbo(void);
 
 /***************************/
 /* Enable/Disable Features */
@@ -169,7 +168,7 @@ int enable_turbo(void);
 int disable_turbo(void);
 
 ///* Do we need these? */
-//int dump_cap_package_frequency(void);
-//int dump_available_frequencies(void);
+//int print_cap_package_frequency(void);
+//int print_available_frequencies(void);
 
 #endif

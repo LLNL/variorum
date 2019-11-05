@@ -3,25 +3,27 @@ target_link_libraries(variorum ${variorum_deps})
 add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
-  ex-dump-power-limits
-  ex-print-power-limits
-  ex-dump-thermals
-  ex-print-thermals
-  ex-print-topology
-  ex-print-features
-  ex-set-power-limits
-  ex-dump-counters
-  ex-print-counters
-  ex-dump-clock-speed
-  ex-print-clock-speed
-  ex-dump-power
-  ex-print-power
-  ex-dump-hyperthreading
-  ex-dump-turbo
-  ex-poll-power-to-file
-  ex-poll-power-to-stdout
-  ex-monitoring-to-file
-  ex-set-cpu-clock-speed
+    ex-disable-turbo
+    ex-enable-turbo
+    ex-monitoring-to-file
+    ex-poll-power-to-file
+    ex-poll-power-to-stdout
+    ex-print-clock-speed
+    ex-print-counters
+    ex-print-features
+    ex-print-hyperthreading
+    ex-print-power-limits
+    ex-print-power
+    ex-print-thermals
+    ex-print-topology
+    ex-print-turbo
+    ex-print-verbose-clock-speed
+    ex-print-verbose-counters
+    ex-print-verbose-power-limits
+    ex-print-verbose-power
+    ex-print-verbose-thermals
+    ex-set-cpu-clock-speed
+    ex-set-power-limits
 )
 
 message(STATUS "Adding variorum examples")

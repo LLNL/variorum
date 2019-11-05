@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_clock_speed();
-    if (ret != 0)
+	ret = disable_turbo();
+	if (ret != 0)
     {
-        printf("Print clock speed failed!\n");
-    }
+		printf("Disable turbo failed!\n");
+	}
     return ret;
 }

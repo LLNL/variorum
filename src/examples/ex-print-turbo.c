@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = dump_hyperthreading();
-    if (ret != 0)
+	ret = print_turbo();
+	if (ret != 0)
     {
-        printf("Dump hyperthreading failed!\n");
-    }
+		printf("Print turbo failed!\n");
+	}
     return ret;
 }

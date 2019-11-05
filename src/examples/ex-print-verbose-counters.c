@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = dump_thermals();
+    ret = print_verbose_counters();
     if (ret != 0)
     {
-        printf("Dump thermals failed!\n");
+        printf("Print verbose counters failed!\n");
     }
     return ret;
 }

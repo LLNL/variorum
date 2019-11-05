@@ -31,20 +31,20 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    ret = dump_power();
+    ret = print_verbose_power();
     if (ret != 0)
     {
-        printf("Dump power failed!\n");
+        printf("Print verbose power failed!\n");
     }
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
     {
         x += do_work(i);
     }
-    ret = dump_power();
+    ret = print_verbose_power();
     if (ret != 0)
     {
-        printf("Dump power failed!\n");
+        printf("Print verbose power failed!\n");
     }
 #endif
     return ret;

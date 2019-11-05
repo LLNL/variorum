@@ -11,15 +11,13 @@ int main(int argc, char **argv)
 {
     int ret;
 
-	ret = disable_turbo();
-	if (ret != 0)
+    ret = print_verbose_clock_speed();
+    if (ret != 0)
     {
-		printf("Disable turbo failed!\n");
-	}
-	ret = enable_turbo();
-	if (ret != 0)
-    {
-		printf("Enable turbo failed!\n");
-	}
+        printf("Print verbose clock speed failed!\n");
+    }
+#ifdef SECOND_RUN
+    ret = print_verbose_clock_speed();
+#endif
     return ret;
 }
