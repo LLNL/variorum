@@ -1,3 +1,8 @@
+// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
+//
+// SPDX-License-Identifier: MIT
+
 #ifndef KABYLAKE_9E_H_INCLUDE
 #define KABYLAKE_9E_H_INCLUDE
 
