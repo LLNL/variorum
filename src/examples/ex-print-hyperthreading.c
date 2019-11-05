@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = dump_power_limits();
+    ret = print_hyperthreading();
     if (ret != 0)
     {
-        printf("Dump power limits failed!\n");
+        printf("Print hyperthreading failed!\n");
     }
     return ret;
 }

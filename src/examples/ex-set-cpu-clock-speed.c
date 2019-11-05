@@ -28,10 +28,10 @@ int main(int argc, char **argv)
         printf("Set each core frequency failed!\n");
     }
     printf("\n");
-    ret = dump_clock_speed();
+    ret = print_clock_speed();
     if (ret != 0)
     {
-        printf("Dump clock speed failed!\n");
+        printf("Print clock speed failed!\n");
     }
     return ret;
 }

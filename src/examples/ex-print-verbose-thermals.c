@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = dump_clock_speed();
+    ret = print_verbose_thermals();
     if (ret != 0)
     {
-        printf("Dump clock speed failed!\n");
+        printf("Print verbose thermals failed!\n");
     }
     return ret;
 }

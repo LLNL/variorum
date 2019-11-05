@@ -30,10 +30,10 @@ int main(int argc, char **argv)
         printf("Set each socket power limit failed!\n");
     }
     printf("\n");
-    ret = dump_power_limits();
+    ret = print_power_limits();
     if (ret != 0)
     {
-        printf("Dump power limits failed!\n");
+        printf("Print power limits failed!\n");
     }
     return ret;
 }
