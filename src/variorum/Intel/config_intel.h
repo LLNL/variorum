@@ -1,3 +1,8 @@
+// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
+//
+// SPDX-License-Identifier: MIT
+
 #ifndef CONFIG_INTEL_H_INCLUDE
 #define CONFIG_INTEL_H_INCLUDE
 

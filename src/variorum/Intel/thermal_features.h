@@ -1,3 +1,8 @@
+// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
+//
+// SPDX-License-Identifier: MIT
+
 #ifndef THERMAL_FEATURES_H_INCLUDE
 #define THERMAL_FEATURES_H_INCLUDE
 

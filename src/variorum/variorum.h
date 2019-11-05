@@ -1,3 +1,8 @@
+// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
+//
+// SPDX-License-Identifier: MIT
+
 #ifndef VARIORUM_H_INCLUDE
 #define VARIORUM_H_INCLUDE
 
@@ -50,6 +55,11 @@ int set_each_socket_power_limit(int socket_power_limit);
 ///
 /// @return Error code.
 int set_each_core_frequency(int cpu_freq_mhz);
+// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
+//
+// SPDX-License-Identifier: MIT
+
 
 /************************/
 /* Print/Dump Functions */
