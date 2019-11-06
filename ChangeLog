@@ -1,3 +1,16 @@
+* Wed Nov 6 2019 Stephanie Brink <brink2@llnl.gov> v0.1.0
+- Initial release to <https://github.com/llnl/variorum>!
+- Includes support for Intel platform -- Sandy Bridge, Ivy Bridge, Haswell,
+Broadwell, Skylake, and Kaby Lake architectures
+- Includes support for IBM platform -- Power9 architecture
+- Add powmon command line sample for monitoring performance counters during
+application execution
+- Rename libvariorum to variorum
+- Bug fix for computing power from energy on Intel
+- Add developer docs for supporting new platforms
+- Add info on IBM sensors, OCC, and power shifting ratio
+- Rename front-facing APIs from print_*() to print_verbose_*() and dump_*() to
+print_*()
 * Wed Jul 19 2017 Stephanie Labasan <labasan1@llnl.gov> v0.0.0
 - Initial release to libvariorum repo on internal Bitbucket.
 - Base Sphinx documentation taken from SDAV Alpine project. Still has some

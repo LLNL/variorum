@@ -1,7 +1,7 @@
 # VARIORUM
 
 [![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=master)](https://travis-ci.com/LLNL/variorum)
-[![Read the Docs](http://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
+[![Read the Docs](https://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
 
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
 interfaces for several features in hardware architectures.
@@ -11,12 +11,12 @@ version 0.1.0
 
 Last Update
 -----------
-5 November 2019
+6 November 2019
 
 
 Webpages
 --------
-https://lc.llnl.gov/bitbucket/projects/VAR/repos/variorum/browse
+https://variorum.readthedocs.io
 
 
 ## Overview
@@ -128,23 +128,25 @@ capabilities to the binaries) is another option.
 
 
 ## Bug Tracker
-Bugs and feature requests are being tracked on the [Institutional
-Jira](https://lc.llnl.gov/jira/projects/VARIORUM/summary).
+Bugs and feature requests are being tracked on [GitHub
+Issues](https://github.com/LLNL/variorum/issues).
 
 
 ## Contributing
 Please submit any bugfixes or feature improvements as pull requests. See the
-[CONTRIBUTING](./CONTRIBUTING.MD) for more information.
+[CONTRIBUTING](./CONTRIBUTING.md) for more information.
 
 
 ## Contact
-Barry Rountree, Project Lead, <rountree@llnl.gov> <br>
-Stephanie Brink, Developer, <brink2@llnl.gov>
+Stephanie Brink, <brink2@llnl.gov> <br>
+Aniruddha Marathe, <marathe1@llnl.gov> <br>
+Tapasya Patki, <patki1@llnl.gov> <br>
+Barry Rountree, <rountree@llnl.gov>
 
 Please feel free to contact the developers with any questions or feedback.
 
 We collect names of those who have contributed to Variorum over
-the years. See the current list in the `AUTHORS` file.
+the years. See the current list in [AUTHORS](./AUTHORS).
 
 
 ## License

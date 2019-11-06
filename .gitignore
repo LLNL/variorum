@@ -1,12 +1,9 @@
 *.pyc
 CMakeCache.txt
 CMakeFiles/
-install_manifest.txt
 Makefile
 cmake_install.cmake
 libvariorum.a
 libvariorum.so
 src/docs/dox/Doxyfile
-src/docs/sphinx/conf.py
-src/docs/sphinx/index.rst
 src/variorum/variorum_config.h
