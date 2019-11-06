@@ -6,9 +6,6 @@
 #ifndef VARIORUM_H_INCLUDE
 #define VARIORUM_H_INCLUDE
 
-/// @brief Test for memory leaks.
-int tester(void);
-
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
 ///
@@ -55,11 +52,6 @@ int set_each_socket_power_limit(int socket_power_limit);
 ///
 /// @return Error code.
 int set_each_core_frequency(int cpu_freq_mhz);
-// Copyright 2019 Lawrence Livermore National Security, LLC and other
-// Variorum Project Developers. See the top-level LICENSE file for details.
-//
-// SPDX-License-Identifier: MIT
-
 
 /*******************/
 /* Print Functions */
@@ -104,18 +96,6 @@ int print_verbose_power(void);
 /// @return Error code.
 int print_power(void);
 
-///// @brief Print desired frequency setting (i.e., upper bound on the operating
-///// frequency; the processor may grant up to this frequency) in long format.
-/////
-///// @return Error code.
-//int print_verbose_cap_frequency(void);
-//
-///// @brief Print desired frequency setting (i.e., upper bound on the operating
-///// frequency; the processor may grant up to this frequency) in CSV format.
-/////
-///// @return Error code.
-//int print_cap_frequency(void);
-
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// long format.
 ///
@@ -138,7 +118,7 @@ int print_available_frequencies(void) { return 0; };
 /// @return Error code.
 int print_hyperthreading(void);
 
-/// @brief Print architecture toplogy in long format.
+/// @brief Print architecture topology in long format.
 ///
 /// @return Error code.
 int print_topology(void);
@@ -167,8 +147,23 @@ int enable_turbo(void);
 /// @return Error code.
 int disable_turbo(void);
 
+/// @brief Test for memory leaks.
+int tester(void);
+
 ///* Do we need these? */
 //int print_cap_package_frequency(void);
 //int print_available_frequencies(void);
+
+///// @brief Print desired frequency setting (i.e., upper bound on the operating
+///// frequency; the processor may grant up to this frequency) in long format.
+/////
+///// @return Error code.
+//int print_verbose_cap_frequency(void);
+
+///// @brief Print desired frequency setting (i.e., upper bound on the operating
+///// frequency; the processor may grant up to this frequency) in CSV format.
+/////
+///// @return Error code.
+//int print_cap_frequency(void);
 
 #endif
