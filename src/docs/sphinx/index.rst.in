@@ -36,7 +36,7 @@ Variorum Project Resources
 
 **Online Documentation**
 
-http://software.llnl.gov/variorum
+https://variorum.readthedocs.io/
 
 **Githib Source Repo**
 
