@@ -11,20 +11,20 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int pkg_pow_lim;
+    int pkg_pow_lim_watts;
 
     if (argc == 1)
     {
         printf("No power limit specified...using default limit of 100W.\n");
-        pkg_pow_lim = 100;
+        pkg_pow_lim_watts = 100;
     }
     else if (argc == 2)
     {
-        pkg_pow_lim = atoi(argv[1]);
-        printf("Setting each socket to %dW.\n", pkg_pow_lim);
+        pkg_pow_lim_watts = atoi(argv[1]);
+        printf("Setting each socket to %dW.\n", pkg_pow_lim_watts);
     }
 
-    ret = set_each_socket_power_limit(pkg_pow_lim);
+    ret = set_each_socket_power_limit(pkg_pow_lim_watts);
     if (ret != 0)
     {
         printf("Set each socket power limit failed!\n");
