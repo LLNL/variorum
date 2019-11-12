@@ -11,7 +11,4 @@ Variorum User Documentation
    :maxdepth: 2
 
    Overview
-   BuildingVariorum
    Examples
-   VariorumAPI
-   VariorumDevel

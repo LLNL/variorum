@@ -31,14 +31,3 @@ Steps to Add Support for a New Architecture (pfm_arch)
 1. Follow the steps listed above to create a new platform if the platform does not already exist in the Variorum source.
 2. For each architecture, add a `pfm_arch.h` and `pfm_arch.c` file, define the internal get/set functions for capturing power, thermal, performance data. These need to be added as function pointers in the platform file (`config_pfm.h` and `config_pfm.c` files).
 3. The internal implementation will depend on the interfaces, such as sensors, MSRs, OPAL, IPMI, etc. If applicable, these can be re-used across architectures (i.e., the same implementation is used for many architectures).
-
-
-Documentation on Supported Platforms
-------------------------------------
-
-For specifics on the platforms that we support, please see the following pages.
-
-.. toctree::
-   :maxdepth: 2
-
-   HWArchitectures

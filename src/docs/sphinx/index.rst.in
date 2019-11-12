@@ -63,12 +63,33 @@ Variorum Documentation
 ======================
 
 .. toctree::
+  :maxdepth: 2
+  :caption: Basics
 
-   QuickStart
-   Variorum
-   Releases
-   Publications
-   Licenses
+  QuickStart
+  Releases
+  Publications
+  Licenses
+
+.. toctree::
+  :maxdepth: 2
+  :caption: Reference
+
+  BuildingVariorum
+  Variorum
+  VariorumAPI
+
+.. toctree::
+  :maxdepth: 2
+  :caption: Contributing
+
+  VariorumDevel
+
+.. toctree::
+  :maxdepth: 2
+  :caption: Vendor Notes
+
+  HWArchitectures
 
 Indices and tables
 ==================
