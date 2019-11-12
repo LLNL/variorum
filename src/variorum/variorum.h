@@ -57,7 +57,7 @@ int set_gpu_power_ratio(int gpu_power_ratio);
 
 /// @brief Set identical CPU frequencies to all cores within a socket.
 ///
-/// @param [in] core_freq_mhz Desired CPU frequency for each core in MHz.
+/// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
 ///
 /// @return Error code.
 int set_each_core_frequency(int cpu_freq_mhz);

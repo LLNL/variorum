@@ -38,7 +38,7 @@ Variorum Project Resources
 
 https://variorum.readthedocs.io/
 
-**Githib Source Repo**
+**Github Source Repo**
 
 http://github.com/llnl/variorum
 
