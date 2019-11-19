@@ -231,18 +231,11 @@ int variorum_set_func_ptrs()
         return err;
     }
     err = init_msr();
-    if (err)
-    {
-        return err;
-    }
 #endif
 #ifdef VARIORUM_WITH_IBM
     err = set_ibm_func_ptrs();
-    if (err)
-    {
-        return err;
-    }
 #endif
+    return err;
 }
 
 ////setfixedcounters = fixed_ctr0,

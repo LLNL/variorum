@@ -62,6 +62,8 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status, off_t msr_p
             allocate_batch(PERF_CTRL, 2UL * nthreads);
             load_thread_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
             break;
+        default:
+            break;
         }
     }
     if (pd != NULL)

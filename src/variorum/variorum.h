@@ -6,6 +6,8 @@
 #ifndef VARIORUM_H_INCLUDE
 #define VARIORUM_H_INCLUDE
 
+#include <stdio.h>
+
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
 ///
