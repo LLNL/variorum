@@ -66,6 +66,13 @@ enum ibm_arch_e
     POWER9 = 9, // Power9
 };
 
+/// @brief List of NVIDIA family and models.
+/// @todo: we need to find architecture detection info here.
+enum nvidia_arch_e
+{
+    VOLTA = 1, // Volta
+};
+
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -170,6 +177,11 @@ struct platform
     /// @return Error code.
     int (*dump_turbo)(void);
 
+    /// @brief Function pointer to print GPU utilization. 
+    ///
+    /// @return Error code.
+    int (*dump_gpu_utilization)(int long_ver);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/
@@ -179,6 +191,8 @@ struct platform
     uint64_t *amd_arch;
     /// @brief Identifier for IBM architecture.
     uint64_t *ibm_arch;
+    /// @brief Identifier for NVIDIA architecture.
+    uint64_t *nvidia_arch;
     /// @brief Identifier for GPU architecture.
     uint64_t *gpu_arch;
 

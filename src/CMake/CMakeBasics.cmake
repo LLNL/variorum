@@ -38,10 +38,10 @@ if(VARIORUM_WITH_AMD)
 else()
     message(STATUS "Building without support for AMD architectures (VARIORUM_WITH_AMD == OFF)")
 endif()
-if(VARIORUM_WITH_GPU)
-    message(STATUS "Building support for GPU architectures (VARIORUM_WITH_GPU == ON)")
+if(VARIORUM_WITH_NVIDIA)
+    message(STATUS "Building support for Nvidia architectures (VARIORUM_WITH_NVIDIA == ON)")
 else()
-    message(STATUS "Building without support for GPU architectures (VARIORUM_WITH_GPU == OFF)")
+    message(STATUS "Building without support for Nvidia architectures (VARIORUM_WITH_NVIDIA == OFF)")
 endif()
 
 #############
