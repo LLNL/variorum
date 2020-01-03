@@ -14,4 +14,4 @@ updated as releases occur.
 v0.1.0
 ------
 
-Initial release of Variorum.
+11/11/2019: Initial release of Variorum. `Tarball here <https://github.com/LLNL/variorum/archive/v0.1.0.tar.gz>`_.
