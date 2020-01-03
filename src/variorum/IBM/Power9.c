@@ -85,22 +85,47 @@ int p9_get_power_limits(int long_ver)
     gethostname(hostname, 1024);
 
     fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-current", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &pcap_current);
     fclose(fp);
 
     fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-max", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-max", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &pcap_max);
     fclose(fp);
 
     fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-min", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-min", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &pcap_min);
     fclose(fp);
 
     fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_0", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_0", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &psr_1);
     fclose(fp);
 
     fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_8", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_8", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &psr_2);
     fclose(fp);
 
@@ -147,6 +172,11 @@ int p9_set_and_verify_node_power_limit(int pcap_new)
     usleep(100000);
 
     fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
     fscanf(fp, "%d", &pcap_test);
     fclose(fp);
 #ifdef VARIORUM_DEBUG
