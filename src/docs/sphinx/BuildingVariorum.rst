@@ -126,4 +126,34 @@ is provided in `host-configs/boilerplate.cmake`
 Building with Spack
 -------------------
 
-TBD
+To install Variorum with all options (and also build all of its dependencies as
+necessary) run:
+
+.. code:: bash
+
+    spack install variorum
+
+The Variorum spack package provides several `variants <http://spack.readthedocs.io/en/latest/basic_usage.html#specs-dependencies>`_
+that customize the options and dependencies used to build Variorum:
+
+ ================ ======================================== ============================
+  Variant         Description                              Default
+ ================ ======================================== ============================
+  **shared**      Build Variorum as shared library         ON (+shared)
+  **docs**        Build Variorum's Documentation           OFF (~docs)
+  **log**         Enable Variorum's logging infrastructure OFF (~docs)
+  **build_type**  Specify build type                       Release (build_type=Release)
+ ================ ======================================== ============================
+
+Variants are enabled using ``+`` and disabled using ``~``. For example, to
+build Conduit with the minimum set of options (and dependencies) run:
+
+.. code:: bash
+
+    spack install variorum~docs
+
+To build Variorum's tests run:
+
+.. code:: bash
+
+    spack install variorum~docs --run-tests
