@@ -27,6 +27,7 @@ set(BASIC_EXAMPLES
     ex-set-gpu-power-ratio
     ex-set-node-power-limit
     ex-set-socket-power-limits
+    ex-json-get-power
 )
 
 message(STATUS "Adding variorum examples")
