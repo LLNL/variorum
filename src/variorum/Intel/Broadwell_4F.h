@@ -7,6 +7,7 @@
 #define BROADWELL_4F_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Broadwell Family/Model 4FH.
 struct broadwell_4f_offsets
@@ -106,4 +107,5 @@ int fm_06_4f_monitoring(FILE *output);
 
 int fm_06_4f_get_frequencies(void);
 
+int fm_06_4f_json_get_node_power(json_t *get_power_obj);
 #endif

@@ -218,6 +218,7 @@ void variorum_init_func_ptrs()
     g_platform.set_each_core_frequency = NULL;
     g_platform.monitoring = NULL;
     g_platform.print_available_frequencies = NULL;
+    g_platform.json_get_node_power = NULL;
 }
 
 int variorum_set_func_ptrs()

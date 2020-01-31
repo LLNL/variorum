@@ -7,6 +7,7 @@
 #define CONFIG_ARCHIECTURE_H_INCLUDE
 
 #include <stdint.h>
+#include <jansson.h>
 
 #include <variorum_config.h>
 
@@ -186,6 +187,10 @@ struct platform
     ///
     /// @return Error code.
     int (*print_available_frequencies)(void);
+    /// @brief Function pointer to get node power data in JSON.
+    ///
+    /// @return Error code.
+    int (*json_get_node_power)(json_t *get_power_obj);
 
     /******************************/
     /* Platform-Specific Topology */
