@@ -975,9 +975,6 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t ms
         json_object_set_new(get_power_obj, lim1_sec_str, json_real(l1.seconds));
         json_object_set_new(get_power_obj, lim2_watts_str, json_real(l2.watts));
         json_object_set_new(get_power_obj, lim2_sec_str, json_real(l2.seconds));
-        sprintf(sockID, "%d", i); 
-        strcat(cpu_str, sockID);
-        strcat(mem_str, sockID);
     }
 
 }
