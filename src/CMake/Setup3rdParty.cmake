@@ -1,4 +1,5 @@
 include(CMake/thirdparty/SetupHwloc.cmake)
+include(CMake/thirdparty/SetupJansson.cmake)
 
 if(BUILD_DOCS)
     find_package(Doxygen)
