@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -844,6 +845,49 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i], rapl->dram_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
     }
 }
+
+
+void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    int nsockets = 0;
+    struct timeval tv;
+    char hostname[1024];
+    char sockID[4]; 
+    char cpu_str[24] = "power_cpu_socket";
+    char mem_str[24] = "power_mem_socket";
+    int i;
+
+    gethostname(hostname, 1024);
+    variorum_set_topology(&nsockets, NULL, NULL);
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+
+    if (!init)
+    {
+        rapl_storage(&rapl);
+    }
+    gettimeofday(&tv, NULL);
+    
+    uint64_t ts = tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
+//    printf ("\n Timestamp: %d\n", ts); 
+
+    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts)); 
+ 
+    for (i = 0; i < nsockets; i++)
+    {
+        sprintf(sockID, "%d", i); 
+        strcat(cpu_str, sockID);
+        strcat(mem_str, sockID);
+     //   printf("\n socket %d, pkg %lf, dram %lf\n", i, rapl->pkg_watts[i], rapl->dram_watts[i]);
+        json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
+        json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
+    }
+
+}
+
 
 //int dump_rapl_data(FILE *writedest)
 //{

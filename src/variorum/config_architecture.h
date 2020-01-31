@@ -7,6 +7,7 @@
 #define CONFIG_ARCHIECTURE_H_INCLUDE
 
 #include <stdint.h>
+#include <jansson.h>
 
 #include <variorum_config.h>
 
@@ -176,6 +177,11 @@ struct platform
     ///
     /// @return Error code.
     int (*dump_turbo)(void);
+
+    /// @brief Function pointer to get print turbo data.
+    ///
+    /// @return Error code.
+    int (*json_get_node_power)(json_t *get_power_obj);
 
     /******************************/
     /* Platform-Specific Topology */
