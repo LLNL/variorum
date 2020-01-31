@@ -124,7 +124,6 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_monitoring = fm_06_4f_monitoring;
         //g_platform.variorum_set_each_core_frequency = fm_06_4f_set_frequency;
         g_platform.variorum_json_get_node_power = fm_06_4f_json_get_node_power;
-        //g_platform.set_each_core_frequency = fm_06_4f_set_frequency;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)

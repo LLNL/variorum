@@ -770,7 +770,7 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-int json_get_node_power(json_t *get_power_obj)
+int variorum_json_get_node_power(json_t *get_power_obj)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -778,12 +778,12 @@ int json_get_node_power(json_t *get_power_obj)
     {
         return -1;
     }
-    if (g_platform.json_get_node_power == NULL)
+    if (g_platform.variorum_json_get_node_power == NULL)
     {
         variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
-    err = g_platform.json_get_node_power(get_power_obj);
+    err = g_platform.variorum_json_get_node_power(get_power_obj);
     if (err)
     {
         return -1;
