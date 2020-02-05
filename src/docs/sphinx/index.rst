@@ -8,7 +8,7 @@
 Variorum
 ========
 
-An extensible vendor-neutral library for exposing performance montoring and
+An extensible vendor-neutral library for exposing performance monitoring and
 control capabilities of low-level hardware knobs.
 
 Introduction
