@@ -93,16 +93,16 @@ There are four structs:
 4. **occ_sensor_counter**: This is the data if you were using READING_COUNTER. Contains timestamp, latest sample or latest accumulated value.  unit_8 values and no min/max values are reported here.
 
 
-Out of Band Power Capping and GPU Shifting Ratio
--------------------------------------------------
+Inband Power Capping and GPU Shifting Ratio
+-----------------------------------------------
 
 Power caps and GPU power shifting ratio can be set by using OPAL/Skiboot. This
-is an out of band interface.
+is an inband interface through the BMC located on the node.
 
 Node power caps are set by writing to the following file in watts:
 `/sys/firmware/opal/powercap/system-powercap/powercap-current`
 
-Socket level power capping is not available.
+Socket level power capping and memory power capping is not available.
 
 GPU power shifting ratio can be set by setting the following files in
 percentage (i.e., between 0 and 100).

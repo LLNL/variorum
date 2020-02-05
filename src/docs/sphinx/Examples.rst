@@ -17,8 +17,8 @@ Print Thermals
 ^^^^^^^^^^^^^^
 
 The example below gets the thermal temperatures before and after running some
-application. The ``print`` API prints the output in CSV format that is easily
-parsable by some data analysis framework, like `R` or `Python`.
+application. The ``print`` API prints the output in CSV format that can be easily
+parsed by a data analysis framework, such as `R` or `Python`.
 
 .. literalinclude:: ../../examples/ex-print-thermals.c
     :language: c
