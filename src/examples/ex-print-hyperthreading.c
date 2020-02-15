@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_hyperthreading();
+    ret = variorum_print_hyperthreading();
     if (ret != 0)
     {
         printf("Print hyperthreading failed!\n");

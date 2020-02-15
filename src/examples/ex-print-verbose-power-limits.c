@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_verbose_power_limits();
+    ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {
         printf("Print verbose power limits failed!\n");

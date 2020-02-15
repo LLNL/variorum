@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_thermals();
+    ret = variorum_print_thermals();
     if (ret != 0)
     {
         printf("Print thermals failed!\n");

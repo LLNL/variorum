@@ -172,7 +172,7 @@ int main(int argc, char **argv)
         /* Set the cap. */
         //set_rapl_power(watt_cap, watt_cap);
         printf("Setting each package power limit to %dW\n", watt_cap);
-        set_each_socket_power_limit(watt_cap);
+        variorum_set_each_socket_power_limit(watt_cap);
 
         /* Start power measurement thread. */
         pthread_attr_t mattr;

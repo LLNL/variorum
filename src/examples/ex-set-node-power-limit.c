@@ -25,14 +25,14 @@ int main(int argc, char **argv)
         printf("Setting node to %dW.\n", node_pow_lim_watts);
     }
 
-    ret = set_node_power_limit(node_pow_lim_watts);
+    ret = variorum_set_node_power_limit(node_pow_lim_watts);
     if (ret != 0)
     {
         printf("Set node power limit failed!\n");
         return ret;
     }
     printf("\n");
-    ret = print_verbose_power_limits();
+    ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {
         printf("Print power limits failed!\n");

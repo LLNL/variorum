@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    ret = poll_power(stdout);
+    ret = variorum_poll_power(stdout);
     if (ret != 0)
     {
         printf("Poll power failed!\n");
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
-    ret = poll_power(stdout);
+    ret = variorum_poll_power(stdout);
     if (ret != 0)
     {
         printf("Poll power failed!\n");

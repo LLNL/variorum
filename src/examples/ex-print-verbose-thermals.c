@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_verbose_thermals();
+    ret = variorum_print_verbose_thermals();
     if (ret != 0)
     {
         printf("Print verbose thermals failed!\n");

@@ -24,14 +24,14 @@ int main(int argc, char **argv)
         printf("Setting each socket to %dW.\n", pkg_pow_lim_watts);
     }
 
-    ret = set_each_socket_power_limit(pkg_pow_lim_watts);
+    ret = variorum_set_each_socket_power_limit(pkg_pow_lim_watts);
     if (ret != 0)
     {
         printf("Set each socket power limit failed!\n");
         return ret;
     }
     printf("\n");
-    ret = print_verbose_power_limits();
+    ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {
         printf("Print power limits failed!\n");

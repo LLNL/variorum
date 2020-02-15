@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-	ret = enable_turbo();
+	ret = variorum_enable_turbo();
 	if (ret != 0)
     {
 		printf("Enable turbo failed!\n");

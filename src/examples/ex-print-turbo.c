@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-	ret = print_turbo();
+	ret = variorum_print_turbo();
 	if (ret != 0)
     {
 		printf("Print turbo failed!\n");
