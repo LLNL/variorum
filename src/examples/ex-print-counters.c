@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    ret = print_counters();
+    ret = variorum_print_counters();
     if (ret != 0)
     {
         printf("Print counters failed!\n");
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
-    ret = print_counters();
+    ret = variorum_print_counters();
     if (ret != 0)
     {
         printf("Print counters failed!\n");

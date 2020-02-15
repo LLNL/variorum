@@ -10,7 +10,7 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
-int tester(void)
+int variorum_tester(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -26,7 +26,7 @@ int tester(void)
     return err;
 }
 
-int poll_power(FILE *output)
+int variorum_poll_power(FILE *output)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -47,7 +47,7 @@ int poll_power(FILE *output)
     return err;
 }
 
-int monitoring(FILE *output)
+int variorum_monitoring(FILE *output)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -68,7 +68,7 @@ int monitoring(FILE *output)
     return err;
 }
 
-int print_power_limits(void)
+int variorum_print_power_limits(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -94,7 +94,7 @@ int print_power_limits(void)
     return err;
 }
 
-int print_verbose_power_limits(void)
+int variorum_print_verbose_power_limits(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -120,7 +120,7 @@ int print_verbose_power_limits(void)
     return err;
 }
 
-int print_topology(void)
+int variorum_print_topology(void)
 {
     int err = 0;
     int i;
@@ -164,7 +164,7 @@ int print_topology(void)
     return err;
 }
 
-int set_node_power_limit(int node_power_limit)
+int variorum_set_node_power_limit(int node_power_limit)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -191,7 +191,7 @@ int set_node_power_limit(int node_power_limit)
 }
 
 
-int set_and_verify_node_power_limit(int node_power_limit)
+int variorum_set_and_verify_node_power_limit(int node_power_limit)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -218,7 +218,7 @@ int set_and_verify_node_power_limit(int node_power_limit)
 }
 
 
-int set_gpu_power_ratio(int gpu_power_ratio)
+int variorum_set_gpu_power_ratio(int gpu_power_ratio)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -244,7 +244,7 @@ int set_gpu_power_ratio(int gpu_power_ratio)
     return err;
 }
 
-int set_each_socket_power_limit(int socket_power_limit)
+int variorum_set_each_socket_power_limit(int socket_power_limit)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -270,7 +270,7 @@ int set_each_socket_power_limit(int socket_power_limit)
     return err;
 }
 
-int set_each_core_frequency(int core_freq_mhz)
+int variorum_set_each_core_frequency(int core_freq_mhz)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -296,7 +296,7 @@ int set_each_core_frequency(int core_freq_mhz)
     return err;
 }
 
-int print_features(void)
+int variorum_print_features(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -322,7 +322,7 @@ int print_features(void)
     return err;
 }
 
-int print_thermals(void)
+int variorum_print_thermals(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -348,7 +348,7 @@ int print_thermals(void)
     return err;
 }
 
-int print_verbose_thermals(void)
+int variorum_print_verbose_thermals(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -374,7 +374,7 @@ int print_verbose_thermals(void)
     return err;
 }
 
-int print_counters(void)
+int variorum_print_counters(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -400,7 +400,7 @@ int print_counters(void)
     return err;
 }
 
-int print_verbose_counters(void)
+int variorum_print_verbose_counters(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -426,7 +426,7 @@ int print_verbose_counters(void)
     return err;
 }
 
-int print_clock_speed(void)
+int variorum_print_clock_speed(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -452,7 +452,7 @@ int print_clock_speed(void)
     return err;
 }
 
-int print_verbose_clock_speed(void)
+int variorum_print_verbose_clock_speed(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -478,7 +478,7 @@ int print_verbose_clock_speed(void)
     return err;
 }
 
-int print_power(void)
+int variorum_print_power(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -504,7 +504,7 @@ int print_power(void)
     return err;
 }
 
-int print_verbose_power(void)
+int variorum_print_verbose_power(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -530,7 +530,7 @@ int print_verbose_power(void)
     return err;
 }
 
-int print_hyperthreading(void)
+int variorum_print_hyperthreading(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -556,7 +556,7 @@ int print_hyperthreading(void)
     return err;
 }
 
-int print_turbo(void)
+int variorum_print_turbo(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -583,7 +583,7 @@ int print_turbo(void)
 
 }
 
-int enable_turbo(void)
+int variorum_enable_turbo(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -609,7 +609,7 @@ int enable_turbo(void)
     return err;
 }
 
-int disable_turbo(void)
+int variorum_disable_turbo(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);

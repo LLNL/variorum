@@ -26,7 +26,7 @@ void take_measurement(void)
 
     /* RAPL reads. */
     //poll_power(logfile); // PKG/DRAM energy, PKG/DRAM power limit
-    monitoring(logfile); // PKG/DRAM energy, PKG/DRAM power limit, fixed counters, TSC, APERF, MPERF
+    variorum_monitoring(logfile); // PKG/DRAM energy, PKG/DRAM power limit, fixed counters, TSC, APERF, MPERF
 
 #if 0
     total_joules += rapl_data[0] + rapl_data[1];

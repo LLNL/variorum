@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    ret = print_verbose_power();
+    ret = variorum_print_verbose_power();
     if (ret != 0)
     {
         printf("Print verbose power failed!\n");
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
-    ret = print_verbose_power();
+    ret = variorum_print_verbose_power();
     if (ret != 0)
     {
         printf("Print verbose power failed!\n");

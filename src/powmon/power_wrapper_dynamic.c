@@ -55,7 +55,7 @@ void *power_set_measurement(void *arg)
     unsigned long poll_num = 0;
     struct mstimer timer;
     //set_rapl_power(watt_cap, watt_cap);
-    set_each_socket_power_limit(watt_cap);
+    variorum_set_each_socket_power_limit(watt_cap);
     int watts = watt_cap;
     // According to the Intel docs, the counter wraps a most once per second.
     // 500 ms should be short enough to always get good information.
@@ -81,7 +81,7 @@ void *power_set_measurement(void *arg)
             watts += poll_dir;
             //set_rapl_power(watts, watts);
             printf("Setting each package power limit to %dW\n", watts);
-            set_each_socket_power_limit(watts);
+            variorum_set_each_socket_power_limit(watts);
         }
         poll_num++;
         timer_sleep(&timer);
@@ -215,7 +215,7 @@ int main(int argc, char**argv)
         /* Set the cap. */
         //set_rapl_power(watt_cap, watt_cap);
         printf("Setting each package power limit to %dW\n", watt_cap);
-        set_each_socket_power_limit(watt_cap);
+        variorum_set_each_socket_power_limit(watt_cap);
 
         /* Start power measurement thread. */
         pthread_attr_t mattr;

@@ -24,14 +24,14 @@ int main(int argc, char **argv)
         printf("Setting GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
     }
 
-    ret = set_gpu_power_ratio(gpu_power_ratio_pct);
+    ret = variorum_set_gpu_power_ratio(gpu_power_ratio_pct);
     if (ret != 0)
     {
         printf("Set GPU power ratio failed!\n");
         return ret;
     }
     printf("\n");
-    ret = print_verbose_power_limits();
+    ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {
         printf("Print power limits failed!\n");

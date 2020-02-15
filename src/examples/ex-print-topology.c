@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_topology();
+    ret = variorum_print_topology();
     if (ret != 0)
     {
         printf("Print topology failed!\n");

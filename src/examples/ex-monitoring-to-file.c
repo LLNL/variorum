@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     }
     FILE *logfile = fdopen(logfd, "w");
 
-    ret = monitoring(logfile);
+    ret = variorum_monitoring(logfile);
     if (ret != 0)
     {
         printf("Monitoring failed!\n");
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
-    ret = poll_power(logfile);
+    ret = variorum_poll_power(logfile);
     if (ret != 0)
     {
         printf("Monitoring failed!\n");

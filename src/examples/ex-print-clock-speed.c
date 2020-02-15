@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    ret = print_clock_speed();
+    ret = variorum_print_clock_speed();
     if (ret != 0)
     {
         printf("Print clock speed failed!\n");
