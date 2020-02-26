@@ -129,19 +129,8 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const
     /*
      * We have been given watts and seconds and need to translate these into
      * bit values.
-     * If offset is >= 32 (we are setting the 2nd pkg limit), we don't need time
-     * conversion.
      */
     translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-    if (offset >= 32)
-    {
-        seconds_bits = (uint64_t)limit->seconds; // unit is milliseconds
-        //translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD);
-    }
-    else
-    {
-        translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
-    }
     /* There is only 1 translation for watts (so far). */
     translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr);
 #ifdef VARIORUM_DEBUG
