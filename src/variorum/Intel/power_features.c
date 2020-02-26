@@ -712,9 +712,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
         for (i = 0; i < nsockets; i++)
         {
             rapl->pkg_watts[i] = 0.0;
-            rapl->pkg_joules[i] = 0.0;
             rapl->dram_watts[i] = 0.0;
-            rapl->dram_joules[i] = 0.0;
         }
         init = 1;
         rapl->elapsed = 0;
