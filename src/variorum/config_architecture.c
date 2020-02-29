@@ -67,8 +67,6 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
     }
 #endif
 
-    free(g_platform.map_pu_to_core);
-
 #ifdef VARIORUM_WITH_INTEL
     free(g_platform.intel_arch);
 #endif
@@ -119,22 +117,6 @@ int variorum_detect_arch(void)
     return 0;
 }
 
-static void get_children_per_core(hwloc_topology_t topology, hwloc_obj_t obj, int curr_depth, int core_depth, int pu_depth, int log_idx)
-{
-    unsigned i;
-    hwloc_obj_t core_obj;
-
-    core_obj = hwloc_get_obj_by_type(topology, HWLOC_OBJ_CORE, log_idx);
-    if (curr_depth != core_depth)
-    {
-        g_platform.map_pu_to_core[obj->os_index].physical_core_idx = core_obj->logical_index;
-    }
-    for (i = 0; i < obj->arity; i++)
-    {
-        get_children_per_core(topology, obj->children[i], curr_depth + 1, core_depth, pu_depth, log_idx);
-    }
-}
-
 void variorum_set_topology(int *nsockets, int *ncores, int *nthreads)
 {
     if (nsockets != NULL)
@@ -175,28 +157,6 @@ int variorum_get_topology(void)
 
         g_platform.num_cores_per_socket = g_platform.total_cores/g_platform.num_sockets;
         g_platform.num_threads_per_core = g_platform.total_threads/g_platform.total_cores;
-        g_platform.map_pu_to_core = (struct map *) malloc(g_platform.total_threads * sizeof(struct map));
-
-        for (i = 0; i < g_platform.total_cores; i++)
-        {
-            obj = hwloc_get_obj_by_type(topology, HWLOC_OBJ_CORE, i);
-            get_children_per_core(topology, obj, obj->depth, core_depth, pu_depth, i);
-        }
-
-//        printf("confirm map contents\n");
-//        for (i = 0; i < g_platform.total_threads; i++)
-//        {
-//            printf("idx %d = %d\n", i, g_platform.map_pu_to_core[i].physical_core_idx);
-//        }
-
-//        set = hwloc_topology_get_allowed_cpuset(topology);
-//        hwloc_bitmap_foreach_begin(i, set)
-//        {
-//            obj = hwloc_get_pu_obj_by_os_index(topology, i);
-//            printf("RRR i=%u logical_index=%u depth=%u sibling_rank=%u os_index=%u arity=%u\n",
-//                   i, obj->logical_index, obj->depth, obj->sibling_rank, obj->os_index, obj->arity);
-//        }
-//        hwloc_bitmap_foreach_end();
 
         hwloc_topology_destroy(topology);
     }

@@ -66,13 +66,6 @@ enum ibm_arch_e
     POWER9 = 9, // Power9
 };
 
-/// @brief Mapping topology information.
-struct map
-{
-    /// @brief Unique ID of each physical core.
-    int physical_core_idx;
-};
-
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -201,8 +194,6 @@ struct platform
     int num_cores_per_socket;
     /// @brief Number of logical threads per core.
     int num_threads_per_core;
-    /// @brief Map logical thread ID to physical core ID.
-    struct map *map_pu_to_core;
 };
 
 #if 0 /* To implement later */
