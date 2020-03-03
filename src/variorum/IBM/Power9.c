@@ -129,8 +129,8 @@ int p9_get_power_limits(int long_ver)
     fscanf(fp, "%d", &psr_2);
     fclose(fp);
 
-    fprintf(stdout, "_POWERCAP | CurrentWatts | MaxWatts | MinWatts | CPU_to_GPU_0 PSR | CPU_to_GPU_8 PSR\n");
-    fprintf(stdout, "_POWERCAP | %d | %d | %d | %d | %d \n", pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+    fprintf(stdout, "_POWERCAP CurrentWatts MaxWatts MinWatts CPU_to_GPU_0 PSR CPU_to_GPU_8 PSR\n");
+    fprintf(stdout, "_POWERCAP %d %d %d %d %d \n", pcap_current, pcap_max, pcap_min, psr_1, psr_2);
     return 0;
 }
 

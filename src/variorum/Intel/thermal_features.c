@@ -308,7 +308,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat, off_t msr_pkg
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
 
-    fprintf(writedest, "_THERMALS | socket | phys_core | log_thread | TCC_celsius | pkg_reading_celsius | pkg_actual_celsius | thread_reading_celsius | thread_actual_celsius | thread_digital_reading_valid\n");
+    fprintf(writedest, "_THERMALS socket phys_core log_thread TCC_celsius pkg_reading_celsius pkg_actual_celsius thread_reading_celsius thread_actual_celsius thread_digital_reading_valid\n");
     for (i = 0; i < nsockets; i++)
     {
         for (j = 0; j < ncores/nsockets; j++)
@@ -316,12 +316,12 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat, off_t msr_pkg
             for (k = 0; k < nthreads/ncores; k++)
             {
                 idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                fprintf(writedest, "_THERMALS | %d | %d | %d | ", i, j, idx);
-                fprintf(writedest, "%d | ", (int)t_target[i].temp_target);
-                fprintf(writedest, "%d | ", pkg_stat[i].readout);
-                fprintf(writedest, "%d | ", (int)t_target[i].temp_target-pkg_stat[i].readout);
-                fprintf(writedest, "%d | ", t_stat[idx].readout);
-                fprintf(writedest, "%d | ", (int)t_target[i].temp_target-t_stat[idx].readout);
+                fprintf(writedest, "_THERMALS %d %d %d ", i, j, idx);
+                fprintf(writedest, "%d ", (int)t_target[i].temp_target);
+                fprintf(writedest, "%d ", pkg_stat[i].readout);
+                fprintf(writedest, "%d ", (int)t_target[i].temp_target-pkg_stat[i].readout);
+                fprintf(writedest, "%d ", t_stat[idx].readout);
+                fprintf(writedest, "%d ", (int)t_target[i].temp_target-t_stat[idx].readout);
                 fprintf(writedest, "%d\n", t_stat[idx].readout_valid);
             }
         }
