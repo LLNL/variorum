@@ -53,18 +53,18 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "    powmon - Package and DRAM power monitor\n"
+                        "    powmon - Sampler for domain power usage and limits\n"
                         "\n"
                         "SYNOPSIS\n"
                         "    powmon [--help | -h] [OPTIONS]... -a \"executable [<exec-args>]\"\n"
                         "\n"
                         "OVERVIEW\n"
-                        "    Powmon is a utility for sampling and printing the power usage (for package\n"
-                        "    and DRAM) and power limits per socket in a node\n"
+                        "    Powmon is a utility for sampling and printing domain power usage\n"
+                        "    and power limits.\n"
                         "\n"
                         "REQUIRED\n"
                         "    -a \"executable [<exec-args>]\"\n"
-                        "        Application and arguments surrounded by quotes\n"
+                        "        Application and arguments surrounded by quotes.\n"
                         "\n"
                         "OPTIONS\n"
                         "    --help | -h\n"
@@ -76,8 +76,8 @@ int main(int argc, char **argv)
                         "    -p path_to_trace\n"
                         "        Path to store application trace.\n"
                         "\n"
-                        "    -i ms_intervalon"
-                        "        Sampling interval in milliseconds.\n"
+                        "    -i ms_interval"
+                        "        Sampling interval in milliseconds (default = 50ms).\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
@@ -271,7 +271,6 @@ int main(int argc, char **argv)
         }
 
         char *msg;
-        //asprintf(&msg, "host: %s\npid: %d\ntotal_joules: %lf\nallocated: %lf\nmax_watts: %lf\nmin_watts: %lf\nruntime ms: %lu\nstart: %lu\nend: %lu\n", hostname, app_pid, total_joules, limit_joules, max_watts, min_watts, end-start, start, end);
         asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n", hostname, app_pid, end-start, start, end);
 
         fprintf(summaryfile, "%s", msg);
