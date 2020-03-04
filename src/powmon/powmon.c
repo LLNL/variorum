@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "    powmon - Intel Package and DRAM power monitor\n"
+                        "    powmon - Package and DRAM power monitor\n"
                         "\n"
                         "SYNOPSIS\n"
                         "    powmon [--help | -h] [OPTIONS]... -a \"executable [<exec-args>]\"\n"

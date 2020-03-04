@@ -295,6 +295,7 @@ int p9_monitoring(FILE *output)
     int iter = 0;
     int nsockets;
     int long_ver = 0;
+    static int count = 0;
 
     variorum_set_topology(&nsockets, NULL, NULL);
 
@@ -334,6 +335,12 @@ int p9_monitoring(FILE *output)
             return -1;
         }
 
+        if (count < nsockets)
+        {
+            print_all_sensors_header(iter, output, buf);
+            count++;
+        }
+
         print_all_sensors(iter, output, buf);
         free(buf);
     }
@@ -341,7 +348,7 @@ int p9_monitoring(FILE *output)
     return 0;
 }
 
-int p9_set_socket_power_limit (int pcap_new)
+int p9_set_socket_power_limit(int pcap_new)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
