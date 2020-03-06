@@ -1,0 +1,17 @@
+stages:
+  - build
+
+build:
+ tags:
+   - shell
+   - quartz
+ stage: build
+ script:
+   - echo -e "PWD:" ${PWD}
+   - export HOST_CONFIG=`ls ./host-configs/quartz-*.cmake
+   - mkdir build && mkdir install
+   - cd build
+   - cmake -C ${HOST_CONFIG} -DCMAKE_INSTALL_PREFIX=${PWD}/../install ../src
+   - make VERBOSE=1
+   - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
