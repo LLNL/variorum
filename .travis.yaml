@@ -1,0 +1,89 @@
+sudo: false
+
+language: c
+
+compiler:
+  - gcc
+
+env:
+  global:
+  - COMPILER_CC=gcc
+  - COMPILER_CXX=g++
+  include:
+  - os: linux
+    dist: trusty
+#  - os: linux
+#    dist: xenial
+  matrix:
+  # we want to test both static and shared, w/ and w/o docs.
+  - BUILD_SHARED_LIBS=ON
+    BUILD_DOCS=OFF
+    VARIORUM_LOG=OFF
+#  - BUILD_SHARED_LIBS=ON
+#    BUILD_DOCS=ON
+#    VARIORUM_LOG=ON
+#  - BUILD_SHARED_LIBS=OFF
+#    BUILD_DOCS=OFF
+#    VARIORUM_LOG=ON
+#  - BUILD_SHARED_LIBS=ON
+#    BUILD_DOCS=OFF
+#    VARIORUM_LOG=OFF
+
+before_script:
+  - date
+
+after_script:
+  - date
+
+install:
+  # none
+
+script:
+  - which g++
+  - g++ --version
+  - export CC=${COMPILER_CC}
+  - export CXX=${COMPILER_CXX}
+  - ${CC} --version
+  - cd $TRAVIS_BUILD_DIR
+  - echo -e "TRAVIS_BUILD_DIR:" ${TRAVIS_BUILD_DIR}
+  - echo -e "PWD:" ${PWD}
+  # install local spack
+  - git clone https://github.com/spack/spack.git
+  - export PATH=${PWD}/spack/bin:${PATH}
+  - spack install py-sphinx
+  - spack install hwloc
+  # create out-of-source build dir
+  - mkdir build-travis
+  - cd build-travis
+  - echo -e "PWD:" ${PWD}
+  # cmake options
+  # build type
+  - CMAKE_OPTS="-DCMAKE_BUILD_TYPE=Debug"
+  # shared or static libs
+  - CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
+  # sphinx path
+  - if [ $BUILD_DOCS = 'ON' ]; then CMAKE_OPTS="${CMAKE_OPTS} -DSPHINX_EXECUTABLE=${TRAVIS_BUILD_DIR}/spack/opt/spack/*/*/py-sphinx-*"; fi
+  # variorum logging
+  - if [ $VARIORUM_LOG = 'ON' ]; then CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG"; fi
+  # hwloc path
+  - CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${TRAVIS_BUILD_DIR}/spack/opt/spack/*/*/hwloc*"
+  # install path
+  - CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install-travis"
+  # confirm CMake config options
+  - echo -e "CMake Options:" ${CMAKE_OPTS}
+  # make sure cmake is in our path
+  - echo -e "PATH:" ${PATH}
+  - which cmake
+  - cmake --version
+  # configure
+  - cmake ${CMAKE_OPTS} ../src
+  # build, test, and install
+  - make VERBOSE=1
+  - env CTEST_OUTPUT_ON_FAILURE=1 make test
+
+notifications:
+  email:
+    recipients:
+      - brink2@llnl.gov
+    on_success: always
+    on_failure: always
