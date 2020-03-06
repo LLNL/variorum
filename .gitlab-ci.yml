@@ -1,0 +1,38 @@
+stages:
+  - build
+
+build-quartz:
+ tags:
+   - batch
+   - quartz
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
+   - cd build-gitlab-quartz
+   - export HOST_CONFIG=`ls ../host-configs/quartz-*.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz ../src
+   - make VERBOSE=1
+   - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+
+build-lassen:
+ tags:
+   - batch
+   - lassen
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-lassen && mkdir install-gitlab-lassen
+   - cd build-gitlab-lassen
+   - export HOST_CONFIG=`ls ../host-configs/lassen-*.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen ../src
+   - make VERBOSE=1
