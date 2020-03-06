@@ -10,7 +10,7 @@ if(HWLOC_DIR)
 
     message(STATUS "FOUND hwloc at ${HWLOC_DIR}")
     message(STATUS " [*] HWLOC_INCLUDE_DIRS = ${HWLOC_INCLUDE_DIRS}")
-    message(STATUS " [*] WLOC_LIBRARY = ${HWLOC_LIBRARY}")
+    message(STATUS " [*] HWLOC_LIBRARY = ${HWLOC_LIBRARY}")
 # If HWLOC_DIR not specified, then try to automatically find the HWLOC header
 # and library
 elseif(NOT HWLOC_DIR)

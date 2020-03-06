@@ -1,6 +1,6 @@
 # VARIORUM
 
-[![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=master)](https://travis-ci.com/LLNL/variorum)
+[![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=dev)](https://travis-ci.com/LLNL/variorum)
 [![Read the Docs](https://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
 
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
