@@ -11,7 +11,7 @@ version 0.1.0
 
 Last Update
 -----------
-6 November 2019
+13 March 2020
 
 
 Webpages
@@ -66,7 +66,6 @@ installs. These can be used as follows:
     $ make
 ```
 
-
 ## Platform Support
 Currently supported architectures are Intel Xeons (server processors). The
 library technically supports all Intel processors based on these architectures,
@@ -87,6 +86,11 @@ or `/proc/cpuinfo` (note that it will not be in hexadecimal).
 Supported IBM Architectures:
 
     Power9
+
+Supported Nvidia Architectures:
+
+    Volta
+
 
 ## Testing
 
