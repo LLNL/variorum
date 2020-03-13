@@ -112,7 +112,7 @@ int main(int argc, char **argv)
                 break;
             case 'i':
                 sample_interval = atol(optarg);
-                if (sample_interval > FASTEST_SAMPLE_INTERVAL_MS)
+                if (sample_interval < FASTEST_SAMPLE_INTERVAL_MS)
                 {
                     printf("Warning: Specified sample interval (-i) is faster than default. Setting to default sampling interval of %d milliseconds.\n", FASTEST_SAMPLE_INTERVAL_MS);
                     sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
