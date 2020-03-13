@@ -128,7 +128,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output, const void *buf
         gettimeofday(&start, NULL);
         if (long_ver == 0)
         {
-            fprintf(output, "_IBMPOWER | Host | Socket | PWRSYS | PWRPROC | PWRMEM | PWRGPU | Timestamp\n");
+            fprintf(output, "_IBMPOWER Host Socket PWRSYS PWRPROC PWRMEM PWRGPU Timestamp\n");
         }
     }
 
@@ -180,7 +180,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output, const void *buf
 
     if (long_ver == 0)
     {
-        fprintf(output, "_IBMPOWER | %s | %d | %lu | %lu | %lu | %lu | %lf\n",
+        fprintf(output, "_IBMPOWER %s %d %lu %lu %lu %lu %lf\n",
                 hostname, chipid, pwrsys, pwrproc, pwrmem, pwrgpu,
                 now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
     }
@@ -204,7 +204,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-    fprintf(output, "_IBMPOWER%d | Timestamp_s | Hostname | Socket", chipid);
+    fprintf(output, "_IBMPOWER%d Timestamp_s Hostname Socket", chipid);
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
@@ -212,11 +212,11 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
 
         if (be16toh(md[i].type) == OCC_SENSOR_TYPE_POWER)
         {
-            fprintf(output, " | %s_Scale_%s | %s_Energy_J", md[i].name, md[i].units, md[i].name);
+            fprintf(output, " %s_Scale_%s %s_Energy_J", md[i].name, md[i].units, md[i].name);
         }
         else
         {
-            fprintf(output, " | %s_%s", md[i].name, md[i].units);
+            fprintf(output, " %s_%s", md[i].name, md[i].units);
         }
     }
     fprintf(output,"\n"); // Add end of line.
@@ -251,7 +251,7 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-    fprintf(output, "_IBMPOWER%d | %lf | %s | %d", chipid, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0, hostname, chipid);
+    fprintf(output, "_IBMPOWER%d %lf %s %d", chipid, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0, hostname, chipid);
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
@@ -280,11 +280,11 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
 
             // Note that we're not capturing timestamp here, the common timestamp printed
             // is the one from the beginning of the loop.
-            fprintf(output, " | %lu | %lu", (uint64_t)(sample * TO_FP(scale)), (uint64_t)(energy / TO_FP(freq)));
+            fprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)), (uint64_t)(energy / TO_FP(freq)));
         }
         else
         {
-            fprintf(output, " | %lu", (uint64_t)(sample * TO_FP(scale)));
+            fprintf(output, " %lu", (uint64_t)(sample * TO_FP(scale)));
         }
     }
     fprintf(output,"\n"); // Add end of line.

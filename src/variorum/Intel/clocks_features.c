@@ -112,11 +112,11 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
         perf_storage(&pd, msr_perf_status);
         if (control_domains == SOCKET)
         {
-            fprintf(writedest, "_CLOCKS_DATA | hostname | socket | aperf | mperf | tsc | curr_freq_mhz | avg_freq_mhz\n");
+            fprintf(writedest, "_CLOCKS_DATA hostname socket aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
         }
         else if (control_domains == CORE)
         {
-            fprintf(writedest, "_CLOCKS_DATA | hostname | socket | core | thread_phy | thread_log | aperf | mperf | tsc | curr_freq_mhz | avg_freq_mhz\n");
+            fprintf(writedest, "_CLOCKS_DATA hostname socket core thread_phy thread_log aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
         }
         init = 1;
     }
@@ -133,7 +133,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
                 for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
                 {
                     idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA | %s | %d | %lu | %lu | %lu | %lu | %f\n",
+                    fprintf(writedest, "_CLOCKS_DATA %s %d %lu %lu %lu %lu %f\n",
                             hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
                 }
             }
@@ -147,7 +147,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
                 for (k = 0; k < nthreads/ncores; k++)
                 {
                     idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA | %s | %d | %d | %d | %d | %lu | %lu | %lu | %lu | %f\n",
+                    fprintf(writedest, "_CLOCKS_DATA %s %d %d %d %d %lu %lu %lu %lu %f\n",
                             hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
                 }
             }

@@ -376,10 +376,10 @@ void dump_rapl_power_unit(FILE *writedest, off_t msr)
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
     get_rapl_power_unit(ru, msr);
 
-    fprintf(writedest, "_RAPL_POWER_UNITS | Offset | Host | Socket | Bits | WattsUnit | JoulesUnit | SecondsUnit\n");
+    fprintf(writedest, "_RAPL_POWER_UNITS Offset Host Socket Bits WattsUnit JoulesUnit SecondsUnit\n");
     for (socket = 0; socket < nsockets; socket++)
     {
-        fprintf(writedest, "_RAPL_POWER_UNITS | 0x%lx | %s | %d | 0x%lx | %f | %f | %f\n", msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts, 1/ru[socket].joules, 1/ru[socket].seconds);
+        fprintf(writedest, "_RAPL_POWER_UNITS 0x%lx %s %d 0x%lx %f %f %f\n", msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts, 1/ru[socket].joules, 1/ru[socket].seconds);
     }
     free(ru);
 }
@@ -415,12 +415,12 @@ void dump_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!init_dump_package_power_info)
     {
         init_dump_package_power_info = 1;
-        fprintf(writedest, "_PACKAGE_POWER_INFO | Offset | Host | Socket | Bits | MaxPower | MinPower | MaxTimeWindow | ThermPower\n");
+        fprintf(writedest, "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower MinPower MaxTimeWindow ThermPower\n");
     }
 
     if (!get_rapl_power_info(socket, &info, msr))
     {
-        fprintf(writedest, "_PACKAGE_POWER_INFO | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n", msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+        fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n", msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
 }
 
@@ -450,12 +450,12 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_
     if (!init_dump_package_power_limit)
     {
         init_dump_package_power_limit = 1;
-        fprintf(writedest, "_PACKAGE_POWER_LIMITS | Offset | Host | Socket | PowerLimBits | Watts1 | Seconds1 | Watts2 | Seconds2\n");
+        fprintf(writedest, "_PACKAGE_POWER_LIMITS Offset Host Socket PowerLimBits Watts1 Seconds1 Watts2 Seconds2\n");
     }
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PACKAGE_POWER_LIMITS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
+        fprintf(writedest, "_PACKAGE_POWER_LIMITS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
     }
 }
 
@@ -472,12 +472,12 @@ void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rap
     if (!init_dump_dram_power_limit)
     {
         init_dump_dram_power_limit = 1;
-        fprintf(writedest, "_DRAM_POWER_LIMIT | Offset | Host | Socket | PowerLimBits | Watts | Seconds\n");
+        fprintf(writedest, "_DRAM_POWER_LIMIT Offset Host Socket PowerLimBits Watts Seconds\n");
     }
 
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_DRAM_POWER_LIMIT | 0x%lx | %s | %d | 0x%lx | %lf | %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+        fprintf(writedest, "_DRAM_POWER_LIMIT 0x%lx %s %d 0x%lx %lf %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
     }
 }
 
@@ -810,24 +810,24 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
     if (!init)
     {
         gettimeofday(&start, NULL);
-        fprintf(writedest, "_PACKAGE_ENERGY_STATUS | Offset | Host | Socket | Bits | Joules | Watts | Elapsed | Timestamp\n");
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_PACKAGE_ENERGY_STATUS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n",
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i], rapl->pkg_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
     }
 
     if (!init)
     {
-        fprintf(writedest, "_DRAM_ENERGY_STATUS | Offset | Host | Socket | Bits | Joules | Watts | Elapsed | Timestamp\n");
+        fprintf(writedest, "_DRAM_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_DRAM_ENERGY_STATUS | 0x%lx | %s | %d | 0x%lx | %lf | %lf | %lf | %lf\n",
+        fprintf(writedest, "_DRAM_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i], rapl->dram_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
     }
 }
@@ -996,10 +996,10 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
 
         rapl_storage(&rapl);
 
-        fprintf(writedest, "_POWMON | time");
+        fprintf(writedest, "_POWMON time");
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest, " | pkg%d_joules | pkg%d_lim1watts | pkg%d_lim2watts | dram%d_joules | dram%d_limwatts", i, i, i, i, i);
+            fprintf(writedest, " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts", i, i, i, i, i);
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
             rlim_idx += 3;
@@ -1020,10 +1020,10 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
     }
 
     rlim_idx = 0;
-    fprintf(writedest, "_POWMON | %ld", now_ms());
+    fprintf(writedest, "_POWMON %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, " | %lf | %lf | %lf | %lf | %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
+        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
         rlim_idx += 3;
     }
     fprintf(writedest, "\n");

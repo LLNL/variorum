@@ -78,10 +78,10 @@ void dump_power_data(FILE *writedest, int verbose)
             {
                 if (!init_output)
                 {
-                    fprintf(writedest, "_GPU_POWER_USAGE | Host | Socket | Device | Power\n");
+                    fprintf(writedest, "_GPU_POWER_USAGE Host Socket Device Power\n");
                     init_output = 1;
                 }
-                fprintf(writedest, "_GPU_POWER_USAGE | %s | %d | %d | %lf\n",
+                fprintf(writedest, "_GPU_POWER_USAGE %s %d %d %lf\n",
                         hostname, device_index, d, value);
             }
         }
@@ -116,10 +116,10 @@ void dump_thermal_data(FILE *writedest, int verbose)
             {
                 if (!init_output)
                 {
-                    fprintf(writedest, "_GPU_TEMPERATURE | Host | Socket | Device | Temperature\n");
+                    fprintf(writedest, "_GPU_TEMPERATURE Host Socket Device Temperature\n");
                     init_output = 1;
                 }
-                fprintf(writedest, "_GPU_TEMPERATURE | %s | %d | %d | %ld\n",
+                fprintf(writedest, "_GPU_TEMPERATURE %s %d %d %ld\n",
                         hostname, device_index, d, gpu_temp);
             }
         }
@@ -158,10 +158,10 @@ void dump_power_limits(FILE *writedest, int verbose)
             {
                 if (!init_output)
                 {
-                    fprintf(writedest, "_GPU_POWER_LIMIT | Host | Socket | Device | PowerLimit\n");
+                    fprintf(writedest, "_GPU_POWER_LIMIT Host Socket Device PowerLimit\n");
                     init_output = 1;
                 }
-                fprintf(writedest, "_GPU_POWER_LIMIT | %s | %d | %d | %0.3lf\n",
+                fprintf(writedest, "_GPU_POWER_LIMIT %s %d %d %0.3lf\n",
                         hostname, device_index, d, value);
             }
         }
@@ -197,10 +197,10 @@ void dump_clocks_data(FILE *writedest, int verbose)
             {
                 if (!init_output)
                 {
-                    fprintf(writedest, "_GPU_CLOCKS | Host | Socket | Device | Clock\n");
+                    fprintf(writedest, "_GPU_CLOCKS Host Socket Device Clock\n");
                     init_output = 1;
                 }
-                fprintf(writedest, "_GPU_CLOCKS | %s | %d | %d | %d\n",
+                fprintf(writedest, "_GPU_CLOCKS %s %d %d %d\n",
                         hostname, device_index, d, gpu_clock);
             }
         }
@@ -235,10 +235,10 @@ void dump_gpu_utilization(FILE *writedest, int verbose)
             {
                 if (!init_output)
                 {
-                    fprintf(writedest, "_GPU_UTILIZATION | Host | Socket | Device | SMUtil | MemUtil\n");
+                    fprintf(writedest, "_GPU_UTILIZATION Host Socket Device SMUtil MemUtil\n");
                     init_output = 1;
                 }
-                fprintf(writedest, "_GPU_UTILIZATION | %s | %d | %d | %d | %d\n",
+                fprintf(writedest, "_GPU_UTILIZATION %s %d %d %d %d\n",
                         hostname, device_index, d, util.gpu, util.memory);
             }
         }
