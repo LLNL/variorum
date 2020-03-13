@@ -1,30 +1,30 @@
-LIBVARIORUM EXAMPLES
-====================
+VARIORUM EXAMPLES
+=================
 The examples directory contains some simple programs highlighting some of
-Libvariorum's features and capabilities. We categorize the existing examples
+Variorum's features and capabilities. We categorize the existing examples
 into three categories:
 1. Query functions: Query if feature is enabled or disabled.
-2. Set functions: Provide control of a particular hardware-level feature 
-3. Dump functions: Show current value of a particular hardware-level feature in
-a column-delimited format
-4. Print functions: Show current value of a particular hardware-level feature
-in a verbose (long) format
+2. Set functions: Provide control of a particular hardware-level feature
+3. Print functions: Show current value of a particular hardware-level feature in
+   a column-delimited format
+4. Print verbose functions: Show current value of a particular hardware-level feature
+   in long format
 
 QUERY FUNCTIONS
 ===============
 
-ex-dump-hyperthreading
+ex-print-hyperthreading
 ----------------------
 Query if architecture has hyperthreading enabled. Return the number of threads
 per core.
 
-    $ ./ex-dump-hyperthreading
+    $ ./ex-print-hyperthreading
 
-ex-dump-turbo
+ex-print-turbo
 -------------
 Query if architecture has TurboBoost (or equivalent) enabled.
 
-    $ ./ex-dump-turbo
+    $ ./ex-print-turbo
 
 ex-print-topology
 -----------------
@@ -53,10 +53,10 @@ parameter. If no power cap is specified, then use a default power cap of 100W.
     $ ./ex-set-power-limits <pkg_power_limit>
 
 
-DUMP FUNCTIONS
-==============
+PRINT FUNCTIONS
+===============
 
-ex-dump-clock-speed
+ex-print-clock-speed
 -------------------
 Show current clock frequency (reading IA32_PERF_STATUS on Intel platforms) and
 average clock frequency (dividing IA32_APERF by IA32_MPERF on Intel platforms)
@@ -64,32 +64,32 @@ in column format. Search for tag `_CLOCKS_DATA` to filter out non-column
 formatted information. The granularity of the reported clock frequency will
 vary based on the architecture.
 
-    $ ./ex-dump-clock-speed | grep _CLOCKS_DATA
+    $ ./ex-print-clock-speed | grep _CLOCKS_DATA
 
-ex-dump-counters
+ex-print-counters
 ----------------
 Show fixed counters, performance monitoring counters, and uncore counters in
 column format.  Search for tag `_FIXED_COUNTERS`,
 `_PERFORMANCE_MONITORING_COUNTERS`, and `_UNCORE_COUNTERS` to filter out
 non-column formatted information for each particular set of counters.
 
-    $ ./ex-dump-counters | grep _FIXED_COUNTERS
-    $ ./ex-dump-counters | grep _PERFORMANCE_MONITORING_COUNTERS
-    $ ./ex-dump-counters | grep _UNCORE_COUNTERS
+    $ ./ex-print-counters | grep _FIXED_COUNTERS
+    $ ./ex-print-counters | grep _PERFORMANCE_MONITORING_COUNTERS
+    $ ./ex-print-counters | grep _UNCORE_COUNTERS
 
-ex-dump-power-limits
+ex-print-power-limits
 --------------------
 Show the current power limits for the known domains (e.g., package, DRAM), as
 well as the units fused into the hardware. Search for tag
 `_PACKAGE_POWER_LIMITS`, `_DRAM_POWER_LIMIT`, `_PACKAGE_POWER_INFO`, and
 `_RAPL_POWER_UNITS` to filter out non-column formatted information.
 
-    $ ./ex-dump-power-limits | grep _PACKAGE_POWER_LIMITS
-    $ ./ex-dump-power-limits | grep _DRAM_POWER_LIMITS
-    $ ./ex-dump-power-limits | grep _PACKAGE_POWER_INFO
-    $ ./ex-dump-power-limits | grep _RAPL_POWER_UNITS
-    
-ex-dump-power
+    $ ./ex-print-power-limits | grep _PACKAGE_POWER_LIMITS
+    $ ./ex-print-power-limits | grep _DRAM_POWER_LIMITS
+    $ ./ex-print-power-limits | grep _PACKAGE_POWER_INFO
+    $ ./ex-print-power-limits | grep _RAPL_POWER_UNITS
+
+ex-print-power
 -------------
 Show current energy (raw) and power (derived over two samples) usage for the
 known domains (e.g., package, DRAM). Search for tag `_PACKAGE_ENERGY_STATUS`
@@ -97,53 +97,53 @@ and `_DRAM_ENERGY_STATUS` to filter out non-column formatted information. The
 first sample will show that 0 Watts were used, since the energy sample is taken
 at time t_0.
 
-    $ ./ex-dump-power | grep _PACKAGE_ENERGY_STATUS
-    $ ./ex-dump-power | grep _DRAM_ENERGY_STATUS
+    $ ./ex-print-power | grep _PACKAGE_ENERGY_STATUS
+    $ ./ex-print-power | grep _DRAM_ENERGY_STATUS
 
-ex-dump-thermals
+ex-print-thermals
 ----------------
 Show current temperature information. Search for tag `_THERMALS` to filter out
 non-column delimited information.
 
-    $ ./ex-dump-thermals | grep _THERMALS
+    $ ./ex-print-thermals | grep _THERMALS
 
 
-PRINT FUNCTIONS
-===============
+PRINT VERBOSE FUNCTIONS
+=======================
 
-ex-print-clock-speed
+ex-print-verbose-clock-speed
 --------------------
 Show current clock frequency (reading IA32_PERF_STATUS on Intel platforms) and
 average clock frequency (dividing IA32_APERF by IA32_MPERF on Intel platforms)
 in a verbose format (not meant for parsing). The granularity of the reported
 clock frequency will vary based on the architecture.
 
-    $ ./ex-print-clock-speed
+    $ ./ex-print-verbose-clock-speed
 
-ex-print-counters
+ex-print-verbose-counters
 -----------------
 Show fixed counters, performance monitoring counters, and uncore counters in
-a verbose format (not meant for parsing). 
+a verbose format (not meant for parsing).
 
-    $ ./ex-print-counters
+    $ ./ex-print-verbose-counters
 
-ex-print-power-limits
+ex-print-verbose-power-limits
 ---------------------
 Show the current power limits for the known domains (e.g., package, DRAM), as
 well as the units fused into the hardware.
 
-    $ ./ex-print-power-limits
+    $ ./ex-print-verbose-power-limits
 
-ex-print-power
+ex-print-verbose-power
 --------------
 Show current energy (raw) and power (derived over two samples) usage for the
 known domains (e.g., package, DRAM). The first sample will show that 0 Watts
 were used, since the energy sample is taken at time t_0.
 
-    $ ./ex-print-power
+    $ ./ex-print-verbose-power
 
-ex-print-thermals
+ex-print-verbose-thermals
 -----------------
 Show current temperature information.
 
-    $ ./ex-print-thermals
+    $ ./ex-print-verbose-thermals
