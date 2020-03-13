@@ -40,6 +40,14 @@ if(VARIORUM_WITH_IBM)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/IBM)
 endif()
 
+if(VARIORUM_WITH_NVIDIA)
+    add_subdirectory(Nvidia)
+    list(APPEND variorum_headers Nvidia/config_nvidia.h ${variorum_nvidia_headers})
+    list(APPEND variorum_sources Nvidia/config_nvidia.c)
+    list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_nvidia>)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Nvidia)
+endif()
+
 if(BUILD_SHARED_LIBS)
     add_library(variorum SHARED
                 ${variorum_sources}

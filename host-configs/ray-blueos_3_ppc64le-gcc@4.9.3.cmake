@@ -8,7 +8,7 @@ set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc/gcc-4.9.3/bin/g++" CACHE PATH "")
 set(CMAKE_Fortran_COMPILER  "/usr/tce/packages/gcc/gcc-4.9.3/bin/gfortran" CACHE PATH "")
 
 set(VARIORUM_WITH_AMD OFF CACHE BOOL "")
-set(VARIORUM_WITH_GPU OFF CACHE BOOL "")
+set(VARIORUM_WITH_NVIDIA OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM ON CACHE BOOL "")
 set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
 

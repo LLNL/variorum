@@ -152,6 +152,16 @@ int variorum_print_features(void);
 /// @return Error code.
 int variorum_print_turbo(void);
 
+/// @brief Print verbose GPU streaming multi-processor and memory utilization.
+///
+/// @return Error code.
+int variorum_print_verbose_gpu_utilization(void);
+
+/// @brief Print CSV-formatted GPU streaming multi-processor and memory utilization.
+///
+/// @return Error code.
+int variorum_print_gpu_utilization(void);
+
 /***************************/
 /* Enable/Disable Features */
 /***************************/

@@ -17,11 +17,13 @@ set(BASIC_EXAMPLES
     ex-print-thermals
     ex-print-topology
     ex-print-turbo
+    ex-print-gpu-utilization
     ex-print-verbose-clock-speed
     ex-print-verbose-counters
     ex-print-verbose-power-limits
     ex-print-verbose-power
     ex-print-verbose-thermals
+    ex-print-verbose-gpu-utilization
     ex-set-and-verify-node-power-limit
     ex-set-cpu-clock-speed
     ex-set-gpu-power-ratio
