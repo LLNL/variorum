@@ -1,3 +1,13 @@
+* Fri Mar 13 2020 Stephanie Brink <brink2@llnl.gov> v0.2.0
+- Add support for Nvidia platform -- Volta architecture
+- Add ECP 2020 tutorial presentation
+- Prefix front-facing APIs with variorum_
+- Bug fix for computing power usage values
+- On Intel platforms, translate both power limit time windows (not just TW1)
+- Fix hwloc topology mapping (use logical indices, not OS)
+- Integrate Travis and GitLab for CI
+- Modify IBM powmon formatting into columns
+- Update license year for 2020
 * Wed Nov 11 2019 Stephanie Brink <brink2@llnl.gov> v0.1.0
 - Initial release to <https://github.com/llnl/variorum>!
 - Includes support for Intel platform -- Sandy Bridge, Ivy Bridge, Haswell,
