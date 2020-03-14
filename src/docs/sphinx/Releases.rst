@@ -11,6 +11,11 @@ Variorum is under constant development. So, we recommend using our ``dev``
 branch, which contains our latest features. The ``master`` branch will be
 updated as releases occur.
 
+v0.2.0
+------
+
+03/13/2020: Updated version includes support for Nvidia GPGPUs. `Tarball here <https://github.com/LLNL/variorum/archive/v0.2.0.tar.gz>`_.
+
 v0.1.0
 ------
 
