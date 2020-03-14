@@ -88,6 +88,10 @@ Supported IBM Architectures:
 
     Power9
 
+Supported nVidia Architectures:
+
+    Volta (requires [CUDA Toolkit[(https://developer.nvidia.com/cuda-downloads))
+
 ## Testing
 
 From within the build directory, unit tests can be executed individually.
