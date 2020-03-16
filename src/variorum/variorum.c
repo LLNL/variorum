@@ -152,9 +152,8 @@ int variorum_print_verbose_power_limits(void)
     return err;
 }
 
-int variorum_print_topology(void)
+void variorum_print_topology(void)
 {
-    int err = 0;
     int i;
     int hyperthreading = 0;
     hwloc_topology_t topo;
@@ -162,13 +161,7 @@ int variorum_print_topology(void)
     hwloc_topology_init(&topo);
     hwloc_topology_load(topo);
 
-    err = variorum_get_topology();
-    if (err)
-    {
-        variorum_error_handler("Cannot get topology", err, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return -1;
-    }
+    variorum_get_topology(NULL, NULL, NULL);
 
     fprintf(stdout, "=================\n");
     fprintf(stdout, "Platform Topology\n");
@@ -198,7 +191,7 @@ int variorum_print_topology(void)
 
     hwloc_topology_destroy(topo);
 
-    return err;
+    return;
 }
 
 int variorum_set_node_power_limit(int node_power_limit)

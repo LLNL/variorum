@@ -9,12 +9,6 @@
 
 int main(int argc, char **argv)
 {
-    int ret;
-
-    ret = variorum_print_topology();
-    if (ret != 0)
-    {
-        printf("Print topology failed!\n");
-    }
-    return ret;
+    variorum_print_topology();
+    return 0;
 }
