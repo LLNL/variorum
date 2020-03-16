@@ -31,7 +31,7 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
     if (!init_translate)
     {
         init_translate = 1;
-        variorum_set_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL);
         ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
         get_rapl_power_unit(ru, msr);
     }
@@ -269,7 +269,7 @@ static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
 static void create_rapl_data_batch(struct rapl_data *rapl, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     allocate_batch(RAPL_DATA, 2UL * nsockets);
 
@@ -309,7 +309,7 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
     static int nsockets, ncores, nthreads;
     int i;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     if (!init_get_rapl_power_unit)
     {
         init_get_rapl_power_unit = 1;
@@ -370,7 +370,7 @@ void dump_rapl_power_unit(FILE *writedest, off_t msr)
     char hostname[1024];
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
@@ -391,7 +391,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     char hostname[1024];
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
@@ -444,7 +444,7 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_
     char hostname[1024];
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
     if (!init_dump_package_power_limit)
@@ -466,7 +466,7 @@ void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rap
     char hostname[1024];
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
     if (!init_dump_dram_power_limit)
@@ -626,7 +626,7 @@ int rapl_storage(struct rapl_data **data)
     if (!init)
     {
         init = 1;
-        variorum_set_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL);
 
         rapl = (struct rapl_data *) malloc(nsockets * sizeof(struct rapl_data));
 
@@ -653,7 +653,7 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_e
     static struct rapl_data *rapl = NULL;
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%lu\n", getenv("HOSTNAME"), __FILE__, __LINE__, nsockets);
@@ -693,7 +693,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
 #endif
     if (!init)
     {
-        variorum_set_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL);
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -769,7 +769,7 @@ void print_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_uni
     int i;
 
     gethostname(hostname, 1024);
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
@@ -803,7 +803,7 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
     int i;
 
     gethostname(hostname, 1024);
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
@@ -880,7 +880,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
 
     if (!init)
     {
-        variorum_set_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL);
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -978,7 +978,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
     int i;
     int rlim_idx = 0;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
     get_power(msr_rapl_unit, msr_package_energy_status, msr_dram_energy_status);
