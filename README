@@ -89,7 +89,7 @@ Supported IBM Architectures:
 
 Supported Nvidia Architectures:
 
-    Volta
+    Volta (requires [CUDA Toolkit[(https://developer.nvidia.com/cuda-downloads))
 
 
 ## Testing
