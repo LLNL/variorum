@@ -132,33 +132,33 @@ int main(int argc, char**argv)
     {
         switch(opt)
         {
-            case 'c':
-                highlander_clean();
-                printf("Exiting power_wrapper_dynamic...\n");
-                return 0;
-            case 'a':
-                app = optarg;
-                break;
-            case 'w':
-                watt_cap = atoi(optarg);
-                break;
-            case '?':
-                if (optopt == 'w' || optopt == 'a')
-                {
-                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-                }
-                else if (isprint(optopt))
-                {
-                    fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
-                }
-                else
-                {
-                    fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-                }
-                fprintf(stderr, "%s", usage);
-                return 1;
-            default:
-                return 1;
+        case 'c':
+            highlander_clean();
+            printf("Exiting power_wrapper_dynamic...\n");
+            return 0;
+        case 'a':
+            app = optarg;
+            break;
+        case 'w':
+            watt_cap = atoi(optarg);
+            break;
+        case '?':
+            if (optopt == 'w' || optopt == 'a')
+            {
+                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+            }
+            else if (isprint(optopt))
+            {
+                fprintf(stderr, "\nError: unknown parameter \"-%c\"\n", optopt);
+            }
+            else
+            {
+                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+            }
+            fprintf(stderr, "%s", usage);
+            return 1;
+        default:
+            return 1;
         }
     }
 

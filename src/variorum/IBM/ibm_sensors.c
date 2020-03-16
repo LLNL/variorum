@@ -87,12 +87,12 @@ unsigned long read_sensor(const struct occ_sensor_data_header *hb, uint32_t offs
 
     switch (attr)
     {
-        case SENSOR_SAMPLE:
-            return be16toh(sensor->sample);
-        case SENSOR_ACCUMULATOR:
-            return be64toh(sensor->accumulator);
-        default:
-            break;
+    case SENSOR_SAMPLE:
+        return be16toh(sensor->sample);
+    case SENSOR_ACCUMULATOR:
+        return be64toh(sensor->accumulator);
+    default:
+        break;
     }
 
     return 0;

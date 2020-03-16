@@ -264,25 +264,25 @@ int fm_06_3f_get_power(int long_ver)
 int fm_06_3f_enable_turbo(void)
 {
 #ifdef VARIORUM_LOG
-	printf("Running %s\n", __FUNCTION__);
+    printf("Running %s\n", __FUNCTION__);
 #endif
 
-	unsigned int turbo_mode_disable_bit = 38;
+    unsigned int turbo_mode_disable_bit = 38;
     set_turbo_on(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
-	return 0;
+    return 0;
 }
 
 int fm_06_3f_disable_turbo(void)
 {
 #ifdef VARIORUM_LOG
-	printf("Running %s\n", __FUNCTION__);
+    printf("Running %s\n", __FUNCTION__);
 #endif
 
-	unsigned int turbo_mode_disable_bit = 38;
+    unsigned int turbo_mode_disable_bit = 38;
     set_turbo_off(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
-	return 0;
+    return 0;
 }
 int fm_06_3f_get_turbo_status(void)
 {

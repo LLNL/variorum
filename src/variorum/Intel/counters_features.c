@@ -250,30 +250,30 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs, off
     {
         switch(avail)
         {
-            case 8:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6 PMC7\n");
-                break;
-            case 7:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6\n");
-                break;
-            case 6:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5\n");
-                break;
-            case 5:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4\n");
-                break;
-            case 4:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3\n");
-                break;
-            case 3:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2\n");
-                break;
-            case 2:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1\n");
-                break;
-            case 1:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0\n");
-                break;
+        case 8:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6 PMC7\n");
+            break;
+        case 7:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6\n");
+            break;
+        case 6:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5\n");
+            break;
+        case 5:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4\n");
+            break;
+        case 4:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3\n");
+            break;
+        case 3:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2\n");
+            break;
+        case 2:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1\n");
+            break;
+        case 1:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0\n");
+            break;
         }
 
         set_all_pmc_ctrl(0x0, 0x67, 0x00, 0xC4, 1, msrs_perfevtsel_ctrs);
@@ -288,38 +288,38 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs, off
     {
         switch (avail)
         {
-            case 8:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
-                break;
-            case 7:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
-                break;
-            case 6:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
-                break;
-            case 5:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
-                break;
-            case 4:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
-                break;
-            case 3:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
-                break;
-            case 2:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i]);
-                break;
-            case 1:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu\n",
-                        hostname, i, *p->pmc0[i]);
-                break;
+        case 8:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
+            break;
+        case 7:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
+            break;
+        case 6:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
+            break;
+        case 5:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+            break;
+        case 4:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+            break;
+        case 3:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+            break;
+        case 2:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i]);
+            break;
+        case 1:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu\n",
+                    hostname, i, *p->pmc0[i]);
+            break;
         }
     }
 }
@@ -375,38 +375,38 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs, of
     {
         switch (avail)
         {
-            case 8:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu PMC6: %lu PMC7: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
-                break;
-            case 7:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu PMC6: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
-                break;
-            case 6:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
-                break;
-            case 5:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
-                break;
-            case 4:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
-                break;
-            case 3:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
-                break;
-            case 2:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i]);
-                break;
-            case 1:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu\n",
-                        hostname, i, *p->pmc0[i]);
-                break;
+        case 8:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu PMC6: %lu PMC7: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
+            break;
+        case 7:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu PMC6: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
+            break;
+        case 6:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu PMC5: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
+            break;
+        case 5:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu PMC4: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+            break;
+        case 4:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu PMC3: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+            break;
+        case 3:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu PMC2: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+            break;
+        case 2:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu PMC1: %lu\n",
+                    hostname, i, *p->pmc0[i], *p->pmc1[i]);
+            break;
+        case 1:
+            fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host: %s Thread: %d PMC0: %lu\n",
+                    hostname, i, *p->pmc0[i]);
+            break;
         }
     }
 }
@@ -435,42 +435,42 @@ static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
     }
     switch (avail)
     {
-        case 8:
-            p->pmc7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 7:
-            p->pmc6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 6:
-            p->pmc5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 5:
-            p->pmc4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 4:
-            p->pmc3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 3:
-            p->pmc2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 2:
-            p->pmc1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 1:
-            p->pmc0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 8:
+        p->pmc7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 7:
+        p->pmc6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 6:
+        p->pmc5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 5:
+        p->pmc4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 4:
+        p->pmc3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 3:
+        p->pmc2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 2:
+        p->pmc1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 1:
+        p->pmc0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
     allocate_batch(COUNTERS_DATA, avail * nthreads);
     switch (avail)
     {
-        case 8:
-            load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, COUNTERS_DATA);
-        case 7:
-            load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, COUNTERS_DATA);
-        case 6:
-            load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, COUNTERS_DATA);
-        case 5:
-            load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, COUNTERS_DATA);
-        case 4:
-            load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, COUNTERS_DATA);
-        case 3:
-            load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, COUNTERS_DATA);
-        case 2:
-            load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, COUNTERS_DATA);
-        case 1:
-            load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, COUNTERS_DATA);
+    case 8:
+        load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, COUNTERS_DATA);
+    case 7:
+        load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, COUNTERS_DATA);
+    case 6:
+        load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, COUNTERS_DATA);
+    case 5:
+        load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, COUNTERS_DATA);
+    case 4:
+        load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, COUNTERS_DATA);
+    case 3:
+        load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, COUNTERS_DATA);
+    case 2:
+        load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, COUNTERS_DATA);
+    case 1:
+        load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, COUNTERS_DATA);
     }
     return 0;
 }
@@ -496,42 +496,42 @@ static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
     }
     switch (avail)
     {
-        case 8:
-            evt->perf_evtsel7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 7:
-            evt->perf_evtsel6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 6:
-            evt->perf_evtsel5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 5:
-            evt->perf_evtsel4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 4:
-            evt->perf_evtsel3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 3:
-            evt->perf_evtsel2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 2:
-            evt->perf_evtsel1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 1:
-            evt->perf_evtsel0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 8:
+        evt->perf_evtsel7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 7:
+        evt->perf_evtsel6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 6:
+        evt->perf_evtsel5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 5:
+        evt->perf_evtsel4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 4:
+        evt->perf_evtsel3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 3:
+        evt->perf_evtsel2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 2:
+        evt->perf_evtsel1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    case 1:
+        evt->perf_evtsel0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
     allocate_batch(COUNTERS_CTRL, avail * nthreads);
     switch (avail)
     {
-        case 8:
-            load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, COUNTERS_CTRL);
-        case 7:
-            load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, COUNTERS_CTRL);
-        case 6:
-            load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, COUNTERS_CTRL);
-        case 5:
-            load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, COUNTERS_CTRL);
-        case 4:
-            load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, COUNTERS_CTRL);
-        case 3:
-            load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, COUNTERS_CTRL);
-        case 2:
-            load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, COUNTERS_CTRL);
-        case 1:
-            load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, COUNTERS_CTRL);
+    case 8:
+        load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, COUNTERS_CTRL);
+    case 7:
+        load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, COUNTERS_CTRL);
+    case 6:
+        load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, COUNTERS_CTRL);
+    case 5:
+        load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, COUNTERS_CTRL);
+    case 4:
+        load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, COUNTERS_CTRL);
+    case 3:
+        load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, COUNTERS_CTRL);
+    case 2:
+        load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, COUNTERS_CTRL);
+    case 1:
+        load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, COUNTERS_CTRL);
     }
     return 0;
 }
@@ -582,30 +582,30 @@ void set_pmc_ctrl_flags(uint64_t cmask, uint64_t flags, uint64_t umask, uint64_t
     }
     switch(pmcnum)
     {
-        case 8:
-            *evt->perf_evtsel7[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 7:
-            *evt->perf_evtsel6[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 6:
-            *evt->perf_evtsel5[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 5:
-            *evt->perf_evtsel4[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 4:
-            *evt->perf_evtsel3[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 3:
-            *evt->perf_evtsel2[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 2:
-            *evt->perf_evtsel1[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
-        case 1:
-            *evt->perf_evtsel0[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
-            break;
+    case 8:
+        *evt->perf_evtsel7[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 7:
+        *evt->perf_evtsel6[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 6:
+        *evt->perf_evtsel5[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 5:
+        *evt->perf_evtsel4[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 4:
+        *evt->perf_evtsel3[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 3:
+        *evt->perf_evtsel2[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 2:
+        *evt->perf_evtsel1[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
+    case 1:
+        *evt->perf_evtsel0[thread] = 0UL | (cmask << 24) | (flags << 16) | (umask << 8) | eventsel;
+        break;
     }
 }
 
@@ -658,22 +658,22 @@ void clear_all_pmc(off_t *msrs_perfmon_ctrs)
     {
         switch (avail)
         {
-            case 8:
-                *p->pmc7[i] = 0;
-            case 7:
-                *p->pmc6[i] = 0;
-            case 6:
-                *p->pmc5[i] = 0;
-            case 5:
-                *p->pmc4[i] = 0;
-            case 4:
-                *p->pmc3[i] = 0;
-            case 3:
-                *p->pmc2[i] = 0;
-            case 2:
-                *p->pmc1[i] = 0;
-            case 1:
-                *p->pmc0[i] = 0;
+        case 8:
+            *p->pmc7[i] = 0;
+        case 7:
+            *p->pmc6[i] = 0;
+        case 6:
+            *p->pmc5[i] = 0;
+        case 5:
+            *p->pmc4[i] = 0;
+        case 4:
+            *p->pmc3[i] = 0;
+        case 3:
+            *p->pmc2[i] = 0;
+        case 2:
+            *p->pmc1[i] = 0;
+        case 1:
+            *p->pmc0[i] = 0;
         }
     }
     write_batch(COUNTERS_DATA);

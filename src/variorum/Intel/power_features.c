@@ -38,79 +38,79 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
 
     switch(type)
     {
-        case BITS_TO_WATTS:
-            *units = (double)(*bits) * ru[socket].watts;
-            break;
-        case BITS_TO_JOULES_DRAM:
-            /* If Haswell (06_3F) or Broadwell (06_4F), use 15.3 micro-Joules as the energy unit for DRAM. */
-            if (*g_platform.intel_arch == 63 || *g_platform.intel_arch == 79)
-            {
-                *units = (double)(*bits) / STD_ENERGY_UNIT;
+    case BITS_TO_WATTS:
+        *units = (double)(*bits) * ru[socket].watts;
+        break;
+    case BITS_TO_JOULES_DRAM:
+        /* If Haswell (06_3F) or Broadwell (06_4F), use 15.3 micro-Joules as the energy unit for DRAM. */
+        if (*g_platform.intel_arch == 63 || *g_platform.intel_arch == 79)
+        {
+            *units = (double)(*bits) / STD_ENERGY_UNIT;
 #ifdef VARIORUM_DEBUG
-                fprintf(stderr, "DEBUG: (translate_dram) %f is %f joules\n", (double)*bits, *units);
+            fprintf(stderr, "DEBUG: (translate_dram) %f is %f joules\n", (double)*bits, *units);
 #endif
-                return 0;
-            }
-        /* No break statement, if not Haswell or Broadwell, use energy units defined in MSR_RAPL_POWER_UNIT. */
-        case BITS_TO_JOULES:
-            *units = (double)(*bits) / ru[socket].joules;
-            break;
-        case WATTS_TO_BITS:
-            *bits  = (uint64_t)((*units) / ru[socket].watts);
-            break;
-        case JOULES_TO_BITS:
-            /// @todo Currently unused, but if it ever is used, we need a fix for Haswell.
-            *bits  = (uint64_t)((*units) * ru[socket].joules);
-            break;
-        case BITS_TO_SECONDS_STD:
-            timeval_y = *bits & 0x1F;
-            timeval_z = (*bits & 0x60) >> 5;
-            /* Dividing by time unit because it's stored as (1/(2^TU))^-1. */
-            *units = ((1 + 0.25 * timeval_z) * pow(2.0,(double)timeval_y)) / ru[socket].seconds;
-            // Temporary fix for haswell
-            //    if (model == 0x3F)
-            //    {
-            //        *units = *units * 2.5 + 15.0;
-            //    }
+            return 0;
+        }
+    /* No break statement, if not Haswell or Broadwell, use energy units defined in MSR_RAPL_POWER_UNIT. */
+    case BITS_TO_JOULES:
+        *units = (double)(*bits) / ru[socket].joules;
+        break;
+    case WATTS_TO_BITS:
+        *bits  = (uint64_t)((*units) / ru[socket].watts);
+        break;
+    case JOULES_TO_BITS:
+        /// @todo Currently unused, but if it ever is used, we need a fix for Haswell.
+        *bits  = (uint64_t)((*units) * ru[socket].joules);
+        break;
+    case BITS_TO_SECONDS_STD:
+        timeval_y = *bits & 0x1F;
+        timeval_z = (*bits & 0x60) >> 5;
+        /* Dividing by time unit because it's stored as (1/(2^TU))^-1. */
+        *units = ((1 + 0.25 * timeval_z) * pow(2.0,(double)timeval_y)) / ru[socket].seconds;
+        // Temporary fix for haswell
+        //    if (model == 0x3F)
+        //    {
+        //        *units = *units * 2.5 + 15.0;
+        //    }
 #ifdef LIBMSR_DEBUG
-            fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits);
+        fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits);
 #endif
-            break;
-        case SECONDS_TO_BITS_STD:
-            // Temporary fix for haswell
-            //    if (model == 0x3F)
-            //    {
-            //        *units = *units / 2.5 - 15;
-            //    }
-            /* Store the whole number part of the log2. */
-            timeval_y = (uint64_t)log2(*units * ru[socket].seconds);
-            /* Store the mantissa of the log2. */
-            logremainder = (double)log2(*units * ru[socket].seconds) - (double)timeval_y;
-            timeval_z = 0;
-            /* Based on the mantissa, choose the appropriate multiplier. */
-            if (logremainder > 0.15 && logremainder <= 0.45)
-            {
-                timeval_z = 1;
-            }
-            else if (logremainder > 0.45 && logremainder <= 0.7)
-            {
-                timeval_z = 2;
-            }
-            else if (logremainder > 0.7)
-            {
-                timeval_z = 3;
-            }
-            /* Store the bits in the Intel specified format. */
-            *bits = (uint64_t)(timeval_y | (timeval_z << 5));
+        break;
+    case SECONDS_TO_BITS_STD:
+        // Temporary fix for haswell
+        //    if (model == 0x3F)
+        //    {
+        //        *units = *units / 2.5 - 15;
+        //    }
+        /* Store the whole number part of the log2. */
+        timeval_y = (uint64_t)log2(*units * ru[socket].seconds);
+        /* Store the mantissa of the log2. */
+        logremainder = (double)log2(*units * ru[socket].seconds) - (double)timeval_y;
+        timeval_z = 0;
+        /* Based on the mantissa, choose the appropriate multiplier. */
+        if (logremainder > 0.15 && logremainder <= 0.45)
+        {
+            timeval_z = 1;
+        }
+        else if (logremainder > 0.45 && logremainder <= 0.7)
+        {
+            timeval_z = 2;
+        }
+        else if (logremainder > 0.7)
+        {
+            timeval_z = 3;
+        }
+        /* Store the bits in the Intel specified format. */
+        *bits = (uint64_t)(timeval_y | (timeval_z << 5));
 #ifdef LIBMSR_DEBUG
-            fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx, remainder is %lf\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits, logremainder);
+        fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx, remainder is %lf\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits, logremainder);
 #endif
-            break;
-        default:
-            fprintf(stderr, "%s:%d  Unknown value %d.  This is bad.\n", __FILE__, __LINE__, type);
-            *bits = -1;
-            *units= -1.0;
-            break;
+        break;
+    default:
+        fprintf(stderr, "%s:%d  Unknown value %d.  This is bad.\n", __FILE__, __LINE__, type);
+        *bits = -1;
+        *units= -1.0;
+        break;
     }
     return 0;
 }

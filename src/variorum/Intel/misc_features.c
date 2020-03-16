@@ -27,7 +27,7 @@ int get_max_non_turbo_ratio(off_t msr_platform_info)
         init = 1;
     }
 
-	read_batch(PLATFORM_INFO);
+    read_batch(PLATFORM_INFO);
     max_non_turbo_ratio = (int)(MASK_VAL(*val[0], 15, 8));
     /// Do sockets match?
     if (nsockets != 1)
@@ -44,11 +44,11 @@ int get_max_non_turbo_ratio(off_t msr_platform_info)
 /// For socket level
 int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
-	int ret = 0;
+    int ret = 0;
     int socket;
     int nsockets;
-	uint64_t mask = 0;
-	uint64_t msr_val = 0;
+    uint64_t mask = 0;
+    uint64_t msr_val = 0;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     /// Creates mask for turbo disable bit according to the architecture offset
@@ -82,21 +82,21 @@ int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
             fprintf(stdout, "Turbo enabled on socket %d\n", socket);
         }
     }
-	return ret;
+    return ret;
 }
 
 int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
-	int ret = 0;
+    int ret = 0;
     int socket;
     int nsockets;
-	uint64_t mask = 0;
-	uint64_t msr_val = 0;
+    uint64_t mask = 0;
+    uint64_t msr_val = 0;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     /// Creates mask for turbo disable bit according to the architecture offset
     /// given.
-	mask |= 1LL << turbo_mode_disable_bit;
+    mask |= 1LL << turbo_mode_disable_bit;
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -125,7 +125,7 @@ int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
             fprintf(stdout, "Turbo disabled on socket %d\n", socket);
         }
     }
-	return ret;
+    return ret;
 }
 
 int dump_turbo_status(FILE *writedest, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)

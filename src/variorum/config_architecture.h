@@ -177,7 +177,7 @@ struct platform
     /// @return Error code.
     int (*dump_turbo)(void);
 
-    /// @brief Function pointer to print GPU utilization. 
+    /// @brief Function pointer to print GPU utilization.
     ///
     /// @return Error code.
     int (*dump_gpu_utilization)(int long_ver);

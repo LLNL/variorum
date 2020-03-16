@@ -129,7 +129,9 @@ int variorum_print_clock_speed(void);
 /// @todo Print discrete frequencies from P0 to Pn.
 ///
 /// @return Error code.
-int variorum_print_available_frequencies(void) { return 0; };
+int variorum_print_available_frequencies(void) {
+    return 0;
+};
 
 /// @brief Print if hyperthreading is enabled or disabled.
 ///
@@ -137,9 +139,7 @@ int variorum_print_available_frequencies(void) { return 0; };
 int variorum_print_hyperthreading(void);
 
 /// @brief Print architecture topology in long format.
-///
-/// @return Error code.
-int variorum_print_topology(void);
+void variorum_print_topology(void);
 
 /// @brief Print list of features available on a particular architecture.
 ///
