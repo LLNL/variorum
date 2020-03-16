@@ -24,7 +24,7 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
 
     if (!init)
     {
-        variorum_set_topology(NULL, NULL, &nthreads);
+        variorum_get_topology(NULL, NULL, &nthreads);
         d.aperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.mperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.tsc = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
@@ -47,7 +47,7 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status,
     static struct perf_data d;
     int nsockets, ncores, nthreads;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     if (!init)
     {
@@ -85,7 +85,7 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
 
     if (!nsockets)
     {
-        variorum_set_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL);
         d.perf_status = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(RD_PERF_DATA, 2UL * nsockets); // FIXME should be 1UL?
         load_socket_batch(msr_perf_status, d.perf_status, BATCH_READ, RD_PERF_DATA);
@@ -109,7 +109,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     char hostname[1024];
     int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
     if (!init)
     {
@@ -182,7 +182,7 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     char hostname[1024];
     int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
 
     clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
@@ -242,7 +242,7 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //    char hostname[1024];
 //    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
 //
-//    variorum_set_topology(&nsockets, &ncores, &nthreads);
+//    variorum_get_topology(&nsockets, &ncores, &nthreads);
 //    gethostname(hostname, 1024);
 //
 //    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
@@ -273,7 +273,7 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //    char hostname[1024];
 //    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
 //
-//    variorum_set_topology(&nsockets, &ncores, &nthreads);
+//    variorum_get_topology(&nsockets, &ncores, &nthreads);
 //    gethostname(hostname, 1024);
 //
 //    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
@@ -302,7 +302,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     static struct perf_data *pd;
     static int init = 0;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     if (!init)
     {
         init = 1;

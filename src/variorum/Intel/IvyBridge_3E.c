@@ -72,7 +72,7 @@ int fm_06_3e_get_power_limits(int long_ver)
 {
     int socket;
     int nsockets, ncores, nthreads;
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -134,7 +134,7 @@ int fm_06_3e_set_power_limits(int package_power_limit)
 {
     int socket;
     int nsockets, ncores, nthreads;
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

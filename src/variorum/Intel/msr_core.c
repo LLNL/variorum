@@ -26,7 +26,7 @@
 static uint64_t devidx(int socket, int core, int thread)
 {
     int nsockets, ncores, nthreads;
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     return (thread * nsockets * (ncores / nsockets)) + (socket * ncores / nsockets)
            + core;
 }
@@ -131,7 +131,7 @@ static int *core_fd(const int dev_idx)
     if (!init_core_fd)
     {
         init_core_fd = 1;
-        variorum_set_topology(NULL, NULL, &nthreads);
+        variorum_get_topology(NULL, NULL, &nthreads);
         file_descriptors = (int *) malloc(nthreads * sizeof(int));
     }
     if (dev_idx < nthreads)
@@ -217,7 +217,7 @@ int sockets_assert(const unsigned *socket, const int location, const char *file)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     if (*socket > nsockets)
     {
@@ -236,7 +236,7 @@ int threads_assert(const unsigned *thread, const int location, const char *file)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
     int nthreads;
-    variorum_set_topology(NULL, NULL, &nthreads);
+    variorum_get_topology(NULL, NULL, &nthreads);
 
     if (*thread > nthreads)
     {
@@ -255,7 +255,7 @@ int cores_assert(const unsigned *core, const int location, const char *file)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
     int ncores;
-    variorum_set_topology(NULL, &ncores, NULL);
+    variorum_get_topology(NULL, &ncores, NULL);
 
     if (*core > ncores)
     {
@@ -354,7 +354,7 @@ int finalize_msr(void)
     int *file_descriptor = NULL;
     char *variorum_error_msg = (char *) malloc(NAME_MAX * sizeof(char));
     int nthreads;
-    variorum_set_topology(NULL, NULL, &nthreads);
+    variorum_get_topology(NULL, NULL, &nthreads);
 
     for (dev_idx = 0; dev_idx < nthreads; dev_idx++)
     {
@@ -390,7 +390,7 @@ int init_msr(void)
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
     int nsockets, ncores, nthreads;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
     snprintf(filename, FILENAME_SIZE, "/dev/cpu/msr_whitelist");
     stat_module(filename, &kerneltype, 0);
     /* Open the file descriptor for each device's msr interface. */
@@ -569,7 +569,7 @@ int load_socket_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
 {
     int dev_idx, val_idx;
     int nsockets, ncores, nthreads;
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     if (val == NULL)
     {
@@ -591,7 +591,7 @@ int load_thread_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
 {
     int dev_idx, val_idx;
     int nsockets, ncores, nthreads;
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     if (val == NULL)
     {

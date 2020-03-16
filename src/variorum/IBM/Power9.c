@@ -24,7 +24,7 @@ int p9_get_power(int long_ver)
     int iter = 0;
     int nsockets;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -313,7 +313,7 @@ int p9_monitoring(FILE *output)
     int long_ver = 0;
     static int count = 0;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
