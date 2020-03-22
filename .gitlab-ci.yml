@@ -1,5 +1,22 @@
 stages:
+  - format
   - build
+
+build-quartz-format:
+ tags:
+   - batch
+   - quartz
+ stage: format
+ script:
+   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
+   - tar -xf astyle_3.1_linux.tar.gz
+   - cd astyle/build/gcc && make
+   - export PATH="${PWD}/bin:${PATH}"
+   - cd -
+   - echo -e "PWD:" ${PWD}
+   - ./scripts/gitlab/astyle-format.sh
+   - err=$?
+   - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
 
 build-quartz:
  tags:
