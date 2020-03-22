@@ -129,7 +129,7 @@ int variorum_print_clock_speed(void);
 /// @todo Print discrete frequencies from P0 to Pn.
 ///
 /// @return Error code.
-int variorum_print_available_frequencies(void) { return 0; };
+//int variorum_print_available_frequencies(void) {};
 
 /// @brief Print if hyperthreading is enabled or disabled.
 ///
