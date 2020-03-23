@@ -1,5 +1,9 @@
 set(VARIORUM_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE STRING "" FORCE)
 
+if(FORTRAN_FOUND)
+    set(VARIORUM_FORTRAN_COMPILER ${CMAKE_Fortran_COMPILER})
+endif()
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h.in"
                "${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h")
 
@@ -48,6 +52,18 @@ if(VARIORUM_WITH_NVIDIA)
     list(APPEND variorum_sources Nvidia/config_nvidia.c)
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_nvidia>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Nvidia)
+endif()
+
+if(FORTRAN_FOUND)
+    add_library(variorum_fortran OBJECT variorum.f90)
+    list(APPEND variorum_sources $<TARGET_OBJECTS:variorum_fortran>)
+
+    #####################################################
+    # Setup install to copy the fortran modules
+    #####################################################
+    install(FILES
+            ${CMAKE_Fortran_MODULE_DIRECTORY}/variorum.mod
+            DESTINATION include)
 endif()
 
 if(BUILD_SHARED_LIBS)

@@ -33,6 +33,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script: ./scripts/travis/build.sh
@@ -51,6 +52,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -70,6 +72,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -89,6 +92,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -108,6 +112,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -127,6 +132,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -146,6 +152,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -165,6 +172,7 @@ jobs:
     before_script:
       - date
       - sudo apt-get install python-sphinx
+      - sudo apt-get install gfortran
     after_script:
       - date
     script:

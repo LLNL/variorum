@@ -1,6 +1,11 @@
 #!/bin/bash
 
-FILES=$(find src -type f  \( -name *.[ch] -o -name *.cpp \) | grep -v thirdparty_builtin)
+# re-fromat all *.cpp, *.h, and *.c files in src/ directory
+#   exclude files in thirdparty_builtin/ (gtest source files)
+#   exclude files in fortran/ (EP source files)
+FILES=$(find src -type f  \( -name *.[ch] -o -name *.cpp \) \
+        | grep -v thirdparty_builtin \
+        | grep -v fortran)
 
 TMP=$(astyle --errors-to-stdout \
              --preserve-date \
