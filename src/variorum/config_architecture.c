@@ -38,19 +38,22 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     err = variorum_get_topology();
     if (err)
     {
-        variorum_error_handler("Cannot get topology", err, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Cannot get topology", err, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
         return err;
     }
     err = variorum_detect_arch();
     if (err)
     {
-        variorum_error_handler("Cannot detect architecture", err, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Cannot detect architecture", err, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
         return err;
     }
     err = variorum_set_func_ptrs();
     if (err)
     {
-        variorum_error_handler("Cannot set function pointers", err, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Cannot set function pointers", err, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
         return err;
     }
     return err;
@@ -115,7 +118,8 @@ int variorum_detect_arch(void)
         g_platform.nvidia_arch  == NULL &&
         g_platform.gpu_arch     == NULL)
     {
-        variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return VARIORUM_ERROR_UNSUPPORTED_ARCH;
     }
 
@@ -160,8 +164,10 @@ int variorum_get_topology(void)
         g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
         g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
 
-        g_platform.num_cores_per_socket = g_platform.total_cores/g_platform.num_sockets;
-        g_platform.num_threads_per_core = g_platform.total_threads/g_platform.total_cores;
+        g_platform.num_cores_per_socket = g_platform.total_cores /
+                                          g_platform.num_sockets;
+        g_platform.num_threads_per_core = g_platform.total_threads /
+                                          g_platform.total_cores;
 
         hwloc_topology_destroy(topology);
     }

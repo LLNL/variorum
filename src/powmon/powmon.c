@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
     while ((opt = getopt(argc, argv, "ca:p:i:")) != -1)
     {
-        switch(opt)
+        switch (opt)
         {
             case 'c':
                 highlander_clean();
@@ -114,7 +114,8 @@ int main(int argc, char **argv)
                 sample_interval = atol(optarg);
                 if (sample_interval < FASTEST_SAMPLE_INTERVAL_MS)
                 {
-                    printf("Warning: Specified sample interval (-i) is faster than default. Setting to default sampling interval of %d milliseconds.\n", FASTEST_SAMPLE_INTERVAL_MS);
+                    printf("Warning: Specified sample interval (-i) is faster than default. Setting to default sampling interval of %d milliseconds.\n",
+                           FASTEST_SAMPLE_INTERVAL_MS);
                     sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
                 }
                 break;
@@ -155,7 +156,7 @@ int main(int argc, char **argv)
         {
             return 1; /* memory allocation failed */
         }
-        arg[n_spaces-1] = app_split;
+        arg[n_spaces - 1] = app_split;
         app_split = strtok(NULL, " ");
     }
     arg = realloc(arg, sizeof(char *) * (n_spaces + 1));
@@ -163,7 +164,7 @@ int main(int argc, char **argv)
 
 #ifdef VARIORUM_DEBUG
     int i;
-    for (i = 0; i < (n_spaces+1); ++i)
+    for (i = 0; i < (n_spaces + 1); ++i)
     {
         printf("arg[%d] = %s\n", i, arg[i]);
     }
@@ -176,7 +177,7 @@ int main(int argc, char **argv)
         /* Start the log file. */
         int logfd;
         char hostname[64];
-        gethostname(hostname,64);
+        gethostname(hostname, 64);
 
         if (logpath)
         {
@@ -189,16 +190,20 @@ int main(int argc, char **argv)
             asprintf(&fname_dat, "%s.powmon.dat", hostname);
         }
 
-        logfd = open(fname_dat, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
+        logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
         if (logfd < 0)
         {
-            fprintf(stderr, "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0], hostname, fname_dat, strerror(errno));
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
             return 1;
         }
         logfile = fdopen(logfd, "w");
         if (logfile == NULL)
         {
-            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0], hostname, fname_dat, strerror(errno));
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
             return 1;
         }
 
@@ -257,21 +262,26 @@ int main(int argc, char **argv)
             asprintf(&fname_summary, "%s.powmon.summary", hostname);
         }
 
-        logfd = open(fname_summary, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
+        logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
         if (logfd < 0)
         {
-            fprintf(stderr, "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0], hostname, fname_summary, strerror(errno));
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
             return 1;
         }
         summaryfile = fdopen(logfd, "w");
         if (summaryfile == NULL)
         {
-            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0], hostname, fname_summary, strerror(errno));
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
             return 1;
         }
 
         char *msg;
-        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n", hostname, app_pid, end-start, start, end);
+        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                 hostname, app_pid, end - start, start, end);
 
         fprintf(summaryfile, "%s", msg);
         fclose(summaryfile);

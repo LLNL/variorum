@@ -21,7 +21,7 @@ static inline double do_work(int input)
 
     for (i = 0; i < 100000; i++)
     {
-        result += i*result;
+        result += i * result;
     }
 
     return result;
@@ -47,10 +47,12 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int logfd = open(fname, O_WRONLY|O_CREAT|O_EXCL|O_NDELAY, S_IRUSR|S_IWUSR);
+    int logfd = open(fname, O_WRONLY | O_CREAT | O_EXCL | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
     if (logfd < 0)
     {
-        printf("Fatal Error: %s on %s cannot open the appropriate fd.\n", argv[0], hostname);
+        printf("Fatal Error: %s on %s cannot open the appropriate fd.\n", argv[0],
+               hostname);
         return 1;
     }
     FILE *logfile = fdopen(logfd, "w");

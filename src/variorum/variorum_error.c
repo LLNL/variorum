@@ -11,7 +11,7 @@
 
 void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
 {
-    switch(err)
+    switch (err)
     {
         case VARIORUM_ERROR_RUNTIME:
             strncpy(msg, "_ERROR_VARIORUM_RUNTIME", size);
@@ -58,7 +58,7 @@ void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
     }
     if (size > 0)
     {
-        msg[size-1] = '\0';
+        msg[size - 1] = '\0';
     }
 }
 
@@ -77,7 +77,8 @@ char *get_variorum_error_message(enum variorum_error_e err)
     return brief_msg;
 }
 
-void variorum_error_handler(const char *desc, int err, const char *host, const char *file, const char *func, int line)
+void variorum_error_handler(const char *desc, int err, const char *host,
+                            const char *file, const char *func, int line)
 {
     char *str = get_variorum_error_message(err);
     fprintf(stderr, "%s:%s:%s():%d: %s: %s\n", host, file, func, line, str, desc);

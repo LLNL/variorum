@@ -15,7 +15,8 @@
 #include <variorum_cpuid.h>
 #include <variorum_error.h>
 
-void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc)
+void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
+                    off_t msr_tsc)
 {
     static int init = 0;
     static struct clocks_data d;
@@ -39,7 +40,8 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf, o
     }
 }
 
-void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status, off_t msr_perf_ctl, enum ctl_domains_e control_domains)
+void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status,
+                       off_t msr_perf_ctl, enum ctl_domains_e control_domains)
 {
     static int init = 0;
     static struct perf_data d;
@@ -50,20 +52,20 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status, off_t msr_p
     if (!init)
     {
         init = 1;
-        switch(control_domains)
+        switch (control_domains)
         {
-        case SOCKET:
-            d.perf_ctl = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-            allocate_batch(PERF_CTRL, 2UL * nsockets);
-            load_socket_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
-            break;
-        case CORE:
-            d.perf_ctl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
-            allocate_batch(PERF_CTRL, 2UL * nthreads);
-            load_thread_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
-            break;
-        default:
-            break;
+            case SOCKET:
+                d.perf_ctl = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+                allocate_batch(PERF_CTRL, 2UL * nsockets);
+                load_socket_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+                break;
+            case CORE:
+                d.perf_ctl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
+                allocate_batch(PERF_CTRL, 2UL * nthreads);
+                load_thread_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+                break;
+            default:
+                break;
         }
     }
     if (pd != NULL)
@@ -93,7 +95,9 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
     }
 }
 
-void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info, enum ctl_domains_e control_domains)
+void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                      off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                      enum ctl_domains_e control_domains)
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
@@ -112,54 +116,62 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
         perf_storage(&pd, msr_perf_status);
         if (control_domains == SOCKET)
         {
-            fprintf(writedest, "_CLOCKS_DATA hostname socket aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
+            fprintf(writedest,
+                    "_CLOCKS_DATA hostname socket aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
         }
         else if (control_domains == CORE)
         {
-            fprintf(writedest, "_CLOCKS_DATA hostname socket core thread_phy thread_log aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
+            fprintf(writedest,
+                    "_CLOCKS_DATA hostname socket core thread_phy thread_log aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
         }
         init = 1;
     }
     read_batch(CLOCKS_DATA);
     read_batch(PERF_DATA);
 
-    switch(control_domains)
+    switch (control_domains)
     {
-    case SOCKET:
-        for (i = 0; i < nsockets; i++)
-        {
-            for (j = 0; j < ncores/nsockets; j+=ncores/nsockets)
+        case SOCKET:
+            for (i = 0; i < nsockets; i++)
             {
-                for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
+                for (j = 0; j < ncores / nsockets; j += ncores / nsockets)
                 {
-                    idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA %s %d %lu %lu %lu %lu %f\n",
-                            hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+                    for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        fprintf(writedest, "_CLOCKS_DATA %s %d %lu %lu %lu %lu %f\n",
+                                hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+                    }
                 }
             }
-        }
-        break;
-    case CORE:
-        for (i = 0; i < nsockets; i++)
-        {
-            for (j = 0; j < ncores/nsockets; j++)
+            break;
+        case CORE:
+            for (i = 0; i < nsockets; i++)
             {
-                for (k = 0; k < nthreads/ncores; k++)
+                for (j = 0; j < ncores / nsockets; j++)
                 {
-                    idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA %s %d %d %d %d %lu %lu %lu %lu %f\n",
-                            hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+                    for (k = 0; k < nthreads / ncores; k++)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        fprintf(writedest, "_CLOCKS_DATA %s %d %d %d %d %lu %lu %lu %lu %f\n",
+                                hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+                    }
                 }
             }
-        }
-        break;
-    default:
-        fprintf(stderr, "Not a valid control domain.\n");
-        break;
+            break;
+        default:
+            fprintf(stderr, "Not a valid control domain.\n");
+            break;
     }
 }
 
-void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info, enum ctl_domains_e control_domains)
+void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                       off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                       enum ctl_domains_e control_domains)
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
@@ -177,39 +189,45 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t 
     read_batch(CLOCKS_DATA);
     read_batch(PERF_DATA);
 
-    switch(control_domains)
+    switch (control_domains)
     {
-    case SOCKET:
-        for (i = 0; i < nsockets; i++)
-        {
-            for (j = 0; j < ncores/nsockets; j+=ncores/nsockets)
+        case SOCKET:
+            for (i = 0; i < nsockets; i++)
             {
-                for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
+                for (j = 0; j < ncores / nsockets; j += ncores / nsockets)
                 {
-                    idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
-                            hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+                    for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        fprintf(writedest,
+                                "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
+                                hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+                    }
                 }
             }
-        }
-        break;
-    case CORE:
-        for (i = 0; i < nsockets; i++)
-        {
-            for (j = 0; j < ncores/nsockets; j++)
+            break;
+        case CORE:
+            for (i = 0; i < nsockets; i++)
             {
-                for (k = 0; k < nthreads/ncores; k++)
+                for (j = 0; j < ncores / nsockets; j++)
                 {
-                    idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-                    fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
-                            hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
+                    for (k = 0; k < nthreads / ncores; k++)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        fprintf(writedest,
+                                "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
+                                hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+                    }
                 }
             }
-        }
-        break;
-    default:
-        fprintf(stderr, "Not a valid control domain.\n");
-        break;
+            break;
+        default:
+            fprintf(stderr, "Not a valid control domain.\n");
+            break;
     }
 }
 
@@ -275,7 +293,8 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t 
 //    }
 //}
 
-void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain, off_t msr_perf_status, off_t msr_perf_ctl)
+void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
+                 off_t msr_perf_status, off_t msr_perf_ctl)
 {
     int nsockets, ncores, nthreads;
     int i;
@@ -289,34 +308,34 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain, off_t msr_perf_sta
         perf_storage_temp(&pd, msr_perf_status, msr_perf_ctl, domain);
     }
 
-    switch(domain)
+    switch (domain)
     {
-    case SOCKET:
-        printf("Set frequencies per socket\n");
-        for (i = 0; i < nsockets; i++)
-        {
-            *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
-        }
-        write_batch(PERF_CTRL);
-        break;
-    case CORE:
-        printf("Set frequencies per core\n");
-        for (i = 0; i < nthreads; i++)
-        {
-            *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
-        }
+        case SOCKET:
+            printf("Set frequencies per socket\n");
+            for (i = 0; i < nsockets; i++)
+            {
+                *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
+            }
+            write_batch(PERF_CTRL);
+            break;
+        case CORE:
+            printf("Set frequencies per core\n");
+            for (i = 0; i < nthreads; i++)
+            {
+                *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
+            }
 #if VARIORUM_DEBUG
-        printf("PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
+            printf("PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
 #endif
-        write_batch(PERF_CTRL);
-        read_batch(PERF_CTRL);
+            write_batch(PERF_CTRL);
+            read_batch(PERF_CTRL);
 #if VARIORUM_DEBUG
-        printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
+            printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
 #endif
-        break;
-    default:
-        fprintf(stderr, "Not a valid control domain.\n");
-        break;
+            break;
+        default:
+            fprintf(stderr, "Not a valid control domain.\n");
+            break;
     }
 }
 

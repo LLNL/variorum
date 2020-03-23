@@ -25,8 +25,10 @@ void take_measurement(void)
     pthread_mutex_lock(&mlock);
 
     /* RAPL reads. */
-    //poll_power(logfile); // PKG/DRAM energy, PKG/DRAM power limit
-    variorum_monitoring(logfile); // PKG/DRAM energy, PKG/DRAM power limit, fixed counters, TSC, APERF, MPERF
+    // PKG/DRAM energy, PKG/DRAM power limit
+    //poll_power(logfile);
+    // PKG/DRAM energy, PKG/DRAM power limit, fixed counters, TSC, APERF, MPERF
+    variorum_monitoring(logfile);
 
 #if 0
     total_joules += rapl_data[0] + rapl_data[1];
@@ -47,7 +49,9 @@ void take_measurement(void)
     {
         min_watts = rapl_data[5];
     }
-    fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(), rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8], rapl_data[9], instr0, instr1, core0, core1);
+    fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
+            rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
+            rapl_data[9], instr0, instr1, core0, core1);
 #endif
     pthread_mutex_unlock(&mlock);
 }

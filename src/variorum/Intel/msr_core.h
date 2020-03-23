@@ -135,7 +135,7 @@ struct msr_batch_op
 //  read/write_msr_all_cores_v uses a vector of values.
 //  write_msr_all_cores writes all cores with a single value.
 //  read/write_msr_single_core contains all of the low-level logic.
-//	The rest of the functions are wrappers that call these two functions.
+//  The rest of the functions are wrappers that call these two functions.
 
 /// @brief Validate specific socket exists in the platform configuration.
 ///

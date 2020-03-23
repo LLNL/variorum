@@ -15,7 +15,7 @@ static inline double do_work(int input)
 
     for (i = 0; i < 100000; i++)
     {
-        result += i*result;
+        result += i * result;
     }
 
     return result;

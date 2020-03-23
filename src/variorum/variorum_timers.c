@@ -50,6 +50,6 @@ void sleep_ms(long ms)
 {
     struct timeval i;
     i.tv_sec = ms / 1000;
-    i.tv_usec = (ms%1000) * 1000;
+    i.tv_usec = (ms % 1000) * 1000;
     select(0, NULL, NULL, NULL, &i);
 }

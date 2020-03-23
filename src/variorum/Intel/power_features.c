@@ -16,7 +16,8 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-static int translate(const unsigned socket, uint64_t *bits, double *units, int type, off_t msr)
+static int translate(const unsigned socket, uint64_t *bits, double *units,
+                     int type, off_t msr)
 {
     static int init_translate = 0;
     double logremainder = 0.0;
@@ -36,7 +37,7 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
         get_rapl_power_unit(ru, msr);
     }
 
-    switch(type)
+    switch (type)
     {
         case BITS_TO_WATTS:
             *units = (double)(*bits) * ru[socket].watts;
@@ -47,7 +48,8 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
             {
                 *units = (double)(*bits) / STD_ENERGY_UNIT;
 #ifdef VARIORUM_DEBUG
-                fprintf(stderr, "DEBUG: (translate_dram) %f is %f joules\n", (double)*bits, *units);
+                fprintf(stderr, "DEBUG: (translate_dram) %f is %f joules\n", (double)*bits,
+                        *units);
 #endif
                 return 0;
             }
@@ -66,14 +68,17 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
             timeval_y = *bits & 0x1F;
             timeval_z = (*bits & 0x60) >> 5;
             /* Dividing by time unit because it's stored as (1/(2^TU))^-1. */
-            *units = ((1 + 0.25 * timeval_z) * pow(2.0,(double)timeval_y)) / ru[socket].seconds;
+            *units = ((1 + 0.25 * timeval_z) * pow(2.0,
+                                                   (double)timeval_y)) / ru[socket].seconds;
             // Temporary fix for haswell
             //    if (model == 0x3F)
             //    {
             //        *units = *units * 2.5 + 15.0;
             //    }
 #ifdef LIBMSR_DEBUG
-            fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits);
+            fprintf(stderr,
+                    "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx\n",
+                    getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits);
 #endif
             break;
         case SECONDS_TO_BITS_STD:
@@ -103,28 +108,34 @@ static int translate(const unsigned socket, uint64_t *bits, double *units, int t
             /* Store the bits in the Intel specified format. */
             *bits = (uint64_t)(timeval_y | (timeval_z << 5));
 #ifdef LIBMSR_DEBUG
-            fprintf(stderr, "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx, remainder is %lf\n", getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits, logremainder);
+            fprintf(stderr,
+                    "%s %s::%d DEBUG: timeval_z is %lx, timeval_y is %lx, units is %lf, bits is %lx, remainder is %lf\n",
+                    getenv("HOSTNAME"), __FILE__, __LINE__, timeval_z, timeval_y, *units, *bits,
+                    logremainder);
 #endif
             break;
         default:
-            fprintf(stderr, "%s:%d  Unknown value %d.  This is bad.\n", __FILE__, __LINE__, type);
+            fprintf(stderr, "%s:%d  Unknown value %d.  This is bad.\n", __FILE__, __LINE__,
+                    type);
             *bits = -1;
-            *units= -1.0;
+            *units = -1.0;
             break;
     }
     return 0;
 }
 
-static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const unsigned offset, off_t msr)
+static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit,
+                          const unsigned offset, off_t msr)
 {
     uint64_t watts_bits = 0;
     uint64_t seconds_bits = 0;
 
-    watts_bits = MASK_VAL(limit->bits, 14+offset, 0+offset);
-    seconds_bits = MASK_VAL(limit->bits, 23+offset, 17+offset);
+    watts_bits = MASK_VAL(limit->bits, 14 + offset, 0 + offset);
+    seconds_bits = MASK_VAL(limit->bits, 23 + offset, 17 + offset);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (calc_rapl_bits)\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "%s %s::%d DEBUG: (calc_rapl_bits)\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__);
 #endif
     /*
      * We have been given watts and seconds and need to translate these into
@@ -134,14 +145,17 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const
     /* There is only 1 translation for watts (so far). */
     translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr);
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts, watts_bits);
-    fprintf(stderr, "Converted %lf seconds into %lx bits.\n", limit->seconds, seconds_bits);
+    fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts,
+            watts_bits);
+    fprintf(stderr, "Converted %lf seconds into %lx bits.\n", limit->seconds,
+            seconds_bits);
 #endif
     /* Check to make sure the specified watts is not larger than the allowed
      * (15 bits). */
-    if ((double)watts_bits > (pow(2,15))-1)
+    if ((double)watts_bits > (pow(2, 15)) - 1)
     {
-        variorum_error_handler("Power limit is too large", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Power limit is too large", VARIORUM_ERROR_INVAL,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
     watts_bits <<= 0 + offset;
@@ -163,7 +177,8 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit, const
     return 0;
 }
 
-static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit, const unsigned offset, off_t msr)
+static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit,
+                               const unsigned offset, off_t msr)
 {
     uint64_t watts_bits = 0;
     uint64_t seconds_bits = 0;
@@ -172,34 +187,38 @@ static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit, 
     sockets_assert(&socket, __LINE__, __FILE__);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (calc_rapl_from_bits)\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "%s %s::%d DEBUG: (calc_rapl_from_bits)\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__);
 #endif
-    watts_bits = MASK_VAL(limit->bits, 14+offset, 0+offset);
-    seconds_bits = MASK_VAL(limit->bits, 23+offset, 17+offset);
+    watts_bits = MASK_VAL(limit->bits, 14 + offset, 0 + offset);
+    seconds_bits = MASK_VAL(limit->bits, 23 + offset, 17 + offset);
 
     // We have been given the bits to be written to the msr.
     // For sake of completeness, translate these into watts and seconds.
     ret = translate(socket, &watts_bits, &limit->watts, BITS_TO_WATTS, msr);
     // If the offset is > 31 (we are writing the upper PKG limit), then no
     // translation needed
-    ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
-//    if (offset < 32)
-//    {
-//        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
-//    }
-//    else
-//    {
-//        limit->seconds = seconds_bits;
-//    }
+    ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD,
+                     msr);
+    //    if (offset < 32)
+    //    {
+    //        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
+    //    }
+    //    else
+    //    {
+    //        limit->seconds = seconds_bits;
+    //    }
     if (ret < 0)
     {
-        variorum_error_handler("Translation from bits to values failed", VARIORUM_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Translation from bits to values failed",
+                               VARIORUM_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return ret;
     }
     return 0;
 }
 
-static int calc_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1, struct rapl_limit *limit2, off_t msr)
+static int calc_package_rapl_limit(const unsigned socket,
+                                   struct rapl_limit *limit1, struct rapl_limit *limit2, off_t msr)
 {
     /* If we have been given a lower rapl limit. */
     if (limit1 != NULL)
@@ -243,7 +262,8 @@ static int calc_package_rapl_limit(const unsigned socket, struct rapl_limit *lim
     return 0;
 }
 
-static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit, off_t msr)
+static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
+                                off_t msr)
 {
     if (limit != NULL)
     {
@@ -266,7 +286,8 @@ static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
     return 0;
 }
 
-static void create_rapl_data_batch(struct rapl_data *rapl, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+static void create_rapl_data_batch(struct rapl_data *rapl,
+                                   off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     int nsockets;
     variorum_set_topology(&nsockets, NULL, NULL);
@@ -339,27 +360,31 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
         /* Storing (1/(2^ESU))^-1 for maximum precision. */
         ru[i].joules = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 12, 8)));
         /* Default is 0011b or 1/8 Watts. */
-        ru[i].watts = ((1.0)/((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3, 0)))));
+        ru[i].watts = ((1.0) / ((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3,
+                                               0)))));
 #ifdef VARIORUM_DEBUG
         fprintf(stdout, "Pkg %d MSR_RAPL_POWER_UNIT\n", i);
-        fprintf(stdout, "Raw: %f sec, %f J, %f watts\n", ru[i].seconds, ru[i].joules, ru[i].watts);
-        fprintf(stdout, "Adjusted: %f sec, %f J, %f watts\n", 1/ru[i].seconds, 1/ru[i].joules, ru[i].watts);
+        fprintf(stdout, "Raw: %f sec, %f J, %f watts\n", ru[i].seconds, ru[i].joules,
+                ru[i].watts);
+        fprintf(stdout, "Adjusted: %f sec, %f J, %f watts\n", 1 / ru[i].seconds,
+                1 / ru[i].joules, ru[i].watts);
 #endif
     }
 
-//    /* Check consistency between packages. */
-//    uint64_t *tmp = (uint64_t *) libmsr_calloc(sockets, sizeof(uint64_t));
-//    for (i = 0; i < sockets; i++)
-//    {
-//        read_msr_by_coord(i, 0, 0, MSR_RAPL_POWER_UNIT, tmp);
-//        double energy = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 12, 8)));
-//        double seconds = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 19, 16)));
-//        double power = ((1.0)/((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3, 0)))));
-//        if (energy != ru[i].joules || power != ru[i].watts || seconds != ru[i].seconds)
-//        {
-//            variorum_error_handler("Inconsistent rapl power units across packages", VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-//        }
-//    }
+    //    /* Check consistency between packages. */
+    //    uint64_t *tmp = (uint64_t *) libmsr_calloc(sockets, sizeof(uint64_t));
+    //    for (i = 0; i < sockets; i++)
+    //    {
+    //        read_msr_by_coord(i, 0, 0, MSR_RAPL_POWER_UNIT, tmp);
+    //        double energy = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 12, 8)));
+    //        double seconds = (double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 19, 16)));
+    //        double power = ((1.0)/((double)(1 << (MASK_VAL(ru[i].msr_rapl_power_unit, 3, 0)))));
+    //        if (energy != ru[i].joules || power != ru[i].watts || seconds != ru[i].seconds)
+    //        {
+    //            variorum_error_handler("Inconsistent rapl power units across packages",
+    //                                   VARIORUM_ERROR_RUNTIME, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+    //        }
+    //    }
     return 0;
 }
 
@@ -376,10 +401,13 @@ void dump_rapl_power_unit(FILE *writedest, off_t msr)
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
     get_rapl_power_unit(ru, msr);
 
-    fprintf(writedest, "_RAPL_POWER_UNITS Offset Host Socket Bits WattsUnit JoulesUnit SecondsUnit\n");
+    fprintf(writedest,
+            "_RAPL_POWER_UNITS Offset Host Socket Bits WattsUnit JoulesUnit SecondsUnit\n");
     for (socket = 0; socket < nsockets; socket++)
     {
-        fprintf(writedest, "_RAPL_POWER_UNITS 0x%lx %s %d 0x%lx %f %f %f\n", msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts, 1/ru[socket].joules, 1/ru[socket].seconds);
+        fprintf(writedest, "_RAPL_POWER_UNITS 0x%lx %s %d 0x%lx %f %f %f\n", msr,
+                hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
+                1 / ru[socket].joules, 1 / ru[socket].seconds);
     }
     free(ru);
 }
@@ -399,7 +427,10 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        fprintf(writedest, "_RAPL_POWER_UNITS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx PowerUnit: %fW EnergyUnit: %fJ TimeUnit: %f\n", msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts, 1/ru[socket].joules, 1/ru[socket].seconds);
+        fprintf(writedest,
+                "_RAPL_POWER_UNITS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx PowerUnit: %fW EnergyUnit: %fJ TimeUnit: %f\n",
+                msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
+                1 / ru[socket].joules, 1 / ru[socket].seconds);
     }
     free(ru);
 }
@@ -415,12 +446,15 @@ void dump_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!init_dump_package_power_info)
     {
         init_dump_package_power_info = 1;
-        fprintf(writedest, "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower MinPower MaxTimeWindow ThermPower\n");
+        fprintf(writedest,
+                "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower MinPower MaxTimeWindow ThermPower\n");
     }
 
     if (!get_rapl_power_info(socket, &info, msr))
     {
-        fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n", msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+        fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+                msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
+                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
 }
 
@@ -433,11 +467,15 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 
     if (!get_rapl_power_info(socket, &info, msr))
     {
-        fprintf(writedest, "_PACKAGE_POWER_INFO Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx MaxPower: %lfW MinPower: %lfW MaxWindow: %lf sec ThermPower: %lfW\n", msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+        fprintf(writedest,
+                "_PACKAGE_POWER_INFO Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx MaxPower: %lfW MinPower: %lfW MaxWindow: %lf sec ThermPower: %lfW\n",
+                msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
+                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
 }
 
-void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void dump_package_power_limit(FILE *writedest, off_t msr_power_limit,
+                              off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
     static int init_dump_package_power_limit = 0;
@@ -450,16 +488,20 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_
     if (!init_dump_package_power_limit)
     {
         init_dump_package_power_limit = 1;
-        fprintf(writedest, "_PACKAGE_POWER_LIMITS Offset Host Socket PowerLimBits Watts1 Seconds1 Watts2 Seconds2\n");
+        fprintf(writedest,
+                "_PACKAGE_POWER_LIMITS Offset Host Socket PowerLimBits Watts1 Seconds1 Watts2 Seconds2\n");
     }
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PACKAGE_POWER_LIMITS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
+        fprintf(writedest, "_PACKAGE_POWER_LIMITS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+                msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
+                l2.seconds);
     }
 }
 
-void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                           off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
     static int init_dump_dram_power_limit = 0;
@@ -472,16 +514,19 @@ void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rap
     if (!init_dump_dram_power_limit)
     {
         init_dump_dram_power_limit = 1;
-        fprintf(writedest, "_DRAM_POWER_LIMIT Offset Host Socket PowerLimBits Watts Seconds\n");
+        fprintf(writedest,
+                "_DRAM_POWER_LIMIT Offset Host Socket PowerLimBits Watts Seconds\n");
     }
 
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_DRAM_POWER_LIMIT 0x%lx %s %d 0x%lx %lf %lf\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+        fprintf(writedest, "_DRAM_POWER_LIMIT 0x%lx %s %d 0x%lx %lf %lf\n",
+                msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
     }
 }
 
-void print_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
+                               off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
     char hostname[1024];
@@ -490,11 +535,15 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PACKAGE_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim1: %lfW SecTimeWin1: %lf sec WattsPowerLim2: %lfW SecTimeWin2: %lf sec\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts, l2.seconds);
+        fprintf(writedest,
+                "_PACKAGE_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim1: %lfW SecTimeWin1: %lf sec WattsPowerLim2: %lfW SecTimeWin2: %lf sec\n",
+                msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
+                l2.seconds);
     }
 }
 
-void print_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                            off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
     char hostname[1024];
@@ -503,11 +552,14 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_ra
 
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_DRAM_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim: %lfW SecTimeWin: %lf sec\n", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+        fprintf(writedest,
+                "_DRAM_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim: %lfW SecTimeWin: %lf sec\n",
+                msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
     }
 }
 
-int get_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1, struct rapl_limit *limit2, off_t msr_power_limit, off_t msr_rapl_unit)
+int get_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1,
+                           struct rapl_limit *limit2, off_t msr_power_limit, off_t msr_rapl_unit)
 {
     if (limit1 != NULL)
     {
@@ -523,7 +575,8 @@ int get_package_rapl_limit(const unsigned socket, struct rapl_limit *limit1, str
     return 0;
 }
 
-int get_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit, off_t msr_power_limit, off_t msr_rapl_unit)
+int get_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
+                        off_t msr_power_limit, off_t msr_rapl_unit)
 {
     if (limit != NULL)
     {
@@ -534,12 +587,14 @@ int get_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit, off_t m
     return 0;
 }
 
-int set_package_power_limit(const unsigned socket, int package_power_limit, off_t msr_power_limit, off_t msr_rapl_unit)
+int set_package_power_limit(const unsigned socket, int package_power_limit,
+                            off_t msr_power_limit, off_t msr_rapl_unit)
 {
     uint64_t val = 0;
     uint64_t currentval = 0;
     int ret = 0;
-    struct rapl_limit *limit1 = (struct rapl_limit *) malloc(sizeof(struct rapl_limit));
+    struct rapl_limit *limit1 = (struct rapl_limit *) malloc(sizeof(
+                                    struct rapl_limit));
     struct rapl_limit *limit2 = NULL;
 
     limit1->watts = package_power_limit;
@@ -553,7 +608,9 @@ int set_package_power_limit(const unsigned socket, int package_power_limit, off_
     if (limit1 == NULL)
     {
 #ifdef VARIORUM_DEBUG
-        fprintf(stderr, "%s %s::%d DEBUG: only one rapl limit, retrieving any existing power limits\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+        fprintf(stderr,
+                "%s %s::%d DEBUG: only one rapl limit, retrieving any existing power limits\n",
+                getenv("HOSTNAME"), __FILE__, __LINE__);
 #endif
         ret = read_msr_by_coord(socket, 0, 0, msr_power_limit, &currentval);
         /* We want to keep the lower limit so mask off all other bits. */
@@ -562,7 +619,9 @@ int set_package_power_limit(const unsigned socket, int package_power_limit, off_
     else if (limit2 == NULL)
     {
 #ifdef VARIORUM_DEBUG
-        fprintf(stderr, "%s %s::%d DEBUG: only one rapl limit, retrieving any existing power limits\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+        fprintf(stderr,
+                "%s %s::%d DEBUG: only one rapl limit, retrieving any existing power limits\n",
+                getenv("HOSTNAME"), __FILE__, __LINE__);
 #endif
         ret = read_msr_by_coord(socket, 0, 0, msr_power_limit, &currentval);
         /* We want to keep the upper limit so mask off all other bits. */
@@ -591,14 +650,16 @@ int set_package_power_limit(const unsigned socket, int package_power_limit, off_
     return ret;
 }
 
-int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info, off_t msr)
+int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
+                        off_t msr)
 {
     uint64_t val = 0;
 
     sockets_assert(&socket, __LINE__, __FILE__);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_power_info)\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_power_info)\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__);
 #endif
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_pkg_power_info));
@@ -635,7 +696,8 @@ int rapl_storage(struct rapl_data **data)
             *data = rapl;
         }
 #ifdef VARIORUM_DEBUG
-        fprintf(stderr, "%s %s::%d DEBUG: (storage) initialized rapl data at %p\n", getenv("HOSTNAME"), __FILE__, __LINE__, rapl);
+        fprintf(stderr, "%s %s::%d DEBUG: (storage) initialized rapl data at %p\n",
+                getenv("HOSTNAME"), __FILE__, __LINE__, rapl);
         fprintf(stderr, "DEBUG: socket 0 has pkg_bits at %p\n", &rapl[0].pkg_bits);
 #endif
         return 0;
@@ -648,7 +710,8 @@ int rapl_storage(struct rapl_data **data)
     return 0;
 }
 
-int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
+              off_t msr_dram_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     int nsockets;
@@ -656,7 +719,8 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_e
     variorum_set_topology(&nsockets, NULL, NULL);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%lu\n", getenv("HOSTNAME"), __FILE__, __LINE__, nsockets);
+    fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%lu\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__, nsockets);
 #endif
 
     if (rapl == NULL)
@@ -669,7 +733,8 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_e
 
     if (rapl == NULL)
     {
-        variorum_error_handler("RAPL storage failed", VARIORUM_ERROR_RAPL_INIT, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("RAPL storage failed", VARIORUM_ERROR_RAPL_INIT,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         return -1;
     }
 
@@ -689,7 +754,8 @@ int delta_rapl_data(off_t msr_rapl_unit)
     int i = 0;
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (delta_rapl_data)\n", getenv("HOSTNAME"), __FILE__, __LINE__);
+    fprintf(stderr, "%s %s::%d DEBUG: (delta_rapl_data)\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__);
 #endif
     if (!init)
     {
@@ -717,27 +783,35 @@ int delta_rapl_data(off_t msr_rapl_unit)
         /* Check to see if there was wraparound and use corresponding translation. */
         if ((double)*rapl->pkg_bits[i] - (double)rapl->old_pkg_bits[i] < 0)
         {
-            rapl->pkg_delta_bits[i] = (uint64_t)((*rapl->pkg_bits[i] + (uint64_t)max_joules) - rapl->old_pkg_bits[i]);
-            translate(i, &rapl->pkg_delta_bits[i], &rapl->pkg_delta_joules[i], BITS_TO_JOULES, msr_rapl_unit);
+            rapl->pkg_delta_bits[i] = (uint64_t)((*rapl->pkg_bits[i] +
+                                                  (uint64_t)max_joules) - rapl->old_pkg_bits[i]);
+            translate(i, &rapl->pkg_delta_bits[i], &rapl->pkg_delta_joules[i],
+                      BITS_TO_JOULES, msr_rapl_unit);
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "OVF pkg%d new=0x%lx old=0x%lx -> %lf\n", i, *rapl->pkg_bits[i], rapl->old_pkg_bits[i], rapl->pkg_delta_joules[i]);
+            fprintf(stderr, "OVF pkg%d new=0x%lx old=0x%lx -> %lf\n", i, *rapl->pkg_bits[i],
+                    rapl->old_pkg_bits[i], rapl->pkg_delta_joules[i]);
 #endif
         }
         else
         {
             rapl->pkg_delta_joules[i] = rapl->pkg_joules[i] - rapl->old_pkg_joules[i];
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "pkg%d pkg_joules[%d] = %lf, old_pkg_joules[%d] = %lf, pkg_delta_joules[%d] = %lf\n", i, i, rapl->pkg_joules[i], i, rapl->old_pkg_joules[i], i, rapl->pkg_delta_joules[i]);
+            fprintf(stderr,
+                    "pkg%d pkg_joules[%d] = %lf, old_pkg_joules[%d] = %lf, pkg_delta_joules[%d] = %lf\n",
+                    i, i, rapl->pkg_joules[i], i, rapl->old_pkg_joules[i], i,
+                    rapl->pkg_delta_joules[i]);
 #endif
         }
         /* This case should not happen. */
         if (rapl->pkg_delta_joules[i] < 0)
         {
-            variorum_error_handler("Energy used since last same is negative", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            variorum_error_handler("Energy used since last same is negative",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         }
         if (rapl->dram_joules[i] - rapl->old_dram_joules[i] < 0)
         {
-            rapl->dram_delta_joules[i] = (rapl->dram_joules[i] + max_joules) - rapl->old_dram_joules[i];
+            rapl->dram_delta_joules[i] = (rapl->dram_joules[i] + max_joules) -
+                                         rapl->old_dram_joules[i];
         }
         else
         {
@@ -758,7 +832,8 @@ int delta_rapl_data(off_t msr_rapl_unit)
     return 0;
 }
 
-void print_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void print_power_data(FILE *writedest, off_t msr_power_limit,
+                      off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -783,16 +858,24 @@ void print_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_uni
     for (i = 0; i < nsockets; i++)
     {
 #ifdef VARIORUM_DEBUG
-        fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4lf\n", i, *rapl->pkg_bits[i], rapl->pkg_joules[i]);
+        fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4lf\n", i,
+                *rapl->pkg_bits[i], rapl->pkg_joules[i]);
 #endif
-        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
-                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i], rapl->pkg_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
-        fprintf(writedest, "_DRAM_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
-                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i], rapl->dram_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
+        fprintf(writedest,
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                rapl->pkg_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        fprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                rapl->dram_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
 }
 
-void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void dump_power_data(FILE *writedest, off_t msr_power_limit,
+                     off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -810,25 +893,31 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
     if (!init)
     {
         gettimeofday(&start, NULL);
-        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
+        fprintf(writedest,
+                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
     for (i = 0; i < nsockets; i++)
     {
         fprintf(writedest, "_PACKAGE_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
-                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i], rapl->pkg_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                rapl->pkg_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
 
     if (!init)
     {
-        fprintf(writedest, "_DRAM_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
+        fprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
     {
         fprintf(writedest, "_DRAM_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
-                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i], rapl->dram_watts[i], rapl->elapsed, now.tv_sec-start.tv_sec + (now.tv_usec-start.tv_usec)/1000000.0);
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                rapl->dram_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
 }
 
@@ -871,7 +960,8 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit
 //    return 0;
 //}
 
-int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
+                   off_t msr_dram_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
@@ -898,7 +988,8 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
         }
     }
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (read_rapl_data): socket=%lu at address %p\n", getenv("HOSTNAME"), __FILE__, __LINE__, nsockets, rapl);
+    fprintf(stderr, "%s %s::%d DEBUG: (read_rapl_data): socket=%lu at address %p\n",
+            getenv("HOSTNAME"), __FILE__, __LINE__, nsockets, rapl);
 #endif
     /* Move current variables to "old" variables. */
     rapl->old_now.tv_sec = rapl->now.tv_sec;
@@ -907,15 +998,19 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
     gettimeofday(&(rapl->now), NULL);
     if (init)
     {
-        rapl->elapsed = (rapl->now.tv_sec - rapl->old_now.tv_sec) + (rapl->now.tv_usec - rapl->old_now.tv_usec)/1000000.0;
+        rapl->elapsed = (rapl->now.tv_sec - rapl->old_now.tv_sec) +
+                        (rapl->now.tv_usec - rapl->old_now.tv_usec) / 1000000.0;
         /* This case should not happen. */
-        if (rapl->elapsed < 0) {
-            variorum_error_handler("Elapsed time since last sample is negative", VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        if (rapl->elapsed < 0)
+        {
+            variorum_error_handler("Elapsed time since last sample is negative",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         }
         for (i = 0; i < nsockets; i++)
         {
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "DEBUG: socket %lu msr 0x611 has destination %p\n", nsockets, rapl->pkg_bits);
+            fprintf(stderr, "DEBUG: socket %lu msr 0x611 has destination %p\n", nsockets,
+                    rapl->pkg_bits);
 #endif
             rapl->old_pkg_bits[i] = *rapl->pkg_bits[i];
             rapl->old_pkg_joules[i] = rapl->pkg_joules[i];
@@ -923,7 +1018,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
             fprintf(stderr, "DEBUG: (read_rapl_data): made it to 1st mark\n");
 #endif
 
-            rapl->old_dram_bits[i]	= *rapl->dram_bits[i];
+            rapl->old_dram_bits[i]  = *rapl->dram_bits[i];
             rapl->old_dram_joules[i] = rapl->dram_joules[i];
 
             ///* Make sure the pkg perf status register exists. */
@@ -941,18 +1036,20 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
     read_batch(RAPL_DATA);
     for (i = 0; i < nsockets; i++)
     {
-//        if (*rapl_flags & DRAM_ENERGY_STATUS)
-//        {
-//#ifdef VARIORUM_DEBUG
-//            fprintf(stderr, "DEBUG: (read_rapl_data): translating dram\n");
-//#endif
-//            translate(s, rapl->dram_bits[s], &rapl->dram_joules[s], BITS_TO_JOULES_DRAM);
-//        }
+        //        if (*rapl_flags & DRAM_ENERGY_STATUS)
+        //        {
+        //#ifdef VARIORUM_DEBUG
+        //            fprintf(stderr, "DEBUG: (read_rapl_data): translating dram\n");
+        //#endif
+        //            translate(s, rapl->dram_bits[s], &rapl->dram_joules[s], BITS_TO_JOULES_DRAM);
+        //        }
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: (read_rapl_data): translating pkg\n");
 #endif
-        translate(i, rapl->pkg_bits[i], &rapl->pkg_joules[i], BITS_TO_JOULES, msr_rapl_unit);
-        translate(i, rapl->dram_bits[i], &rapl->dram_joules[i], BITS_TO_JOULES_DRAM, msr_rapl_unit);
+        translate(i, rapl->pkg_bits[i], &rapl->pkg_joules[i], BITS_TO_JOULES,
+                  msr_rapl_unit);
+        translate(i, rapl->dram_bits[i], &rapl->dram_joules[i], BITS_TO_JOULES_DRAM,
+                  msr_rapl_unit);
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: socket %d\n", i);
         fprintf(stderr, "DEBUG: elapsed %f\n", rapl->elapsed);
@@ -966,7 +1063,9 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_d
     return 0;
 }
 
-void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dram_power_limit, off_t msr_rapl_unit, off_t msr_package_energy_status, off_t msr_dram_energy_status)
+void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
+                        off_t msr_dram_power_limit, off_t msr_rapl_unit,
+                        off_t msr_package_energy_status, off_t msr_dram_energy_status)
 {
     // The length of the rlim array assumes dual socket system.
     static struct rapl_limit *rlim;
@@ -999,9 +1098,13 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
         fprintf(writedest, "_POWMON time");
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest, " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts", i, i, i, i, i);
-            get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx+1]), msr_pkg_power_limit, msr_rapl_unit);
-            get_dram_rapl_limit(i, &(rlim[rlim_idx+2]), msr_dram_power_limit, msr_rapl_unit);
+            fprintf(writedest,
+                    " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
+                    i, i, i, i, i);
+            get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx + 1]),
+                                   msr_pkg_power_limit, msr_rapl_unit);
+            get_dram_rapl_limit(i, &(rlim[rlim_idx + 2]), msr_dram_power_limit,
+                                msr_rapl_unit);
             rlim_idx += 3;
             // rlim[0] = first socket, power limit 1
             // rlim[1] = first socket, power limit 2
@@ -1023,7 +1126,9 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit, off_t msr_dr
     fprintf(writedest, "_POWMON %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i], rlim[rlim_idx].watts, rlim[rlim_idx+1].watts, rapl->dram_delta_joules[i], rlim[rlim_idx+2].watts);
+        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
+                rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
+                rlim[rlim_idx + 2].watts);
         rlim_idx += 3;
     }
     fprintf(writedest, "\n");
