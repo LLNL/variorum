@@ -1,5 +1,7 @@
 #!/bin/bash
 
+FILES=$(find src -type f  \( -name *.[ch] -o -name *.cpp \) | grep -v thirdparty_builtin)
+
 RES=$(astyle --errors-to-stdout \
              --preserve-date \
              --style=allman \
@@ -20,11 +22,9 @@ RES=$(astyle --errors-to-stdout \
              --break-after-logical \
              --dry-run \
              --indent-switches \
-             src/variorum/*.[ch] \
-             src/variorum/*/*.[ch] \
-             src/examples/*.c \
-             src/tests/*.cpp \
-             src/powmon/*.[ch] | grep Formatted)
+             ${FILES} | grep Formatted)
+
+echo "$RES"
 
 if [ -z "$RES" ]; then
     exit 0
