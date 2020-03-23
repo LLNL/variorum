@@ -179,6 +179,7 @@ jobs:
       - echo -e "PWD:" ${PWD}
       - ./scripts/travis/astyle-format.sh
       - err=$?
+      - echo -e "err:" ${err}
       - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
 
 notifications:
