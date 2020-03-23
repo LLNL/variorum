@@ -177,10 +177,7 @@ jobs:
       - export PATH="${PWD}/bin:${PATH}"
       - cd -
       - echo -e "PWD:" ${PWD}
-      - ./scripts/travis/astyle-format.sh
-      - err=$?
-      - echo -e "err:" ${err}
-      - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
+      - ./scripts/astyle-format.sh || travis_terminate 1
 
 notifications:
   email:

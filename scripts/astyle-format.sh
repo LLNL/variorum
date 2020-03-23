@@ -2,7 +2,7 @@
 
 FILES=$(find src -type f  \( -name *.[ch] -o -name *.cpp \) | grep -v thirdparty_builtin)
 
-RES=$(astyle --errors-to-stdout \
+TMP=$(astyle --errors-to-stdout \
              --preserve-date \
              --style=allman \
              --indent=spaces=4 \
@@ -22,9 +22,11 @@ RES=$(astyle --errors-to-stdout \
              --break-after-logical \
              --dry-run \
              --indent-switches \
-             ${FILES} | grep Formatted)
+             ${FILES})
 
-echo "$RES"
+RES=$(echo "$TMP" | grep Formatted)
+
+echo -e "$RES"
 
 if [ -z "$RES" ]; then
     exit 0
