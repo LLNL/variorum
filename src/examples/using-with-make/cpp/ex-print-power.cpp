@@ -6,7 +6,7 @@
 #include <iostream>
 
 extern "C" {
-    #include <variorum.h>
+#include <variorum.h>
 }
 
 #ifdef SECOND_RUN
@@ -16,7 +16,7 @@ static inline double do_work(int input)
 
     for (int i = 0; i < 100000; i++)
     {
-        result += i*result;
+        result += i * result;
     }
 
     return result;
