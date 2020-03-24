@@ -1,4 +1,5 @@
 .*.swp
+*.orig
 *.pyc
 CMakeCache.txt
 CMakeFiles/

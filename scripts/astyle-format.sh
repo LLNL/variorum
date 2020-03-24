@@ -20,7 +20,6 @@ TMP=$(astyle --errors-to-stdout \
              --keep-one-line-statements \
              --max-code-length=80 \
              --break-after-logical \
-             --dry-run \
              --indent-switches \
              ${FILES})
 
