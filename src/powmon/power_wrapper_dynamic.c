@@ -68,7 +68,7 @@ void *power_set_measurement(void *arg)
     while (running)
     {
         take_measurement();
-        if (poll_num%5 == 0)
+        if (poll_num % 5 == 0)
         {
             if (watts >= watt_cap)
             {
@@ -89,7 +89,7 @@ void *power_set_measurement(void *arg)
     return arg;
 }
 
-int main(int argc, char**argv)
+int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
@@ -130,7 +130,7 @@ int main(int argc, char**argv)
 
     while ((opt = getopt(argc, argv, "cw:a:")) != -1)
     {
-        switch(opt)
+        switch (opt)
         {
             case 'c':
                 highlander_clean();
@@ -172,7 +172,7 @@ int main(int argc, char**argv)
         {
             return 1; /* memory allocation failed */
         }
-        arg[n_spaces-1] = app_split;
+        arg[n_spaces - 1] = app_split;
         app_split = strtok(NULL, " ");
     }
     arg = realloc(arg, sizeof(char *) * (n_spaces + 1));
@@ -180,7 +180,7 @@ int main(int argc, char**argv)
 
 #ifdef VARIORUM_DEBUG
     int i;
-    for (i = 0; i < (n_spaces+1); ++i)
+    for (i = 0; i < (n_spaces + 1); ++i)
     {
         printf("arg[%d] = %s\n", i, arg[i]);
     }
@@ -197,16 +197,20 @@ int main(int argc, char**argv)
 
         asprintf(&fname_dat, "%s.powmon.dat", hostname);
 
-        logfd = open(fname_dat, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
+        logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
         if (logfd < 0)
         {
-            fprintf(stderr, "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0], hostname, fname_dat, strerror(errno));
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
             return 1;
         }
         logfile = fdopen(logfd, "w");
         if (logfile == NULL)
         {
-            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0], hostname, fname_dat, strerror(errno));
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
             return 1;
         }
 
@@ -255,22 +259,27 @@ int main(int argc, char**argv)
         /* Output summary data. */
         asprintf(&fname_summary, "%s.power.summary", hostname);
 
-        logfd = open(fname_summary, O_WRONLY|O_CREAT|O_EXCL|O_NOATIME|O_NDELAY, S_IRUSR|S_IWUSR);
+        logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
         if (logfd < 0)
         {
-            fprintf(stderr, "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0], hostname, fname_summary, strerror(errno));
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
             return 1;
         }
         summaryfile = fdopen(logfd, "w");
         if (summaryfile == NULL)
         {
-            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0], hostname, fname_summary, strerror(errno));
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
             return 1;
         }
 
         char *msg;
         //asprintf(&msg, "host: %s\npid: %d\ntotal: %lf\nallocated: %lf\nmax_watts: %lf\nmin_watts: %lf\nruntime ms: %lu\n,start: %lu\nend: %lu\n", hostname, app_pid, total_joules, limit_joules, max_watts, min_watts, end-start, start, end);
-        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n", hostname, app_pid, end-start, start, end);
+        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                 hostname, app_pid, end - start, start, end);
 
         fprintf(summaryfile, "%s", msg);
         fclose(summaryfile);

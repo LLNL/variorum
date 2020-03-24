@@ -22,7 +22,7 @@ int highlander(void)
     }
 
     semk = sem_open("/power_wrapperK", O_CREAT | O_EXCL, 0600, 0);
-    if(semk == NULL || semk == SEM_FAILED)
+    if (semk == NULL || semk == SEM_FAILED)
     {
         semk = sem_open("/power_wrapperK", O_CREAT, 0600, 0);
         seml = sem_open("/power_wrapperL", O_CREAT, 0600, 0);

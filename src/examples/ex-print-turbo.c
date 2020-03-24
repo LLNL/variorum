@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 {
     int ret;
 
-	ret = variorum_print_turbo();
-	if (ret != 0)
+    ret = variorum_print_turbo();
+    if (ret != 0)
     {
-		printf("Print turbo failed!\n");
-	}
+        printf("Print turbo failed!\n");
+    }
     return ret;
 }

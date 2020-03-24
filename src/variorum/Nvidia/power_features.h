@@ -12,7 +12,7 @@
 #include <nvml.h>
 
 unsigned int m_total_unit_devices;
-nvmlDevice_t* m_unit_devices_file_desc;
+nvmlDevice_t *m_unit_devices_file_desc;
 
 void initNVML(void);
 

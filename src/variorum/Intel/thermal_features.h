@@ -241,7 +241,7 @@ struct pkg_therm_stat
     /// operate below OS-requested p-state. Software can examine
     /// IA32_THERM_STATUS to determine if the cause originates from a processor
     /// core. This bit (bit 10) is RO.
-    int power_limit_status;	//Read only
+    int power_limit_status; //Read only
     /// @brief Sticky bit indicating if any processor in the package went below
     /// OS-requested p-state or OS-requested clock modulation duty cycle since
     /// last cleared or last reset.

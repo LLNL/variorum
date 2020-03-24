@@ -25,14 +25,14 @@
 //    /// @brief On-demand clock modulation duty cycle.
 //    int duty_cycle;
 //    //   Value   | Duty Cycle
-//    // 000b = 0	 |  Reserved
-//    // 001b = 1	 |    12.5% (default)
-//    // 010b = 2	 |    25.0%
-//    // 011b = 3	 |    37.5%
-//    // 100b = 4	 |    50.0%
-//    // 101b = 5	 |    63.5%
-//    // 110b = 6	 |    75.0%
-//    // 111b = 7	 |    87.5%
+//    // 000b = 0    |  Reserved
+//    // 001b = 1    |    12.5% (default)
+//    // 010b = 2    |    25.0%
+//    // 011b = 3    |    37.5%
+//    // 100b = 4    |    50.0%
+//    // 101b = 5    |    63.5%
+//    // 110b = 6    |    75.0%
+//    // 111b = 7    |    87.5%
 //};
 
 /// @brief Structure containing data for IA32_APERF, IA32_MPERF, and

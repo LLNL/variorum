@@ -77,11 +77,13 @@ int fm_06_3f_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
-            dump_package_power_limit(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, socket);
+            dump_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                     msrs.msr_rapl_power_unit, socket);
         }
         else if (long_ver == 1)
         {
-            print_package_power_limit(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, socket);
+            print_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                      msrs.msr_rapl_power_unit, socket);
         }
     }
 
@@ -89,11 +91,13 @@ int fm_06_3f_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
-            dump_dram_power_limit(stdout, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, socket);
+            dump_dram_power_limit(stdout, msrs.msr_dram_power_limit,
+                                  msrs.msr_rapl_power_unit, socket);
         }
         else if (long_ver == 1)
         {
-            print_dram_power_limit(stdout, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, socket);
+            print_dram_power_limit(stdout, msrs.msr_dram_power_limit,
+                                   msrs.msr_rapl_power_unit, socket);
         }
     }
 
@@ -133,7 +137,8 @@ int fm_06_3f_set_power_limits(int package_power_limit)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        set_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit);
+        set_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
+                                msrs.msr_rapl_power_unit);
     }
     return 0;
 }
@@ -144,52 +149,95 @@ int fm_06_3f_get_features(void)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    fprintf(stdout, "msr_platform_info            = 0x%lx\n", msrs.msr_platform_info);
-    fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n", msrs.ia32_time_stamp_counter);
+    fprintf(stdout, "msr_platform_info            = 0x%lx\n",
+            msrs.msr_platform_info);
+    fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n",
+            msrs.ia32_time_stamp_counter);
     fprintf(stdout, "ia32_perf_ctl                = 0x%lx\n", msrs.ia32_perf_ctl);
-    fprintf(stdout, "ia32_perf_status             = 0x%lx\n", msrs.ia32_perf_status);
-    fprintf(stdout, "ia32_therm_interrupt         = 0x%lx\n", msrs.ia32_therm_interrupt);
-    fprintf(stdout, "ia32_therm_status            = 0x%lx\n", msrs.ia32_therm_status);
-    fprintf(stdout, "ia32_misc_enable             = 0x%lx\n", msrs.ia32_misc_enable);
-    fprintf(stdout, "msr_temperature_target       = 0x%lx\n", msrs.msr_temperature_target);
-    fprintf(stdout, "msr_turbo_ratio_limit        = 0x%lx\n", msrs.msr_turbo_ratio_limit);
-    fprintf(stdout, "msr_turbo_ratio_limit1       = 0x%lx\n", msrs.msr_turbo_ratio_limit1);
-    fprintf(stdout, "ia32_package_therm_status    = 0x%lx\n", msrs.ia32_package_therm_status);
-    fprintf(stdout, "ia32_package_therm_interrupt = 0x%lx\n", msrs.ia32_package_therm_interrupt);
-    fprintf(stdout, "ia32_fixed_counters[0]       = 0x%lx\n", msrs.ia32_fixed_counters[0]);
-    fprintf(stdout, "ia32_fixed_counters[1]       = 0x%lx\n", msrs.ia32_fixed_counters[1]);
-    fprintf(stdout, "ia32_fixed_counters[2]       = 0x%lx\n", msrs.ia32_fixed_counters[2]);
-    fprintf(stdout, "ia32_fixed_ctr_ctrl          = 0x%lx\n", msrs.ia32_fixed_ctr_ctrl);
-    fprintf(stdout, "ia32_perf_global_status      = 0x%lx\n", msrs.ia32_perf_global_status);
-    fprintf(stdout, "ia32_perf_global_ctrl        = 0x%lx\n", msrs.ia32_perf_global_ctrl);
-    fprintf(stdout, "ia32_perf_global_ovf_ctrl    = 0x%lx\n", msrs.ia32_perf_global_ovf_ctrl);
-    fprintf(stdout, "msr_rapl_power_unit          = 0x%lx\n", msrs.msr_rapl_power_unit);
-    fprintf(stdout, "msr_pkg_power_limit          = 0x%lx\n", msrs.msr_pkg_power_limit);
-    fprintf(stdout, "msr_pkg_energy_status        = 0x%lx\n", msrs.msr_pkg_energy_status);
-    fprintf(stdout, "msr_pkg_perf_status          = 0x%lx\n", msrs.msr_pkg_perf_status);
-    fprintf(stdout, "msr_pkg_power_info           = 0x%lx\n", msrs.msr_pkg_power_info);
-    fprintf(stdout, "msr_dram_power_limit         = 0x%lx\n", msrs.msr_dram_power_limit);
-    fprintf(stdout, "msr_dram_energy_status       = 0x%lx\n", msrs.msr_dram_energy_status);
-    fprintf(stdout, "msr_dram_perf_status         = 0x%lx\n", msrs.msr_dram_perf_status);
-    fprintf(stdout, "msr_turbo_activation_ratio   = 0x%lx\n", msrs.msr_turbo_activation_ratio);
+    fprintf(stdout, "ia32_perf_status             = 0x%lx\n",
+            msrs.ia32_perf_status);
+    fprintf(stdout, "ia32_therm_interrupt         = 0x%lx\n",
+            msrs.ia32_therm_interrupt);
+    fprintf(stdout, "ia32_therm_status            = 0x%lx\n",
+            msrs.ia32_therm_status);
+    fprintf(stdout, "ia32_misc_enable             = 0x%lx\n",
+            msrs.ia32_misc_enable);
+    fprintf(stdout, "msr_temperature_target       = 0x%lx\n",
+            msrs.msr_temperature_target);
+    fprintf(stdout, "msr_turbo_ratio_limit        = 0x%lx\n",
+            msrs.msr_turbo_ratio_limit);
+    fprintf(stdout, "msr_turbo_ratio_limit1       = 0x%lx\n",
+            msrs.msr_turbo_ratio_limit1);
+    fprintf(stdout, "ia32_package_therm_status    = 0x%lx\n",
+            msrs.ia32_package_therm_status);
+    fprintf(stdout, "ia32_package_therm_interrupt = 0x%lx\n",
+            msrs.ia32_package_therm_interrupt);
+    fprintf(stdout, "ia32_fixed_counters[0]       = 0x%lx\n",
+            msrs.ia32_fixed_counters[0]);
+    fprintf(stdout, "ia32_fixed_counters[1]       = 0x%lx\n",
+            msrs.ia32_fixed_counters[1]);
+    fprintf(stdout, "ia32_fixed_counters[2]       = 0x%lx\n",
+            msrs.ia32_fixed_counters[2]);
+    fprintf(stdout, "ia32_fixed_ctr_ctrl          = 0x%lx\n",
+            msrs.ia32_fixed_ctr_ctrl);
+    fprintf(stdout, "ia32_perf_global_status      = 0x%lx\n",
+            msrs.ia32_perf_global_status);
+    fprintf(stdout, "ia32_perf_global_ctrl        = 0x%lx\n",
+            msrs.ia32_perf_global_ctrl);
+    fprintf(stdout, "ia32_perf_global_ovf_ctrl    = 0x%lx\n",
+            msrs.ia32_perf_global_ovf_ctrl);
+    fprintf(stdout, "msr_rapl_power_unit          = 0x%lx\n",
+            msrs.msr_rapl_power_unit);
+    fprintf(stdout, "msr_pkg_power_limit          = 0x%lx\n",
+            msrs.msr_pkg_power_limit);
+    fprintf(stdout, "msr_pkg_energy_status        = 0x%lx\n",
+            msrs.msr_pkg_energy_status);
+    fprintf(stdout, "msr_pkg_perf_status          = 0x%lx\n",
+            msrs.msr_pkg_perf_status);
+    fprintf(stdout, "msr_pkg_power_info           = 0x%lx\n",
+            msrs.msr_pkg_power_info);
+    fprintf(stdout, "msr_dram_power_limit         = 0x%lx\n",
+            msrs.msr_dram_power_limit);
+    fprintf(stdout, "msr_dram_energy_status       = 0x%lx\n",
+            msrs.msr_dram_energy_status);
+    fprintf(stdout, "msr_dram_perf_status         = 0x%lx\n",
+            msrs.msr_dram_perf_status);
+    fprintf(stdout, "msr_turbo_activation_ratio   = 0x%lx\n",
+            msrs.msr_turbo_activation_ratio);
     fprintf(stdout, "ia32_mperf                   = 0x%lx\n", msrs.ia32_mperf);
     fprintf(stdout, "ia32_aperf                   = 0x%lx\n", msrs.ia32_aperf);
-    fprintf(stdout, "ia32_perfmon_counters[0]     = 0x%lx\n", msrs.ia32_perfmon_counters[0]);
-    fprintf(stdout, "ia32_perfmon_counters[1]     = 0x%lx\n", msrs.ia32_perfmon_counters[1]);
-    fprintf(stdout, "ia32_perfmon_counters[2]     = 0x%lx\n", msrs.ia32_perfmon_counters[2]);
-    fprintf(stdout, "ia32_perfmon_counters[3]     = 0x%lx\n", msrs.ia32_perfmon_counters[3]);
-    fprintf(stdout, "ia32_perfmon_counters[4]     = 0x%lx\n", msrs.ia32_perfmon_counters[4]);
-    fprintf(stdout, "ia32_perfmon_counters[5]     = 0x%lx\n", msrs.ia32_perfmon_counters[5]);
-    fprintf(stdout, "ia32_perfmon_counters[6]     = 0x%lx\n", msrs.ia32_perfmon_counters[6]);
-    fprintf(stdout, "ia32_perfmon_counters[7]     = 0x%lx\n", msrs.ia32_perfmon_counters[7]);
-    fprintf(stdout, "ia32_perfevtsel_counters[0]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[0]);
-    fprintf(stdout, "ia32_perfevtsel_counters[1]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[1]);
-    fprintf(stdout, "ia32_perfevtsel_counters[2]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[2]);
-    fprintf(stdout, "ia32_perfevtsel_counters[3]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[3]);
-    fprintf(stdout, "ia32_perfevtsel_counters[4]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[4]);
-    fprintf(stdout, "ia32_perfevtsel_counters[5]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[5]);
-    fprintf(stdout, "ia32_perfevtsel_counters[6]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[6]);
-    fprintf(stdout, "ia32_perfevtsel_counters[7]  = 0x%lx\n", msrs.ia32_perfevtsel_counters[7]);
+    fprintf(stdout, "ia32_perfmon_counters[0]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[0]);
+    fprintf(stdout, "ia32_perfmon_counters[1]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[1]);
+    fprintf(stdout, "ia32_perfmon_counters[2]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[2]);
+    fprintf(stdout, "ia32_perfmon_counters[3]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[3]);
+    fprintf(stdout, "ia32_perfmon_counters[4]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[4]);
+    fprintf(stdout, "ia32_perfmon_counters[5]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[5]);
+    fprintf(stdout, "ia32_perfmon_counters[6]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[6]);
+    fprintf(stdout, "ia32_perfmon_counters[7]     = 0x%lx\n",
+            msrs.ia32_perfmon_counters[7]);
+    fprintf(stdout, "ia32_perfevtsel_counters[0]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[0]);
+    fprintf(stdout, "ia32_perfevtsel_counters[1]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[1]);
+    fprintf(stdout, "ia32_perfevtsel_counters[2]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[2]);
+    fprintf(stdout, "ia32_perfevtsel_counters[3]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[3]);
+    fprintf(stdout, "ia32_perfevtsel_counters[4]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[4]);
+    fprintf(stdout, "ia32_perfevtsel_counters[5]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[5]);
+    fprintf(stdout, "ia32_perfevtsel_counters[6]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[6]);
+    fprintf(stdout, "ia32_perfevtsel_counters[7]  = 0x%lx\n",
+            msrs.ia32_perfevtsel_counters[7]);
     return 0;
 }
 
@@ -201,11 +249,13 @@ int fm_06_3f_get_thermals(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_therm_temp_reading(stdout, msrs.ia32_therm_status, msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        dump_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     else if (long_ver == 1)
     {
-        print_therm_temp_reading(stdout, msrs.ia32_therm_status, msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        print_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                 msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     return 0;
 }
@@ -218,11 +268,17 @@ int fm_06_3f_get_counters(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_all_counter_data(stdout, msrs.ia32_fixed_counters, msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters, msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+        dump_all_counter_data(stdout, msrs.ia32_fixed_counters,
+                              msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
+                              msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
+                              msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     else if (long_ver == 1)
     {
-        print_all_counter_data(stdout, msrs.ia32_fixed_counters, msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters, msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+        print_all_counter_data(stdout, msrs.ia32_fixed_counters,
+                               msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
+                               msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
+                               msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     return 0;
 }
@@ -235,11 +291,15 @@ int fm_06_3f_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, CORE);
+        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
+                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                         CORE);
     }
     else if (long_ver == 1)
     {
-        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, CORE);
+        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
+                          msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                          CORE);
     }
     return 0;
 }
@@ -252,11 +312,13 @@ int fm_06_3f_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        dump_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
+                        msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
+                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     return 0;
 }
@@ -264,25 +326,25 @@ int fm_06_3f_get_power(int long_ver)
 int fm_06_3f_enable_turbo(void)
 {
 #ifdef VARIORUM_LOG
-	printf("Running %s\n", __FUNCTION__);
+    printf("Running %s\n", __FUNCTION__);
 #endif
 
-	unsigned int turbo_mode_disable_bit = 38;
+    unsigned int turbo_mode_disable_bit = 38;
     set_turbo_on(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
-	return 0;
+    return 0;
 }
 
 int fm_06_3f_disable_turbo(void)
 {
 #ifdef VARIORUM_LOG
-	printf("Running %s\n", __FUNCTION__);
+    printf("Running %s\n", __FUNCTION__);
 #endif
 
-	unsigned int turbo_mode_disable_bit = 38;
+    unsigned int turbo_mode_disable_bit = 38;
     set_turbo_off(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
-	return 0;
+    return 0;
 }
 int fm_06_3f_get_turbo_status(void)
 {
@@ -302,7 +364,9 @@ int fm_06_3f_poll_power(FILE *output)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    get_all_power_data(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+    get_all_power_data(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit,
+                       msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                       msrs.msr_dram_energy_status);
     return 0;
 }
 
@@ -312,6 +376,10 @@ int fm_06_3f_monitoring(FILE *output)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    get_all_power_data_fixed(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status, msrs.ia32_fixed_counters, msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
+    get_all_power_data_fixed(output, msrs.msr_pkg_power_limit,
+                             msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                             msrs.msr_dram_energy_status, msrs.ia32_fixed_counters,
+                             msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf,
+                             msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
     return 0;
 }

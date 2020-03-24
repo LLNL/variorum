@@ -18,7 +18,8 @@ void initNVML()
     /* Initialize GPU reading */
     nvmlReturn_t result = nvmlInit();
     nvmlDeviceGetCount(&m_total_unit_devices);
-    m_unit_devices_file_desc = (nvmlDevice_t*) malloc(sizeof(nvmlDevice_t) * m_total_unit_devices);
+    m_unit_devices_file_desc = (nvmlDevice_t *) malloc(sizeof(
+                                   nvmlDevice_t) * m_total_unit_devices);
 
     /* get handles to all devices */
     for (d = 0; d < m_total_unit_devices; ++d)
@@ -28,16 +29,21 @@ void initNVML()
         result = nvmlDeviceGetHandleByIndex(d, &m_unit_devices_file_desc[d]);
         if (result != NVML_SUCCESS)
         {
-            variorum_error_handler("Could not get GPU device handle", VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            variorum_error_handler("Could not get GPU device handle",
+                                   VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
         }
 
         /* check to see whether we can read power */
-        result = nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], (unsigned int *)&power);
+        result = nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d],
+                                         (unsigned int *)&power);
         if (result != NVML_SUCCESS)
         {
             //This needs to print an error with diagnostics and exit, but for now
             //it just prints an error and proceeds
-            variorum_error_handler("Could not read power/initialize NVML", VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            variorum_error_handler("Could not read power/initialize NVML",
+                                   VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
         }
     }
 }
@@ -63,7 +69,8 @@ void dump_power_data(FILE *writedest, int verbose)
     //Iterate over all GPU device handles populated at init and print power
     for (device_index = 0; device_index < 2; device_index++)
     {
-        for (d = device_index * gpus_per_socket; d < (device_index + 1) * gpus_per_socket; ++d)
+        for (d = device_index * gpus_per_socket;
+             d < (device_index + 1) * gpus_per_socket; ++d)
         {
             nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
             value = 0.0f;
@@ -71,7 +78,8 @@ void dump_power_data(FILE *writedest, int verbose)
 
             if (verbose)
             {
-                fprintf(writedest, "_GPU_POWER_USAGE Host: %s, Socket: %d, Device ID: %d, Power: %lf\n",
+                fprintf(writedest,
+                        "_GPU_POWER_USAGE Host: %s, Socket: %d, Device ID: %d, Power: %lf\n",
                         hostname, device_index, d, value);
             }
             else
@@ -103,13 +111,16 @@ void dump_thermal_data(FILE *writedest, int verbose)
     /* Iterate over all GPU device handles populated at init and print temperature (SM) */
     for (device_index = 0; device_index < 2; device_index++)
     {
-        for (d = device_index * gpus_per_socket; d < (device_index + 1) * gpus_per_socket; ++d)
+        for (d = device_index * gpus_per_socket;
+             d < (device_index + 1) * gpus_per_socket; ++d)
         {
-            nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU, &gpu_temp);
+            nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU,
+                                     &gpu_temp);
 
             if (verbose)
             {
-                fprintf(writedest, "_GPU_TEMPERATURE Host: %s, Socket:%d, Device ID: %d, Temperature: %ld\n",
+                fprintf(writedest,
+                        "_GPU_TEMPERATURE Host: %s, Socket:%d, Device ID: %d, Temperature: %ld\n",
                         hostname, device_index, d, gpu_temp);
             }
             else
@@ -144,14 +155,16 @@ void dump_power_limits(FILE *writedest, int verbose)
     /* Iterate over all GPU device handles populated at init and print GPU power limit */
     for (device_index = 0; device_index < 2; device_index++)
     {
-        for (d = device_index * gpus_per_socket; d < (device_index + 1) * gpus_per_socket; ++d)
+        for (d = device_index * gpus_per_socket;
+             d < (device_index + 1) * gpus_per_socket; ++d)
         {
             nvmlDeviceGetPowerManagementLimit(m_unit_devices_file_desc[d], &power_limit);
             value = (double) power_limit * 0.001f;
 
             if (verbose)
             {
-                fprintf(writedest, "_GPU_POWER_LIMIT Host: %s, Socket:%d, Device ID: %d, Power limit: %0.3lf\n",
+                fprintf(writedest,
+                        "_GPU_POWER_LIMIT Host: %s, Socket:%d, Device ID: %d, Power limit: %0.3lf\n",
                         hostname, device_index, d, value);
             }
             else
@@ -184,13 +197,16 @@ void dump_clocks_data(FILE *writedest, int verbose)
     /* Iterate over all GPU device handles populated at init and print GPU clock */
     for (device_index = 0; device_index < 2; device_index++)
     {
-        for (d = device_index * gpus_per_socket; d < (device_index + 1) * gpus_per_socket; ++d)
+        for (d = device_index * gpus_per_socket;
+             d < (device_index + 1) * gpus_per_socket; ++d)
         {
-            nvmlDeviceGetClock(m_unit_devices_file_desc[d], NVML_CLOCK_SM, NVML_CLOCK_ID_CURRENT, &gpu_clock);
+            nvmlDeviceGetClock(m_unit_devices_file_desc[d], NVML_CLOCK_SM,
+                               NVML_CLOCK_ID_CURRENT, &gpu_clock);
 
             if (verbose)
             {
-                fprintf(writedest, "_GPU_CLOCKS Host: %s, Socket:%d, Device ID: %d, GPU Clock: %d\n",
+                fprintf(writedest,
+                        "_GPU_CLOCKS Host: %s, Socket:%d, Device ID: %d, GPU Clock: %d\n",
                         hostname, device_index, d, gpu_clock);
             }
             else
@@ -222,13 +238,15 @@ void dump_gpu_utilization(FILE *writedest, int verbose)
     /* Iterate over all GPU device handles populated at init and print GPU SM and memory utilization */
     for (device_index = 0; device_index < 2; device_index++)
     {
-        for (d = device_index * gpus_per_socket; d < (device_index + 1) * gpus_per_socket; ++d)
+        for (d = device_index * gpus_per_socket;
+             d < (device_index + 1) * gpus_per_socket; ++d)
         {
             nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
 
             if (verbose)
             {
-                fprintf(writedest, "_GPU_UTILIZATION Host: %s, Socket: %d, Device ID: %d, GPU Utilization (%): SM: %d, Memory: %d\n",
+                fprintf(writedest,
+                        "_GPU_UTILIZATION Host: %s, Socket: %d, Device ID: %d, GPU Utilization (%): SM: %d, Memory: %d\n",
                         hostname, device_index, d, util.gpu, util.memory);
             }
             else
