@@ -29,7 +29,7 @@ build-quartz:
    - groups
    - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
    - cd build-gitlab-quartz
-   - export HOST_CONFIG=`ls ../host-configs/quartz-*.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz ../src
@@ -37,7 +37,7 @@ build-quartz:
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
 
-build-lassen:
+build-lassen-cpu:
  tags:
    - batch
    - lassen
@@ -46,10 +46,27 @@ build-lassen:
    - export HOSTNAME=`hostname`
    - echo -e "Hostname:" ${HOSTNAME}
    - groups
-   - mkdir build-gitlab-lassen && mkdir install-gitlab-lassen
-   - cd build-gitlab-lassen
-   - export HOST_CONFIG=`ls ../host-configs/lassen-*.cmake`
+   - mkdir build-gitlab-lassen-cpu && mkdir install-gitlab-lassen-cpu
+   - cd build-gitlab-lassen-cpu
+   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu ../src
+   - make VERBOSE=1
+
+build-lassen-gpu:
+ tags:
+   - batch
+   - lassen
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-lassen-gpu && mkdir install-gitlab-lassen-gpu
+   - cd build-gitlab-lassen-gpu
+   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu ../src
    - make VERBOSE=1
