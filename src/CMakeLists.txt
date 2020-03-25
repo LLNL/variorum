@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-project(variorum C CXX)
+project(variorum VERSION "0.2.0")
 
 option(BUILD_SHARED_LIBS    "Build shared libraries"       ON)
 option(BUILD_DOCS           "Build documentation"          ON)
@@ -42,5 +42,8 @@ add_subdirectory(examples)
 ### Add powmon sampler
 add_subdirectory(powmon)
 
+### Add config helpers
+add_subdirectory(config)
+
 ### Create CMake importable exports
-install(EXPORT variorum DESTINATION cmake)
+install(EXPORT variorum DESTINATION lib/cmake)

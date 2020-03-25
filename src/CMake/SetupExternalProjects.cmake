@@ -11,6 +11,10 @@ ExternalProject_Add(libhwloc
   BUILD_IN_SOURCE 1
 )
 
+set(HWLOC_DIR
+  ${PROJECT_BINARY_DIR}
+  CACHE INTERNAL "")
+
 set(HWLOC_INCLUDE_DIRS
   ${PROJECT_BINARY_DIR}/thirdparty_builtin/libhwloc-prefix/include
   CACHE INTERNAL "")
