@@ -1,3 +1,5 @@
+set(VARIORUM_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE STRING "" FORCE)
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h.in"
                "${CMAKE_CURRENT_SOURCE_DIR}/variorum_config.h")
 
@@ -6,23 +8,23 @@ set(variorum_headers
   variorum.h
   variorum_timers.h
   variorum_error.h
-  )
+)
 
 set(variorum_sources
   config_architecture.c
   variorum.c
   variorum_timers.c
   variorum_error.c
-  )
+)
 
 set(variorum_deps ""
     CACHE INTERNAL ""
-  )
+)
 
 set(variorum_includes
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${HWLOC_INCLUDE_DIRS}
-  )
+)
 
 if(VARIORUM_WITH_INTEL)
     add_subdirectory(Intel)
@@ -71,7 +73,7 @@ install(TARGETS variorum
 
 set(variorum_install_headers
     variorum.h
-  )
+)
 
 install(FILES ${variorum_install_headers}
         DESTINATION include)

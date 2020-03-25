@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+
+@PACKAGE_INIT@
+
+if(NOT VARIORUM_FOUND)
+    set(VARIORUM_VERSION "@PROJECT_VERSION@")
+    set(VARIORUM_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+    set(VARIORUM_HWLOC_LIB "@HWLOC_LIBRARY@")
+    set(VARIORUM_HWLOC_INCLUDE_DIR "@HWLOC_INCLUDE_DIRS@")
+
+    # pull in vars with details about configured paths
+    get_filename_component(VARIORUM_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+    # setup dependent pkgs
+    include("${VARIORUM_CMAKE_CONFIG_DIR}/variorum_setup_deps.cmake")
+
+    # include the main exported targets
+    include("${VARIORUM_CMAKE_CONFIG_DIR}/variorum.cmake")
+
+    # finish setup
+    include("${VARIORUM_CMAKE_CONFIG_DIR}/variorum_setup_targets.cmake")
+
+    set(VARIORUM_FOUND TRUE)
+endif()
