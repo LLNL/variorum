@@ -14,6 +14,8 @@ option(VARIORUM_LOG         "Enable logging statements"    ON)
 
 include(CMake/CMakeBasics.cmake)
 
+include(CMake/VariorumBuildType.cmake)
+
 include(CMake/Setup3rdParty.cmake)
 
 include(CMake/SetupTests.cmake)
