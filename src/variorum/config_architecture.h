@@ -193,8 +193,6 @@ struct platform
     uint64_t *ibm_arch;
     /// @brief Identifier for NVIDIA architecture.
     uint64_t *nvidia_arch;
-    /// @brief Identifier for GPU architecture.
-    uint64_t *gpu_arch;
 
     /// @brief Hostname.
     char hostname[1024];
