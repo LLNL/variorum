@@ -48,7 +48,7 @@ find_package(Variorum REQUIRED
 add_definitions(-DSECOND_RUN)
 
 # create our example
-add_executable(ex-print-power ex-print-power.c)
+add_executable(variorum-print-power-example variorum-print-power-example.c)
 
 # link to variorum
 target_link_libraries(ex-print-power variorum::variorum)
