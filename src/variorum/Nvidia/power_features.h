@@ -13,19 +13,21 @@
 
 unsigned int m_total_unit_devices;
 nvmlDevice_t *m_unit_devices_file_desc;
+unsigned int m_gpus_per_socket;
+char m_hostname[1024];
 
 void initNVML(void);
 
 void shutdownNVML(void);
 
-void dump_power_data(FILE *writedest, int verbose);
+void dump_power_data(int chipid, int verbose, FILE *output);
 
-void dump_thermal_data(FILE *writedest, int verbose);
+void dump_thermal_data(int chipid, int verbose, FILE *output);
 
-void dump_power_limits(FILE *writedest, int verbose);
+void dump_power_limits(int chipid, int verbose, FILE *output);
 
-void dump_clocks_data(FILE *writedest, int verbose);
+void dump_clocks_data(int chipid, int verbose, FILE *output);
 
-void dump_gpu_utilization(FILE *writedest, int verbose);
+void dump_gpu_utilization(int chipid, int verbose, FILE *output);
 
 #endif
