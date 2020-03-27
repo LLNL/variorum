@@ -22,12 +22,12 @@ int get_max_non_turbo_ratio(off_t msr_platform_info)
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(PLATFORM_INFO, nsockets);
-        load_socket_batch(msr_platform_info, val, PLATFORM_INFO);
+        allocate_batch(RD_PLATFORM_INFO, nsockets);
+        load_socket_batch(msr_platform_info, val, BATCH_READ, RD_PLATFORM_INFO);
         init = 1;
     }
 
-    read_batch(PLATFORM_INFO);
+    execute_batch(RD_PLATFORM_INFO);
     max_non_turbo_ratio = (int)(MASK_VAL(*val[0], 15, 8));
     /// Do sockets match?
     if (nsockets != 1)

@@ -25,11 +25,11 @@ void get_temp_target(struct msr_temp_target *s, off_t msr)
     {
         init_tt = 1;
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(TEMP_TARGET, nsockets);
-        load_socket_batch(msr, val, TEMP_TARGET);
+        allocate_batch(RD_TEMP_TARGET, nsockets);
+        load_socket_batch(msr, val, BATCH_READ, RD_TEMP_TARGET);
     }
 
-    read_batch(TEMP_TARGET);
+    execute_batch(RD_TEMP_TARGET);
 
     for (i = 0; i < nsockets; i++)
     {
@@ -55,11 +55,11 @@ void get_therm_stat(struct therm_stat *s, off_t msr)
     {
         init_ts = 1;
         val = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
-        allocate_batch(THERM_STAT, nthreads);
-        load_thread_batch(msr, val, THERM_STAT);
+        allocate_batch(RD_THERM_STAT, nthreads);
+        load_thread_batch(msr, val, BATCH_READ, RD_THERM_STAT);
     }
 
-    read_batch(THERM_STAT);
+    execute_batch(RD_THERM_STAT);
 
     for (i = 0; i < nthreads; i++)
     {
@@ -161,11 +161,11 @@ int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
     {
         init_pkg_ts = 1;
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(PKG_THERM_STAT, nsockets);
-        load_socket_batch(msr, val, PKG_THERM_STAT);
+        allocate_batch(RD_PKG_THERM_STAT, nsockets);
+        load_socket_batch(msr, val, BATCH_READ, RD_PKG_THERM_STAT);
     }
 
-    read_batch(PKG_THERM_STAT);
+    execute_batch(RD_PKG_THERM_STAT);
     for (i = 0; i < nsockets; i++)
     {
         s[i].raw = *val[i];
@@ -430,7 +430,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    int i;
 //    core_config(NULL, &threadsPerCore, NULL, NULL);
 //
-//    read_batch(THERM_INTERR);
+//    execute_batch(THERM_INTERR);
 //    for (i = 0; i < numCores * threadsPerCore; i++)
 //    {
 //        // Allows the BIOS to enable the generation of an interrupt on the
@@ -492,7 +492,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    uint64_t sockets = num_sockets();
 //    int i;
 //
-//    read_batch(PKG_THERM_INTERR);
+//    execute_batch(PKG_THERM_INTERR);
 //    for (i = 0; i < sockets; i++)
 //    {
 //        // Allows the BIOS to enable the generation of an interrupt on
@@ -604,7 +604,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    uint64_t numCores = num_cores();
 //    int i;
 //
-//    read_batch(THERM_STAT);
+//    execute_batch(THERM_STAT);
 //    for (i = 0; i < numCores; i++)
 //    {
 //        *s->raw[i] = (*s->raw[i] & (~(1<<1))) | (s->status_log[i] << 1);
@@ -614,7 +614,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //        *s->raw[i] = (*s->raw[i] & (~(1<<9))) | (s->therm_thresh2_log[i] << 1);
 //        *s->raw[i] = (*s->raw[i] & (~(1<<11))) | (s->power_notification_log[i] << 1);
 //    }
-//    write_batch(THERM_STAT);
+//    execute_batch(THERM_STAT);
 //    /* Not sure if I should update the struct here or not. */
 //}
 //
@@ -623,7 +623,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    uint64_t numCores = num_cores();
 //    int i;
 //
-//    read_batch(THERM_INTERR);
+//    execute_batch(THERM_INTERR);
 //    for (i = 0; i < numCores; i++)
 //    {
 //        *s->raw[i] = (*s->raw[i] & (~(1<<0))) | (s->high_temp_enable[i] << 0);
@@ -637,7 +637,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //        *s->raw[i] = (*s->raw[i] & (~(1<<23))) | (s->thresh2_enable[i] << 23);
 //        *s->raw[i] = (*s->raw[i] & (~(1<<24))) | (s->pwr_limit_notification_enable[i] << 24);
 //    }
-//    write_batch(THERM_INTERR);
+//    execute_batch(THERM_INTERR);
 //}
 //
 //void set_pkg_therm_stat(struct pkg_therm_stat *s)
@@ -645,7 +645,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    uint64_t sockets = num_sockets();
 //    int i;
 //
-//    read_batch(PKG_THERM_STAT);
+//    execute_batch(PKG_THERM_STAT);
 //    for (i = 0; i < sockets; i++)
 //    {
 //        *s->raw[i] = (*s->raw[i] & (~(1<<1))) | (s->status_log[i] << 1);
@@ -655,13 +655,13 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //        *s->raw[i] = (*s->raw[i] & (~(1<<9))) | (s->therm_thresh2_log[i] << 9);
 //        *s->raw[i] = (*s->raw[i] & (~(1<<11))) | (s->power_notification_log[i] << 11);
 //    }
-//    write_batch(PKG_THERM_STAT);
+//    execute_batch(PKG_THERM_STAT);
 //}
 //
 //void set_pkg_therm_interrupt(struct pkg_therm_interrupt *s)
 //{
 //    uint64_t sockets = num_sockets();
-//    read_batch(PKG_THERM_INTERR);
+//    execute_batch(PKG_THERM_INTERR);
 //    int i;
 //    for (i = 0; i < sockets; i++)
 //    {
@@ -675,5 +675,5 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //        *s->raw[i] = (*s->raw[i] & (~(1<<23))) | (s->thresh2_enable[i] << 23);
 //        *s->raw[i] = (*s->raw[i] & (~(1<<24))) | (s->pwr_limit_notification_enable[i] << 24);
 //    }
-//    write_batch(PKG_THERM_INTERR);
+//    execute_batch(PKG_THERM_INTERR);
 //}

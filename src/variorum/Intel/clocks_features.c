@@ -28,10 +28,10 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
         d.aperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.mperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.tsc = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
-        allocate_batch(CLOCKS_DATA, 3UL * nthreads);
-        load_thread_batch(msr_aperf, d.aperf, CLOCKS_DATA);
-        load_thread_batch(msr_mperf, d.mperf, CLOCKS_DATA);
-        load_thread_batch(msr_tsc, d.tsc, CLOCKS_DATA);
+        allocate_batch(RD_CLOCKS_DATA, 3UL * nthreads);
+        load_thread_batch(msr_aperf, d.aperf, BATCH_READ, RD_CLOCKS_DATA);
+        load_thread_batch(msr_mperf, d.mperf, BATCH_READ, RD_CLOCKS_DATA);
+        load_thread_batch(msr_tsc, d.tsc, BATCH_READ, RD_CLOCKS_DATA);
         init = 1;
     }
     if (cd != NULL)
@@ -56,13 +56,17 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status,
         {
             case SOCKET:
                 d.perf_ctl = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-                allocate_batch(PERF_CTRL, 2UL * nsockets);
-                load_socket_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+                allocate_batch(RD_PERF_CTRL, 2UL * nsockets);
+                allocate_batch(WR_PERF_CTRL, 2UL * nsockets);
+                load_socket_batch(msr_perf_ctl, d.perf_ctl, BATCH_READ, RD_PERF_CTRL);
+                load_socket_batch(msr_perf_ctl, d.perf_ctl, BATCH_READ, WR_PERF_CTRL);
                 break;
             case CORE:
                 d.perf_ctl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
-                allocate_batch(PERF_CTRL, 2UL * nthreads);
-                load_thread_batch(msr_perf_ctl, d.perf_ctl, PERF_CTRL);
+                allocate_batch(RD_PERF_CTRL, 2UL * nthreads);
+                allocate_batch(WR_PERF_CTRL, 2UL * nthreads);
+                load_thread_batch(msr_perf_ctl, d.perf_ctl, BATCH_WRITE, RD_PERF_CTRL);
+                load_thread_batch(msr_perf_ctl, d.perf_ctl, BATCH_WRITE, WR_PERF_CTRL);
                 break;
             default:
                 break;
@@ -83,11 +87,8 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
     {
         variorum_set_topology(&nsockets, NULL, NULL);
         d.perf_status = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(PERF_DATA, 2UL * nsockets);
-        load_socket_batch(msr_perf_status, d.perf_status, PERF_DATA);
-        //d.perf_ctl = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        //allocate_batch(PERF_CTL, 2UL * nsockets());
-        //load_socket_batch(IA32_PERF_CTL, d.perf_ctl, PERF_CTL);
+        allocate_batch(RD_PERF_DATA, 2UL * nsockets); // FIXME should be 1UL?
+        load_socket_batch(msr_perf_status, d.perf_status, BATCH_READ, RD_PERF_DATA);
     }
     if (pd != NULL)
     {
@@ -126,8 +127,8 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         }
         init = 1;
     }
-    read_batch(CLOCKS_DATA);
-    read_batch(PERF_DATA);
+    execute_batch(RD_CLOCKS_DATA);
+    execute_batch(RD_PERF_DATA);
 
     switch (control_domains)
     {
@@ -186,8 +187,8 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 
     clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
     perf_storage(&pd, msr_perf_status);
-    read_batch(CLOCKS_DATA);
-    read_batch(PERF_DATA);
+    execute_batch(RD_CLOCKS_DATA);
+    execute_batch(RD_PERF_DATA);
 
     switch (control_domains)
     {
@@ -246,8 +247,8 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //
 //    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
 //    perf_storage(&pd, msr_perf_status);
-//    read_batch(CLOCKS_DATA);
-//    read_batch(PERF_DATA);
+//    execute_batch(RD_CLOCKS_DATA);
+//    execute_batch(PERF_DATA);
 //    for (i = 0; i < nsockets; i++)
 //    {
 //        for (j = 0; j < ncores/nsockets; j+=ncores/nsockets)
@@ -277,8 +278,8 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //
 //    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
 //    perf_storage(&pd, msr_perf_status);
-//    read_batch(CLOCKS_DATA);
-//    read_batch(PERF_DATA);
+//    execute_batch(RD_CLOCKS_DATA);
+//    execute_batch(PERF_DATA);
 //    for (i = 0; i < nsockets; i++)
 //    {
 //        for (j = 0; j < ncores/nsockets; j++)
@@ -316,7 +317,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
             {
                 *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
             }
-            write_batch(PERF_CTRL);
+            execute_batch(WR_PERF_CTRL);
             break;
         case CORE:
             printf("Set frequencies per core\n");
@@ -327,8 +328,8 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
 #if VARIORUM_DEBUG
             printf("PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
 #endif
-            write_batch(PERF_CTRL);
-            read_batch(PERF_CTRL);
+            execute_batch(WR_PERF_CTRL);
+            execute_batch(RD_PERF_CTRL);
 #if VARIORUM_DEBUG
             printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *pd->perf_ctl[9]);
 #endif
@@ -353,10 +354,10 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
 //#ifdef LIBMSR_DEBUG
 //    printf("PERF_CTL raw decimal %" PRIu64 "\n", *cd->perf_ctl[socket]);
 //#endif
-//    write_batch(PERF_CTL);
+//    execute_batch(PERF_CTL);
 //
 //#ifdef LIBMSR_DEBUG
-//    read_batch(PERF_CTL);
+//    execute_batch(PERF_CTL);
 //    printf("---reading PERF_CTL raw decimal %" PRIu64 "\n", *cd->perf_ctl[socket]);
 //#endif
 //}
