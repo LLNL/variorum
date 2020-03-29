@@ -53,10 +53,13 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
         init_fixed_counter(&c0);
         init_fixed_counter(&c1);
         init_fixed_counter(&c2);
-        allocate_batch(FIXED_COUNTERS_DATA, 3UL * nthreads);
-        load_thread_batch(msrs_fixed_ctrs[0], c0.value, FIXED_COUNTERS_DATA);
-        load_thread_batch(msrs_fixed_ctrs[1], c1.value, FIXED_COUNTERS_DATA);
-        load_thread_batch(msrs_fixed_ctrs[2], c2.value, FIXED_COUNTERS_DATA);
+        allocate_batch(RD_FIXED_COUNTERS_DATA, 3UL * nthreads);
+        load_thread_batch(msrs_fixed_ctrs[0], c0.value, BATCH_READ,
+                          RD_FIXED_COUNTERS_DATA);
+        load_thread_batch(msrs_fixed_ctrs[1], c1.value, BATCH_READ,
+                          RD_FIXED_COUNTERS_DATA);
+        load_thread_batch(msrs_fixed_ctrs[2], c2.value, BATCH_READ,
+                          RD_FIXED_COUNTERS_DATA);
     }
     if (ctr0 != NULL)
     {
@@ -144,7 +147,7 @@ void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
     variorum_set_topology(NULL, NULL, &nthreads);
 
     /* Don't need to read counters data, we are just zeroing things out. */
-    read_batch(FIXED_COUNTERS_CTRL_DATA);
+    execute_batch(RD_FIXED_COUNTERS_CTRL_DATA);
 
     for (i = 0; i < nthreads; i++)
     {
@@ -179,8 +182,7 @@ void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
         *fixed_ctr_ctrl[i] = (*fixed_ctr_ctrl[i] & (~(1ULL << 11))) |
                              (ctr2->pmi[i] << 11);
     }
-    write_batch(FIXED_COUNTERS_CTRL_DATA);
-    //write_batch(FIXED_COUNTERS_DATA);
+    execute_batch(WR_FIXED_COUNTERS_CTRL_DATA);
 }
 
 void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
@@ -196,11 +198,16 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
         variorum_set_topology(NULL, NULL, &nthreads);
         perf_global_ctrl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         fixed_ctr_ctrl = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
-        allocate_batch(FIXED_COUNTERS_CTRL_DATA, 2UL * nthreads);
-        load_thread_batch(msr_perf_global_ctrl, perf_global_ctrl,
-                          FIXED_COUNTERS_CTRL_DATA);
-        load_thread_batch(msr_fixed_counter_ctrl, fixed_ctr_ctrl,
-                          FIXED_COUNTERS_CTRL_DATA);
+        allocate_batch(RD_FIXED_COUNTERS_CTRL_DATA, 2UL * nthreads);
+        allocate_batch(WR_FIXED_COUNTERS_CTRL_DATA, 2UL * nthreads);
+        load_thread_batch(msr_perf_global_ctrl, perf_global_ctrl, BATCH_READ,
+                          RD_FIXED_COUNTERS_CTRL_DATA);
+        load_thread_batch(msr_fixed_counter_ctrl, fixed_ctr_ctrl, BATCH_READ,
+                          RD_FIXED_COUNTERS_CTRL_DATA);
+        load_thread_batch(msr_perf_global_ctrl, perf_global_ctrl, BATCH_WRITE,
+                          WR_FIXED_COUNTERS_CTRL_DATA);
+        load_thread_batch(msr_fixed_counter_ctrl, fixed_ctr_ctrl, BATCH_WRITE,
+                          WR_FIXED_COUNTERS_CTRL_DATA);
         init = 1;
     }
     if (perf_ctrl != NULL)
@@ -254,7 +261,7 @@ void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
     gethostname(hostname, 1024);
     fixed_counter_storage(&c0, &c1, &c2, msrs_fixed_ctrs);
 
-    read_batch(FIXED_COUNTERS_DATA);
+    execute_batch(RD_FIXED_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
         fprintf(writedest, "_FIXED_COUNTERS %s %d %lu %lu %lu\n", hostname, i,
@@ -319,7 +326,7 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
         init = 1;
     }
 
-    read_batch(COUNTERS_DATA);
+    execute_batch(RD_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
         switch (avail)
@@ -384,7 +391,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
     gethostname(hostname, 1024);
     fixed_counter_storage(&c0, &c1, &c2, msrs_fixed_ctrs);
 
-    read_batch(FIXED_COUNTERS_DATA);
+    execute_batch(RD_FIXED_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
         fprintf(writedest,
@@ -416,7 +423,7 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
         init = 1;
     }
 
-    read_batch(COUNTERS_DATA);
+    execute_batch(RD_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
         switch (avail)
@@ -509,25 +516,34 @@ static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
         case 1:
             p->pmc0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
-    allocate_batch(COUNTERS_DATA, avail * nthreads);
+    allocate_batch(RD_COUNTERS_DATA, avail * nthreads);
+    allocate_batch(WR_COUNTERS_DATA, avail * nthreads);
     switch (avail)
     {
         case 8:
-            load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, BATCH_WRITE, WR_COUNTERS_DATA);
         case 7:
-            load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, BATCH_WRITE, WR_COUNTERS_DATA);
         case 6:
-            load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, BATCH_WRITE, WR_COUNTERS_DATA);
         case 5:
-            load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, BATCH_WRITE, WR_COUNTERS_DATA);
         case 4:
-            load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, BATCH_WRITE, WR_COUNTERS_DATA);
         case 3:
-            load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, BATCH_WRITE, WR_COUNTERS_DATA);
         case 2:
-            load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, BATCH_WRITE, WR_COUNTERS_DATA);
         case 1:
-            load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, BATCH_READ, RD_COUNTERS_DATA);
+            load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, BATCH_WRITE, WR_COUNTERS_DATA);
     }
     return 0;
 }
@@ -570,25 +586,50 @@ static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
         case 1:
             evt->perf_evtsel0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
-    allocate_batch(COUNTERS_CTRL, avail * nthreads);
+    allocate_batch(RD_COUNTERS_CTRL, avail * nthreads);
+    allocate_batch(WR_COUNTERS_CTRL, avail * nthreads);
     switch (avail)
     {
         case 8:
-            load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 7:
-            load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 6:
-            load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 5:
-            load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 4:
-            load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 3:
-            load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 2:
-            load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
         case 1:
-            load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, BATCH_READ,
+                              RD_COUNTERS_CTRL);
+            load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, BATCH_WRITE,
+                              WR_COUNTERS_CTRL);
     }
     return 0;
 }
@@ -621,7 +662,7 @@ int enable_pmc(off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs)
         }
         perfevtsel_storage(&evt, msrs_perfevtsel_ctrs);
     }
-    write_batch(COUNTERS_CTRL);
+    execute_batch(WR_COUNTERS_CTRL);
     clear_all_pmc(msrs_perfmon_ctrs);
     return 0;
 }
@@ -744,7 +785,7 @@ void clear_all_pmc(off_t *msrs_perfmon_ctrs)
                 *p->pmc0[i] = 0;
         }
     }
-    write_batch(COUNTERS_DATA);
+    execute_batch(WR_COUNTERS_DATA);
 }
 
 ///*************************************/
@@ -770,11 +811,27 @@ static void init_unc_perfevtsel(struct unc_perfevtsel *uevt,
         uevt->c1 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
         uevt->c2 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
         uevt->c3 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
-        allocate_batch(UNCORE_EVTSEL, 4 * nsockets);
-        load_socket_batch(msrs_pcu_pmon_evtsel[0], uevt->c0, UNCORE_EVTSEL);
-        load_socket_batch(msrs_pcu_pmon_evtsel[1], uevt->c1, UNCORE_EVTSEL);
-        load_socket_batch(msrs_pcu_pmon_evtsel[2], uevt->c2, UNCORE_EVTSEL);
-        load_socket_batch(msrs_pcu_pmon_evtsel[3], uevt->c3, UNCORE_EVTSEL);
+
+        allocate_batch(RD_UNCORE_EVTSEL, 4 * nsockets);
+        load_socket_batch(msrs_pcu_pmon_evtsel[0], uevt->c0, BATCH_READ,
+                          RD_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[1], uevt->c1, BATCH_READ,
+                          RD_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[2], uevt->c2, BATCH_READ,
+                          RD_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[3], uevt->c3, BATCH_READ,
+                          RD_UNCORE_EVTSEL);
+
+        allocate_batch(WR_UNCORE_EVTSEL, 4 * nsockets);
+        load_socket_batch(msrs_pcu_pmon_evtsel[0], uevt->c0, BATCH_WRITE,
+                          WR_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[1], uevt->c1, BATCH_WRITE,
+                          WR_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[2], uevt->c2, BATCH_WRITE,
+                          WR_UNCORE_EVTSEL);
+        load_socket_batch(msrs_pcu_pmon_evtsel[3], uevt->c3, BATCH_WRITE,
+                          WR_UNCORE_EVTSEL);
+
         init = 1;
     }
 }
@@ -798,11 +855,19 @@ static void init_unc_counters(struct unc_counters *uc,
         uc->c1 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
         uc->c2 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
         uc->c3 = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
-        allocate_batch(UNCORE_COUNT, 4 * nsockets);
-        load_socket_batch(msrs_pcu_pmon_ctrs[0], uc->c0, UNCORE_COUNT);
-        load_socket_batch(msrs_pcu_pmon_ctrs[1], uc->c1, UNCORE_COUNT);
-        load_socket_batch(msrs_pcu_pmon_ctrs[2], uc->c2, UNCORE_COUNT);
-        load_socket_batch(msrs_pcu_pmon_ctrs[3], uc->c3, UNCORE_COUNT);
+
+        allocate_batch(RD_UNCORE_COUNT, 4 * nsockets);
+        load_socket_batch(msrs_pcu_pmon_ctrs[0], uc->c0, BATCH_READ, RD_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[1], uc->c1, BATCH_READ, RD_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[2], uc->c2, BATCH_READ, RD_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[3], uc->c3, BATCH_READ, RD_UNCORE_COUNT);
+
+        allocate_batch(WR_UNCORE_COUNT, 4 * nsockets);
+        load_socket_batch(msrs_pcu_pmon_ctrs[0], uc->c0, BATCH_WRITE, WR_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[1], uc->c1, BATCH_WRITE, WR_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[2], uc->c2, BATCH_WRITE, WR_UNCORE_COUNT);
+        load_socket_batch(msrs_pcu_pmon_ctrs[3], uc->c3, BATCH_WRITE, WR_UNCORE_COUNT);
+
         init = 1;
     }
 }
@@ -845,7 +910,7 @@ void enable_pcu(off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
     {
         unc_perfevtsel_storage(&uevt, msrs_pcu_pmon_evtsel);
     }
-    write_batch(UNCORE_EVTSEL);
+    execute_batch(WR_UNCORE_EVTSEL);
     clear_all_pcu(msrs_pcu_pmon_ctrs);
 }
 
@@ -867,7 +932,7 @@ void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs)
         *uc->c2[i] = 0;
         *uc->c3[i] = 0;
     }
-    write_batch(UNCORE_COUNT);
+    execute_batch(WR_UNCORE_COUNT);
 }
 
 void dump_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
@@ -990,8 +1055,8 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         fprintf(writedest, "\n");
     }
 
-    read_batch(FIXED_COUNTERS_DATA);
-    read_batch(CLOCKS_DATA);
+    execute_batch(RD_FIXED_COUNTERS_DATA);
+    execute_batch(RD_CLOCKS_DATA);
     rlim_idx = 0;
     for (i = 0; i < nsockets; i++)
     {
