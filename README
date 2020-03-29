@@ -11,7 +11,7 @@ version 0.2.0
 
 Last Update
 -----------
-13 March 2020
+27 March 2020
 
 
 Webpages
@@ -73,12 +73,12 @@ but some features may vary between platforms.
 
 Supported Intel Architectures:
 
-	0x2A (Sandy Bridge)
-	0x3E (Ivy Bridge)
-	0x3E (Haswell)
-	0x4F (Broadwell)
-	0x9E (Kaby Lake)
-	0x55 (Skylake)
+    0x2A (Sandy Bridge)
+    0x3E (Ivy Bridge)
+    0x3E (Haswell)
+    0x4F (Broadwell)
+    0x9E (Kaby Lake)
+    0x55 (Skylake)
 
 If you are unsure of your architecture number, check the "model" field in `lscpu`
 or `/proc/cpuinfo` (note that it will not be in hexadecimal).
@@ -95,7 +95,7 @@ Supported Nvidia Architectures:
 ## Testing
 
 From within the build directory, unit tests can be executed individually.
-Please report any failed tests to Stephanie Brink at <brink2@llnl.gov>.
+Please report any failed tests to the project team at <variorum-maintainers@llnl.gov>.
 
 
 ## Examples
@@ -136,12 +136,37 @@ Bugs and feature requests are being tracked on [GitHub
 Issues](https://github.com/LLNL/variorum/issues).
 
 
+## Mailing List
+If you have questions about Variorum, identify a bug, or have ideas about
+expanding the functionality of Variorum and are interested in contributing to
+its development, please send an email to our open mailing list at
+<variorum-users@llnl.gov>. We are very interested in improving Variorum and
+exploring new use cases.
+
+If you are interested in keeping up with Variorum or communicating with its
+developers and users, please join our open mailing list by sending an email as
+follows:
+
+```
+To: listserv@listserv.llnl.gov
+Subject: (leave this field empty)
+
+Subscribe variorum-users
+```
+
+
 ## Contributing
-Please submit any bugfixes or feature improvements as pull requests. See the
-[CONTRIBUTING](./CONTRIBUTING.md) for more information.
+We welcome all kinds of contributions: new features, bug fixes, documentation,
+edits, etc.!
+
+To contribute, make a pull request, with `dev` as the destination branch. We
+use Travis to run CI tests, and your branch must pass these tests before being
+merged.
+
+See the [CONTRIBUTING](./CONTRIBUTING.md) for more information.
 
 
-## Contact
+## Authors
 Stephanie Brink, <brink2@llnl.gov> <br>
 Aniruddha Marathe, <marathe1@llnl.gov> <br>
 Tapasya Patki, <patki1@llnl.gov> <br>
