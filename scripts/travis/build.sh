@@ -22,6 +22,10 @@ mv spack-0.14.0 spack
 
 export PATH=${PWD}/spack/bin:${PATH}
 
+# setup mirror, so we don't have to download the file
+spack mirror add local_filesystem file://${TRAVIS_BUILD_DIR}/scripts/travis/mirrors
+ls ${TRAVIS_BUILD_DIR}/scripts/travis/mirrors
+
 # hwloc
 spack install hwloc
 export HWLOC_DIR=`ls -d ${TRAVIS_BUILD_DIR}/travis-spack-env/spack/opt/spack/*/*/hwloc-*`
