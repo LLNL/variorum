@@ -19,7 +19,7 @@ void get_temp_target(struct msr_temp_target *s, off_t msr)
     static int init_tt = 0;
     int i;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     if (!init_tt)
     {
@@ -49,7 +49,7 @@ void get_therm_stat(struct therm_stat *s, off_t msr)
     static int init_ts = 0;
     int i;
 
-    variorum_set_topology(NULL, NULL, &nthreads);
+    variorum_get_topology(NULL, NULL, &nthreads);
 
     if (!init_ts)
     {
@@ -155,7 +155,7 @@ int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
     static int init_pkg_ts = 0;
     int i;
 
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     if (!init_pkg_ts)
     {
@@ -245,7 +245,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     int i, j, k;
     int nsockets, ncores, nthreads;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
                    struct pkg_therm_stat));
@@ -304,7 +304,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     int i, j, k;
     int nsockets, ncores, nthreads;
 
-    variorum_set_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
                    struct pkg_therm_stat));

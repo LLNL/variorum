@@ -137,9 +137,7 @@ int variorum_print_clock_speed(void);
 int variorum_print_hyperthreading(void);
 
 /// @brief Print architecture topology in long format.
-///
-/// @return Error code.
-int variorum_print_topology(void);
+void variorum_print_topology(void);
 
 /// @brief Print list of features available on a particular architecture.
 ///

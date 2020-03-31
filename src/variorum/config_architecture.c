@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <hwloc.h>
+#include <assert.h>
 
 #include <config_architecture.h>
 #include <variorum_config.h>
@@ -35,13 +36,8 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
 
     variorum_init_func_ptrs();
 
-    err = variorum_get_topology();
-    if (err)
-    {
-        variorum_error_handler("Cannot get topology", err, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return err;
-    }
+    //Triggers initialization on first call.  Errors assert.
+    variorum_get_topology(NULL, NULL, NULL);
     err = variorum_detect_arch();
     if (err)
     {
@@ -125,52 +121,78 @@ int variorum_detect_arch(void)
     return 0;
 }
 
-void variorum_set_topology(int *nsockets, int *ncores, int *nthreads)
-{
-    if (nsockets != NULL)
-    {
-        *nsockets = g_platform.num_sockets;
-    }
-    if (ncores != NULL)
-    {
-        *ncores = g_platform.total_cores;
-    }
-    if (nthreads != NULL)
-    {
-        *nthreads = g_platform.total_threads;
-    }
-}
-
-int variorum_get_topology(void)
+void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
 {
     hwloc_topology_t topology;
     hwloc_obj_t obj;
     unsigned int i;
     unsigned int core_depth, pu_depth;
-    static int init_variorum_get_toplogy = 0;
+    static int init_variorum_get_topology = 0;
 
     gethostname(g_platform.hostname, 1024);
 
-    if (!init_variorum_get_toplogy)
+    if (!init_variorum_get_topology)
     {
-        hwloc_topology_init(&topology);  // initialization
-        hwloc_topology_load(topology);   // actual detection
+        init_variorum_get_topology = 1;
 
+        // hwloc should give us expected results on any reasonable arch.
+        // If something goes wrong, there's no sense in trying to keep
+        // marching forward.  Thus the asserts.
+        assert(0 == hwloc_topology_init(&topology));
+        assert(0 == hwloc_topology_load(topology));
+
+        // The hwloc documentation gives an example of a machine having
+        // depth=0, each package having a depth=1, each cache associated
+        // with a package having depth=2, each core associated with a cache
+        // having a depth=3, and each processing unit (pu) associated with
+        // a core having a depth=4.
         core_depth = hwloc_get_type_depth(topology, HWLOC_OBJ_CORE);
+        assert(HWLOC_TYPE_DEPTH_UNKNOWN != core_depth);
+        assert(HWLOC_TYPE_DEPTH_MULTIPLE != core_depth);
+
         pu_depth = hwloc_get_type_depth(topology, HWLOC_OBJ_PU);
+        assert(HWLOC_TYPE_DEPTH_UNKNOWN != pu_depth);
+        assert(HWLOC_TYPE_DEPTH_MULTIPLE != pu_depth);
 
         g_platform.num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
+        //-1 if Several levels exist with OBJ_SOCKET
+        assert(-1 != g_platform.num_sockets);
+        // 0 if No levels exist with OBJ_SOCKET
+        assert(0 != g_platform.num_sockets);
+
         g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
+        assert(-1 != g_platform.total_cores);
+        assert( 0 != g_platform.total_cores);
+
         g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
+        assert(-1 != g_platform.total_threads);
+        assert( 0 != g_platform.total_threads);
 
         g_platform.num_cores_per_socket = g_platform.total_cores /
                                           g_platform.num_sockets;
+        assert(0 == g_platform.total_cores % g_platform.num_sockets);
+
         g_platform.num_threads_per_core = g_platform.total_threads /
                                           g_platform.total_cores;
+        assert(0 == g_platform.total_threads % g_platform.total_cores);
 
         hwloc_topology_destroy(topology);
     }
-    return 0;
+
+    if (nsockets != NULL)
+    {
+        *nsockets = g_platform.num_sockets;
+    }
+
+    if (ncores != NULL)
+    {
+        *ncores = g_platform.total_cores;
+    }
+
+    if (nthreads != NULL)
+    {
+        *nthreads = g_platform.total_threads;
+    }
 }
 
 void variorum_init_func_ptrs()
