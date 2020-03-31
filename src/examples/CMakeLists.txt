@@ -3,32 +3,32 @@ target_link_libraries(variorum ${variorum_deps})
 add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
-    ex-disable-turbo
-    ex-enable-turbo
-    ex-monitoring-to-file
-    ex-poll-power-to-file
-    ex-poll-power-to-stdout
-    ex-print-clock-speed
-    ex-print-counters
-    ex-print-features
-    ex-print-hyperthreading
-    ex-print-power-limits
-    ex-print-power
-    ex-print-thermals
-    ex-print-topology
-    ex-print-turbo
-    ex-print-gpu-utilization
-    ex-print-verbose-clock-speed
-    ex-print-verbose-counters
-    ex-print-verbose-power-limits
-    ex-print-verbose-power
-    ex-print-verbose-thermals
-    ex-print-verbose-gpu-utilization
-    ex-set-and-verify-node-power-limit
-    ex-set-cpu-clock-speed
-    ex-set-gpu-power-ratio
-    ex-set-node-power-limit
-    ex-set-socket-power-limits
+    variorum-disable-turbo-example
+    variorum-enable-turbo-example
+    variorum-monitoring-to-file-example
+    variorum-poll-power-to-file-example
+    variorum-poll-power-to-stdout-example
+    variorum-print-clock-speed-example
+    variorum-print-counters-example
+    variorum-print-features-example
+    variorum-print-hyperthreading-example
+    variorum-print-power-limits-example
+    variorum-print-power-example
+    variorum-print-thermals-example
+    variorum-print-topology-example
+    variorum-print-turbo-example
+    variorum-print-gpu-utilization-example
+    variorum-print-verbose-clock-speed-example
+    variorum-print-verbose-counters-example
+    variorum-print-verbose-power-limits-example
+    variorum-print-verbose-power-example
+    variorum-print-verbose-thermals-example
+    variorum-print-verbose-gpu-utilization-example
+    variorum-set-and-verify-node-power-limit-example
+    variorum-set-cpu-clock-speed-example
+    variorum-set-gpu-power-ratio-example
+    variorum-set-node-power-limit-example
+    variorum-set-socket-power-limits-example
 )
 
 message(STATUS "Adding variorum examples")
