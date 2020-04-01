@@ -12,3 +12,4 @@ Variorum User Documentation
 
    Overview
    Examples
+   Utilities
