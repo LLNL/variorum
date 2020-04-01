@@ -18,6 +18,7 @@ TMP=$(astyle --errors-to-stdout \
              --max-instatement-indent=40 \
              --pad-oper \
              --pad-header \
+             --unpad-paren \
              --align-pointer=name \
              --align-reference=name \
              --break-closing-brackets \
