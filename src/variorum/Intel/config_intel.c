@@ -26,8 +26,8 @@ uint64_t *detect_intel_arch(void)
 
     asm volatile(
         "cpuid"
-        : "=a" (rax), "=b" (rbx), "=c" (rcx), "=d" (rdx)
-        : "0" (rax), "2" (rcx));
+        : "=a"(rax), "=b"(rbx), "=c"(rcx), "=d"(rdx)
+        : "0"(rax), "2"(rcx));
 
     *model = ((rax >> 12) & 0xF0) | ((rax >> 4) & 0xF);
     return model;

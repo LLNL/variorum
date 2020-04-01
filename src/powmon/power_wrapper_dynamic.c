@@ -118,7 +118,7 @@ int main(int argc, char **argv)
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
-                          strncmp(argv[1], "-h", strlen("-h")) == 0 )))
+                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
     {
         printf("%s", usage);
         return 0;

@@ -166,19 +166,19 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
 
         if (strcmp(md[i].name, "PWRSYS") == 0)
         {
-            pwrsys = (uint64_t) (sample * TO_FP(scale));
+            pwrsys = (uint64_t)(sample * TO_FP(scale));
         }
         if (strcmp(md[i].name, "PWRPROC") == 0)
         {
-            pwrproc = (uint64_t) (sample * TO_FP(scale));
+            pwrproc = (uint64_t)(sample * TO_FP(scale));
         }
         if (strcmp(md[i].name, "PWRMEM") == 0)
         {
-            pwrmem = (uint64_t) (sample * TO_FP(scale));
+            pwrmem = (uint64_t)(sample * TO_FP(scale));
         }
         if (strcmp(md[i].name, "PWRGPU") == 0)
         {
-            pwrgpu = (uint64_t) (sample * TO_FP(scale));
+            pwrgpu = (uint64_t)(sample * TO_FP(scale));
         }
     }
 

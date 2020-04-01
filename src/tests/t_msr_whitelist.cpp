@@ -68,7 +68,7 @@ int whitelist_size(const char *file)
     return statbuf.st_size;
 }
 
-TEST (MsrWhitelist, Exists)
+TEST(MsrWhitelist, Exists)
 {
     char *filename;
 
@@ -77,7 +77,7 @@ TEST (MsrWhitelist, Exists)
     free(filename);
 }
 
-TEST (MsrWhitelist, Perms)
+TEST(MsrWhitelist, Perms)
 {
     char *filename;
 
@@ -86,7 +86,7 @@ TEST (MsrWhitelist, Perms)
     free(filename);
 }
 
-TEST (MsrWhitelist, Size)
+TEST(MsrWhitelist, Size)
 {
     char *filename;
 
