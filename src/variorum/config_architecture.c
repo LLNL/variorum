@@ -128,6 +128,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
     unsigned int i;
     unsigned int core_depth, pu_depth;
     static int init_variorum_get_topology = 0;
+    int rc;
 
     gethostname(g_platform.hostname, 1024);
 
@@ -138,8 +139,10 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
         // hwloc should give us expected results on any reasonable arch.
         // If something goes wrong, there's no sense in trying to keep
         // marching forward.  Thus the asserts.
-        assert(0 == hwloc_topology_init(&topology));
-        assert(0 == hwloc_topology_load(topology));
+        rc = hwloc_topology_init(&topology);
+        assert( 0 == rc );
+        rc = hwloc_topology_load(topology);
+        assert( 0 == rc );
 
         // The hwloc documentation gives an example of a machine having
         // depth=0, each package having a depth=1, each cache associated
