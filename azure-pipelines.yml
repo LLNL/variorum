@@ -16,20 +16,12 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     timeoutInMinutes: 0
-    strategy:
-      matrix:
-        mytest1:
-          CC: gcc-5
-          CXX: g++-5
-          FC: gfortran-5
-          BUILD_SHARED_LIBS: ON
-          CMAKE_BUILD_TYPE: Debug
-        mytest2:
-          CC: gcc-6
-          CXX: g++-6
-          FC: gfortran-6
-          BUILD_SHARED_LIBS: ON
-          CMAKE_BUILD_TYPE: Debug
+    variables:
+      COMPILER_CC: gcc-7
+      COMPILER_CXX: g++-7
+      COMPILER_FC: gfortran-7
+      BUILD_SHARED_LIBS: ON
+      CMAKE_BUILD_TYPE: Debug
     steps:
       - checkout: self
         clean: boolean
@@ -59,9 +51,9 @@ stages:
            # configure
            #################################
            # setup compiler env vars
-           export CC=${CC}
-           export CXX=${CXX}
-           export FC=${FC}
+           export CC=${COMPILER_CC}
+           export CXX=${COMPILER_CXX}
+           export FC=${COMPILER_FC}
            ${CC} --version
            # capture current path
            export ROOT_DIR=$(pwd)
