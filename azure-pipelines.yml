@@ -13,6 +13,7 @@ stages:
 - stage: Main
   jobs:
   - job: Ubuntu_Latest
+    displayName: 'Ubuntu latest'
     pool:
       vmImage: 'ubuntu-latest'
     timeoutInMinutes: 0
@@ -113,6 +114,7 @@ stages:
         displayName: 'Install'
 
   - job: Ubuntu_16
+    displayName: 'Ubuntu 16'
     pool:
       vmImage: 'ubuntu-16.04'
     timeoutInMinutes: 0
