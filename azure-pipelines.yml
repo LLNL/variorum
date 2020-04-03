@@ -87,7 +87,7 @@ stages:
            # setup cmake options
            export CMAKE_OPTS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
            export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${HWLOC_DIR}"
-           export CMAKE_OPTS="${CMAKE_OPTS} -D${BUILD_DOCS}=${BUILD_DOCS}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${BUILD_DOCS}"
            export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${VARIORUM_LOG}"
            export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
            export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
