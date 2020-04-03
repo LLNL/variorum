@@ -45,9 +45,11 @@ stages:
            mv spack-0.14.0 spack
            export PATH=${ROOT_DIR}/spack/bin:${PATH}
 
+           spack mirror add local_filesystem file://${ROOT_DIR}/scripts/travis/mirrors
+           ls ${ROOT_DIR}/scripts/travis/mirrors
+
            # hwloc
            spack install hwloc
-           echo "ls:" $(ls)
            export HWLOC_DIR=`ls -d ${ROOT_DIR}/spack/opt/spack/*/*/hwloc-*`
            echo -e "HWLOC_DIR:" ${HWLOC_DIR}
         displayName: 'Spack Build Dependencies'
