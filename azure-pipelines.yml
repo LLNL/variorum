@@ -1,0 +1,43 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+pr:
+  branches:
+    include:
+    - dev
+
+stages:
+- stage: Main
+  jobs:
+  - job: Ubuntu_latest
+    pool:
+      vmImage: 'ubuntu-latest'
+    timeoutInMinutes: 0
+    variables:
+      COMPILER_CC: gcc-5
+      COMPILER_CXX: g++-5
+      COMPILER_FC: gfortran-5
+    steps:
+      - checkout: self
+        clean: boolean
+
+      - script: |
+           #################################
+           # build spack dependencies
+           #################################
+           #
+           echo "PWD:" $(pwd)
+           wget https://github.com/spack/spack/archive/v0.14.0.tar.gz
+           tar -xzf v0.14.0.tar.gz
+           mv spack-0.14.0 spack
+           export PATH=${PWD}/spack/bin:${PATH}
+
+           # hwloc
+           spack install hwloc
+           echo "ls:" $(ls)
+           #export HWLOC_DIR=`ls -d ${TRAVIS_BUILD_DIR}/travis-spack-env/spack/opt/spack/*/*/hwloc-*`
+           echo -e "HWLOC_DIR:" ${HWLOC_DIR}
+        displayName: 'Spack Build Dependencies'

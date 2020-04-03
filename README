@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=dev)](https://travis-ci.com/LLNL/variorum)
 [![Read the Docs](https://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
+[![Azure Pipelines Build Status](https://dev.azure.com/slabasan/variorum/_apis/build/status/LLNL.Variorum?branchName=dev)](https://dev.azure.com/slabasan/variorum/_build/latest?definitionId=1&branchName=dev)
 
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
 interfaces for several features in hardware architectures.
@@ -11,7 +12,7 @@ version 0.2.0
 
 Last Update
 -----------
-27 March 2020
+2 April 2020
 
 
 Webpages
