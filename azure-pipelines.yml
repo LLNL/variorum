@@ -16,10 +16,20 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     timeoutInMinutes: 0
-    variables:
-      COMPILER_CC: gcc-5
-      COMPILER_CXX: g++-5
-      COMPILER_FC: gfortran-5
+    strategy:
+      matrix:
+        mytest1:
+          CC: gcc-5
+          CXX: g++-5
+          FC: gfortran-5
+          BUILD_SHARED_LIBS: ON
+          CMAKE_BUILD_TYPE: Debug
+        mytest2:
+          CC: gcc-6
+          CXX: g++-6
+          FC: gfortran-6
+          BUILD_SHARED_LIBS: ON
+          CMAKE_BUILD_TYPE: Debug
     steps:
       - checkout: self
         clean: boolean
@@ -28,16 +38,40 @@ stages:
            #################################
            # build spack dependencies
            #################################
-           #
-           echo "PWD:" $(pwd)
+           export ROOT_DIR=$(pwd)
+           echo "ROOT_DIR:" ${ROOT_DIR}
            wget https://github.com/spack/spack/archive/v0.14.0.tar.gz
            tar -xzf v0.14.0.tar.gz
            mv spack-0.14.0 spack
-           export PATH=${PWD}/spack/bin:${PATH}
+           export PATH=${ROOT_DIR}/spack/bin:${PATH}
 
            # hwloc
            spack install hwloc
            echo "ls:" $(ls)
-           #export HWLOC_DIR=`ls -d ${TRAVIS_BUILD_DIR}/travis-spack-env/spack/opt/spack/*/*/hwloc-*`
+           export HWLOC_DIR=`ls -d ${ROOT_DIR}/spack/opt/spack/*/*/hwloc-*`
            echo -e "HWLOC_DIR:" ${HWLOC_DIR}
         displayName: 'Spack Build Dependencies'
+
+      - script: |
+           #################################
+           # configure
+           #################################
+           # setup compiler env vars
+           export CC=${CC}
+           export CXX=${CXX}
+           export FC=${FC}
+           ${CC} --version
+           # capture current path
+           export ROOT_DIR=$(pwd)
+           which cmake
+           cmake --version
+           # prepare build dir
+           mkdir build
+           cd build
+           # setup cmake options
+           export CMAKE_OPTS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
+           # configure
+           cmake ${CMAKE_OPTS} ../src
+        displayName: 'Configure with CMake'
