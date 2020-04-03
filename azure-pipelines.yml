@@ -12,7 +12,7 @@ pr:
 stages:
 - stage: Main
   jobs:
-  - job: Ubuntu_latest
+  - job: Ubuntu_Latest
     pool:
       vmImage: 'ubuntu-latest'
     timeoutInMinutes: 0
@@ -111,3 +111,104 @@ stages:
            cd build
            make install
         displayName: 'Install'
+
+  - job: Ubuntu_16
+    pool:
+      vmImage: 'ubuntu-16.04'
+    timeoutInMinutes: 0
+    variables:
+      COMPILER_CC: gcc-5
+      COMPILER_CXX: g++-5
+      COMPILER_FC: gfortran-5
+      BUILD_SHARED_LIBS: ON
+      CMAKE_BUILD_TYPE: Debug
+      BUILD_DOCS: OFF
+      VARIORUM_LOG: OFF
+    steps:
+      - checkout: self
+        clean: boolean
+
+      - script: |
+           ##################
+           # setup build env
+           ##################
+           # output env
+           echo -e "System Info:" $(uname -a)
+           sudo apt-get update
+           # list pkgs we need
+           export APT_PKGS=binutils
+           export APT_PKGS="$APT_PKGS gcc"
+           export APT_PKGS="$APT_PKGS g++"
+           export APT_PKGS="$APT_PKGS gfortran"
+           export APT_PKGS="$APT_PKGS build-essential"
+           # install pkgs we need
+           sudo apt-get -y install $APT_PKGS
+        displayName: 'Prepare build env'
+
+      - script: |
+           #################################
+           # build spack dependencies
+           #################################
+           sudo apt-get install gfortran
+           export ROOT_DIR=$(pwd)
+           echo "ROOT_DIR:" ${ROOT_DIR}
+           wget https://github.com/spack/spack/archive/v0.14.0.tar.gz
+           tar -xzf v0.14.0.tar.gz
+           mv spack-0.14.0 spack
+           export PATH=${ROOT_DIR}/spack/bin:${PATH}
+
+           spack mirror add local_filesystem file://${ROOT_DIR}/scripts/travis/mirrors
+           ls ${ROOT_DIR}/scripts/travis/mirrors
+
+           # hwloc
+           spack install hwloc
+           export HWLOC_DIR=`ls -d ${ROOT_DIR}/spack/opt/spack/*/*/hwloc-*`
+           echo -e "HWLOC_DIR:" ${HWLOC_DIR}
+        displayName: 'Spack Build Dependencies'
+
+      - script: |
+           #################################
+           # configure
+           #################################
+           # setup compiler env vars
+           export CC=${COMPILER_CC}
+           export CXX=${COMPILER_CXX}
+           export FC=${COMPILER_FC}
+           ${CC} --version
+           # capture current path
+           export ROOT_DIR=$(pwd)
+           which cmake
+           cmake --version
+           # set hwloc dir
+           export HWLOC_DIR=`ls -d ${ROOT_DIR}/spack/opt/spack/*/*/hwloc-*`
+           # prepare build dir
+           mkdir build
+           cd build
+           # setup cmake options
+           export CMAKE_OPTS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${HWLOC_DIR}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${BUILD_DOCS}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${VARIORUM_LOG}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
+           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
+           echo "Executing cmake" ${CMAKE_OPTS} "../src"
+           # configure
+           cmake ${CMAKE_OPTS} ../src
+        displayName: 'Configure with CMake'
+
+      - script: |
+           #################################
+           # build
+           #################################
+           cd build
+           make VERBOSE=1
+        displayName: 'Build'
+
+      - script: |
+           #################################
+           # install
+           #################################
+           cd build
+           make install
+        displayName: 'Install'
+
