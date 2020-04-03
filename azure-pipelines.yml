@@ -27,9 +27,27 @@ stages:
         clean: boolean
 
       - script: |
+           ##################
+           # setup build env
+           ##################
+           # output env
+           echo -e "System Info:" $(uname -a)
+           sudo apt-get update
+           # list pkgs we need
+           export APT_PKGS=binutils
+           export APT_PKGS="$APT_PKGS gcc"
+           export APT_PKGS="$APT_PKGS g++"
+           export APT_PKGS="$APT_PKGS gfortran"
+           export APT_PKGS="$APT_PKGS build-essential"
+           # install pkgs we need
+           sudo apt-get -y install $APT_PKGS
+        displayName: 'Prepare build env'
+
+      - script: |
            #################################
            # build spack dependencies
            #################################
+           sudo apt-get install gfortran
            export ROOT_DIR=$(pwd)
            echo "ROOT_DIR:" ${ROOT_DIR}
            wget https://github.com/spack/spack/archive/v0.14.0.tar.gz
