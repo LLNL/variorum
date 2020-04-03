@@ -95,3 +95,19 @@ stages:
            # configure
            cmake ${CMAKE_OPTS} ../src
         displayName: 'Configure with CMake'
+
+      - script: |
+           #################################
+           # build
+           #################################
+           cd build
+           make VERBOSE=1
+        displayName: 'Build'
+
+      - script: |
+           #################################
+           # install
+           #################################
+           cd build
+           make install
+        displayName: 'Install'
