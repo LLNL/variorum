@@ -292,7 +292,7 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
     int nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
 
-    allocate_batch(RD_RAPL_DATA, 2UL * nsockets);
+    allocate_batch(RAPL_DATA, 2UL * nsockets);
 
     rapl->pkg_bits = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
     rapl->pkg_joules = (double *) calloc(nsockets, sizeof(double));
@@ -301,8 +301,7 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
     rapl->pkg_delta_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(double));
     rapl->pkg_watts = (double *) calloc(nsockets, sizeof(double));
-    load_socket_batch(msr_pkg_energy_status, rapl->pkg_bits, BATCH_READ,
-                      RD_RAPL_DATA);
+    load_socket_batch(msr_pkg_energy_status, rapl->pkg_bits, RAPL_DATA);
 
     rapl->dram_bits = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
     rapl->old_dram_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
@@ -310,9 +309,18 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
     rapl->old_dram_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->dram_delta_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->dram_watts = (double *) calloc(nsockets, sizeof(double));
-    load_socket_batch(msr_dram_energy_status, rapl->dram_bits, BATCH_READ,
-                      RD_RAPL_DATA);
+    load_socket_batch(msr_dram_energy_status, rapl->dram_bits, RAPL_DATA);
 
+    //if (*rapl_flags & PKG_PERF_STATUS)
+    //{
+    //    rapl->pkg_perf_count = (uint64_t **) libmsr_calloc(sockets * threadsPerCore, sizeof(uint64_t));
+    //    load_socket_batch(MSR_PKG_PERF_STATUS, rapl->pkg_perf_count, RAPL_DATA);
+    //}
+    //if (*rapl_flags & DRAM_PERF_STATUS)
+    //{
+    //    rapl->dram_perf_count = (uint64_t **) libmsr_calloc(sockets * threadsPerCore, sizeof(uint64_t));
+    //    load_socket_batch(MSR_DRAM_PERF_STATUS, rapl->dram_perf_count, RAPL_DATA);
+    //}
 }
 
 int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
@@ -327,10 +335,10 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
     {
         init_get_rapl_power_unit = 1;
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(RD_RAPL_UNIT, nsockets);
-        load_socket_batch(msr, val, BATCH_READ, RD_RAPL_UNIT);
+        allocate_batch(RAPL_UNIT, nsockets);
+        load_socket_batch(msr, val, RAPL_UNIT);
     }
-    execute_batch(RD_RAPL_UNIT);
+    read_batch(RAPL_UNIT);
 
     /* Initialize the units used for each socket. */
     for (i = 0; i < nsockets; i++)
@@ -1025,7 +1033,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
             //}
         }
     }
-    execute_batch(RD_RAPL_DATA);
+    read_batch(RAPL_DATA);
     for (i = 0; i < nsockets; i++)
     {
         //        if (*rapl_flags & DRAM_ENERGY_STATUS)

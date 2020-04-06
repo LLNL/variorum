@@ -23,88 +23,81 @@ enum variorum_data_type_e
 {
     /// @brief Energy, time, and power measurements of various RAPL power
     /// domains.
-    RD_RAPL_DATA,
+    RAPL_DATA = 0,
     /// @brief Units for energy, time, and power across all RAPL power domains.
-    RD_RAPL_UNIT,
+    RAPL_UNIT = 1,
     /// @brief Fixed-function counter measurements (i.e., instructions retired,
     /// reference clock cycles, CPU cycles).
-    RD_FIXED_COUNTERS_DATA,
+    FIXED_COUNTERS_DATA = 2,
     /// @brief Controls for fixed-function counters (i.e., instructions retired,
     /// reference clock cycles, CPU cycles).
-    RD_FIXED_COUNTERS_CTRL_DATA,
-    WR_FIXED_COUNTERS_CTRL_DATA,
+    FIXED_COUNTERS_CTRL_DATA = 3,
     /// @brief General-purpose performance counter measurements.
-    RD_COUNTERS_DATA,
-    WR_COUNTERS_DATA,
+    COUNTERS_DATA = 4,
     /// @brief Controls for general-purpose performance counters and
     /// performance event select counter measurements.
-    RD_COUNTERS_CTRL,
-    WR_COUNTERS_CTRL,
+    COUNTERS_CTRL = 5,
     /// @brief Clock cycle measurements based on fixed frequency and actual
     /// frequency of the processor.
-    RD_CLOCKS_DATA,
+    CLOCKS_DATA = 6,
     /// @brief Instantaneous operating frequency of the core or socket.
-    RD_PERF_DATA,
-    WR_PERF_DATA,
+    PERF_DATA = 7,
     /// @brief Thermal status of core.
-    RD_THERM_STAT,
+    THERM_STAT = 8,
     /// @brief Interrupts by thermal monitor when thermal sensor on a core is
     /// tripped.
-    THERM_INTERR,
+    THERM_INTERR = 9,
     /// @brief Thermal status of package.
-    RD_PKG_THERM_STAT,
+    PKG_THERM_STAT = 10,
     /// @brief Interrupts by thermal monitor when thermal sensor on the package
     /// is tripped.
-    PKG_THERM_INTERR,
+    PKG_THERM_INTERR = 11,
     /// @brief Current temperature of the package.
-    RD_TEMP_TARGET,
+    TEMP_TARGET = 12,
     /// @brief Software desired operating frequency of the core or socket.
-    RD_PERF_CTRL,
-    WR_PERF_CTRL,
+    PERF_CTRL = 13,
     /// @brief Measured time spent in C-states by the package.
-    PKG_CRESIDENCY,
+    PKG_CRESIDENCY = 14,
     /// @brief Measured time spent in C-states by the core.
-    CORE_CRESIDENCY,
+    CORE_CRESIDENCY = 15,
     /// @brief Uncore performance event select counter measurements.
-    RD_UNCORE_EVTSEL,
-    WR_UNCORE_EVTSEL,
+    UNCORE_EVTSEL = 16,
     /// @brief Uncore general-performance counter measurements.
-    RD_UNCORE_COUNT, // FIXME Not the most fortunate of abbrevs.
-    WR_UNCORE_COUNT, // FIXME Not the most fortunate of abbrevs.
+    UNCORE_COUNT = 17,
     /// @brief User-defined batch MSR data.
-    USR_BATCH0,
+    USR_BATCH0 = 18,
     /// @brief User-defined batch MSR data.
-    USR_BATCH1,
+    USR_BATCH1 = 19,
     /// @brief User-defined batch MSR data.
-    USR_BATCH2,
+    USR_BATCH2 = 20,
     /// @brief User-defined batch MSR data.
-    USR_BATCH3,
+    USR_BATCH3 = 21,
     /// @brief User-defined batch MSR data.
-    USR_BATCH4,
+    USR_BATCH4 = 22,
     /// @brief User-defined batch MSR data.
-    USR_BATCH5,
+    USR_BATCH5 = 23,
     /// @brief User-defined batch MSR data.
-    USR_BATCH6,
+    USR_BATCH6 = 24,
     /// @brief User-defined batch MSR data.
-    USR_BATCH7,
+    USR_BATCH7 = 25,
     /// @brief User-defined batch MSR data.
-    USR_BATCH8,
+    USR_BATCH8 = 26,
     /// @brief User-defined batch MSR data.
-    USR_BATCH9,
+    USR_BATCH9 = 27,
     /// @brief User-defined batch MSR data.
-    USR_BATCH10,
-    RD_PLATFORM_INFO,
+    USR_BATCH10 = 28,
+    PLATFORM_INFO = 29,
 };
 
 /// @brief Enum encompassing batch operations.
-/// These particular values are required by the msr-safe struct msr_batch_op
-/// field isrdmsr.
 enum variorum_batch_op_type_e
 {
+    /// @brief Load batch operation.
+    BATCH_LOAD,
     /// @brief Write batch operation.
-    BATCH_WRITE = 0,
+    BATCH_WRITE,
     /// @brief Read batch operation.
-    BATCH_READ = 1,
+    BATCH_READ,
 };
 
 /// @brief Structure holding multiple read/write operations to various MSRs.
@@ -318,18 +311,18 @@ int write_msr_by_coord(unsigned socket,
 
 int load_thread_batch(off_t msr,
                       uint64_t **val,
-                      int isrdmsr,
                       int batchnum);
 
 int load_socket_batch(off_t msr,
                       uint64_t **val,
-                      int isrdmsr,
                       int batchnum);
 
 int allocate_batch(int batchnum,
                    size_t bsize);
 
-int execute_batch(int batchnum);
+int read_batch(const int batchnum);
+
+int write_batch(const int batchnum);
 
 int create_batch_op(off_t msr,
                     uint64_t cpu,

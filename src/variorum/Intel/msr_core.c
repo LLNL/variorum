@@ -88,7 +88,7 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
     return 0;
 }
 
-static int compatibility_batch(int batchnum)
+static int compatibility_batch(int batchnum, int type)
 {
     struct msr_batch_array *batch = NULL;
     int i;
@@ -102,7 +102,7 @@ static int compatibility_batch(int batchnum)
     }
     for (i = 0; i < batch->numops; i++)
     {
-        if (batch->ops[i].isrdmsr == BATCH_READ)
+        if (type == BATCH_READ)
         {
             read_msr_by_idx(batch->ops[i].cpu, batch->ops[i].msr,
                             (uint64_t *) &batch->ops[i].msrdata);
@@ -152,7 +152,7 @@ static int *core_fd(const int dev_idx)
     return NULL;
 }
 
-int execute_batch(int batchnum)
+static int do_batch_op(int batchnum, int type)
 {
     static int batchfd = 0;
     struct msr_batch_array *batch = NULL;
@@ -167,18 +167,19 @@ int execute_batch(int batchnum)
         }
     }
 #ifdef USE_NO_BATCH
-    return compatibility_batch(batchnum);
+    return compatibility_batch(batchnum, type);
 #endif
     if (batchfd < 0)
     {
-        return compatibility_batch(batchnum);
+        return compatibility_batch(batchnum, type);
     }
     if (batch_storage(&batch, batchnum, NULL))
     {
         return -1;
     }
 #ifdef BATCH_DEBUG
-    fprintf(stderr, "BATCH %d: numops %u\n", batchnum, batch->numops);
+    fprintf(stderr, "BATCH %d: %s MSRs, numops %u\n", batchnum,
+            (type == BATCH_READ ? "reading" : "writing"), batch->numops);
 #endif
     if (batch->numops <= 0)
     {
@@ -187,6 +188,16 @@ int execute_batch(int batchnum)
         return -1;
     }
 
+    /* If current flag is the opposite type, switch the flags. */
+    if ((type == BATCH_WRITE && batch->ops[0].isrdmsr) || (type == BATCH_READ &&
+            !batch->ops[0].isrdmsr))
+    {
+        __u8 readflag = (__u8)(type == BATCH_READ ? 1 : 0);
+        for (j = 0; j < batch->numops; j++)
+        {
+            batch->ops[j].isrdmsr = readflag;
+        }
+    }
     res = ioctl(batchfd, X86_IOC_MSR_BATCH, batch);
     if (res < 0)
     {
@@ -565,7 +576,7 @@ int allocate_batch(int batchnum, size_t bsize)
     return 0;
 }
 
-int load_socket_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
+int load_socket_batch(off_t msr, uint64_t **val, int batchnum)
 {
     int dev_idx, val_idx;
     int nsockets, ncores, nthreads;
@@ -587,7 +598,7 @@ int load_socket_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
     return 0;
 }
 
-int load_thread_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
+int load_thread_batch(off_t msr, uint64_t **val, int batchnum)
 {
     int dev_idx, val_idx;
     int nsockets, ncores, nthreads;
@@ -613,12 +624,12 @@ int load_thread_batch(off_t msr, uint64_t **val, int isrdmsr, int batchnum)
 
 int read_batch(const int batchnum)
 {
-    return execute_batch(batchnum);
+    return do_batch_op(batchnum, BATCH_READ);
 }
 
 int write_batch(const int batchnum)
 {
-    return execute_batch(batchnum);
+    return do_batch_op(batchnum, BATCH_WRITE);
 }
 
 int create_batch_op(off_t msr, uint64_t cpu, uint64_t **dest,
