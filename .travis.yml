@@ -17,28 +17,29 @@ include:
 jobs:
   fast_finish: true
   include:
-  - stage: "compile check"
-    env:
-      # we want to test both static and shared, w/ and w/o docs.
-      - BUILD_SHARED_LIBS=ON
-        BUILD_DOCS=ON
-        BUILD_TESTS=OFF
-        VARIORUM_LOG=ON
-        VARIORUM_WITH_INTEL=ON
-        VARIORUM_WITH_IBM=OFF
-        VARIORUM_WITH_NVIDIA=OFF
-        VARIORUM_WITH_AMD=OFF
-    install:
-      # none
+  - stage: "msr safe"
     before_script:
       - date
-      - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
+      - sudo apt-get install git
+      - sudo apt-get install linux-headers-`uname -r`
+      - git clone https://github.com/llnl/msr-safe
+    install:
+      # none
     after_script:
       - date
-    script: ./scripts/travis/build.sh
+    script:
+      - which gcc
+      - uname -r
+      - cd msr-safe
+      - make
+      - sudo insmod msr-safe.ko
+      - ls -l /dev/cpu
+      - ls -l /dev/cpu/*/msr_safe
+      - WL=$(printf 'wl_%.2x%x\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
+      - echo -e "Whitelist: ${WL}"
 
-  - env:
+  - stage: "compile check"
+    env:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
