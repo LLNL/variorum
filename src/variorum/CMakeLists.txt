@@ -33,6 +33,7 @@ set(variorum_deps ""
 set(variorum_includes
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${HWLOC_INCLUDE_DIRS}
+    ${ESMI_INCLUDE_DIRS}
 )
 
 if(VARIORUM_WITH_INTEL)
@@ -67,6 +68,14 @@ if(VARIORUM_WITH_ARM)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/ARM)
 endif()
 
+if(VARIORUM_WITH_AMD)
+    add_subdirectory(AMD)
+    list(APPEND variorum_headers AMD/config_amd.h ${variorum_amd_headers})
+    list(APPEND variorum_sources AMD/config_amd.c)
+    list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_amd>)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/AMD)
+endif()
+
 if(FORTRAN_FOUND)
     add_library(variorum_fortran OBJECT variorum.f90)
     list(APPEND variorum_sources $<TARGET_OBJECTS:variorum_fortran>)
@@ -94,6 +103,9 @@ endif()
 target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
 target_link_libraries(variorum PUBLIC ${JANSSON_LIBRARY})
 target_link_libraries(variorum PUBLIC m)
+if(VARIORUM_WITH_AMD)
+target_link_libraries(variorum PUBLIC ${ESMI_LIBRARY})
+endif()
 
 install(TARGETS variorum
         EXPORT  variorum
