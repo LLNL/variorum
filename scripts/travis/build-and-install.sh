@@ -98,9 +98,13 @@ echo -e "PWD:" ${PWD}
 # configure
 cmake ${CMAKE_OPTS} ../src
 
-# build, test, and install
+# build
 make VERBOSE=1
 
+# install
+make install
+
+# test
 #env CTEST_OUTPUT_ON_FAILURE=1 make test
 
 #
