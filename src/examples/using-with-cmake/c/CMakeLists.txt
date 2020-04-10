@@ -27,7 +27,7 @@ project(using_with_cmake)
 # Provide default for VARIORUM_DIR that works for an variorum install
 #
 if(NOT VARIORUM_DIR)
-    set(VARIORUM_DIR "../..")
+    set(VARIORUM_DIR "../../..")
 endif()
 
 #
@@ -51,4 +51,4 @@ add_definitions(-DSECOND_RUN)
 add_executable(variorum-print-power-example variorum-print-power-example.c)
 
 # link to variorum
-target_link_libraries(ex-print-power variorum::variorum)
+target_link_libraries(variorum-print-power-example variorum::variorum)
