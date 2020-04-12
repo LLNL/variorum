@@ -18,6 +18,8 @@ option(VARIORUM_WITH_NVIDIA "Support Nvidia architectures" OFF)
 option(VARIORUM_DEBUG       "Enable debug statements"      OFF)
 option(VARIORUM_LOG         "Enable logging statements"    ON)
 
+set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
+
 include(CMake/CMakeBasics.cmake)
 
 include(CMake/VariorumBuildType.cmake)
