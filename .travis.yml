@@ -36,7 +36,8 @@ jobs:
       - sudo apt-get install gfortran
     after_script:
       - date
-    script: ./scripts/travis/build.sh
+    script:
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
@@ -56,7 +57,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
@@ -76,7 +77,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
@@ -96,7 +97,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
@@ -116,7 +117,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
@@ -136,7 +137,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
@@ -156,7 +157,7 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
@@ -176,7 +177,31 @@ jobs:
     after_script:
       - date
     script:
-      - ./scripts/travis/build.sh
+      - ./scripts/travis/build-and-install.sh
+
+  - stage: "verify install with example"
+    env:
+      # we want to test both static and shared, w/ and w/o docs.
+      - BUILD_SHARED_LIBS=ON
+        BUILD_DOCS=OFF
+        BUILD_TESTS=OFF
+        VARIORUM_LOG=OFF
+        VARIORUM_WITH_INTEL=ON
+        VARIORUM_WITH_IBM=OFF
+        VARIORUM_WITH_NVIDIA=OFF
+        VARIORUM_WITH_AMD=OFF
+    install:
+      # none
+    before_script:
+      - date
+      - sudo apt-get install gfortran
+      - sudo apt-get install linux-headers-`uname -r`
+    after_script:
+      - date
+    script:
+      - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/load-msr-safe.sh
+      - ./scripts/travis/test-install.sh
 
   - stage: "style check"
     script:
