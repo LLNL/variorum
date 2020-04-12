@@ -22,6 +22,8 @@ include(CMake/CMakeBasics.cmake)
 
 include(CMake/VariorumBuildType.cmake)
 
+include(CMake/SetupCompilerOptions.cmake)
+
 include(CMake/SetupFortran.cmake)
 
 include(CMake/Setup3rdParty.cmake)
