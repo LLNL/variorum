@@ -36,7 +36,7 @@ void initNVML()
     }
 
     /* Collect number of packages and GPUs per package */
-    variorum_set_topology(&m_num_package, NULL, NULL);
+    variorum_get_topology(&m_num_package, NULL, NULL);
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */

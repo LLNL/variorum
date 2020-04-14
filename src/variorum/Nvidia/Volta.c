@@ -18,7 +18,7 @@ int volta_get_power(int long_ver)
 #endif
     int iter = 0;
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         dump_power_data(iter, long_ver, stdout);
@@ -34,7 +34,7 @@ int volta_get_thermals(int long_ver)
 
     int iter = 0;
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         dump_thermal_data(iter, long_ver, stdout);
@@ -49,7 +49,7 @@ int volta_get_clocks(int long_ver)
 #endif
     int iter = 0;
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         dump_clocks_data(iter, long_ver, stdout);
@@ -64,7 +64,7 @@ int volta_get_power_limits(int long_ver)
 #endif
     int iter = 0;
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         dump_power_limits(iter, long_ver, stdout);
@@ -79,7 +79,7 @@ int volta_get_gpu_utilization(int long_ver)
 #endif
     int iter = 0;
     int nsockets;
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         dump_gpu_utilization(iter, long_ver, stdout);
