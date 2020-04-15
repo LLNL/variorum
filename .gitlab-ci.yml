@@ -53,6 +53,7 @@ build-lassen-cpu:
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu ../src
    - make VERBOSE=1
+   - make install
 
 build-lassen-gpu:
  tags:
@@ -70,3 +71,4 @@ build-lassen-gpu:
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu ../src
    - make VERBOSE=1
+   - make install
