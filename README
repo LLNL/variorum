@@ -11,7 +11,7 @@ version 0.2.0
 
 Last Update
 -----------
-27 March 2020
+15 April 2020
 
 
 Webpages
@@ -24,6 +24,13 @@ https://variorum.readthedocs.io
 Variorum provides general interfaces to provide privileged functionality for
 monitoring and controlling various hardware-level features of multiple hardware
 architectures.
+
+
+## Documentation
+To get started building and using Variorum, check out the full documentation
+here:
+
+https://variorum.readthedocs.io
 
 
 ## Getting Started
@@ -94,24 +101,17 @@ Supported Nvidia Architectures:
 
 ## Testing
 
-From within the build directory, unit tests can be executed individually.
-Please report any failed tests to the project team at <variorum-maintainers@llnl.gov>.
+From within the build directory, unit tests can be executed as follows:
+```
+    $ make test
+```
+Please report any failed tests to the project team at
+<variorum-maintainers@llnl.gov>.
 
 
 ## Examples
 
 For sample code, see the `examples/` directory.
-
-
-## Documentation
-From within the build directory, documentation can be built with the following
-target:
-
-```
-    $ make docs
-```
-
-Additionally, set `BUILD_DOCS=ON` in `CMakeLists.txt`.
 
 
 ## Support Additional Intel Platforms
@@ -123,13 +123,21 @@ respective platform.
 3. Include the new header file in `Intel/config_architecture.h`.
 
 
-## Notes
-This software depends on the files `/dev/cpu/*/msr` being present with R/W
-permissions. Recent kernels require additional capabilities. We have found it
-easier to use our own [msr-safe](https://github.com/LLNL/msr-safe) kernel
-module, but running as root (or going through the bother of adding the
-capabilities to the binaries) is another option.
+## System Environment Requirements
+This software has certain system requirements depending on what hardware you
+are running on.
 
+Intel: Running this software on Intel platforms depends on the files
+`/dev/cpu/*/msr` being present with R/W permissions. Recent kernels require
+additional capabilities. We have found it easier to use our own
+[msr-safe](https://github.com/LLNL/msr-safe) kernel module, but running as root
+(or going through the bother of adding the capabilities to the binaries) is
+another option.
+
+IBM: Running this software on IBM platforms depends on the OPAL files being
+present with R/W permissions.
+
+Nvidia: Running this software on Nvidia platforms depends on CUDA being loaded.
 
 ## Bug Tracker
 Bugs and feature requests are being tracked on [GitHub

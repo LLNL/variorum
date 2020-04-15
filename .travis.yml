@@ -2,9 +2,6 @@ sudo: true
 
 language: c
 
-compiler:
-  - gcc
-
 env:
   global:
   - COMPILER_CC=gcc
@@ -28,6 +25,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -48,6 +47,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -68,6 +69,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -88,6 +91,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -108,6 +113,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -128,6 +135,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -148,6 +157,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -168,6 +179,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -190,6 +203,8 @@ jobs:
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
+    compiler:
+      - gcc
     install:
       # none
     before_script:
@@ -203,7 +218,7 @@ jobs:
       - ./scripts/travis/load-msr-safe.sh
       - ./scripts/travis/test-install.sh
 
-  - stage: "style check"
+  - stage: "c/cpp/h style check"
     script:
       - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
       - tar -xf astyle_3.1_linux.tar.gz
@@ -212,6 +227,16 @@ jobs:
       - cd -
       - echo -e "PWD:" ${PWD}
       - ./scripts/astyle-format.sh || travis_terminate 1
+
+  - stage: "python style check"
+    install:
+      - pip install --upgrade -r ./src/utilities/requirements.txt
+      - pip install --upgrade black
+    language: python
+    python: '3.7'
+    script:
+      - black --diff --check ./src/utilities
+      - flake8 ./src/utilities
 
 notifications:
   email:
