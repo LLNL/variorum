@@ -1,3 +1,8 @@
+# Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 set(VARIORUM_INCLUDE_DIRS "${VARIORUM_INSTALL_PREFIX}/include")
 
 # create convenience target that bundles all reg variorum deps

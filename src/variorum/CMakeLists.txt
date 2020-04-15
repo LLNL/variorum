@@ -1,3 +1,8 @@
+# Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 set(VARIORUM_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE INTERNAL "")
 
 if(FORTRAN_FOUND)

@@ -1,3 +1,8 @@
+# Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 set(variorum_nvidia_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/Volta.h
   ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+# Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 import sys
 import os
 
