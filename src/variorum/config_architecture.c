@@ -213,6 +213,10 @@ void variorum_init_func_ptrs()
     g_platform.enable_turbo = NULL;
     g_platform.disable_turbo = NULL;
     g_platform.dump_turbo = NULL;
+    g_platform.poll_power = NULL;
+    g_platform.dump_gpu_utilization = NULL;
+    g_platform.set_each_core_frequency = NULL;
+    g_platform.monitoring = NULL;
 }
 
 int variorum_set_func_ptrs()
