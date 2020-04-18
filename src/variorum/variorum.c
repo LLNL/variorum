@@ -62,6 +62,13 @@ int variorum_poll_power(FILE *output)
     {
         return -1;
     }
+    if (g_platform.poll_power == NULL)
+    {
+        variorum_error_handler("Null function pointer",
+                               VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return -1;
+    }
     err = g_platform.poll_power(output);
     if (err)
     {
@@ -81,6 +88,13 @@ int variorum_monitoring(FILE *output)
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
+        return -1;
+    }
+    if (g_platform.monitoring == NULL)
+    {
+        variorum_error_handler("Null function pointer",
+                               VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
         return -1;
     }
     err = g_platform.monitoring(output);
