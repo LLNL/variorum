@@ -42,8 +42,10 @@ int gpu_power_ratio_unimplemented(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    printf("GPU power ratio is not available on Intel platforms.\n");
-    return -1;
+    variorum_error_handler("GPU power ratio is not available on Intel platforms",
+                           VARIORUM_ERROR_FEATURE_NOT_AVAILABLE, getenv("HOSTNAME"), __FILE__,
+                           __FUNCTION__, __LINE__);
+    return 0;
 }
 
 int set_intel_func_ptrs(void)
