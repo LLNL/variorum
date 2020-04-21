@@ -6,7 +6,7 @@
 # avoid warnings for project commands w/o VERSION
 cmake_policy(SET CMP0048 NEW)
 
-project(variorum VERSION "0.2.0" LANGUAGES C CXX Fortran)
+project(variorum VERSION "0.2.0" LANGUAGES C CXX)
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
@@ -25,13 +25,17 @@ option(VARIORUM_LOG         "Enable logging statements"    ON)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 
+if(ENABLE_FORTRAN)
+    enable_language(Fortran)
+endif()
+
 include(CMake/CMakeBasics.cmake)
+
+include(CMake/SetupFortran.cmake)
 
 include(CMake/VariorumBuildType.cmake)
 
 include(CMake/SetupCompilerOptions.cmake)
-
-include(CMake/SetupFortran.cmake)
 
 include(CMake/Setup3rdParty.cmake)
 

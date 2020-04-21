@@ -3,10 +3,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-# add variorum tests
-add_subdirectory("variorum")
-
-# add system environment tests
-add_subdirectory("system-env")
+if(VARIORUM_WITH_INTEL)
+  add_subdirectory("intel")
+endif()

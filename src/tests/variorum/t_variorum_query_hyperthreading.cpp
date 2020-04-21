@@ -5,6 +5,15 @@
 
 #include "gtest/gtest.h"
 
+extern "C" {
+#include <variorum.h>
+}
+
+TEST(variorum_queries, test_print_hyperthreading)
+{
+    EXPECT_EQ(0, variorum_print_hyperthreading());
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
