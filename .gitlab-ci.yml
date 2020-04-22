@@ -36,6 +36,29 @@ build-quartz:
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-quartz/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./ep.W.x
 
 build-lassen-cpu:
  tags:
@@ -54,6 +77,30 @@ build-lassen-cpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu ../src
    - make VERBOSE=1
    - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-lassen-cpu/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./ep.W.x
 
 build-lassen-gpu:
  tags:
@@ -72,3 +119,27 @@ build-lassen-gpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu ../src
    - make VERBOSE=1
    - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-lassen-gpu/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./ep.W.x
