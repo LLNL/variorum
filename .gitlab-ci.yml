@@ -36,6 +36,27 @@ build-quartz:
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - ./scripts/gitlab/test-install.sh
+
+build-catalyst:
+ tags:
+   - batch
+   - catalyst
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
+   - cd build-gitlab-catalyst
+   - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@4.9.3.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst ../src
+   - make VERBOSE=1
+   - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - ./scripts/gitlab/test-install.sh
 
 build-lassen-cpu:
  tags:
@@ -54,6 +75,8 @@ build-lassen-cpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu ../src
    - make VERBOSE=1
    - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - ./scripts/gitlab/test-install.sh
 
 build-lassen-gpu:
  tags:
@@ -72,3 +95,5 @@ build-lassen-gpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu ../src
    - make VERBOSE=1
    - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - ./scripts/gitlab/test-install.sh
