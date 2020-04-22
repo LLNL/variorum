@@ -6,6 +6,7 @@ env:
   global:
   - COMPILER_CC=gcc
   - COMPILER_CXX=g++
+  - COMPILER_FC=gfortran
 
 include:
   - os: linux
@@ -20,19 +21,19 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
       - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
+      - sudo apt-get install doxygen
     after_script:
       - date
     script:
@@ -42,19 +43,19 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
       - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
+      - sudo apt-get install doxygen
     after_script:
       - date
     script:
@@ -64,19 +65,17 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
-      - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -86,19 +85,17 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
-      - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -108,19 +105,19 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
       - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
+      - sudo apt-get install doxygen
     after_script:
       - date
     script:
@@ -130,19 +127,19 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
       - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
+      - sudo apt-get install doxygen
     after_script:
       - date
     script:
@@ -152,19 +149,17 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
-      - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -174,19 +169,17 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:
       - date
-      - sudo apt-get install python-sphinx
-      - sudo apt-get install gfortran
     after_script:
       - date
     script:
@@ -199,12 +192,12 @@ jobs:
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
         VARIORUM_LOG=OFF
+        ENABLE_FORTRAN=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
         VARIORUM_WITH_AMD=OFF
-    compiler:
-      - gcc
+    compiler: gcc
     install:
       # none
     before_script:

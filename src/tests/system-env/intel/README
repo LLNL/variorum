@@ -1,5 +1,5 @@
-LIBVARIORUM UNIT TESTS
-======================
+VARIORUM UNIT TESTS
+===================
 
 t_msr_driver.cpp
 ----------------
@@ -15,10 +15,6 @@ read and write permissions on the driver.
 
 t_msr_whitelist.cpp
 -------------------
-Test LLNL's msr-whitelist device file. Check that the device exists. Check that
-world has read (and no write) permissions. Check that the whitelist file is not
+Test msr-whitelist device file. Check that the device exists. Check that world
+has read (and no write) permissions. Check that the whitelist file is not
 empty.
-
-t_variorum_test.cpp
--------------------
-Boilerplate test.

@@ -52,7 +52,7 @@ int whitelist_size(const char *file)
     std::string tmp = "tmp_whitelist";
     std::ofstream outfile;
 
-    outfile.open(tmp);
+    outfile.open(tmp.c_str());
     while (std::getline(infile, line))
     {
         std::istringstream iss(line);

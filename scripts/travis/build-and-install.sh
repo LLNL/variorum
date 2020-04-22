@@ -81,6 +81,12 @@ if [ "$VARIORUM_WITH_NVIDIA" == "ON" ]; then
 else
     CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_WITH_NVIDIA=OFF"
 fi
+# fortran
+if [ "$ENABLE_FORTRAN" == "ON" ]; then
+    CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=ON"
+else
+    CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=OFF"
+fi
 
 # install path
 CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install-travis"
@@ -103,8 +109,5 @@ make VERBOSE=1
 
 # install
 make install
-
-# test
-#env CTEST_OUTPUT_ON_FAILURE=1 make test
 
 #
