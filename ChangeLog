@@ -1,3 +1,21 @@
+* Thu Apr 23 2020 Stephanie Brink <brink2@llnl.gov> v0.3.0
+- Setup unit test infrastructure, test on gitlab to leverage msr-safe and OPAL
+access
+- Update return code for top-level variorum APIs from -1 to 0, enables us to
+run unit tests on any architecture
+- Fix poll_power and monitoring segfaults
+- Start adding python utilities to verify system environments (i.e. msr-safe,
+OPAL)
+- Rename variorum_set_topology to variorum_get_topology
+- Rename variorum examples
+- Add example integrations with cmake/make-build systems and c/cpp/fortran
+codes, use these in CI workflow to test install
+- Use spack mirrors in CI workflow to avoid failed fetch commands
+- New mailing lists: variorum-users and variorum-maintainers
+- Nvidia port: use node topology to map GPU to sockets
+- Fix for building variorum as static library
+- Add source code (c/cpp/h/python) format check to CI workflow
+- Add Contributor Covenant Code of Conduct
 * Fri Mar 13 2020 Stephanie Brink <brink2@llnl.gov> v0.2.0
 - Add support for Nvidia platform -- Volta architecture
 - Add ECP 2020 tutorial presentation

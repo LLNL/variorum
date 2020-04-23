@@ -11,6 +11,10 @@ Variorum is under constant development. So, we recommend using our ``dev``
 branch, which contains our latest features. The ``master`` branch will be
 updated as releases occur.
 
+v0.3.0
+------
+04/23/2020: Updated version includes general infrastructure updates, such as unit tests, example integrations, and small bug fixes throughout. `Tarball here <https://github.com/LLNL/variorum/archive/v0.3.0.tar.gz>`_.
+
 v0.2.0
 ------
 
