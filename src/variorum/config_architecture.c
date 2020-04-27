@@ -200,24 +200,23 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
 
 void variorum_init_func_ptrs()
 {
-    g_platform.dump_power_limits = NULL;
-    g_platform.set_node_power_limit = NULL;
-    g_platform.set_and_verify_node_power_limit = NULL;
-    g_platform.set_gpu_power_ratio = NULL;
-    g_platform.set_each_socket_power_limit = NULL;
-    g_platform.print_features = NULL;
-    g_platform.dump_thermals = NULL;
-    g_platform.dump_counters = NULL;
-    g_platform.dump_clocks = NULL;
-    g_platform.dump_power = NULL;
-    g_platform.enable_turbo = NULL;
-    g_platform.disable_turbo = NULL;
-    g_platform.dump_turbo = NULL;
-    g_platform.poll_power = NULL;
-    g_platform.dump_gpu_utilization = NULL;
-    g_platform.set_each_core_frequency = NULL;
-    g_platform.monitoring = NULL;
-    g_platform.print_available_frequencies = NULL;
+    g_platform.variorum_dump_power_limits = NULL;
+    g_platform.variorum_set_node_power_limit = NULL;
+    g_platform.variorum_set_and_verify_node_power_limit = NULL;
+    g_platform.variorum_set_gpu_power_ratio = NULL;
+    g_platform.variorum_set_each_socket_power_limit = NULL;
+    g_platform.variorum_print_features = NULL;
+    g_platform.variorum_dump_thermals = NULL;
+    g_platform.variorum_dump_counters = NULL;
+    g_platform.variorum_dump_clocks = NULL;
+    g_platform.variorum_dump_power = NULL;
+    g_platform.variorum_enable_turbo = NULL;
+    g_platform.variorum_disable_turbo = NULL;
+    g_platform.variorum_dump_turbo = NULL;
+    g_platform.variorum_poll_power = NULL;
+    g_platform.variorum_dump_gpu_utilization = NULL;
+    g_platform.variorum_set_each_core_frequency = NULL;
+    g_platform.variorum_monitoring = NULL;
 }
 
 int variorum_set_func_ptrs()
