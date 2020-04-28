@@ -78,6 +78,19 @@ enum nvidia_arch_e
 enum arm_arch_e
 {
     ARMV8 = 1, //ARM Juno
+}
+
+enum supported_platforms_e {
+#ifdef VARIORUM_WITH_INTEL
+    P_INTEL_IDX,
+#endif
+#ifdef VARIORUM_WITH_IBM
+    P_IBM_IDX,
+#endif
+#ifdef VARIORUM_WITH_NVIDIA
+    P_NVIDIA_IDX,
+#endif
+    P_NUM_PLATFORMS
 };
 
 /// @brief List of AMD GPU family and models.
@@ -218,21 +231,8 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(void);
 
-    /******************************/
-    /* Platform-Specific Topology */
-    /******************************/
-    /// @brief Unique family and model for Intel architectures.
-    uint64_t *intel_arch;
-    /// @brief Identifier for AMD architecture.
-    uint64_t *amd_arch;
-    /// @brief Identifier for IBM architecture.
-    uint64_t *ibm_arch;
-    /// @brief Identifier for NVIDIA architecture.
-    uint64_t *nvidia_arch;
-    /// @brief Identifier for ARM architecture.
-    uint64_t *arm_arch;
-    /// @brief Identifier for AMD GPU architecture.
-    uint64_t *amd_gpu_arch;
+    /// @brief Identifier for architecture.
+    uint64_t *arch_id;
 
     /// @brief Hostname.
     char hostname[1024];
@@ -254,7 +254,7 @@ struct platform
 //    void (*set_performance_counters)();
 #endif
 
-extern struct platform g_platform;
+extern struct platform g_platform[2];
 
 int variorum_enter(const char *filename,
                    const char *func_name,
@@ -264,9 +264,10 @@ int variorum_exit(const char *filename,
                   const char *func_name,
                   int line_num);
 
-void variorum_get_topology(unsigned *nsockets,
-                           unsigned *ncores,
-                           unsigned *nthreads);
+void variorum_get_topology(int *nsockets,
+                           int *ncores,
+                           int *nthreads,
+                           int idx);
 
 int variorum_set_func_ptrs(void);
 

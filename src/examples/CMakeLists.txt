@@ -5,7 +5,7 @@
 
 target_link_libraries(variorum ${variorum_deps})
 
-add_definitions(-DSECOND_RUN)
+#add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
     variorum-cap-best-effort-node-power-limit-example

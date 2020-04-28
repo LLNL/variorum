@@ -13,6 +13,6 @@
 
 uint64_t *detect_gpu_arch(void);
 
-int set_nvidia_func_ptrs(void);
+int set_nvidia_func_ptrs(int idx);
 
 #endif
