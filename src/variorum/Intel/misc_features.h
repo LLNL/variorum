@@ -20,8 +20,13 @@ int get_max_efficiency_ratio(off_t msr_platform_info);
 
 int get_min_operating_ratio(off_t msr_platform_info);
 
+int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit);
+
 int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
-                           off_t msr_turbo_ratio_limit_cores);
+                           off_t msr_turbo_ratio_limit1);
+
+int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
+                               off_t msr_turbo_ratio_limit_cores);
 
 void get_avx_limits(off_t msr_platform_info,
                     off_t msr_config_tdp_l1,

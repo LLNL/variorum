@@ -122,6 +122,47 @@ int get_min_operating_ratio(off_t msr_platform_info)
     return min_operating_ratio * 100;
 }
 
+int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
+{
+    static int init = 0;
+    static int nsockets = 0;
+    static uint64_t **val = NULL;
+    int socket, ncores, nbits;
+
+    variorum_get_topology(&nsockets, &ncores, NULL);
+    if (!init)
+    {
+        val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        init = 1;
+    }
+
+    read_batch(TURBO_RATIO_LIMIT);
+
+    if (nsockets != 1)
+    {
+        if (*val[0] != *val[1])
+        {
+            return VARIORUM_ERROR_INVAL;
+        }
+    }
+
+    int core = 1;
+    for (nbits = 0; nbits < 64; nbits += 8)
+    {
+        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+        core += 1;
+        if (core > ncores)
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
+
 
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
@@ -130,7 +171,7 @@ int get_min_operating_ratio(off_t msr_platform_info)
  * both sockets?"
  */
 int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
-                           off_t msr_turbo_ratio_limit_cores)
+                           off_t msr_turbo_ratio_limit1)
 {
     static int init = 0;
     static int nsockets = 0;
@@ -143,15 +184,15 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(TURBO_RATIO_LIMITS, nsockets);
-        allocate_batch(TURBO_RATIO_LIMITS_CORES, nsockets);
-        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMITS);
-        load_socket_batch(msr_turbo_ratio_limit_cores, val2, TURBO_RATIO_LIMITS_CORES);
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        allocate_batch(TURBO_RATIO_LIMIT_CORES, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
         init = 1;
     }
 
-    read_batch(TURBO_RATIO_LIMITS);
-    read_batch(TURBO_RATIO_LIMITS_CORES);
+    read_batch(TURBO_RATIO_LIMIT);
+    read_batch(TURBO_RATIO_LIMIT1);
 
     /// Do sockets match?
     if (nsockets != 1)
@@ -201,15 +242,15 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(TURBO_RATIO_LIMITS, nsockets);
-        allocate_batch(TURBO_RATIO_LIMITS_CORES, nsockets);
-        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMITS);
-        load_socket_batch(msr_turbo_ratio_limit_cores, val2, TURBO_RATIO_LIMITS_CORES);
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        allocate_batch(TURBO_RATIO_LIMIT_CORES, nsockets);
+        load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
+        load_socket_batch(msr_turbo_ratio_limit_cores, val2, TURBO_RATIO_LIMIT_CORES);
         init = 1;
     }
 
-    read_batch(TURBO_RATIO_LIMITS);
-    read_batch(TURBO_RATIO_LIMITS_CORES);
+    read_batch(TURBO_RATIO_LIMIT);
+    read_batch(TURBO_RATIO_LIMIT_CORES);
 
     /// Do sockets match?
     if (nsockets != 1)
