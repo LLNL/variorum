@@ -35,4 +35,4 @@ Documentation
 """""""""""""
 - *sphinx*: http://sphinx-doc.org/ (BSD Style License)
 - *breathe*: https://github.com/michaeljones/breathe (BSD Style License)
-- *rtd sphinx theme*: https://github.com/snide/sphinx_rtd_theme/blob/master/LICENSE (MIT License)
+- *rtd sphinx theme*: https://github.com/snide/sphinx_rtd_theme/blob/main/LICENSE (MIT License)

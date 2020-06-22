@@ -15,7 +15,7 @@ the system.
 
 References:
 
-* `OCC <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
+* `OCC <https://github.com/open-power/docs/blob/main/occ/OCC_P9_FW_Interfaces.pdf>`_
 * `OPAL <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
 * `Skiboot <https://github.com/open-power/skiboot>`_
 * `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_

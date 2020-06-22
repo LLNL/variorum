@@ -5,7 +5,7 @@ This file will describe how to provide feedback to the Variorum project.
 
 The Variorum project updates the `dev` branch frequently. Use this
 branch to get the latest changes and to create new feature branches. Tagged
-releases will be pushed to the `master` branch.
+releases will be pushed to the `main` branch.
 
 
 Pull Requests
