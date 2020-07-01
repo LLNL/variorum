@@ -26,11 +26,11 @@ int set_nvidia_func_ptrs(void)
     if (*g_platform.nvidia_arch == VOLTA)
     {
         /* Initialize monitoring interfaces */
-        g_platform.dump_power           = volta_get_power;
-        g_platform.dump_thermals        = volta_get_thermals;
-        g_platform.dump_clocks          = volta_get_clocks;
-        g_platform.dump_power_limits    = volta_get_power_limits;
-        g_platform.dump_gpu_utilization = volta_get_gpu_utilization;
+        g_platform.variorum_dump_power           = volta_get_power;
+        g_platform.variorum_dump_thermals        = volta_get_thermals;
+        g_platform.variorum_dump_clocks          = volta_get_clocks;
+        g_platform.variorum_dump_power_limits    = volta_get_power_limits;
+        g_platform.variorum_dump_gpu_utilization = volta_get_gpu_utilization;
     }
     else
     {

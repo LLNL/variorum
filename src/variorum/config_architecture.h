@@ -78,9 +78,9 @@ enum nvidia_arch_e
 /// The intersection of all features on all platforms.
 struct platform
 {
-    int (*poll_power)(FILE *output);
+    int (*variorum_poll_power)(FILE *output);
 
-    int (*monitoring)(FILE *output);
+    int (*variorum_monitoring)(FILE *output);
 
     /***********************************/
     /* Feature-Based Function Pointers */
@@ -91,21 +91,21 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*dump_power_limits)(int long_ver);
+    int (*variorum_dump_power_limits)(int long_ver);
 
     /// @brief Function pointer to set a power limit on the node.
     ///
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
-    int (*set_node_power_limit)(int node_power_limit);
+    int (*variorum_set_node_power_limit)(int node_power_limit);
 
     /// @brief Function pointer to set a power limit to each node and then verify that the cap was set correctly.
     ///
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
-    int (*set_and_verify_node_power_limit)(int node_power_limit);
+    int (*variorum_set_and_verify_node_power_limit)(int node_power_limit);
 
     /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
     ///
@@ -114,21 +114,21 @@ struct platform
     /// @note Only valid on IBM P9 systems for now. Same ratio will be set on both sockets.
     ///
     /// @return Error code.
-    int (*set_gpu_power_ratio)(int gpu_power_ratio);
+    int (*variorum_set_gpu_power_ratio)(int gpu_power_ratio);
 
     /// @brief Function pointer to set a power limit to each socket.
     ///
     /// @param [in] socket_power_limit Desired socket power limit in Watts.
     ///
     /// @return Error code.
-    int (*set_each_socket_power_limit)(int socket_power_limit);
+    int (*variorum_set_each_socket_power_limit)(int socket_power_limit);
 
-    int (*set_each_core_frequency)(int core_freq_mhz);
+    int (*variorum_set_each_core_frequency)(int core_freq_mhz);
 
     /// @brief Function pointer to print the feature set.
     ///
     /// @return Error code.
-    int (*print_features)(void);
+    int (*variorum_print_features)(void);
 
     /// @brief Function pointer to print out thermal data.
     ///
@@ -136,7 +136,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*dump_thermals)(int long_ver);
+    int (*variorum_dump_thermals)(int long_ver);
 
     /// @brief Function pointer to print out counter data.
     ///
@@ -144,7 +144,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*dump_counters)(int long_ver);
+    int (*variorum_dump_counters)(int long_ver);
 
     /// @brief Function pointer to print out clocks data.
     ///
@@ -152,7 +152,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*dump_clocks)(int long_ver);
+    int (*variorum_dump_clocks)(int long_ver);
 
     /// @brief Function pointer to print out power consumption data.
     ///
@@ -160,27 +160,27 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*dump_power)(int long_ver);
+    int (*variorum_dump_power)(int long_ver);
 
     /// @brief Function pointer to enable turbo.
     ///
     /// @return Error code.
-    int (*enable_turbo)(void);
+    int (*variorum_enable_turbo)(void);
 
     /// @brief Function pointer to disable turbo.
     ///
     /// @return Error code.
-    int (*disable_turbo)(void);
+    int (*variorum_disable_turbo)(void);
 
     /// @brief Function pointer to get print turbo data.
     ///
     /// @return Error code.
-    int (*dump_turbo)(void);
+    int (*variorum_dump_turbo)(void);
 
     /// @brief Function pointer to print GPU utilization.
     ///
     /// @return Error code.
-    int (*dump_gpu_utilization)(int long_ver);
+    int (*variorum_dump_gpu_utilization)(int long_ver);
 
     /// @brief Function pointer to get list of available frequencies.
     ///

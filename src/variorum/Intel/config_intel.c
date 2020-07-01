@@ -58,114 +58,110 @@ int set_intel_func_ptrs(void)
 
     // GPU power ratio doesn't apply to Intel architectures.
     // So specify a common function that exits with a log message.
-    g_platform.set_gpu_power_ratio = gpu_power_ratio_unimplemented;
+    g_platform.variorum_set_gpu_power_ratio = gpu_power_ratio_unimplemented;
 
     // Sandy Bridge 06_2A
     if (*g_platform.intel_arch == FM_06_2A)
     {
-        g_platform.dump_power_limits = fm_06_2a_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_2a_set_power_limits;
-        g_platform.print_features = fm_06_2a_get_features;
-        g_platform.dump_thermals = fm_06_2a_get_thermals;
-        g_platform.dump_counters = fm_06_2a_get_counters;
-        g_platform.dump_clocks = fm_06_2a_get_clocks;
-        g_platform.dump_power = fm_06_2a_get_power;
-        g_platform.dump_turbo = fm_06_2a_get_turbo_status;
-        g_platform.enable_turbo = fm_06_2a_enable_turbo;
-        g_platform.disable_turbo = fm_06_2a_disable_turbo;
-        g_platform.poll_power = fm_06_2a_poll_power;
-        g_platform.monitoring = fm_06_2a_monitoring;
-        //g_platform.set_each_core_frequency = fm_06_2a_set_frequency;
-        g_platform.print_available_frequencies = fm_06_2a_get_frequencies;
+        g_platform.variorum_dump_power_limits = fm_06_2a_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_2a_set_power_limits;
+        g_platform.variorum_print_features = fm_06_2a_get_features;
+        g_platform.variorum_dump_thermals = fm_06_2a_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_2a_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_2a_get_clocks;
+        g_platform.variorum_dump_power = fm_06_2a_get_power;
+        g_platform.variorum_dump_turbo = fm_06_2a_get_turbo_status;
+        g_platform.variorum_enable_turbo = fm_06_2a_enable_turbo;
+        g_platform.variorum_disable_turbo = fm_06_2a_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_2a_poll_power;
+        g_platform.variorum_monitoring = fm_06_2a_monitoring;
+        //g_platform.variorum_set_each_core_frequency = fm_06_2a_set_frequency;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
     {
-        g_platform.dump_power_limits = fm_06_3e_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_3e_set_power_limits;
-        g_platform.print_features = fm_06_3e_get_features;
-        g_platform.dump_thermals = fm_06_3e_get_thermals;
-        g_platform.dump_counters = fm_06_3e_get_counters;
-        g_platform.dump_clocks = fm_06_3e_get_clocks;
-        g_platform.dump_power = fm_06_3e_get_power;
-        g_platform.dump_turbo = fm_06_3e_get_turbo_status;
-        g_platform.enable_turbo = fm_06_3e_enable_turbo;
-        g_platform.disable_turbo = fm_06_3e_disable_turbo;
-        g_platform.poll_power = fm_06_3e_poll_power;
-        g_platform.monitoring = fm_06_3e_monitoring;
+        g_platform.variorum_dump_power_limits = fm_06_3e_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_3e_set_power_limits;
+        g_platform.variorum_print_features = fm_06_3e_get_features;
+        g_platform.variorum_dump_thermals = fm_06_3e_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_3e_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_3e_get_clocks;
+        g_platform.variorum_dump_power = fm_06_3e_get_power;
+        g_platform.variorum_dump_turbo = fm_06_3e_get_turbo_status;
+        g_platform.variorum_enable_turbo = fm_06_3e_enable_turbo;
+        g_platform.variorum_disable_turbo = fm_06_3e_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_3e_poll_power;
+        g_platform.variorum_monitoring = fm_06_3e_monitoring;
         //g_platform.set_each_core_frequency = fm_06_3e_set_frequency;
         g_platform.print_available_frequencies = fm_06_3e_get_frequencies;
     }
     // Haswell 06_3F
     else if (*g_platform.intel_arch == FM_06_3F)
     {
-        g_platform.dump_power_limits = fm_06_3f_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_3f_set_power_limits;
-        g_platform.print_features = fm_06_3f_get_features;
-        g_platform.dump_thermals = fm_06_3f_get_thermals;
-        g_platform.dump_counters = fm_06_3f_get_counters;
-        g_platform.dump_clocks = fm_06_3f_get_clocks;
-        g_platform.dump_power = fm_06_3f_get_power;
-        g_platform.dump_turbo = fm_06_3f_get_turbo_status;
-        g_platform.enable_turbo = fm_06_3f_enable_turbo;
-        g_platform.disable_turbo = fm_06_3f_disable_turbo;
-        g_platform.poll_power = fm_06_3f_poll_power;
-        g_platform.monitoring = fm_06_3f_monitoring;
+        g_platform.variorum_dump_power_limits = fm_06_3f_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_3f_set_power_limits;
+        g_platform.variorum_print_features = fm_06_3f_get_features;
+        g_platform.variorum_dump_thermals = fm_06_3f_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_3f_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_3f_get_clocks;
+        g_platform.variorum_dump_power = fm_06_3f_get_power;
+        g_platform.variorum_dump_turbo = fm_06_3f_get_turbo_status;
+        g_platform.variorum_enable_turbo = fm_06_3f_enable_turbo;
+        g_platform.variorum_disable_turbo = fm_06_3f_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_3f_poll_power;
+        g_platform.variorum_monitoring = fm_06_3f_monitoring;
         //g_platform.set_each_core_frequency = fm_06_3f_set_frequency;
         g_platform.print_available_frequencies = fm_06_3f_get_frequencies;
     }
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
     {
-        g_platform.dump_power_limits = fm_06_4f_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_4f_set_power_limits;
-        g_platform.print_features = fm_06_4f_get_features;
-        g_platform.dump_thermals = fm_06_4f_get_thermals;
-        g_platform.dump_counters = fm_06_4f_get_counters;
-        g_platform.dump_clocks = fm_06_4f_get_clocks;
-        g_platform.dump_power = fm_06_4f_get_power;
-        g_platform.dump_turbo = fm_06_4f_get_turbo_status;
-        g_platform.enable_turbo = fm_06_4f_enable_turbo;
-        g_platform.disable_turbo = fm_06_4f_disable_turbo;
-        g_platform.poll_power = fm_06_4f_poll_power;
-        g_platform.monitoring = fm_06_4f_monitoring;
-        //g_platform.set_each_core_frequency = fm_06_4f_set_frequency;
-        g_platform.print_available_frequencies = fm_06_4f_get_frequencies;
+        g_platform.variorum_dump_power_limits = fm_06_4f_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_4f_set_power_limits;
+        g_platform.variorum_print_features = fm_06_4f_get_features;
+        g_platform.variorum_dump_thermals = fm_06_4f_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_4f_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_4f_get_clocks;
+        g_platform.variorum_dump_power = fm_06_4f_get_power;
+        g_platform.variorum_dump_turbo = fm_06_4f_get_turbo_status;
+        g_platform.variorum_enable_turbo = fm_06_4f_enable_turbo;
+        g_platform.variorum_disable_turbo = fm_06_4f_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_4f_poll_power;
+        g_platform.variorum_monitoring = fm_06_4f_monitoring;
+        //g_platform.variorum_set_each_core_frequency = fm_06_4f_set_frequency;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
     {
-        g_platform.dump_power_limits = fm_06_55_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_55_set_power_limits;
-        g_platform.print_features = fm_06_55_get_features;
-        g_platform.dump_thermals = fm_06_55_get_thermals;
-        g_platform.dump_counters = fm_06_55_get_counters;
-        g_platform.dump_clocks = fm_06_55_get_clocks;
-        g_platform.dump_power = fm_06_55_get_power;
-        //g_platform.dump_turbo = fm_06_55_get_turbo_status;
-        //g_platform.enable_turbo = fm_06_55_enable_turbo;
-        //g_platform.disable_turbo = fm_06_55_disable_turbo;
-        g_platform.poll_power = fm_06_55_poll_power;
-        g_platform.monitoring = fm_06_55_monitoring;
-        g_platform.set_each_core_frequency = fm_06_55_set_frequency;
-        g_platform.print_available_frequencies = fm_06_55_get_frequencies;
+        g_platform.variorum_dump_power_limits = fm_06_55_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_55_set_power_limits;
+        g_platform.variorum_print_features = fm_06_55_get_features;
+        g_platform.variorum_dump_thermals = fm_06_55_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_55_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_55_get_clocks;
+        g_platform.variorum_dump_power = fm_06_55_get_power;
+        //g_platform.variorum_dump_turbo = fm_06_55_get_turbo_status;
+        //g_platform.variorum_enable_turbo = fm_06_55_enable_turbo;
+        //g_platform.variorum_disable_turbo = fm_06_55_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_55_poll_power;
+        g_platform.variorum_monitoring = fm_06_55_monitoring;
+        g_platform.variorum_set_each_core_frequency = fm_06_55_set_frequency;
     }
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
     {
-        g_platform.dump_power_limits = fm_06_9e_get_power_limits;
-        g_platform.set_each_socket_power_limit = fm_06_9e_set_power_limits;
-        g_platform.print_features = fm_06_9e_get_features;
-        g_platform.dump_thermals = fm_06_9e_get_thermals;
-        g_platform.dump_counters = fm_06_9e_get_counters;
-        g_platform.dump_clocks = fm_06_9e_get_clocks;
-        g_platform.dump_power = fm_06_9e_get_power;
-        //g_platform.dump_turbo = fm_06_9e_get_turbo_status;
-        //g_platform.enable_turbo = fm_06_9e_enable_turbo;
-        //g_platform.disable_turbo = fm_06_9e_disable_turbo;
-        g_platform.poll_power = fm_06_9e_poll_power;
-        g_platform.monitoring = fm_06_9e_monitoring;
-        g_platform.print_available_frequencies = fm_06_9e_get_frequencies;
+        g_platform.variorum_dump_power_limits = fm_06_9e_get_power_limits;
+        g_platform.variorum_set_each_socket_power_limit = fm_06_9e_set_power_limits;
+        g_platform.variorum_print_features = fm_06_9e_get_features;
+        g_platform.variorum_dump_thermals = fm_06_9e_get_thermals;
+        g_platform.variorum_dump_counters = fm_06_9e_get_counters;
+        g_platform.variorum_dump_clocks = fm_06_9e_get_clocks;
+        g_platform.variorum_dump_power = fm_06_9e_get_power;
+        //g_platform.variorum_dump_turbo = fm_06_9e_get_turbo_status;
+        //g_platform.variorum_enable_turbo = fm_06_9e_enable_turbo;
+        //g_platform.variorum_disable_turbo = fm_06_9e_disable_turbo;
+        g_platform.variorum_poll_power = fm_06_9e_poll_power;
+        g_platform.variorum_monitoring = fm_06_9e_monitoring;
     }
     else
     {
