@@ -101,4 +101,6 @@ int fm_06_3e_poll_power(FILE *output);
 
 int fm_06_3e_monitoring(FILE *output);
 
+int fm_06_3e_get_frequencies(void);
+
 #endif

@@ -16,6 +16,28 @@
 /// @return Maximum non-turbo ratio in Hz.
 int get_max_non_turbo_ratio(off_t msr_platform_info);
 
+int get_max_efficiency_ratio(off_t msr_platform_info);
+
+int get_min_operating_ratio(off_t msr_platform_info);
+
+int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit);
+
+int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
+                           off_t msr_turbo_ratio_limit1);
+
+int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
+                               off_t msr_turbo_ratio_limit_cores);
+
+void get_avx_limits(off_t msr_platform_info,
+                    off_t msr_config_tdp_l1,
+                    off_t msr_config_tdp_l2,
+                    off_t msr_config_tdp_nominal);
+
+int config_tdp(int nlevels,
+               off_t msr_config_tdp_level1,
+               off_t msr_config_tdp_level2,
+               off_t msr_config_tdp_nominal);
+
 /// NOTE about Turbo bit -- Pulled from the Intel Vol. 4 2-154 Documentation
 /// When set to 1 on processors that support Intel Turbo Boost Technology,
 /// the turbo mode feature is disabled and the IDA_Enable feature flag will

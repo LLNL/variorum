@@ -211,6 +211,7 @@ static int do_batch_op(int batchnum, int type)
                         batch->ops[i].msr, strerror(batch->ops[i].err));
             }
         }
+        return res;
     }
 #ifdef BATCH_DEBUG
     int k;
