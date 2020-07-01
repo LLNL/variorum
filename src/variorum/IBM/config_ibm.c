@@ -25,13 +25,14 @@ int set_ibm_func_ptrs(void)
 
     if (*g_platform.ibm_arch == POWER9)
     {
-        g_platform.dump_power = p9_get_power;
-        g_platform.dump_power_limits = p9_get_power_limits;
-        g_platform.set_node_power_limit = p9_set_node_power_limit;
-        g_platform.set_each_socket_power_limit = p9_set_socket_power_limit;
-        g_platform.set_gpu_power_ratio = p9_set_gpu_power_ratio;
-        g_platform.set_and_verify_node_power_limit = p9_set_and_verify_node_power_limit;
-        g_platform.monitoring = p9_monitoring;
+        g_platform.variorum_dump_power = p9_get_power;
+        g_platform.variorum_dump_power_limits = p9_get_power_limits;
+        g_platform.variorum_set_node_power_limit = p9_set_node_power_limit;
+        g_platform.variorum_set_each_socket_power_limit = p9_set_socket_power_limit;
+        g_platform.variorum_set_gpu_power_ratio = p9_set_gpu_power_ratio;
+        g_platform.variorum_set_and_verify_node_power_limit =
+            p9_set_and_verify_node_power_limit;
+        g_platform.variorum_monitoring = p9_monitoring;
     }
     else
     {
