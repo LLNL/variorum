@@ -180,16 +180,17 @@ int variorum_enable_turbo(void);
 /// @return Error code.
 int variorum_disable_turbo(void);
 
-
-
 /***************************/
 /* JSON Support */
 /***************************/
 /// @brief Populate json_t object parameter with total node power.
 ///
 /// @return Error code.
-int json_get_node_power(json_t *get_power_obj);
+int variorum_json_get_node_power(json_t *get_power_obj);
 
+/***************************/
+/* Testing */
+/***************************/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
 

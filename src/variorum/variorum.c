@@ -770,7 +770,6 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-
 int variorum_print_available_frequencies(void)
 {
     int err = 0;
@@ -809,54 +808,12 @@ int variorum_json_get_node_power(json_t *get_power_obj)
     }
     if (g_platform.json_get_node_power == NULL)
     {
-        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    err = g_platform.json_get_node_power(get_power_obj);
-    if (err)
-    {
-        return -1;
-    }
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-    return err;
-}
-
-
-
-/*
-<<<<<<< HEAD
-int variorum_print_available_frequencies(void)
-=======
-int json_get_node_power(json_t *get_power_obj)
->>>>>>> Add a JSON interface for getting power values from variorum.
-{
-    int err = 0;
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-<<<<<<< HEAD
-    if (g_platform.print_available_frequencies == NULL)
-    {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.print_available_frequencies();
-=======
-    if (g_platform.json_get_node_power == NULL)
-    {
-        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
     err = g_platform.json_get_node_power(get_power_obj);
->>>>>>> Add a JSON interface for getting power values from variorum.
     if (err)
     {
         return -1;
@@ -868,8 +825,4 @@ int json_get_node_power(json_t *get_power_obj)
     }
     return err;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> Add a JSON interface for getting power values from variorum.
-*/

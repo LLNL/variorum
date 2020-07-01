@@ -187,6 +187,7 @@ struct platform
     ///
     /// @return Error code.
     int (*print_available_frequencies)(void);
+ 
     /// @brief Function pointer to get node power data in JSON.
     ///
     /// @return Error code.
