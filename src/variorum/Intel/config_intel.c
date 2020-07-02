@@ -122,7 +122,7 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_disable_turbo = fm_06_4f_disable_turbo;
         g_platform.variorum_poll_power = fm_06_4f_poll_power;
         g_platform.variorum_monitoring = fm_06_4f_monitoring;
-        //g_platform.variorum_set_each_core_frequency = fm_06_4f_set_frequency;
+        //g_platform.set_each_core_frequency = fm_06_4f_set_frequency;
         g_platform.variorum_json_get_node_power = fm_06_4f_json_get_node_power;
     }
     // Skylake 06_55

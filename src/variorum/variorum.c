@@ -780,8 +780,10 @@ int variorum_json_get_node_power(json_t *get_power_obj)
     }
     if (g_platform.variorum_json_get_node_power == NULL)
     {
-        variorum_error_handler("Null function pointer", VARIORUM_ERROR_UNINITIALIZED_FUNC_PTR, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return 0;
     }
     err = g_platform.variorum_json_get_node_power(get_power_obj);
     if (err)
