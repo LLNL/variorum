@@ -182,11 +182,6 @@ struct platform
     /// @return Error code.
     int (*variorum_dump_gpu_utilization)(int long_ver);
 
-    /// @brief Function pointer to get list of available frequencies.
-    ///
-    /// @return Error code.
-    int (*print_available_frequencies)(void);
-
     /******************************/
     /* Platform-Specific Topology */
     /******************************/

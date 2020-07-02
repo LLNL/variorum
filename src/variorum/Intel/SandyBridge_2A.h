@@ -31,6 +31,8 @@ struct sandybridge_2a_offsets
     const off_t msr_temperature_target;
     /// @brief Address for TURBO_RATIO_LIMIT.
     const off_t msr_turbo_ratio_limit;
+    /// @brief Address for TURBO_RATIO_LIMIT1.
+    const off_t msr_turbo_ratio_limit1;
     /// @brief Address for IA32_PACKAGE_THERM_STATUS.
     const off_t ia32_package_therm_status;
     /// @brief Address for IA32_PACKAGE_THERM_INTERRUPT.
@@ -98,7 +100,5 @@ int fm_06_2a_get_turbo_status(void);
 int fm_06_2a_poll_power(FILE *output);
 
 int fm_06_2a_monitoring(FILE *output);
-
-int fm_06_2a_get_frequencies(void);
 
 #endif

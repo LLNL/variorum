@@ -4,7 +4,6 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
-#include <stdlib.h>
 
 #include <SandyBridge_2A.h>
 #include <clocks_features.h>
@@ -13,7 +12,6 @@
 #include <misc_features.h>
 #include <power_features.h>
 #include <thermal_features.h>
-#include <variorum_error.h>
 
 static struct sandybridge_2a_offsets msrs =
 {
@@ -366,42 +364,5 @@ int fm_06_2a_monitoring(FILE *output)
                              msrs.msr_dram_energy_status, msrs.ia32_fixed_counters,
                              msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf,
                              msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
-    return 0;
-}
-
-int fm_06_2a_get_frequencies(void)
-{
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
-    /* Turbo Range
-     * Default ratio for 1C Max Turbo == P01
-     * All core turbo == P0n
-     * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
-     */
-    fprintf(stdout, "=== Turbo Schedule ===\n");
-    if (get_turbo_ratio_limits(msrs.msr_turbo_ratio_limit,
-                               msrs.msr_turbo_ratio_limit) != 0)
-    {
-        variorum_error_handler("Values do not match across sockets",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-    }
-    fprintf(stdout, "\n");
-
-    /* P-State Table -- P1, Pn, and Pm
-     * Read IA32_PLATFORM_INFO 0xCE
-     * Field "Maximum Efficiency Ratio: Bits 47:40 == Pn
-     * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
-     * Field "Minimum Operating Ratio: Bits 55:48 == Pm
-     */
-    fprintf(stdout, "=== P-State Table ===\n");
-    fprintf(stdout, "Max Efficiency Ratio = %d MHz\n",
-            get_max_non_turbo_ratio(msrs.msr_platform_info));
-    fprintf(stdout, "Max Non-Turbo Ratio  = %d MHz\n",
-            get_max_efficiency_ratio(msrs.msr_platform_info));
-    fprintf(stdout, "Min Operating Ratio  = %d MHz\n",
-            get_min_operating_ratio(msrs.msr_platform_info));
-
     return 0;
 }

@@ -769,31 +769,3 @@ int variorum_disable_turbo(void)
     }
     return err;
 }
-
-int variorum_print_available_frequencies(void)
-{
-    int err = 0;
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-    if (g_platform.print_available_frequencies == NULL)
-    {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return 0;
-    }
-    err = g_platform.print_available_frequencies();
-    if (err)
-    {
-        return -1;
-    }
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-    return err;
-}

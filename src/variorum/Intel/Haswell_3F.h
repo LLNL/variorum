@@ -75,9 +75,6 @@ struct haswell_3f_offsets
     off_t ia32_perfevtsel_counters[8];
     /// @brief Array of unique addresses for pmon evtsel.
     off_t msrs_pcu_pmon_evtsel[4];
-    const off_t msr_config_tdp_level1;
-    const off_t msr_config_tdp_level2;
-    const off_t msr_config_tdp_nominal;
 };
 
 int fm_06_3f_get_power_limits(int long_ver);
@@ -103,7 +100,4 @@ int fm_06_3f_get_turbo_status(void);
 int fm_06_3f_poll_power(FILE *output);
 
 int fm_06_3f_monitoring(FILE *output);
-
-int fm_06_3f_get_frequencies(void);
-
 #endif

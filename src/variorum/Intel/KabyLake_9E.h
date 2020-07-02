@@ -31,8 +31,8 @@ struct kabylake_9e_offsets
     const off_t msr_temperature_target;
     /// @brief Address for TURBO_RATIO_LIMIT.
     const off_t msr_turbo_ratio_limit;
-    /// @brief Address for TURBO_RATIO_LIMIT_CORES.
-    const off_t msr_turbo_ratio_limit_cores;
+    /// @brief Address for TURBO_RATIO_LIMIT1.
+    const off_t msr_turbo_ratio_limit1;
     /// @brief Address for IA32_PACKAGE_THERM_STATUS.
     const off_t ia32_package_therm_status;
     /// @brief Address for IA32_PACKAGE_THERM_INTERRUPT.
@@ -75,9 +75,6 @@ struct kabylake_9e_offsets
     off_t ia32_perfevtsel_counters[8];
     /// @brief Array of unique addresses for pmon evtsel.
     off_t msrs_pcu_pmon_evtsel[4];
-    const off_t msr_config_tdp_level1;
-    const off_t msr_config_tdp_level2;
-    const off_t msr_config_tdp_nominal;
 };
 
 int fm_06_9e_get_power_limits(int long_ver);
@@ -97,7 +94,5 @@ int fm_06_9e_get_power(int long_ver);
 int fm_06_9e_poll_power(FILE *output);
 
 int fm_06_9e_monitoring(FILE *output);
-
-int fm_06_9e_get_frequencies(void);
 
 #endif
