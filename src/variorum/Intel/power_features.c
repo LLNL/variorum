@@ -979,7 +979,6 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t ms
 
 }
 
-
 //int dump_rapl_data(FILE *writedest)
 //{
 //    static int init = 0;
