@@ -935,7 +935,7 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t ms
     int i;
 
     gethostname(hostname, 1024);
-    variorum_set_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL);
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
     if (!init)
@@ -978,63 +978,6 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t ms
     }
 
 }
-
-void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
-{
-    static int init = 0;
-    static struct rapl_data *rapl = NULL;
-    struct rapl_limit l1, l2;
-    int nsockets = 0;
-    struct timeval tv;
-    char hostname[1024];
-    char sockID[4]; 
-    int i;
-
-    gethostname(hostname, 1024);
-    variorum_set_topology(&nsockets, NULL, NULL);
-
-    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
-    if (!init)
-    {
-        rapl_storage(&rapl);
-    }
-    gettimeofday(&tv, NULL);
-    
-    uint64_t ts = tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
-//    printf ("\n Timestamp: %d\n", ts); 
-
-    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts)); 
- 
-    for (i = 0; i < nsockets; i++)
-    {
-        char cpu_str[24] = "power_cpu_socket";
-        char mem_str[24] = "power_mem_socket";
-        char lim1_watts_str[24] = "lim1_watts_socket";
-        char lim1_sec_str[24] = "lim1_sec_socket";
-        char lim2_watts_str[24] = "lim2_watts_socket";
-        char lim2_sec_str[24] = "lim2_sec_socket";
-        sprintf(sockID, "%d", i); 
-        strcat(cpu_str, sockID);
-        strcat(mem_str, sockID);
-        strcat(lim1_watts_str, sockID);
-        strcat(lim1_sec_str, sockID);
-        strcat(lim2_watts_str, sockID);
-        strcat(lim2_sec_str, sockID);
-
-        get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
-     //   printf("\n socket %d, pkg %lf, dram %lf\n", i, rapl->pkg_watts[i], rapl->dram_watts[i]);
-
-        json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
-        json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
-        json_object_set_new(get_power_obj, lim1_watts_str, json_real(l1.watts));
-        json_object_set_new(get_power_obj, lim1_sec_str, json_real(l1.seconds));
-        json_object_set_new(get_power_obj, lim2_watts_str, json_real(l2.watts));
-        json_object_set_new(get_power_obj, lim2_sec_str, json_real(l2.seconds));
-    }
-
-}
-
 
 //int dump_rapl_data(FILE *writedest)
 //{
