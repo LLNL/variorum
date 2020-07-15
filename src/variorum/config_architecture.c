@@ -217,6 +217,10 @@ void variorum_init_func_ptrs()
     g_platform.dump_gpu_utilization = NULL;
     g_platform.set_each_core_frequency = NULL;
     g_platform.monitoring = NULL;
+    g_platform.init_msr = NULL;
+    g_platform.finalize_msr = NULL;
+    g_platform.read_msr = NULL;
+    g_platform.write_msr = NULL;
 }
 
 int variorum_set_func_ptrs()

@@ -100,4 +100,12 @@ int fm_06_4f_get_turbo_status(void);
 int fm_06_4f_poll_power(FILE *output);
 
 int fm_06_4f_monitoring(FILE *output);
+
+int fm_06_4f_init_msr(void);
+
+int fm_06_4f_finalize_msr(void);
+
+int fm_06_4f_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+int fm_06_4f_write_msr(int cpuid, unsigned long offset, unsigned long value);
 #endif

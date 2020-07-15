@@ -99,4 +99,11 @@ int fm_06_55_monitoring(FILE *output);
 
 int fm_06_55_set_frequency(int core_freq_mhz);
 
+int fm_06_55_init_msr(void);
+
+int fm_06_55_finalize_msr(void);
+
+int fm_06_55_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+int fm_06_55_write_msr(int cpuid, unsigned long offset, unsigned long value);
 #endif

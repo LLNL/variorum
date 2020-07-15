@@ -101,4 +101,11 @@ int fm_06_2a_poll_power(FILE *output);
 
 int fm_06_2a_monitoring(FILE *output);
 
+int fm_06_2a_init_msr(void);
+
+int fm_06_2a_finalize_msr(void);
+
+int fm_06_2a_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+int fm_06_2a_write_msr(int cpuid, unsigned long offset, unsigned long value);
 #endif

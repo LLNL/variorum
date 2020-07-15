@@ -769,3 +769,51 @@ int variorum_disable_turbo(void)
     }
     return err;
 }
+
+int variorum_init_msr(void)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_finalize_msr(void)
+{
+    int err = 0;
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_read_msr(int cpuid, unsigned long offset, unsigned long *value)
+{
+    //!@todo: Verify that MSR interface has been initialized before proceeding
+    int err = 0;
+    err = g_platform.read_msr(cpuid, offset, value);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_write_msr(int cpuid, unsigned long offset, unsigned long value)
+{
+
+    //!@todo: Verify that MSR interface has been initialized before proceeding
+    int err = 0;
+    err = g_platform.write_msr(cpuid, offset, value);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+

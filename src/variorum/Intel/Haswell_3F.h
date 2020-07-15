@@ -100,4 +100,12 @@ int fm_06_3f_get_turbo_status(void);
 int fm_06_3f_poll_power(FILE *output);
 
 int fm_06_3f_monitoring(FILE *output);
+
+int fm_06_3f_init_msr(void);
+
+int fm_06_3f_finalize_msr(void);
+
+int fm_06_3f_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+int fm_06_3f_write_msr(int cpuid, unsigned long offset, unsigned long value);
 #endif

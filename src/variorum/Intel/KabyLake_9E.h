@@ -95,4 +95,11 @@ int fm_06_9e_poll_power(FILE *output);
 
 int fm_06_9e_monitoring(FILE *output);
 
+int fm_06_9e_init_msr(void);
+
+int fm_06_9e_finalize_msr(void);
+
+int fm_06_9e_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+int fm_06_9e_write_msr(int cpuid, unsigned long offset, unsigned long value);
 #endif

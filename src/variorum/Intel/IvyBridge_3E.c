@@ -398,3 +398,50 @@ int fm_06_3e_monitoring(FILE *output)
                              msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
     return 0;
 }
+
+int fm_06_3e_init_msr(void)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    init_msr();
+    return 0;
+}
+
+int fm_06_3e_finalize_msr(void)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    finalize_msr();
+    return 0;
+}
+
+int fm_06_3e_read_msr(int cpuid, unsigned long offset, unsigned long *value)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    int err = read_msr_by_coord(cpuid, 0, 0, offset, value);
+    if (err < 0)
+    {
+        return -1;
+    }
+    return 0;
+}
+
+int fm_06_3e_write_msr(int cpuid, unsigned long offset, unsigned long value)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+    int err = write_msr_by_coord(cpuid, 0, 0, offset, value);
+    if (err < 0)
+    {
+        return -1;
+    }
+    return 0;
+}

@@ -176,6 +176,38 @@ int variorum_disable_turbo(void);
 /// @brief Test for memory leaks.
 int variorum_tester(void);
 
+/// @brief Initialize MSR interface.
+//
+//  @return Error code.
+int variorum_init_msr(void);
+
+/// @brief Finalize MSR interface.
+//
+//  @return Error code.
+int variorum_finalize_msr(void);
+
+/// @brief read MSR offset on the specified CPU.
+//
+//  @param [in] cpuid. ID of the CPU on which the MSR will be read.
+//
+//  @param [in] offset. MSR offset to be read on the CPU.
+//
+//  @return Value read from the MSR offset on the CPU.
+int variorum_read_msr(int cpuid, unsigned long offset, unsigned long *value);
+
+/// @brief write value to MSR offset on the specified CPU.
+//
+//  @param [in] cpuid. ID of the CPU on which the MSR will be read.
+//
+//  @param [in] offset. MSR offset to be read on the CPU.
+//
+//  @param [in] raw_value. Value to be written to the MSR on the CPU.
+//
+//  @param [in] write_mask. Bit write mask for the MSR.
+//
+//  @return Value read from the MSR offset on the CPU.
+int variorum_write_msr(int cpuid, unsigned long offset, unsigned long value);
+//
 ///* Do we need these? */
 //int print_cap_package_frequency(void);
 //int print_available_frequencies(void);

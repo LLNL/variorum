@@ -182,6 +182,26 @@ struct platform
     /// @return Error code.
     int (*dump_gpu_utilization)(int long_ver);
 
+    /// @brief Function pointer to initialize the MSR interface.
+    ///
+    /// @return Error code.
+    int (*init_msr)(void);
+
+    /// @brief Function pointer to finalize the MSR interface.
+    ///
+    /// @return Error code.
+    int (*finalize_msr)(void);
+
+    /// @brief Function pointer to print GPU utilization.
+    ///
+    /// @return Error code.
+    int (*read_msr)(int cpuid, unsigned long offset, unsigned long *value);
+
+    /// @brief Function pointer to print GPU utilization.
+    ///
+    /// @return Error code.
+    int (*write_msr)(int cpuid, unsigned long offset, unsigned long value);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/
