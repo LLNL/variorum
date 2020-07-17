@@ -952,12 +952,12 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t ms
  
     for (i = 0; i < nsockets; i++)
     {
-        char cpu_str[24] = "power_cpu_socket";
-        char mem_str[24] = "power_mem_socket";
-        char lim1_watts_str[24] = "lim1_watts_socket";
-        char lim1_sec_str[24] = "lim1_sec_socket";
-        char lim2_watts_str[24] = "lim2_watts_socket";
-        char lim2_sec_str[24] = "lim2_sec_socket";
+        char cpu_str[24] = "power_cpu_socket_";
+        char mem_str[24] = "power_mem_socket_";
+        char lim1_watts_str[24] = "lim1_watts_socket_";
+        char lim1_sec_str[24] = "lim1_sec_socket_";
+        char lim2_watts_str[24] = "lim2_watts_socket_";
+        char lim2_sec_str[24] = "lim2_sec_socket_";
         sprintf(sockID, "%d", i); 
         strcat(cpu_str, sockID);
         strcat(mem_str, sockID);
