@@ -322,7 +322,7 @@ int variorum_set_each_socket_power_limit(int socket_power_limit)
     return err;
 }
 
-int variorum_set_each_core_frequency(int core_freq_mhz)
+int variorum_cap_each_core_frequency(int core_freq_mhz)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -330,14 +330,14 @@ int variorum_set_each_core_frequency(int core_freq_mhz)
     {
         return -1;
     }
-    if (g_platform.variorum_set_each_core_frequency == NULL)
+    if (g_platform.variorum_cap_each_core_frequency == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_set_each_core_frequency(core_freq_mhz);
+    err = g_platform.variorum_cap_each_core_frequency(core_freq_mhz);
     if (err)
     {
         return -1;
