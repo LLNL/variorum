@@ -24,6 +24,7 @@ option(VARIORUM_DEBUG       "Enable debug statements"      OFF)
 option(VARIORUM_LOG         "Enable logging statements"    ON)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
+set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
 
 if(ENABLE_FORTRAN)
     enable_language(Fortran)

@@ -31,6 +31,21 @@ else()
                  hwloc)
 endif()
 
+if(TARGET jansson::jansson)
+    set_property(TARGET variorum::variorum
+                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+                 jansson::jansson)
+else()
+    # if not, bottle jansson
+    set_property(TARGET variorum::variorum
+                 APPEND PROPERTY
+                 INTERFACE_INCLUDE_DIRECTORIES ${JANSSON_INCLUDE_DIRS})
+
+    set_property(TARGET variorum::variorum
+                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+                 jansson)
+endif()
+
 if(NOT Variorum_FIND_QUIETLY)
     message(STATUS "VARIORUM_VERSION        = ${VARIORUM_VERSION}")
     message(STATUS "VARIORUM_INSTALL_PREFIX = ${VARIORUM_INSTALL_PREFIX}")
