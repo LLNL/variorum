@@ -58,3 +58,12 @@ architectures.
 Variorum leverages hwloc for detecting hardware topology. When reading/writing
 a register on a particular hardware thread, hwloc can map that to the correct
 physical socket.
+
+
+jansson (Required)
+""""""""""""""""
+`jansson <https://digip.org/jansson/>`_ is an open-source C library for 
+encoding, decoding and manipulating JSON data.
+ 
+Variorum leverages JANSSON to provide a JSON-based API that can retrieve 
+power data for external tools/software.
