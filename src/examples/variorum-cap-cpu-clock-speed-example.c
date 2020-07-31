@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     cpu_freq_mhz = atoi(argv[1]);
     printf("Setting each CPU to %d MHz.\n", cpu_freq_mhz);
 
-    ret = variorum_set_each_core_frequency(cpu_freq_mhz);
+    ret = variorum_cap_each_core_frequency(cpu_freq_mhz);
     if (ret != 0)
     {
         printf("Set each core frequency failed!\n");

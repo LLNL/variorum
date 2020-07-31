@@ -70,12 +70,12 @@ module variorum
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_set_each_core_frequency(cpu_freq_mhz) &
+            function variorum_cap_each_core_frequency(cpu_freq_mhz) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::cpu_freq_mhz
-    end function variorum_set_each_core_frequency
+    end function variorum_cap_each_core_frequency
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &

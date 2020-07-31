@@ -123,7 +123,7 @@ struct platform
     /// @return Error code.
     int (*variorum_set_each_socket_power_limit)(int socket_power_limit);
 
-    int (*variorum_set_each_core_frequency)(int core_freq_mhz);
+    int (*variorum_cap_each_core_frequency)(int core_freq_mhz);
 
     /// @brief Function pointer to print the feature set.
     ///

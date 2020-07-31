@@ -30,7 +30,7 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-thermals-example
     variorum-print-verbose-gpu-utilization-example
     variorum-set-and-verify-node-power-limit-example
-    variorum-set-cpu-clock-speed-example
+    variorum-cap-cpu-clock-speed-example
     variorum-set-gpu-power-ratio-example
     variorum-set-node-power-limit-example
     variorum-set-socket-power-limits-example
