@@ -84,6 +84,7 @@ else()
 endif()
 
 target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
+target_link_libraries(variorum PUBLIC ${JANSSON_LIBRARY})
 target_link_libraries(variorum PUBLIC m)
 
 install(TARGETS variorum

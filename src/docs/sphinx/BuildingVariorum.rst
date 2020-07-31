@@ -22,6 +22,7 @@ The build dependencies for a minimal build require the following:
 
     * C
     * hwloc
+    * jansson 
 
 
 Build Dependencies
@@ -31,12 +32,17 @@ Variorum
 ^^^^^^^^
 
     * hwloc
+    * jansson
 
 hwloc (Required)
 """"""""""""""""
 
 No dependencies.
 
+jansson (Required)
+""""""""""""""""
+
+No dependencies.
 
 Getting Started
 ---------------
@@ -70,6 +76,8 @@ Variorum's build system supports the following CMake options:
 * **BUILD_TESTS** - Controls if unit tests are built. *(default = ON)*
 
 * **HWLOC_DIR** - Path to an HWLOC install.
+
+* **JANSSON_DIR** - Path to a JANSSON install.
 
 * **SPHINX_EXECUTABLE** - Path to sphinx-build binary *(required for documentation)*.
 

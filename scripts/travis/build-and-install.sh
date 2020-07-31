@@ -34,6 +34,11 @@ spack install hwloc
 export HWLOC_DIR=`ls -d ${TRAVIS_BUILD_DIR}/travis-spack-env/spack/opt/spack/*/*/hwloc-*`
 echo -e "HWLOC_DIR:" ${HWLOC_DIR}
 
+# jansson
+spack install jansson
+export JANSSON_DIR=`ls -d ${TRAVIS_BUILD_DIR}/travis-spack-env/spack/opt/spack/*/*/jansson-*`
+echo -e "JANSSON_DIR:" ${JANSSON_DIR}
+
 which sphinx-build
 cd ..
 
@@ -94,6 +99,7 @@ fi
 # install path
 CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install-travis"
 CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${HWLOC_DIR}"
+CMAKE_OPTS="${CMAKE_OPTS} -DJANSSON_DIR=${JANSSON_DIR}"
 
 # confirm CMake config options
 echo -e "CMake Options:" ${CMAKE_OPTS}
