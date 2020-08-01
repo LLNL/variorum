@@ -769,3 +769,32 @@ int variorum_disable_turbo(void)
     }
     return err;
 }
+
+int variorum_json_get_node_power(json_t *get_power_obj)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    if (g_platform.variorum_json_get_node_power == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return 0;
+    }
+    err = g_platform.variorum_json_get_node_power(get_power_obj);
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
