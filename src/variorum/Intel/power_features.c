@@ -936,10 +936,6 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
     char sockID[4];                                                                 
     int i;
     double node_power = 0.0;                                                                         
-                                                                                    
-    char cpu_str[24] = "power_cpu_socket_";                                     
-    char mem_str[24] = "power_mem_socket_";
-    char gpu_str[24] = "power_gpu_socket_";      
                                  
     gethostname(hostname, 1024);                                                    
     variorum_get_topology(&nsockets, NULL, NULL);                                   
@@ -957,7 +953,13 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));              
                                                                                     
     for (i = 0; i < nsockets; i++)                                                  
-    {                                                                               
+    {  
+        /* Defined here so as to reset the string for each socket 
+         * and append correctly */                                                                            
+        char cpu_str[24] = "power_cpu_socket_";                                     
+        char mem_str[24] = "power_mem_socket_";
+        char gpu_str[24] = "power_gpu_socket_";      
+ 
         sprintf(sockID, "%d", i);                                                   
         strcat(cpu_str, sockID);                                                    
         strcat(mem_str, sockID);                                                    
