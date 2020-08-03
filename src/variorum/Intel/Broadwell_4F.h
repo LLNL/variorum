@@ -102,5 +102,5 @@ int fm_06_4f_poll_power(FILE *output);
 
 int fm_06_4f_monitoring(FILE *output);
 
-int fm_06_4f_json_get_node_power(json_t *get_power_obj); 
+int fm_06_4f_json_get_node_power(json_t *get_power_obj);
 #endif

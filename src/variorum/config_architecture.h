@@ -7,7 +7,7 @@
 #define CONFIG_ARCHIECTURE_H_INCLUDE
 
 #include <stdint.h>
-#include <jansson.h>  
+#include <jansson.h>
 
 #include <variorum_config.h>
 
@@ -183,11 +183,11 @@ struct platform
     /// @return Error code.
     int (*variorum_dump_gpu_utilization)(int long_ver);
 
-    /// @brief Function pointer to get JSON object for node power data.            
-    ///                                                                            
-    /// @return Error code.                                                        
-    int (*variorum_json_get_node_power)(json_t *get_power_obj);                    
-                                                                      
+    /// @brief Function pointer to get JSON object for node power data.
+    ///
+    /// @return Error code.
+    int (*variorum_json_get_node_power)(json_t *get_power_obj);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/

@@ -150,8 +150,8 @@ unsigned long read_sensor(const struct occ_sensor_data_header *hb,
                           uint32_t offset,
                           int attr);
 
-void json_get_power_sensors(int chipid,                                            
-                            json_t *get_power_obj,                                    
-                            const void *buf);     
+void json_get_power_sensors(int chipid,
+                            json_t *get_power_obj,
+                            const void *buf);
 
 #endif

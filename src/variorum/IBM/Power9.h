@@ -22,6 +22,6 @@ int p9_set_gpu_power_ratio(int gpu_power_ratio);
 
 int p9_monitoring(FILE *output);
 
-int p9_json_get_node_power(json_t *get_power_obj);    
+int p9_json_get_node_power(json_t *get_power_obj);
 
 #endif

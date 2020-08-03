@@ -399,15 +399,15 @@ int fm_06_4f_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_4f_json_get_node_power(json_t *get_power_obj)                            
-{                                                                                  
-#ifdef VARIORUM_LOG                                                                
-    printf("Running %s\n", __FUNCTION__);                                          
-#endif                                                                             
-                                                                                   
-    json_dump_power_data(get_power_obj, msrs.msr_pkg_power_limit, 
-                        msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, 
-                        msrs.msr_dram_energy_status);
-                                                                                   
-  return 0;                                                                        
-} 
+int fm_06_4f_json_get_node_power(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_dump_power_data(get_power_obj, msrs.msr_pkg_power_limit,
+                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status);
+
+    return 0;
+}
