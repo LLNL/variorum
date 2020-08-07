@@ -10,12 +10,8 @@ cd $TRAVIS_BUILD_DIR
 echo -e "TRAVIS_BUILD_DIR:" ${TRAVIS_BUILD_DIR}
 echo -e "PWD:" ${PWD}
 
-# setup mirror, so we don't have to download the file
+# clone variorum mirror repo
 git clone https://github.com/llnl/variorum-spack-mirrors
-cd variorum-spack-mirrors
-spack mirror add local_filesystem file://${TRAVIS_BUILD_DIR}/variorum-spack-mirrors
-ls ${TRAVIS_BUILD_DIR}/variorum-spack-mirrors
-cd ..
 
 # install local spack
 mkdir travis-spack-env
@@ -28,6 +24,10 @@ tar -xzf v0.14.0.tar.gz
 mv spack-0.14.0 spack
 
 export PATH=${PWD}/spack/bin:${PATH}
+
+# setup mirror, so we don't have to download the file
+spack mirror add local_filesystem file://${TRAVIS_BUILD_DIR}/variorum-spack-mirrors
+ls ${TRAVIS_BUILD_DIR}/variorum-spack-mirrors
 
 # hwloc
 spack install hwloc
