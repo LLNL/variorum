@@ -375,7 +375,7 @@ int p9_set_socket_power_limit(int pcap_new)
     return 0;
 }
 
-int p9_json_get_node_power(json_t *get_power_obj)
+int p9_get_node_power_json(json_t *get_power_obj)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

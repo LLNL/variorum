@@ -399,7 +399,7 @@ int fm_06_4f_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_4f_json_get_node_power(json_t *get_power_obj)
+int fm_06_4f_get_node_power_json(json_t *get_power_obj)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

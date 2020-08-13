@@ -186,7 +186,7 @@ struct platform
     /// @brief Function pointer to get JSON object for node power data.
     ///
     /// @return Error code.
-    int (*variorum_json_get_node_power)(json_t *get_power_obj);
+    int (*variorum_get_node_power_json)(json_t *get_power_obj);
 
     /******************************/
     /* Platform-Specific Topology */

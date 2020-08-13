@@ -180,7 +180,7 @@ int variorum_disable_turbo(void);
 /// @brief Populate json_t object parameter with total node power.
 /////
 ///// @return Error code.
-int variorum_json_get_node_power(json_t *get_power_obj);
+int variorum_get_node_power_json(json_t *get_power_obj);
 
 /***************************/
 /* Testing */

@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     my_power_obj =
         json_object(); // Create JSON object and pass to variorum API as reference.
-    ret = variorum_json_get_node_power(my_power_obj);
+    ret = variorum_get_node_power_json(my_power_obj);
     if (ret != 0)
     {
         printf("First run: JSON get node power failed!\n");
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
-    ret = variorum_json_get_node_power(my_power_obj);
+    ret = variorum_get_node_power_json(my_power_obj);
     if (ret != 0)
     {
         printf("Second run: JSON get node power failed!\n");
