@@ -374,3 +374,71 @@ int p9_set_socket_power_limit(int pcap_new)
 
     return 0;
 }
+
+int p9_get_node_power_json(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    void *buf;
+    int fd;
+    int rc;
+    int bytes;
+    int initial_bytes;
+    int iter = 0;
+    int nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+        return -1;
+    }
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+        buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+
+        if (!buf)
+        {
+            printf("Failed to allocate\n");
+            return -1;
+        }
+
+        for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+        {
+            rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+
+            if (!rc || rc < 0)
+            {
+                break;
+            }
+        }
+
+        if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+        {
+            printf("Failed to read data\n");
+            free(buf);
+            return -1;
+        }
+
+        json_get_power_sensors(iter, get_power_obj, buf);
+        free(buf);
+    }
+    close(fd);
+    return 0;
+}

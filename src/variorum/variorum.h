@@ -7,6 +7,7 @@
 #define VARIORUM_H_INCLUDE
 
 #include <stdio.h>
+#include <jansson.h>
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
@@ -173,6 +174,17 @@ int variorum_enable_turbo(void);
 /// @return Error code.
 int variorum_disable_turbo(void);
 
+/***************************/
+/* JSON Support */
+/***************************/
+/// @brief Populate json_t object parameter with total node power.
+/////
+///// @return Error code.
+int variorum_get_node_power_json(json_t *get_power_obj);
+
+/***************************/
+/* Testing */
+/***************************/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
 

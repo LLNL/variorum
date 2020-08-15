@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <jansson.h>
 
 #define UINT_MAX 4294967295U // taken from limits.h
 #define STD_ENERGY_UNIT 65536.0
@@ -218,6 +219,13 @@ void print_power_data(FILE *writedest,
                       off_t msr_rapl_unit,
                       off_t msr_pkg_energy_status,
                       off_t msr_dram_energy_status);
+
+
+void json_dump_power_data(json_t *get_power_obj,
+                          off_t msr_power_limit,
+                          off_t msr_rapl_unit,
+                          off_t msr_pkg_energy_status,
+                          off_t msr_dram_energy_status);
 
 /// @brief Store the RAPL data on the heap.
 ///

@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <ibm_sensors.h>
 
@@ -297,4 +298,79 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
         }
     }
     fprintf(output, "\n"); // Add end of line.
+}
+
+void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
+{
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
+    int i = 0;
+    static int init = 0;
+    // Power in watts.
+    uint64_t pwrsys = 0;
+    uint64_t pwrproc = 0;
+    uint64_t pwrmem = 0;
+    uint64_t pwrgpu = 0;
+    char sockID[4];
+
+    char cpu_str[24] = "power_cpu_socket_";
+    char mem_str[24] = "power_mem_socket_";
+    char gpu_str[24] = "power_gpu_socket_";
+
+    sprintf(sockID, "%d", chipid);
+    strcat(cpu_str, sockID);
+    strcat(mem_str, sockID);
+    strcat(gpu_str, sockID);
+
+    hb = (struct occ_sensor_data_header *)(uint64_t)buf;
+    md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
+
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
+    {
+        uint32_t offset = be32toh(md[i].reading_offset);
+        uint32_t scale = be32toh(md[i].scale_factor);
+        uint64_t sample;
+
+        // We are not reading counters here because power data doesn't need counter.
+        if (md[i].structure_type == OCC_SENSOR_READING_FULL)
+        {
+            sample = read_sensor(hb, offset, SENSOR_SAMPLE);
+        }
+
+        /* Ideally, we don't want to use strcmp and use offsets instead.
+         * But this was not clear to us at the time of the implementation.
+         * OCC_DATA_BLOCK contents are different because of master-slave design
+         * across different processor sockets. So the same offset can refer to
+         * a different sensor depending on the socket.
+         *
+         * Note that we're not capturing timestamp here, the common timestamp
+         * printed is the one from the end of the loop, where all 336 sensors
+         * have been scanned on P9.
+         * */
+
+        if (strcmp(md[i].name, "PWRSYS") == 0)
+        {
+            pwrsys = (uint64_t)(sample * TO_FP(scale));
+        }
+        if (strcmp(md[i].name, "PWRPROC") == 0)
+        {
+            pwrproc = (uint64_t)(sample * TO_FP(scale));
+        }
+        if (strcmp(md[i].name, "PWRMEM") == 0)
+        {
+            pwrmem = (uint64_t)(sample * TO_FP(scale));
+        }
+        if (strcmp(md[i].name, "PWRGPU") == 0)
+        {
+            pwrgpu = (uint64_t)(sample * TO_FP(scale));
+        }
+    }
+
+    if (chipid == 0)
+        json_object_set_new(get_power_obj, "power_node", json_real(pwrsys));
+
+    json_object_set_new(get_power_obj, cpu_str, json_real(pwrproc));
+    json_object_set_new(get_power_obj, mem_str, json_real(pwrmem));
+    json_object_set_new(get_power_obj, gpu_str, json_real(pwrgpu));
+
 }

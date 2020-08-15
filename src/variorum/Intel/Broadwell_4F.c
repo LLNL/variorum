@@ -398,3 +398,16 @@ int fm_06_4f_monitoring(FILE *output)
                              msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
     return 0;
 }
+
+int fm_06_4f_get_node_power_json(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_dump_power_data(get_power_obj, msrs.msr_pkg_power_limit,
+                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status);
+
+    return 0;
+}

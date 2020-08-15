@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <math.h>
+#include <jansson.h>
 
 /* Documentation for the OCC Sensors and the structures in this header file
  * is available in README_IBM_OCC.
@@ -148,5 +149,9 @@ unsigned long read_counter(const struct occ_sensor_data_header *hb,
 unsigned long read_sensor(const struct occ_sensor_data_header *hb,
                           uint32_t offset,
                           int attr);
+
+void json_get_power_sensors(int chipid,
+                            json_t *get_power_obj,
+                            const void *buf);
 
 #endif

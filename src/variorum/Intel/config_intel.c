@@ -60,7 +60,8 @@ int set_intel_func_ptrs(void)
     if (*g_platform.intel_arch == FM_06_2A)
     {
         g_platform.variorum_dump_power_limits = fm_06_2a_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_2a_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_2a_set_power_limits;
         g_platform.variorum_print_features = fm_06_2a_get_features;
         g_platform.variorum_dump_thermals = fm_06_2a_get_thermals;
         g_platform.variorum_dump_counters = fm_06_2a_get_counters;
@@ -77,7 +78,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_3E)
     {
         g_platform.variorum_dump_power_limits = fm_06_3e_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_3e_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_3e_set_power_limits;
         g_platform.variorum_print_features = fm_06_3e_get_features;
         g_platform.variorum_dump_thermals = fm_06_3e_get_thermals;
         g_platform.variorum_dump_counters = fm_06_3e_get_counters;
@@ -94,7 +96,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_3F)
     {
         g_platform.variorum_dump_power_limits = fm_06_3f_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_3f_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_3f_set_power_limits;
         g_platform.variorum_print_features = fm_06_3f_get_features;
         g_platform.variorum_dump_thermals = fm_06_3f_get_thermals;
         g_platform.variorum_dump_counters = fm_06_3f_get_counters;
@@ -111,7 +114,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_4F)
     {
         g_platform.variorum_dump_power_limits = fm_06_4f_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_4f_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_4f_set_power_limits;
         g_platform.variorum_print_features = fm_06_4f_get_features;
         g_platform.variorum_dump_thermals = fm_06_4f_get_thermals;
         g_platform.variorum_dump_counters = fm_06_4f_get_counters;
@@ -123,12 +127,14 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_4f_poll_power;
         g_platform.variorum_monitoring = fm_06_4f_monitoring;
         //g_platform.variorum_cap_each_core_frequency = fm_06_4f_set_frequency;
+        g_platform.variorum_get_node_power_json = fm_06_4f_get_node_power_json;
     }
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
     {
         g_platform.variorum_dump_power_limits = fm_06_55_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_55_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_55_set_power_limits;
         g_platform.variorum_print_features = fm_06_55_get_features;
         g_platform.variorum_dump_thermals = fm_06_55_get_thermals;
         g_platform.variorum_dump_counters = fm_06_55_get_counters;
@@ -145,7 +151,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_9E)
     {
         g_platform.variorum_dump_power_limits = fm_06_9e_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_9e_set_power_limits;
+        g_platform.variorum_set_each_socket_power_limit =
+            fm_06_9e_set_power_limits;
         g_platform.variorum_print_features = fm_06_9e_get_features;
         g_platform.variorum_dump_thermals = fm_06_9e_get_thermals;
         g_platform.variorum_dump_counters = fm_06_9e_get_counters;

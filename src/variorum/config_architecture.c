@@ -217,6 +217,7 @@ void variorum_init_func_ptrs()
     g_platform.variorum_dump_gpu_utilization = NULL;
     g_platform.variorum_cap_each_core_frequency = NULL;
     g_platform.variorum_monitoring = NULL;
+    g_platform.variorum_get_node_power_json = NULL;
 }
 
 int variorum_set_func_ptrs()

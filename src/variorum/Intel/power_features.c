@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <power_features.h>
 #include <config_architecture.h>
@@ -920,6 +921,81 @@ void dump_power_data(FILE *writedest, off_t msr_power_limit,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
 }
+
+void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
+                          off_t msr_rapl_unit, off_t msr_pkg_energy_status,
+                          off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    struct rapl_limit l1, l2;
+    int nsockets = 0;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    char sockID[4];
+    int i;
+    double node_power = 0.0;
+
+    gethostname(hostname, 1024);
+    variorum_get_topology(&nsockets, NULL, NULL);
+
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+    if (!init)
+    {
+        rapl_storage(&rapl);
+    }
+
+    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < nsockets; i++)
+    {
+        /* Defined here so as to reset the string for each socket
+         * and append correctly */
+        char cpu_str[24] = "power_cpu_socket_";
+        char mem_str[24] = "power_mem_socket_";
+        char gpu_str[24] = "power_gpu_socket_";
+
+        sprintf(sockID, "%d", i);
+        strcat(cpu_str, sockID);
+        strcat(mem_str, sockID);
+        strcat(gpu_str, sockID);
+
+        get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
+
+        json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
+        json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
+
+        /* To ensure vendor-neutrality of the JSON power object across various
+           platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
+           report it. The negative -1.0 value indicates that the JSON object does
+           not contain the data for the associated key due to architecture
+           limitations.
+           TODO is to populate this through the NVIDIA NVML GPU power values
+           when variorum is built with NVIDIA on Intel architectures. */
+
+        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
+
+
+        /* To ensure vendor-neutrality of the JSON power object across various
+           platforms, such as IBM, we set power_sys as the sum of CPU and DRAM
+           power values. This is estimated node power, and is not total power on
+           the node. Intel platforms currently do not report total node power
+           like the IBM platforms. We hope this changes in the future, and we
+           have an acutal measurement for node power instead, so the following
+           can be updated accordingly. */
+
+        node_power += rapl->pkg_watts[i] + rapl->dram_watts[i];
+    }
+
+    // Set the node power key with pwrnode value.
+    json_object_set_new(get_power_obj, "power_node", json_real(node_power));
+}
+
 
 //int dump_rapl_data(FILE *writedest)
 //{
