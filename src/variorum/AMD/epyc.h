@@ -14,4 +14,12 @@ int epyc_set_socket_power_limit(int pcap_new);
 
 int epyc_set_and_verify_node_power_limit(int pcap_new);
 
+int epyc_print_energy(void);
+
+int epyc_print_boostlimit(void);
+
+int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit);
+
+int epyc_set_socket_boostlimit(int socket, unsigned int boostlimit);
+
 #endif

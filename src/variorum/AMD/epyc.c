@@ -204,3 +204,160 @@ int epyc_set_socket_power_limit(int pcap_new)
     }
     return 0;
 }
+
+int epyc_print_energy(void)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    int i, ret;
+    uint64_t energy;
+
+    fprintf(stdout, "_SOCKET_ENERGY :\n");
+    fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+    for (i = 0; i < g_platform.num_sockets; i++)
+    {
+        energy = 0;
+        ret = esmi_socket_energy_get(i, &energy);
+        if(ret != 0)
+        {
+            fprintf(stdout, "Failed to get socket[%d] _SOCKENERGY, Err[%d]:%s\n",
+                    i, ret, esmi_get_err_msg(ret));
+            return ret;
+        }
+        else
+        {
+            fprintf(stdout, "%6d  | %17.06f | \n",
+                    i, (double)energy/1000000);
+        }
+    }
+    printf("\n_CORE_ENERGY :\n");
+    fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+    for (i = 0; i < g_platform.total_cores; i++)
+    {
+        energy = 0;
+        ret = esmi_core_energy_get(i, &energy);
+        if(ret != 0)
+        {
+            fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
+                    i, ret, esmi_get_err_msg(ret));
+	    continue;
+        }
+        else
+        {
+            fprintf(stdout, " %6d | %17.06f | \n",
+                    i, (double)energy/1000000);
+        }
+    }
+    return 0;
+}
+
+int epyc_print_boostlimit(void)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n\n", __FUNCTION__);
+#endif
+
+    int i, ret;
+    uint32_t boostlimit;
+
+    fprintf(stdout, " Core   | Freq (MHz)  |\n");
+    for (i = 0; i < g_platform.total_cores; i++)
+    {
+        boostlimit = 0;
+        ret = esmi_core_boostlimit_get(i, &boostlimit);
+        if(ret != 0)
+        {
+            fprintf(stdout, "Failed to get core[%u] _BOOSTLIMIT, Err[%d]:%s\n",
+                    i, ret, esmi_get_err_msg(ret));
+            return ret;
+        }
+        else
+        {
+            fprintf(stdout, "%6d  | %10u  |\n", i, boostlimit);
+        }
+    }
+    return 0;
+}
+
+int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
+#endif
+
+    int i, ret;
+    uint32_t core_boost_lim = 0;
+
+    ret = esmi_core_boostlimit_set(core, boostlimit);
+    if (ret != 0)
+    {
+        fprintf(stdout, "Failed to set core[%u] _BOOSTLIMIT, Err[%d]:%s\n",
+                core, ret, esmi_get_err_msg(ret));
+        if (ret == ESMI_PERMISSION)
+        {
+            variorum_error_handler("Incorrect permissions",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        return ret;
+    }
+    usleep(100000);
+
+    ret = esmi_core_boostlimit_get(core, &core_boost_lim);
+    if (ret == 0)
+    {
+        if (core_boost_lim < boostlimit)
+            printf("Set to possible max boostlimit: %u MHz\n\n", core_boost_lim);
+        else if (core_boost_lim > boostlimit)
+            printf("Set to possible min boostlimit: %u MHz\n\n", core_boost_lim);
+        boostlimit = core_boost_lim;
+    }
+
+#ifdef VARIORUM_DEBUG
+    fprintf(stdout, "Values are input:%2u MHz, test=%2u MHz\n",
+            boostlimit, core_boost_lim);
+#endif
+
+    if (boostlimit != core_boost_lim)
+    {
+        fprintf(stdout, "Could not verify if the boostlimit "
+                "was set correctly.\n");
+        fprintf(stdout, "Verification check after 100ms failed.\n");
+        fprintf(stdout, "Please verify again with set boostlimits.\n");
+        return -1;
+    }
+
+    fprintf(stdout, "Changed core[%d] boostlimit to %2u MHz.\n",
+            core, core_boost_lim);
+
+    return 0;
+}
+
+int epyc_set_socket_boostlimit(int socket, unsigned int boostlimit)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
+#endif
+
+    int ret;
+    uint32_t blimit = 0;
+    uint32_t online_core;
+
+    ret = esmi_socket_boostlimit_set(socket, boostlimit);
+    if (ret != 0)
+    {
+        fprintf(stdout, "Failed to set socket[%d] _BOOSTLIMIT, Err[%d]:%s\n",
+                socket, ret, esmi_get_err_msg(ret));
+        if (ret == ESMI_PERMISSION)
+        {
+           variorum_error_handler("Incorrect permissions",
+                                  VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                  __FILE__, __FUNCTION__, __LINE__);
+           ret = -1;
+        }
+    }
+    return ret;
+}

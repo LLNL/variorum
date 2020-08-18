@@ -308,6 +308,10 @@ void variorum_init_func_ptrs()
     g_platform.variorum_monitoring = NULL;
     g_platform.variorum_get_node_power_json = NULL;
     g_platform.variorum_print_available_frequencies = NULL;
+    g_platform.variorum_print_energy = NULL;
+    g_platform.variorum_print_boostlimit = NULL;
+    g_platform.variorum_set_and_verify_core_boostlimit = NULL;
+    g_platform.variorum_set_socket_boostlimit = NULL;
 }
 
 int variorum_set_func_ptrs()

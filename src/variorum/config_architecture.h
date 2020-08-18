@@ -210,6 +210,26 @@ struct platform
     /// @return Error code.
     int (*variorum_print_available_frequencies)(void);
 
+    /// @brief Function pointer to print energy for all cores and sockets.
+    ///
+    /// @return Error code.
+    int (*variorum_print_energy)(void);
+
+    /// @brief Function pointer to print boostlimit of all cores.
+    ///
+    /// @return Error code.
+    int (*variorum_print_boostlimit)(void);
+
+    /// @brief Function pointer to set and verify per core boostlimit.
+    ///
+    /// @return Error code.
+    int (*variorum_set_and_verify_core_boostlimit)(int core, unsigned int boostlimit);
+
+    /// @brief Function pointer to set per socket boostlimit.
+    ///
+    /// @return Error code.
+    int (*variorum_set_socket_boostlimit)(int socket, unsigned int boostlimit);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/
