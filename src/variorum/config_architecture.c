@@ -309,6 +309,7 @@ void variorum_init_func_ptrs()
     g_platform.variorum_monitoring = NULL;
     g_platform.variorum_get_node_power_json = NULL;
     g_platform.variorum_get_node_power_domain_info_json = NULL;
+    g_platform.variorum_print_energy = NULL;
 }
 
 int variorum_set_func_ptrs()

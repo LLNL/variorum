@@ -37,6 +37,10 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-power-limit-example
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
+    variorum-print-energy-example
+    variorum-print-boostlimit-example
+    variorum-set-and-verify-core-boostlimit-example
+    variorum-set-socket-boostlimit-example
 )
 
 message(STATUS "Adding variorum examples")
