@@ -15,9 +15,9 @@ int main(int argc, char **argv)
 
     if (argc == 1)
     {
-        printf("No power limit specified...using default limit of 500W.\n");
-        // 500W is based on minimum power on IBM Witherspoon
-        node_pow_lim_watts = 500;
+        printf("Please specify an input value in W for correctness.\n");
+        printf("Cannot set defaults as these can be architecture dependent.\n");
+        return 0;
     }
     else if (argc == 2)
     {
