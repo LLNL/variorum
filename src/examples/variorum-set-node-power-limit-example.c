@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     if (argc == 1)
     {
         printf("Please specify an input value in W for correctness.\n");
-        printf("Cannot set defaults as these can be architecture dependent.\n");
+        printf("Cannot set defaults due to architecture dependence.\n");
         return 0;
     }
     else if (argc == 2)
