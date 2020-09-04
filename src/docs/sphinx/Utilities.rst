@@ -73,7 +73,7 @@ From the top-level Variorum directory:
 
 .. code:: bash
 
-   brink2@quartz5:~]$ python ./src/utilities/verify_msr_kernel.py -v
+   brink2@quartz5:~]$ python3 ./src/utilities/verify_msr_kernel.py -v
    ######################
    # x86 CPU MSR Access #
    ######################
@@ -86,7 +86,7 @@ From the top-level Variorum directory:
    -- Check if msr_safe kernel files are character devices: /dev/cpu/3/msr_safe -- yes
    ...
    -- Check if msr_safe kernel files are character devices: /dev/cpu/71/msr_safe -- yes
-   -- Check if msr_safe kernel files are character devices: /dev/cpu/msr_whitelist -- yes
+   -- Check if msr_safe kernel files are character devices: /dev/cpu/msr_allowlist -- yes
    -- Check if msr_safe kernel files are character devices: /dev/cpu/msr_batch -- yes
    -- Check if msr_safe kernel files are accessible by user
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/0/msr_safe -- yes
@@ -95,7 +95,7 @@ From the top-level Variorum directory:
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/3/msr_safe -- yes
    ...
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/71/msr_safe -- yes
-   -- Check if msr_safe kernel files are accessible by user: /dev/cpu/msr_whitelist -- yes
+   -- Check if msr_safe kernel files are accessible by user: /dev/cpu/msr_allowlist -- yes
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/msr_batch -- yes
    -- Valid kernel loaded: msr-safe
 
