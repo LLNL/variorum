@@ -127,8 +127,6 @@ int variorum_detect_arch(void)
 void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
 {
     hwloc_topology_t topology;
-    hwloc_obj_t obj;
-    unsigned int i;
     unsigned int core_depth, pu_depth;
     static int init_variorum_get_topology = 0;
     int rc;
@@ -241,11 +239,9 @@ int variorum_set_func_ptrs()
 #endif
 #ifdef VARIORUM_WITH_NVIDIA
     err = set_nvidia_func_ptrs();
-    if (err)
-    {
-        return err;
-    }
 #endif
+
+    return err;
 }
 
 ////setfixedcounters = fixed_ctr0,

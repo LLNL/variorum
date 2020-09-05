@@ -172,8 +172,6 @@ int variorum_print_verbose_power_limits(void)
 
 void variorum_print_topology(void)
 {
-    int i;
-    int hyperthreading = 0;
     hwloc_topology_t topo;
 
     hwloc_topology_init(&topo);
