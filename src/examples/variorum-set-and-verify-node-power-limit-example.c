@@ -11,12 +11,12 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int node_pow_lim_watts;
+    /* 500 W is based on minimum power on IBM Witherspoon */
+    int node_pow_lim_watts = 500;
 
     if (argc == 1)
     {
         printf("No power limit specified...using default limit of 500W.\n");
-        /* 500 W is based on minimum power on IBM Witherspoon */
         node_pow_lim_watts = 500;
     }
     else if (argc == 2)
