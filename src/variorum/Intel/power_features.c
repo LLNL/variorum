@@ -933,7 +933,8 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    char sockID[4];
+    static size_t sockID_len = 11; // large enough to avoid format truncation
+    char sockID[sockID_len+1];
     int i;
     double node_power = 0.0;
 
@@ -960,7 +961,7 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
         char mem_str[24] = "power_mem_socket_";
         char gpu_str[24] = "power_gpu_socket_";
 
-        sprintf(sockID, "%d", i);
+        snprintf(sockID, sockID_len, "%d", i);
         strcat(cpu_str, sockID);
         strcat(mem_str, sockID);
         strcat(gpu_str, sockID);

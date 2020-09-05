@@ -124,12 +124,12 @@ int variorum_detect_arch(void)
     return 0;
 }
 
+
 void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
 {
     hwloc_topology_t topology;
-    unsigned int core_depth, pu_depth;
-    static int init_variorum_get_topology = 0;
     int rc;
+    static int init_variorum_get_topology = 0;
 
     gethostname(g_platform.hostname, 1024);
 
@@ -141,44 +141,89 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
         // If something goes wrong, there's no sense in trying to keep
         // marching forward.  Thus the asserts.
         rc = hwloc_topology_init(&topology);
-        assert(0 == rc);
+        if(0 != rc) exit(-1);
         rc = hwloc_topology_load(topology);
-        assert(0 == rc);
+        if(0 != rc) exit(-1);
 
-        // The hwloc documentation gives an example of a machine having
-        // depth=0, each package having a depth=1, each cache associated
-        // with a package having depth=2, each core associated with a cache
-        // having a depth=3, and each processing unit (pu) associated with
-        // a core having a depth=4.
-        core_depth = hwloc_get_type_depth(topology, HWLOC_OBJ_CORE);
-        assert(HWLOC_TYPE_DEPTH_UNKNOWN != core_depth);
-        assert(HWLOC_TYPE_DEPTH_MULTIPLE != core_depth);
-
-        pu_depth = hwloc_get_type_depth(topology, HWLOC_OBJ_PU);
-        assert(HWLOC_TYPE_DEPTH_UNKNOWN != pu_depth);
-        assert(HWLOC_TYPE_DEPTH_MULTIPLE != pu_depth);
 
         g_platform.num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
         //-1 if Several levels exist with OBJ_SOCKET
-        assert(-1 != g_platform.num_sockets);
+        if(-1 == g_platform.num_sockets){ 
+		fprintf( stderr,"%s:%d "
+				"hwloc reports that HWLOC_OBJ_SOCKETs exist "
+				"at multiple levels of the topology DAG.  "
+				"Variorum doesn't handle this case.  "
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
         // 0 if No levels exist with OBJ_SOCKET
-        assert(0 != g_platform.num_sockets);
+        if(0 == g_platform.num_sockets){ 
+		fprintf( stderr, "%s:%d "
+				"hwloc reports no HWLOC_OBJ_SOCKETs exist.  "
+				"Variorum doesn't handle this case.  "
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
 
         g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
-        assert(-1 != g_platform.total_cores);
-        assert(0 != g_platform.total_cores);
+        if(-1 == g_platform.total_cores){ 
+		fprintf( stderr, "%s:%d "
+				"hwloc reports HWLOC_OJB_COREs exist "
+				"at multiple levels of the topology DAG.  "
+				"Variorum doesn't handle this case.  "
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
+        if(0 == g_platform.total_cores){ 
+		fprintf( stderr, "%s:%d "
+				"hwloc reports no HWLOC_OBJ_COREs exist."
+				"Variorum doesn't handle this case."
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
 
         g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
-        assert(-1 != g_platform.total_threads);
-        assert(0 != g_platform.total_threads);
+        if(-1 == g_platform.total_threads){
+		fprintf( stderr, "%s:%d "
+				"hwloc reports that HWLOC_OBJ_PUs exist "
+				"at multiple levels of the topology DAG.  "
+				"Variorum doesn't handle this case."
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
+        if(0 == g_platform.total_threads){
+		fprintf( stderr, "%s:%d "
+				"hwloc reports no HWLOC_OBJ_COREs exist.  "
+				"Variorum doesn't handle this case.  "
+				"Exiting.", __FILE__, __LINE__);
+		exit(-1);
+	}
 
         g_platform.num_cores_per_socket = g_platform.total_cores /
                                           g_platform.num_sockets;
-        assert(0 == g_platform.total_cores % g_platform.num_sockets);
+        if(0 != g_platform.total_cores % g_platform.num_sockets){
+		fprintf( stderr, "%s:%d "
+				"hwloc reports the number of cores (%d) mod "
+				"the number of sockets (%d) is not zero.  "
+				"Something is amiss.  Exiting.",
+				__FILE__, __LINE__,
+				g_platform.total_cores, 
+				g_platform.num_sockets);
+		exit(-1);
+	}
 
         g_platform.num_threads_per_core = g_platform.total_threads /
                                           g_platform.total_cores;
-        assert(0 == g_platform.total_threads % g_platform.total_cores);
+        if(0 != g_platform.total_threads % g_platform.total_cores){
+		fprintf( stderr, "%s:%d "
+				"hwloc reports the number of threads (%d) mod "
+				"the number of cores (%d) is not zero.  "
+				"Something is amiss.  Exiting.",
+				__FILE__, __LINE__,
+				g_platform.total_threads, 
+				g_platform.total_cores);
+		exit(-1);
+	}
 
         hwloc_topology_destroy(topology);
     }
