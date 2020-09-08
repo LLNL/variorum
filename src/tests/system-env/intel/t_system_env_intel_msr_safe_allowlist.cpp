@@ -72,7 +72,7 @@ TEST(MsrAllowlist, Exists)
 {
     char *filename;
 
-#ifdef USE_MSR_SAFE_BEFORE_1_5_0 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
 #else
     asprintf(&filename, "/dev/cpu/msr_allowlist");
@@ -85,7 +85,7 @@ TEST(MsrAllowlist, Perms)
 {
     char *filename;
 
-#ifdef USE_MSR_SAFE_BEFORE_1_5_0 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
 #else
     asprintf(&filename, "/dev/cpu/msr_allowlist");
@@ -98,7 +98,7 @@ TEST(MsrAllowlist, Size)
 {
     char *filename;
 
-#ifdef USE_MSR_SAFE_BEFORE_1_5_0 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
 #else
     asprintf(&filename, "/dev/cpu/msr_allowlist");

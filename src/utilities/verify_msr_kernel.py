@@ -13,6 +13,7 @@ import sys
 import pathlib
 import getopt
 
+
 # check msr_safe kernel is loaded
 def check_msr_safe_kernel_loaded(verbose):
     if verbose:
@@ -62,7 +63,7 @@ def check_msr_safe_files_character_devices(verbose):
             ret = 1
 
     msr_safe_version = open("/sys/module/msr_safe/version").readline().strip()
-    if( version.parse( msr_safe_version ) < version.parse( "1.4" )):
+    if version.parse(msr_safe_version) < version.parse("1.4"):
         wl_file = "/dev/cpu/msr_whitelist"
     else:
         wl_file = "/dev/cpu/msr_allowlist"
@@ -135,7 +136,7 @@ def check_msr_safe_files_access(verbose):
             ret = 1
 
     msr_safe_version = open("/sys/module/msr_safe/version").readline().strip()
-    if( version.parse( msr_safe_version ) < version.parse( "1.4" )):
+    if version.parse(msr_safe_version) < version.parse("1.4"):
         wl_file = "/dev/cpu/msr_whitelist"
     else:
         wl_file = "/dev/cpu/msr_allowlist"
