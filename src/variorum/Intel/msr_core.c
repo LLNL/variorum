@@ -23,7 +23,6 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 
-
 static uint64_t devidx(int socket, int core, int thread)
 {
     int nsockets, ncores, nthreads;

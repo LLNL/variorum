@@ -7,9 +7,9 @@
 
 from __future__ import print_function
 from packaging import version
+
 import os
 import sys
-
 import pathlib
 import getopt
 
