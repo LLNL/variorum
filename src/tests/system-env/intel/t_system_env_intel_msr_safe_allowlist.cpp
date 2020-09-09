@@ -45,11 +45,11 @@ int check_other_permissions(const char *file)
     return EXIT_SUCCESS;
 }
 
-int whitelist_size(const char *file)
+int allowlist_size(const char *file)
 {
     std::ifstream infile(file);
     std::string line;
-    std::string tmp = "tmp_whitelist";
+    std::string tmp = "tmp_allowlist";
     std::ofstream outfile;
 
     outfile.open(tmp.c_str());
@@ -68,31 +68,43 @@ int whitelist_size(const char *file)
     return statbuf.st_size;
 }
 
-TEST(MsrWhitelist, Exists)
+TEST(MsrAllowlist, Exists)
 {
     char *filename;
 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
+#else
+    asprintf(&filename, "/dev/cpu/msr_allowlist");
+#endif
     EXPECT_EQ(0, is_file_exist(filename));
     free(filename);
 }
 
-TEST(MsrWhitelist, Perms)
+TEST(MsrAllowlist, Perms)
 {
     char *filename;
 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
+#else
+    asprintf(&filename, "/dev/cpu/msr_allowlist");
+#endif
     EXPECT_EQ(1, check_other_permissions(filename));
     free(filename);
 }
 
-TEST(MsrWhitelist, Size)
+TEST(MsrAllowlist, Size)
 {
     char *filename;
 
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     asprintf(&filename, "/dev/cpu/msr_whitelist");
-    /* Valid whitelist should not be empty */
-    EXPECT_NE(0, whitelist_size(filename));
+#else
+    asprintf(&filename, "/dev/cpu/msr_allowlist");
+#endif
+    /* Valid list should not be empty */
+    EXPECT_NE(0, allowlist_size(filename));
     free(filename);
 }
 

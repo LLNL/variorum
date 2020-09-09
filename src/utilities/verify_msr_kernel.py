@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
@@ -6,10 +6,10 @@
 # SPDX-License-Identifier: MIT
 
 from __future__ import print_function
+from packaging import version
 
 import os
 import sys
-
 import pathlib
 import getopt
 
@@ -62,7 +62,12 @@ def check_msr_safe_files_character_devices(verbose):
                 )
             ret = 1
 
-    wl_file = "/dev/cpu/msr_whitelist"
+    msr_safe_version = open("/sys/module/msr_safe/version").readline().strip()
+    if version.parse(msr_safe_version) < version.parse("1.4"):
+        wl_file = "/dev/cpu/msr_whitelist"
+    else:
+        wl_file = "/dev/cpu/msr_allowlist"
+
     p = pathlib.Path(wl_file)
     if p.is_char_device():
         if verbose:
@@ -130,7 +135,12 @@ def check_msr_safe_files_access(verbose):
                 )
             ret = 1
 
-    wl_file = "/dev/cpu/msr_whitelist"
+    msr_safe_version = open("/sys/module/msr_safe/version").readline().strip()
+    if version.parse(msr_safe_version) < version.parse("1.4"):
+        wl_file = "/dev/cpu/msr_whitelist"
+    else:
+        wl_file = "/dev/cpu/msr_allowlist"
+
     if os.access(wl_file, os.R_OK):
         if verbose:
             print(

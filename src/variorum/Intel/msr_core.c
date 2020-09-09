@@ -300,7 +300,11 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
         if (!(statbuf.st_mode & S_IRUSR) || !(statbuf.st_mode & S_IWUSR))
         {
             fprintf(stderr,
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
                     "Warning: <variorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n",
+#else
+                    "Warning: <variorum> Incorrect permissions on msr_allowlist: stat_module(): %s:%s::%d\n",
+#endif
                     getenv("HOSTNAME"), __FILE__, __LINE__);
             *kerneltype = 1;
             free(variorum_error_msg);
@@ -313,7 +317,11 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
     if (stat(filename, &statbuf))
     {
         fprintf(stderr,
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
                 "Warning: <variorum> Incorrect permissions on msr_whitelist: stat_module(): %s:%s::%d\n",
+#else
+                "Warning: <variorum> Incorrect permissions on msr_allowlist: stat_module(): %s:%s::%d\n",
+#endif
                 getenv("HOSTNAME"), __FILE__, __LINE__);
         if (*kerneltype)
         {
@@ -402,7 +410,11 @@ int init_msr(void)
     int nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
     snprintf(filename, FILENAME_SIZE, "/dev/cpu/msr_whitelist");
+#else
+    snprintf(filename, FILENAME_SIZE, "/dev/cpu/msr_allowlist");
+#endif
     stat_module(filename, &kerneltype, 0);
     /* Open the file descriptor for each device's msr interface. */
     for (dev_idx = 0; dev_idx < nthreads; dev_idx++)

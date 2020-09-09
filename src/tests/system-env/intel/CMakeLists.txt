@@ -5,7 +5,7 @@
 
 set(BASIC_TESTS
   t_system_env_intel_msr_safe_driver
-  t_system_env_intel_msr_safe_whitelist
+  t_system_env_intel_msr_safe_allowlist
 )
 
 set(UNIT_TEST_BASE_LIBS gtest_main gtest)

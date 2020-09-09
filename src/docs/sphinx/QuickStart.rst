@@ -29,7 +29,7 @@ Accessing Low-Level Registers
 
 To use Variorum on Intel platforms, the `msr-safe
 <https://github.com/llnl/msr-safe>`_ kernel driver must be loaded to enable
-user-level read and write of whitelisted MSRs.
+user-level read and write of allowed MSRs.
 
 Alternately, you can use Variorum as root with the stock MSR kernel driver
 loaded.
