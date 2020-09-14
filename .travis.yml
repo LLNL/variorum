@@ -20,7 +20,7 @@ jobs:
       # we want to test both static and shared, w/ and w/o docs.
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
@@ -38,11 +38,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
@@ -60,11 +61,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
@@ -80,11 +82,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
@@ -100,11 +103,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
@@ -122,11 +126,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
@@ -144,11 +149,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
@@ -164,11 +170,12 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - env:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
-        BUILD_TESTS=OFF
+        BUILD_TESTS=ON
         ENABLE_FORTRAN=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
@@ -184,6 +191,7 @@ jobs:
       - date
     script:
       - ./scripts/travis/build-and-install.sh
+      - ./scripts/travis/run-unit-tests.sh
 
   - stage: "verify install with example"
     env:

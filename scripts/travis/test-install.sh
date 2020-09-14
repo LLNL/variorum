@@ -2,9 +2,6 @@
 
 echo -e "PWD:" ${PWD}
 
-# unit tests
-env CTEST_OUTPUT_ON_FAILURE=1 make test
-
 # test install (using with cmake example)
 which cmake
 cmake --version
