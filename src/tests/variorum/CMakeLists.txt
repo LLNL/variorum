@@ -6,7 +6,7 @@
 set(BASIC_TESTS
     t_variorum_gpu_power_ratio
     t_variorum_monitoring
-    t_variorum_node_power_limit
+    t_variorum_best_effort_node_power_limit
     t_variorum_poll_data
     t_variorum_query_clock_speed
     t_variorum_query_counters

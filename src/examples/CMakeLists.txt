@@ -32,7 +32,7 @@ set(BASIC_EXAMPLES
     variorum-set-and-verify-node-power-limit-example
     variorum-cap-cpu-clock-speed-example
     variorum-set-gpu-power-ratio-example
-    variorum-set-node-power-limit-example
+    variorum-set-best-effort-node-power-limit-example
     variorum-set-socket-power-limits-example
     variorum-get-node-power-json-example
 )
