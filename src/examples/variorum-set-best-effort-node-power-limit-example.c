@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 
     if (argc == 1)
     {
-        printf("Please specify an input value in W for correctness.\n");
+        printf("Please specify an input value in Watts for correctness.\n");
         printf("Cannot set defaults due to architecture dependence.\n");
         return 0;
     }

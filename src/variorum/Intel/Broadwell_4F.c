@@ -445,7 +445,7 @@ int fm_06_4f_set_best_effort_node_power_limit(int node_limit)
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     // Adding this for portability and rounding down.
-    // Ideally line 437 should be okay as it is integer division and we have
+    // Ideally line 451 should be okay as it is integer division and we have
     // two sockets only.
 
     int remainder = node_limit % nsockets;
