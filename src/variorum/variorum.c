@@ -65,7 +65,8 @@ int variorum_poll_power(FILE *output)
     if (g_platform.variorum_poll_power == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -93,7 +94,8 @@ int variorum_monitoring(FILE *output)
     if (g_platform.variorum_monitoring == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -121,7 +123,8 @@ int variorum_print_power_limits(void)
     if (g_platform.variorum_dump_power_limits == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -149,7 +152,8 @@ int variorum_print_verbose_power_limits(void)
     if (g_platform.variorum_dump_power_limits == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -208,7 +212,7 @@ void variorum_print_topology(void)
     return;
 }
 
-int variorum_set_node_power_limit(int node_power_limit)
+int variorum_set_best_effort_node_power_limit(int node_power_limit)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -216,14 +220,15 @@ int variorum_set_node_power_limit(int node_power_limit)
     {
         return -1;
     }
-    if (g_platform.variorum_set_node_power_limit == NULL)
+    if (g_platform.variorum_set_best_effort_node_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_set_node_power_limit(node_power_limit);
+    err = g_platform.variorum_set_best_effort_node_power_limit(node_power_limit);
     if (err)
     {
         return -1;
@@ -248,7 +253,8 @@ int variorum_set_and_verify_node_power_limit(int node_power_limit)
     if (g_platform.variorum_set_and_verify_node_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -277,7 +283,8 @@ int variorum_set_gpu_power_ratio(int gpu_power_ratio)
     if (g_platform.variorum_set_gpu_power_ratio == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -305,7 +312,8 @@ int variorum_set_each_socket_power_limit(int socket_power_limit)
     if (g_platform.variorum_set_each_socket_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -333,7 +341,8 @@ int variorum_cap_each_core_frequency(int core_freq_mhz)
     if (g_platform.variorum_cap_each_core_frequency == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -361,7 +370,8 @@ int variorum_print_features(void)
     if (g_platform.variorum_print_features == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -389,7 +399,8 @@ int variorum_print_thermals(void)
     if (g_platform.variorum_dump_thermals == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -417,7 +428,8 @@ int variorum_print_verbose_thermals(void)
     if (g_platform.variorum_dump_thermals == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -445,7 +457,8 @@ int variorum_print_counters(void)
     if (g_platform.variorum_dump_counters == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -473,7 +486,8 @@ int variorum_print_verbose_counters(void)
     if (g_platform.variorum_dump_counters == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -501,7 +515,8 @@ int variorum_print_clock_speed(void)
     if (g_platform.variorum_dump_clocks == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -529,7 +544,8 @@ int variorum_print_verbose_clock_speed(void)
     if (g_platform.variorum_dump_clocks == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -557,7 +573,8 @@ int variorum_print_power(void)
     if (g_platform.variorum_dump_power == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -585,7 +602,8 @@ int variorum_print_verbose_power(void)
     if (g_platform.variorum_dump_power == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -640,7 +658,8 @@ int variorum_print_turbo(void)
     if (g_platform.variorum_dump_turbo == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -669,7 +688,8 @@ int variorum_print_gpu_utilization(void)
     if (g_platform.variorum_dump_gpu_utilization == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -697,7 +717,8 @@ int variorum_print_verbose_gpu_utilization(void)
     if (g_platform.variorum_dump_gpu_utilization == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -725,7 +746,8 @@ int variorum_enable_turbo(void)
     if (g_platform.variorum_enable_turbo == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -753,7 +775,8 @@ int variorum_disable_turbo(void)
     if (g_platform.variorum_disable_turbo == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }
@@ -781,7 +804,8 @@ int variorum_get_node_power_json(json_t *get_power_obj)
     if (g_platform.variorum_get_node_power_json == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
         return 0;
     }

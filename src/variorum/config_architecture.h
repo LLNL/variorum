@@ -33,8 +33,9 @@ enum ctl_domains_e
     SOCKET,
     NODE,
     TILE,
-    UNIQUE, // Each processor core has a separate MSR, or a bit field in an MSR governs only a core independently.
-    SHARED // MSR or bit field in an MSR governs the operation of both processor cores.
+    UNIQUE, // Each processor core has a separate MSR,
+    // or a bit field in an MSR governs only a core independently.
+    SHARED // MSR or bit field that governs the operation of both processor cores.
 };
 
 /// @brief List of Intel family and models.
@@ -99,20 +100,23 @@ struct platform
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
-    int (*variorum_set_node_power_limit)(int node_power_limit);
+    int (*variorum_set_best_effort_node_power_limit)(int node_power_limit);
 
-    /// @brief Function pointer to set a power limit to each node and then verify that the cap was set correctly.
+    /// @brief Function pointer to set a power limit to each node and then
+    //  verify that the cap was set correctly.
     ///
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
     int (*variorum_set_and_verify_node_power_limit)(int node_power_limit);
 
-    /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
+    /// @brief Set the GPU power shifting ratio (uniform across sockets).
     ///
-    /// @param [in] gpu_power_ratio Desired power ratio (percentage) for the processor and GPU.
+    /// @param [in] gpu_power_ratio Desired power ratio (percent) for the
+    //  processor and GPU.
     ///
-    /// @note Only valid on IBM P9 systems for now. Same ratio will be set on both sockets.
+    /// @note Only valid on IBM P9 systems for now.
+    //  Same ratio will be set on both sockets.
     ///
     /// @return Error code.
     int (*variorum_set_gpu_power_ratio)(int gpu_power_ratio);

@@ -41,15 +41,17 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     err = variorum_detect_arch();
     if (err)
     {
-        variorum_error_handler("Cannot detect architecture", err, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Cannot detect architecture", err,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
         return err;
     }
     err = variorum_set_func_ptrs();
     if (err)
     {
-        variorum_error_handler("Cannot set function pointers", err, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
+        variorum_error_handler("Cannot set function pointers", err,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
         return err;
     }
     return err;
@@ -114,7 +116,8 @@ int variorum_detect_arch(void)
         g_platform.nvidia_arch  == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
         return VARIORUM_ERROR_UNSUPPORTED_ARCH;
     }
 
@@ -201,7 +204,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
 void variorum_init_func_ptrs()
 {
     g_platform.variorum_dump_power_limits = NULL;
-    g_platform.variorum_set_node_power_limit = NULL;
+    g_platform.variorum_set_best_effort_node_power_limit = NULL;
     g_platform.variorum_set_and_verify_node_power_limit = NULL;
     g_platform.variorum_set_gpu_power_ratio = NULL;
     g_platform.variorum_set_each_socket_power_limit = NULL;

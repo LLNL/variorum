@@ -142,7 +142,8 @@ int fm_06_4f_set_power_limits(int package_power_limit)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        set_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
+        set_package_power_limit(socket, package_power_limit,
+                                msrs.msr_pkg_power_limit,
                                 msrs.msr_rapl_power_unit);
     }
     return 0;
@@ -264,12 +265,14 @@ int fm_06_4f_get_thermals(int long_ver)
     if (long_ver == 0)
     {
         dump_therm_temp_reading(stdout, msrs.ia32_therm_status,
-                                msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+                                msrs.ia32_package_therm_status,
+                                msrs.msr_temperature_target);
     }
     else if (long_ver == 1)
     {
         print_therm_temp_reading(stdout, msrs.ia32_therm_status,
-                                 msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+                                 msrs.ia32_package_therm_status,
+                                 msrs.msr_temperature_target);
     }
     return 0;
 }
@@ -283,16 +286,22 @@ int fm_06_4f_get_counters(int long_ver)
     if (long_ver == 0)
     {
         dump_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                              msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
-                              msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
-                              msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+                              msrs.ia32_perf_global_ctrl,
+                              msrs.ia32_fixed_ctr_ctrl,
+                              msrs.ia32_perfevtsel_counters,
+                              msrs.ia32_perfmon_counters,
+                              msrs.msrs_pcu_pmon_evtsel,
+                              msrs.ia32_perfevtsel_counters);
     }
     else if (long_ver == 1)
     {
         print_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                               msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
-                               msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
-                               msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+                               msrs.ia32_perf_global_ctrl,
+                               msrs.ia32_fixed_ctr_ctrl,
+                               msrs.ia32_perfevtsel_counters,
+                               msrs.ia32_perfmon_counters,
+                               msrs.msrs_pcu_pmon_evtsel,
+                               msrs.ia32_perfevtsel_counters);
     }
     return 0;
 }
@@ -306,14 +315,14 @@ int fm_06_4f_get_clocks(int long_ver)
     if (long_ver == 0)
     {
         dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
-                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                         CORE);
+                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status,
+                         msrs.msr_platform_info, CORE);
     }
     else if (long_ver == 1)
     {
         print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
-                          msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                          CORE);
+                          msrs.ia32_time_stamp_counter, msrs.ia32_perf_status,
+                          msrs.msr_platform_info, CORE);
     }
     return 0;
 }
@@ -326,13 +335,15 @@ int fm_06_4f_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
-                        msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        dump_power_data(stdout, msrs.msr_pkg_power_limit,
+                        msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                        msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
-                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_power_data(stdout, msrs.msr_pkg_power_limit,
+                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status);
     }
     return 0;
 }
@@ -379,9 +390,9 @@ int fm_06_4f_poll_power(FILE *output)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    get_all_power_data(output, msrs.msr_pkg_power_limit, msrs.msr_dram_power_limit,
-                       msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
-                       msrs.msr_dram_energy_status);
+    get_all_power_data(output, msrs.msr_pkg_power_limit,
+                       msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit,
+                       msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     return 0;
 }
 
@@ -392,9 +403,13 @@ int fm_06_4f_monitoring(FILE *output)
 #endif
 
     get_all_power_data_fixed(output, msrs.msr_pkg_power_limit,
-                             msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
-                             msrs.msr_dram_energy_status, msrs.ia32_fixed_counters,
-                             msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf,
+                             msrs.msr_dram_power_limit,
+                             msrs.msr_rapl_power_unit,
+                             msrs.msr_pkg_energy_status,
+                             msrs.msr_dram_energy_status,
+                             msrs.ia32_fixed_counters,
+                             msrs.ia32_perf_global_ctrl,
+                             msrs.ia32_fixed_ctr_ctrl, msrs.ia32_aperf,
                              msrs.ia32_mperf, msrs.ia32_time_stamp_counter);
     return 0;
 }
@@ -411,3 +426,35 @@ int fm_06_4f_get_node_power_json(json_t *get_power_obj)
 
     return 0;
 }
+
+int fm_06_4f_set_best_effort_node_power_limit(int node_limit)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    /* We make an assumption here to uniformly distribute the specified
+     * power to both sockets as socket-level power caps. We are not accounting
+     * for memory power or uncore power at the moment. We will develop a model
+     * for this in the future.
+     * When an odd number value is provided, we want this to result in
+     * the floor of the value being taken. So while we will be off by 1W total,
+     * we will guarantee that we stay under the specified cap. */
+
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
+
+    // Adding this for portability and rounding down.
+    // Ideally line 451 should be okay as it is integer division and we have
+    // two sockets only.
+
+    int remainder = node_limit % nsockets;
+    node_limit = (remainder == 0) ? node_limit : (node_limit - remainder);
+
+    int pkg_limit = node_limit / nsockets;
+
+    fm_06_4f_set_power_limits(pkg_limit);
+
+    return 0;
+}
+
