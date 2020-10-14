@@ -22,13 +22,19 @@ message(STATUS "CMake build tool name: ${CMAKE_BUILD_TOOL}")
 
 ### Enable warnings
 macro(ENABLE_WARNINGS)
-    add_definitions(-Wall -Wextra)
+    add_definitions(-Wall -Wextra -Werror)
 endmacro()
+
+if(ENABLE_WARNINGS)
+    message(STATUS "Building with warnings (ENABLE_WARNINGS == ON)")
+else()
+    message(STATUS "Building without warnings (ENABLE_WARNINGS == OFF)")
+endif()
 
 #######################
 # Msr-Safe Dependency #
 #######################
-if (USE_MSR_SAFE_BEFORE_1_5_0)
+if(USE_MSR_SAFE_BEFORE_1_5_0)
     message(STATUS "Building for msr-safe before v1.5.0 (USE_MSR_SAFE_BEFORE_1_5_0 == ON)")
 else()
     message(STATUS "Building for msr-safe v1.5.0 and beyond (USE_MSR_SAFE_BEFORE_1_5_0 == OFF)")

@@ -7,6 +7,7 @@ env:
   - COMPILER_CC=gcc
   - COMPILER_CXX=g++
   - COMPILER_FC=gfortran
+  - ENABLE_WARNINGS=ON
 
 include:
   - os: linux

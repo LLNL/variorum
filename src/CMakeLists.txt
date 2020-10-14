@@ -17,6 +17,7 @@ option(BUILD_DOCS                "Build documentation"          ON)
 option(BUILD_TESTS               "Build tests"                  ON)
 
 option(ENABLE_FORTRAN            "Build Fortran support"        ON)
+option(ENABLE_WARNINGS           "Enable warnings"              OFF)
 
 option(VARIORUM_WITH_INTEL       "Support Intel architectures"  ON)
 option(VARIORUM_WITH_AMD         "Support AMD architectures"    OFF)
@@ -56,11 +57,15 @@ if(BUILD_DOCS)
     add_subdirectory(docs)
 endif()
 
+### Enable warnings
+if(ENABLE_WARNINGS)
+    ENABLE_WARNINGS()
+endif()
+
 ### Add our libs
 add_subdirectory(variorum)
 
 ### Invoke CMake Fortran setup
-### if ENABLE_FORTRAN == ON
 if(ENABLE_FORTRAN)
     enable_language(Fortran)
 endif()
