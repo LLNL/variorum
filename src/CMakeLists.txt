@@ -10,24 +10,30 @@ project(variorum VERSION "0.3.0" LANGUAGES C CXX)
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-option(BUILD_SHARED_LIBS    "Build shared libraries"       ON)
-option(BUILD_DOCS           "Build documentation"          ON)
-option(BUILD_TESTS          "Build tests"                  ON)
+option(USE_MSR_SAFE_BEFORE_1_5_0 "Use msr-safe before v1.5.0"   ON)
 
-option(ENABLE_FORTRAN       "Build Fortran support"        ON)
+option(BUILD_SHARED_LIBS         "Build shared libraries"       ON)
+option(BUILD_DOCS                "Build documentation"          ON)
+option(BUILD_TESTS               "Build tests"                  ON)
 
-option(VARIORUM_WITH_INTEL  "Support Intel architectures"  ON)
-option(VARIORUM_WITH_AMD    "Support AMD architectures"    OFF)
-option(VARIORUM_WITH_IBM    "Support IBM architectures"    OFF)
-option(VARIORUM_WITH_NVIDIA "Support Nvidia architectures" OFF)
-option(VARIORUM_DEBUG       "Enable debug statements"      OFF)
-option(VARIORUM_LOG         "Enable logging statements"    ON)
+option(ENABLE_FORTRAN            "Build Fortran support"        ON)
+
+option(VARIORUM_WITH_INTEL       "Support Intel architectures"  ON)
+option(VARIORUM_WITH_AMD         "Support AMD architectures"    OFF)
+option(VARIORUM_WITH_IBM         "Support IBM architectures"    OFF)
+option(VARIORUM_WITH_NVIDIA      "Support Nvidia architectures" OFF)
+option(VARIORUM_DEBUG            "Enable debug statements"      OFF)
+option(VARIORUM_LOG              "Enable logging statements"    ON)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
 
 if(ENABLE_FORTRAN)
     enable_language(Fortran)
+endif()
+
+if(USE_MSR_SAFE_BEFORE_1_5_0)
+    add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
 endif()
 
 include(CMake/CMakeBasics.cmake)
