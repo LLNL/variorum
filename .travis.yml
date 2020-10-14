@@ -22,7 +22,10 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=ON
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -44,7 +47,10 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -66,7 +72,10 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=ON
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -86,7 +95,10 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=OFF
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -106,7 +118,10 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=OFF
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -128,7 +143,10 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=ON
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=ON
         VARIORUM_LOG=OFF
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -150,7 +168,10 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=ON
         VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
@@ -170,8 +191,34 @@ jobs:
       - BUILD_SHARED_LIBS=OFF
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Debug
+        ENABLE_WARNINGS=ON
         ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=OFF
         VARIORUM_LOG=OFF
+        VARIORUM_WITH_INTEL=ON
+        VARIORUM_WITH_IBM=OFF
+        VARIORUM_WITH_NVIDIA=OFF
+        VARIORUM_WITH_AMD=OFF
+    compiler: gcc
+    install:
+      # none
+    before_script:
+      - date
+    after_script:
+      - date
+    script:
+      - ./scripts/travis/build-and-install.sh
+
+  - env:
+      - BUILD_SHARED_LIBS=ON
+        BUILD_DOCS=ON
+        BUILD_TESTS=ON
+        CMAKE_BUILD_TYPE=Release
+        ENABLE_WARNINGS=ON
+        ENABLE_FORTRAN=OFF
+        VARIORUM_DEBUG=OFF
+        VARIORUM_LOG=ON
         VARIORUM_WITH_INTEL=ON
         VARIORUM_WITH_IBM=OFF
         VARIORUM_WITH_NVIDIA=OFF
@@ -192,6 +239,8 @@ jobs:
       - BUILD_SHARED_LIBS=ON
         BUILD_DOCS=OFF
         BUILD_TESTS=OFF
+        CMAKE_BUILD_TYPE=Release
+        VARIORUM_DEBUG=OFF
         VARIORUM_LOG=OFF
         ENABLE_FORTRAN=ON
         VARIORUM_WITH_INTEL=ON
