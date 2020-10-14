@@ -25,6 +25,15 @@ macro(ENABLE_WARNINGS)
     add_definitions(-Wall -Wextra)
 endmacro()
 
+#######################
+# Msr-Safe Dependency #
+#######################
+if (USE_MSR_SAFE_BEFORE_1_5_0)
+    message(STATUS "Building for msr-safe before v1.5.0 (USE_MSR_SAFE_BEFORE_1_5_0 == ON)")
+else()
+    message(STATUS "Building for msr-safe v1.5.0 and beyond (USE_MSR_SAFE_BEFORE_1_5_0 == OFF)")
+endif()
+
 ##########################
 # Platform Architectures #
 ##########################
@@ -53,14 +62,14 @@ endif()
 # DEBUGGING #
 #############
 if (VARIORUM_DEBUG)
-    message(STATUS "Building with debug statements (VARIORUM_DEBUG = ON)")
+    message(STATUS "Building with debug statements (VARIORUM_DEBUG == ON)")
 else()
-    message(STATUS "Building without debug statements (VARIORUM_DEBUG = OFF)")
+    message(STATUS "Building without debug statements (VARIORUM_DEBUG == OFF)")
 endif()
 if (VARIORUM_LOG)
-    message(STATUS "Building with logging statements (VARIORUM_LOG = ON)")
+    message(STATUS "Building with logging statements (VARIORUM_LOG == ON)")
 else()
-    message(STATUS "Building without logging statements (VARIORUM_LOG = OFF)")
+    message(STATUS "Building without logging statements (VARIORUM_LOG == OFF)")
 endif()
 
 #################

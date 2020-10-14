@@ -12,8 +12,10 @@ set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc/gcc-4.9.3/bin/g++" CACHE PATH "")
 # fortran compiler
 set(CMAKE_Fortran_COMPILER  "/usr/tce/packages/gcc/gcc-4.9.3/bin/gfortran" CACHE PATH "")
 
+set(USE_MSR_SAFE_BEFORE_1_5_0 ON CACHE BOOL "")
+
 set(BUILD_DOCS ON CACHE BOOL "")
-set(BUILD_TESTS ON CACHE BOOL "")
+set(BUILD_TESTS OFF CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA OFF CACHE BOOL "")
