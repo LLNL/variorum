@@ -55,6 +55,9 @@ void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
         case VARIORUM_ERROR_FEATURE_NOT_AVAILABLE:
             strncpy(msg, "_ERROR_VARIORUM_FEATURE_NOT_AVAILABLE", size);
             break;
+        case VARIORUM_ERROR_FUNCTION:
+            strncpy(msg, "_ERROR_VARIORUM_FUNCTION", size);
+            break;
         default:
             strncpy(msg, "Unknown variorum error code.", size);
             break;

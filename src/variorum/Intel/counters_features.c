@@ -44,7 +44,7 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
 {
     static struct fixed_counter c0, c1, c2;
     static int init = 0;
-    static int nthreads;
+    static unsigned nthreads;
 
     if (!init)
     {
@@ -74,7 +74,7 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
 
 void init_fixed_counter(struct fixed_counter *ctr)
 {
-    int nthreads = 0;
+    unsigned nthreads = 0;
     variorum_get_topology(NULL, NULL, &nthreads);
 
     ctr->enable = (uint64_t *) malloc(nthreads * sizeof(uint64_t));
@@ -91,8 +91,8 @@ void init_fixed_counter(struct fixed_counter *ctr)
 void enable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 {
     struct fixed_counter *c0, *c1, *c2;
-    int i;
-    int nthreads = 0;
+    unsigned i;
+    unsigned nthreads = 0;
 
     variorum_get_topology(NULL, NULL, &nthreads);
     fixed_counter_storage(&c0, &c1, &c2, msrs_fixed_ctrs);
@@ -110,8 +110,8 @@ void enable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 void disable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 {
     struct fixed_counter *c0, *c1, *c2;
-    int i;
-    int nthreads = 0;
+    unsigned i;
+    unsigned nthreads = 0;
 
     variorum_get_topology(NULL, NULL, &nthreads);
     fixed_counter_storage(&c0, &c1, &c2, msrs_fixed_ctrs);
@@ -132,8 +132,8 @@ void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
     static uint64_t **perf_global_ctrl = NULL;
     static uint64_t **fixed_ctr_ctrl = NULL;
     static int init = 0;
-    int i;
-    int nthreads = 0;
+    unsigned i;
+    unsigned nthreads = 0;
 
     if (!init)
     {
@@ -188,7 +188,7 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
 {
     static uint64_t **perf_global_ctrl = NULL;
     static uint64_t **fixed_ctr_ctrl = NULL;
-    static int nthreads = 0;
+    static unsigned nthreads = 0;
     static int init = 0;
 
     if (!init)
@@ -214,35 +214,30 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
 }
 
 void dump_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
-                           off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl,
                            off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs,
                            off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 {
-    dump_fixed_counter_data(writedest, msrs_fixed_ctrs, msr_perf_global_ctrl,
-                            msr_fixed_counter_ctrl);
+    dump_fixed_counter_data(writedest, msrs_fixed_ctrs);
     dump_perfmon_counter_data(writedest, msrs_perfevtsel_ctrs, msrs_perfmon_ctrs);
     dump_unc_counter_data(writedest, msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
 }
 
 void print_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
-                            off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl,
                             off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs,
                             off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 {
-    print_fixed_counter_data(writedest, msrs_fixed_ctrs, msr_perf_global_ctrl,
-                             msr_fixed_counter_ctrl);
+    print_fixed_counter_data(writedest, msrs_fixed_ctrs);
     print_perfmon_counter_data(writedest, msrs_perfevtsel_ctrs, msrs_perfmon_ctrs);
     print_unc_counter_data(writedest, msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
 }
 
-void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
-                             off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl)
+void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
-    int i;
+    unsigned i;
     char hostname[1024];
-    int nthreads = 0;
+    unsigned nthreads = 0;
 
     if (!init)
     {
@@ -267,9 +262,9 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 {
     static struct pmc *p = NULL;
     static int init = 0;
-    int i;
+    unsigned i;
     char hostname[1024];
-    int nthreads;
+    unsigned nthreads;
     int avail = 0;
 
     gethostname(hostname, 1024);
@@ -367,14 +362,13 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
     }
 }
 
-void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
-                              off_t msr_perf_global_ctrl, off_t msr_fixed_counter_ctrl)
+void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
-    int i;
+    unsigned i;
     char hostname[1024];
-    int nthreads = 0;
+    unsigned nthreads = 0;
 
     if (!init)
     {
@@ -398,9 +392,9 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 {
     static struct pmc *p = NULL;
     static int init = 0;
-    int i;
+    unsigned i;
     char hostname[1024];
-    int nthreads;
+    unsigned nthreads;
     int avail = 0;
 
     gethostname(hostname, 1024);
@@ -481,7 +475,7 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 /// counters is less than 1.
 static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
 {
-    int nthreads = 0;
+    unsigned nthreads = 0;
     int avail = cpuid_num_pmc();
 
     variorum_get_topology(NULL, NULL, &nthreads);
@@ -542,7 +536,7 @@ static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
 /// counters is less than 1.
 static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
 {
-    int nthreads;
+    unsigned nthreads;
     int avail = cpuid_num_pmc();
 
     variorum_get_topology(NULL, NULL, &nthreads);
@@ -596,8 +590,8 @@ static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
 void set_all_pmc_ctrl(uint64_t cmask, uint64_t flags, uint64_t umask,
                       uint64_t eventsel, int pmcnum, off_t *msrs_perfevtsel_ctrs)
 {
-    int nthreads;
-    int i;
+    unsigned nthreads;
+    unsigned i;
 
     variorum_get_topology(NULL, NULL, &nthreads);
     for (i = 0; i < nthreads; i++)
@@ -712,9 +706,9 @@ void pmc_storage(struct pmc **p, off_t *msrs_perfmon_ctrs)
 void clear_all_pmc(off_t *msrs_perfmon_ctrs)
 {
     static struct pmc *p = NULL;
-    static int nthreads = 0;
+    static unsigned nthreads = 0;
     static int avail = 0;
-    int i;
+    unsigned i;
 
     if (p == NULL)
     {
@@ -760,7 +754,7 @@ static void init_unc_perfevtsel(struct unc_perfevtsel *uevt,
                                 off_t *msrs_pcu_pmon_evtsel)
 {
     static int init = 0;
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -789,7 +783,7 @@ static void init_unc_counters(struct unc_counters *uc,
                               off_t *msrs_pcu_pmon_ctrs)
 {
     static int init = 0;
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
@@ -852,8 +846,8 @@ void enable_pcu(off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs)
 {
     static struct unc_counters *uc = NULL;
-    int nsockets = 0;
-    int i;
+    unsigned nsockets = 0;
+    unsigned i;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (uc == NULL)
@@ -875,8 +869,8 @@ void dump_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
 {
     static int init = 0;
     struct unc_counters *uc;
-    int i;
-    int nsockets;
+    unsigned i;
+    unsigned nsockets;
     char hostname[1024];
 
     variorum_get_topology(&nsockets, NULL, NULL);
@@ -900,8 +894,8 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
                             off_t *msrs_pcu_pmon_ctrs)
 {
     struct unc_counters *uc;
-    int i;
-    int nsockets;
+    unsigned i;
+    unsigned nsockets;
     char hostname[1024];
 
     variorum_get_topology(&nsockets, NULL, NULL);
@@ -930,9 +924,9 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     static struct fixed_counter *c0, *c1, *c2;
     static struct clocks_data *cd;
     static int init_get_power_data = 0;
-    static int nsockets, nthreads;
+    static unsigned nsockets, nthreads;
     char hostname[1024];
-    int i;
+    unsigned i;
     int rlim_idx = 0;
 
     variorum_get_topology(&nsockets, NULL, &nthreads);

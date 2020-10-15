@@ -33,8 +33,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
 
 int get_avx_limits(off_t *msr_platform_info,
                    off_t *msr_config_tdp_l1,
-                   off_t *msr_config_tdp_l2,
-                   off_t *msr_config_tdp_nominal);
+                   off_t *msr_config_tdp_l2);
 
 int config_tdp(int nlevels,
                off_t msr_config_tdp_level);

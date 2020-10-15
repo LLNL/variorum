@@ -39,6 +39,12 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
+    if (argc > 1)
+    {
+        printf("Fatal Error: No argument needed.\n");
+        return 1;
+    }
+
     gethostname(hostname, 1024);
     ret = asprintf(&fname, "%s.powmon.dat", hostname);
     if (ret < 0)

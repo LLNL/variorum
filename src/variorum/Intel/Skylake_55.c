@@ -67,8 +67,8 @@ static struct skylake_55_offsets msrs =
 
 int fm_06_55_get_power_limits(int long_ver)
 {
-    int socket;
-    int nsockets, ncores, nthreads;
+    unsigned socket;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
 #ifdef VARIORUM_LOG
@@ -115,8 +115,8 @@ int fm_06_55_get_power_limits(int long_ver)
 
 int fm_06_55_set_power_limits(int package_power_limit)
 {
-    int socket;
-    int nsockets, ncores, nthreads;
+    unsigned socket;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
 #ifdef VARIORUM_LOG
@@ -257,14 +257,12 @@ int fm_06_55_get_counters(int long_ver)
     if (long_ver == 0)
     {
         dump_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                              msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
                               msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
                               msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     else if (long_ver == 1)
     {
         print_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                               msrs.ia32_perf_global_ctrl, msrs.ia32_fixed_ctr_ctrl,
                                msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
                                msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
@@ -300,12 +298,12 @@ int fm_06_55_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
+        dump_power_data(stdout, msrs.msr_rapl_power_unit,
                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_power_data(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit,
+        print_power_data(stdout, msrs.msr_rapl_power_unit,
                          msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     return 0;
@@ -339,14 +337,14 @@ int fm_06_55_monitoring(FILE *output)
 
 int fm_06_55_set_frequency(int core_freq_mhz)
 {
-    int nsockets, ncores, nthreads;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    set_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status, msrs.ia32_perf_ctl);
+    set_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status);
     return 0;
 }
 
@@ -358,7 +356,6 @@ int fm_06_55_get_frequencies(void)
 
     get_available_frequencies_skx(stdout, &msrs.msr_platform_info,
                                   &msrs.msr_turbo_ratio_limit, &msrs.msr_turbo_ratio_limit_cores,
-                                  &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2,
-                                  &msrs.msr_config_tdp_nominal);
+                                  &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2);
     return 0;
 }

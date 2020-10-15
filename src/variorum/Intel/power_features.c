@@ -25,7 +25,7 @@ static int translate(const unsigned socket, uint64_t *bits, double *units,
     static struct rapl_units *ru = NULL;
     uint64_t timeval_z = 0;
     uint64_t timeval_y = 0;
-    static int nsockets;
+    static unsigned nsockets;
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "DEBUG: (translate) bits are at %p\n", bits);
@@ -185,7 +185,7 @@ static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit,
     uint64_t seconds_bits = 0;
     int ret = 0;
 
-    sockets_assert(&socket, __LINE__, __FILE__);
+    sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "%s %s::%d DEBUG: (calc_rapl_from_bits)\n", getenv("HOSTNAME"),
@@ -290,7 +290,7 @@ static int calc_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
 static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
-    int nsockets;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
 
     allocate_batch(RAPL_DATA, 2UL * nsockets);
@@ -328,8 +328,8 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
 {
     static int init_get_rapl_power_unit = 0;
     static uint64_t **val = NULL;
-    static int nsockets, ncores, nthreads;
-    int i;
+    static unsigned nsockets, ncores, nthreads;
+    unsigned i;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     if (!init_get_rapl_power_unit)
@@ -391,10 +391,10 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
 
 void dump_rapl_power_unit(FILE *writedest, off_t msr)
 {
-    int socket;
+    unsigned socket;
     struct rapl_units *ru;
     char hostname[1024];
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
@@ -415,10 +415,10 @@ void dump_rapl_power_unit(FILE *writedest, off_t msr)
 
 void print_rapl_power_unit(FILE *writedest, off_t msr)
 {
-    int socket;
+    unsigned socket;
     struct rapl_units *ru;
     char hostname[1024];
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
@@ -481,7 +481,7 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit,
     struct rapl_limit l1, l2;
     static int init_dump_package_power_limit = 0;
     char hostname[1024];
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
@@ -507,7 +507,7 @@ void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     struct rapl_limit l1;
     static int init_dump_dram_power_limit = 0;
     char hostname[1024];
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
@@ -603,7 +603,7 @@ int set_package_power_limit(const unsigned socket, int package_power_limit,
     limit1->bits = 0;
     limit1->translate_bits = 0;
 
-    sockets_assert(&socket, __LINE__, __FILE__);
+    sockets_assert(&socket);
 
     /* If there is only one limit, grab the other existing one. */
     if (limit1 == NULL)
@@ -656,7 +656,7 @@ int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
 {
     uint64_t val = 0;
 
-    sockets_assert(&socket, __LINE__, __FILE__);
+    sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_power_info)\n", getenv("HOSTNAME"),
@@ -682,7 +682,7 @@ int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
 int rapl_storage(struct rapl_data **data)
 {
     static struct rapl_data *rapl = NULL;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static int init = 0;
 
     if (!init)
@@ -715,12 +715,12 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
               off_t msr_dram_energy_status)
 {
     static struct rapl_data *rapl = NULL;
-    int nsockets;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%lu\n", getenv("HOSTNAME"),
+    fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%u\n", getenv("HOSTNAME"),
             __FILE__, __LINE__, nsockets);
 #endif
 
@@ -750,9 +750,9 @@ int delta_rapl_data(off_t msr_rapl_unit)
     /* The energy status register holds 32 bits, this is max unsigned int. */
     static double max_joules = UINT_MAX;
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static struct rapl_data *rapl;
-    int i = 0;
+    unsigned i = 0;
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "%s %s::%d DEBUG: (delta_rapl_data)\n", getenv("HOSTNAME"),
@@ -833,16 +833,16 @@ int delta_rapl_data(off_t msr_rapl_unit)
     return 0;
 }
 
-void print_power_data(FILE *writedest, off_t msr_power_limit,
+void print_power_data(FILE *writedest, 
                       off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
     static struct timeval start;
-    int nsockets = 0;
+    unsigned nsockets = 0;
     struct timeval now;
     char hostname[1024];
-    int i;
+    unsigned i;
 
     gethostname(hostname, 1024);
     variorum_get_topology(&nsockets, NULL, NULL);
@@ -859,8 +859,8 @@ void print_power_data(FILE *writedest, off_t msr_power_limit,
     for (i = 0; i < nsockets; i++)
     {
 #ifdef VARIORUM_DEBUG
-        fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4lf\n", i,
-                *rapl->pkg_bits[i], rapl->pkg_joules[i]);
+        fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4f\n", i,
+                *rapl->pkg_bits[i], i, rapl->pkg_joules[i]);
 #endif
         fprintf(writedest,
                 "_PACKAGE_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
@@ -875,16 +875,16 @@ void print_power_data(FILE *writedest, off_t msr_power_limit,
     }
 }
 
-void dump_power_data(FILE *writedest, off_t msr_power_limit,
+void dump_power_data(FILE *writedest,
                      off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
     static struct timeval start;
-    int nsockets = 0;
+    unsigned nsockets = 0;
     struct timeval now;
     char hostname[1024];
-    int i;
+    unsigned i;
 
     gethostname(hostname, 1024);
     variorum_get_topology(&nsockets, NULL, NULL);
@@ -929,13 +929,13 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
     static int init = 0;
     static struct rapl_data *rapl = NULL;
     struct rapl_limit l1, l2;
-    int nsockets = 0;
+    unsigned nsockets = 0;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
     static size_t sockID_len = 11; // large enough to avoid format truncation
     char sockID[sockID_len + 1];
-    int i;
+    unsigned i;
     double node_power = 0.0;
 
     gethostname(hostname, 1024);
@@ -1042,8 +1042,8 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
-    static int nsockets = 0;
-    int i;
+    static unsigned nsockets = 0;
+    unsigned i;
 
     if (!init)
     {
@@ -1065,7 +1065,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
         }
     }
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (read_rapl_data): socket=%lu at address %p\n",
+    fprintf(stderr, "%s %s::%d DEBUG: (read_rapl_data): socket=%u at address %p\n",
             getenv("HOSTNAME"), __FILE__, __LINE__, nsockets, rapl);
 #endif
     /* Move current variables to "old" variables. */
@@ -1086,7 +1086,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
         for (i = 0; i < nsockets; i++)
         {
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "DEBUG: socket %lu msr 0x611 has destination %p\n", nsockets,
+            fprintf(stderr, "DEBUG: socket %u msr 0x611 has destination %p\n", nsockets,
                     rapl->pkg_bits);
 #endif
             rapl->old_pkg_bits[i] = *rapl->pkg_bits[i];
@@ -1149,9 +1149,9 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     //static struct rapl_limit rlim[6];
     static struct rapl_data *rapl = NULL;
     static int init_get_power_data = 0;
-    static int nsockets;
+    static unsigned nsockets;
     char hostname[1024];
-    int i;
+    unsigned i;
     int rlim_idx = 0;
 
     variorum_get_topology(&nsockets, NULL, NULL);

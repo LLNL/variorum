@@ -23,7 +23,7 @@ static inline double do_work(int input)
 }
 #endif
 
-int main(int argc, char **argv)
+int main(void)
 {
     int ret;
     json_t *my_power_obj = NULL;

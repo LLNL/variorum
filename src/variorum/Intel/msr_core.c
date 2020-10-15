@@ -6,8 +6,6 @@
 // Necessary for pread & pwrite.
 #define _XOPEN_SOURCE 500
 
-#define USE_MSR_SAFE_BEFORE_1_5_0
-
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/ioctl.h>
@@ -25,9 +23,9 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 
-static uint64_t devidx(int socket, int core, int thread)
+static uint64_t devidx(unsigned socket, unsigned core, unsigned thread)
 {
-    int nsockets, ncores, nthreads;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     return (thread * nsockets * (ncores / nsockets)) + (socket * ncores / nsockets)
            + core;
@@ -39,14 +37,14 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
     static struct msr_batch_array *batch = NULL;
     static unsigned arrsize = 1;
     static unsigned *size = NULL;
-    int i;
+    unsigned i;
 
     if (batch == NULL)
     {
 #ifdef BATCH_DEBUG
         fprintf(stderr, "BATCH: initializing batch ops\n");
 #endif
-        arrsize = (batchnum + 1 > arrsize ? batchnum + 1 : arrsize);
+        arrsize = (batchnum + 1 > (int)arrsize ? batchnum + 1 : (int)arrsize);
         //        printf("QQQ arrsize %d\n", arrsize);
         batch = (struct msr_batch_array *) calloc(arrsize,
                 sizeof(struct msr_batch_array));
@@ -58,7 +56,7 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
             batch[i].numops = 0;
         }
     }
-    else if (batchnum + 1 > arrsize)
+    else if (batchnum + 1 > (int)arrsize)
     {
 #ifdef BATCH_DEBUG
         fprintf(stderr, "BATCH: reallocating array of batches for batch %d\n",
@@ -102,7 +100,7 @@ static int compatibility_batch(int batchnum, int type)
     {
         return -1;
     }
-    for (i = 0; i < batch->numops; i++)
+    for (i = 0; i < (int)batch->numops; i++)
     {
         if (type == BATCH_READ)
         {
@@ -123,11 +121,11 @@ static int compatibility_batch(int batchnum, int type)
 /// @param [in] dev_idx Unique logical processor identifier.
 ///
 /// @return Unique file descriptor, else NULL.
-static int *core_fd(const int dev_idx)
+static int *core_fd(const unsigned dev_idx)
 {
     static int init_core_fd = 0;
     static int *file_descriptors = NULL;
-    static int nthreads;
+    static unsigned nthreads;
     char *variorum_error_msg = (char *) malloc(NAME_MAX * sizeof(char));
 
     if (!init_core_fd)
@@ -195,7 +193,7 @@ static int do_batch_op(int batchnum, int type)
             !batch->ops[0].isrdmsr))
     {
         __u8 readflag = (__u8)(type == BATCH_READ ? 1 : 0);
-        for (j = 0; j < batch->numops; j++)
+        for (j = 0; j < (int)batch->numops; j++)
         {
             batch->ops[j].isrdmsr = readflag;
         }
@@ -205,7 +203,7 @@ static int do_batch_op(int batchnum, int type)
     {
         variorum_error_handler("IOctl failed, does /dev/cpu/msr_batch exist?",
                                VARIORUM_ERROR_MSR_BATCH, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        for (i = 0; i < batch->numops; i++)
+        for (i = 0; i < (int)batch->numops; i++)
         {
             if (batch->ops[i].err)
             {
@@ -227,10 +225,10 @@ static int do_batch_op(int batchnum, int type)
     return 0;
 }
 
-int sockets_assert(const unsigned *socket, const int location, const char *file)
+int sockets_assert(const unsigned *socket)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    int nsockets;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
 
     if (*socket > nsockets)
@@ -246,10 +244,10 @@ int sockets_assert(const unsigned *socket, const int location, const char *file)
     return 0;
 }
 
-int threads_assert(const unsigned *thread, const int location, const char *file)
+int threads_assert(const unsigned *thread)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    int nthreads;
+    unsigned nthreads;
     variorum_get_topology(NULL, NULL, &nthreads);
 
     if (*thread > nthreads)
@@ -265,10 +263,10 @@ int threads_assert(const unsigned *thread, const int location, const char *file)
     return 0;
 }
 
-int cores_assert(const unsigned *core, const int location, const char *file)
+int cores_assert(const unsigned *core)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    int ncores;
+    unsigned ncores;
     variorum_get_topology(NULL, &ncores, NULL);
 
     if (*core > ncores)
@@ -372,10 +370,10 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
 int finalize_msr(void)
 {
     int ret = 0;
-    int dev_idx;
+    unsigned dev_idx;
     int *file_descriptor = NULL;
     char *variorum_error_msg = (char *) malloc(NAME_MAX * sizeof(char));
-    int nthreads;
+    unsigned nthreads;
     variorum_get_topology(NULL, NULL, &nthreads);
 
     for (dev_idx = 0; dev_idx < nthreads; dev_idx++)
@@ -410,7 +408,7 @@ int init_msr(void)
     char filename[FILENAME_SIZE];
     int kerneltype = 3; // 0 is msr_safe, 1 is msr
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    int nsockets, ncores, nthreads;
+    unsigned nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 #ifdef USE_MSR_SAFE_BEFORE_1_5_0
@@ -420,7 +418,7 @@ int init_msr(void)
 #endif
     stat_module(filename, &kerneltype, 0);
     /* Open the file descriptor for each device's msr interface. */
-    for (dev_idx = 0; dev_idx < nthreads; dev_idx++)
+    for (dev_idx = 0; dev_idx < (int)nthreads; dev_idx++)
     {
         /* Use the msr_safe module, or default to the msr module. */
         if (kerneltype)
@@ -437,10 +435,6 @@ int init_msr(void)
             free(variorum_error_msg);
             //free(file_descriptor);
             return ret;
-        }
-        if (dev_idx < 0)
-        {
-            continue;
         }
         /* Open the msr module, else return the appropriate error message. */
         file_descriptor = core_fd(dev_idx);
@@ -472,9 +466,9 @@ int init_msr(void)
 int write_msr_by_coord(unsigned socket, unsigned core, unsigned thread,
                        off_t msr, uint64_t val)
 {
-    sockets_assert(&socket, __LINE__, __FILE__);
-    cores_assert(&core, __LINE__, __FILE__);
-    threads_assert(&thread, __LINE__, __FILE__);
+    sockets_assert(&socket);
+    cores_assert(&core);
+    threads_assert(&thread);
 
     return write_msr_by_idx(devidx(socket, core, thread), msr, val);
 }
@@ -487,9 +481,9 @@ int read_msr_by_coord(unsigned socket, unsigned core, unsigned thread,
             "%s %s::%d (read_msr_by_coord) socket=%d core=%d thread=%d msr=%lu (0x%lx)\n",
             getenv("HOSTNAME"), __FILE__, __LINE__, socket, core, thread, msr, msr);
 #endif
-    sockets_assert(&socket, __LINE__, __FILE__);
-    cores_assert(&core, __LINE__, __FILE__);
-    threads_assert(&thread, __LINE__, __FILE__);
+    sockets_assert(&socket);
+    cores_assert(&core);
+    threads_assert(&thread);
     if (val == NULL)
     {
         variorum_error_handler("Received NULL pointer for val", VARIORUM_ERROR_MSR_READ,
@@ -561,7 +555,7 @@ int allocate_batch(int batchnum, size_t bsize)
 {
     unsigned *size = NULL;
     struct msr_batch_array *batch = NULL;
-    int i;
+    unsigned int i;
 
 #ifdef BATCH_DEBUG
     fprintf(stderr, "BATCH: allocating batch %d\n", batchnum);
@@ -593,8 +587,8 @@ int allocate_batch(int batchnum, size_t bsize)
 
 int load_socket_batch(off_t msr, uint64_t **val, int batchnum)
 {
-    int dev_idx, val_idx;
-    int nsockets, ncores, nthreads;
+    unsigned dev_idx, val_idx;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     if (val == NULL)
@@ -615,8 +609,8 @@ int load_socket_batch(off_t msr, uint64_t **val, int batchnum)
 
 int load_thread_batch(off_t msr, uint64_t **val, int batchnum)
 {
-    int dev_idx, val_idx;
-    int nsockets, ncores, nthreads;
+    unsigned dev_idx, val_idx;
+    unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     if (val == NULL)

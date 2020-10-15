@@ -27,7 +27,11 @@
 #include <config_nvidia.h>
 #endif
 
+#ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
+#else
+int variorum_enter()
+#endif
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -57,7 +61,11 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     return err;
 }
 
+#ifdef VARIORUM_LOG
 int variorum_exit(const char *filename, const char *func_name, int line_num)
+#else
+int variorum_exit()
+#endif
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -125,7 +133,7 @@ int variorum_detect_arch(void)
 }
 
 
-void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
+void variorum_get_topology(unsigned *nsockets, unsigned *ncores, unsigned *nthreads)
 {
     hwloc_topology_t topology;
     int rc;
