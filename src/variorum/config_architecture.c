@@ -204,7 +204,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
 
         g_platform[idx].num_sockets = variorum_get_num_sockets();
         //-1 if Several levels exist with OBJ_SOCKET
-        if (g_platform.num_sockets == -1)
+        if (g_platform[idx].num_sockets == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports that HWLOC_OBJ_SOCKETs exist "
@@ -214,7 +214,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
             exit(-1);
         }
         // 0 if No levels exist with OBJ_SOCKET
-        if (g_platform.num_sockets == 0)
+        if (g_platform[idx].num_sockets == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_SOCKETs exist.  "
@@ -224,7 +224,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
         }
 
         g_platform.total_cores = variorum_get_num_cores();
-        if (g_platform.total_cores == -1)
+        if (g_platform[idx].total_cores == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports HWLOC_OJB_COREs exist "
@@ -233,7 +233,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
                     "Exiting.", __FILE__, __LINE__);
             exit(-1);
         }
-        if (g_platform.total_cores == 0)
+        if (g_platform[idx].total_cores == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_COREs exist."
@@ -242,8 +242,8 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
             exit(-1);
         }
 
-        g_platform.total_threads = variorum_get_num_threads();
-        if (g_platform.total_threads == -1)
+        g_platform[idx].total_threads = variorum_get_num_threads();
+        if (g_platform[idx].total_threads == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports that HWLOC_OBJ_PUs exist "
@@ -252,7 +252,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
                     "Exiting.", __FILE__, __LINE__);
             exit(-1);
         }
-        if (g_platform.total_threads == 0)
+        if (g_platform[idx].total_threads == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_COREs exist.  "
@@ -261,31 +261,31 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
             exit(-1);
         }
 
-        g_platform.num_cores_per_socket = g_platform.total_cores /
-                                          g_platform.num_sockets;
-        if (g_platform.total_cores % g_platform.num_sockets != 0)
+        g_platform[idx].num_cores_per_socket = g_platform[idx].total_cores /
+                                               g_platform[idx].num_sockets;
+        if (g_platform[idx].total_cores % g_platform[idx].num_sockets != 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports the number of cores (%d) mod "
                     "the number of sockets (%d) is not zero.  "
                     "Something is amiss.  Exiting.",
                     __FILE__, __LINE__,
-                    g_platform.total_cores,
-                    g_platform.num_sockets);
+                    g_platform[idx].total_cores,
+                    g_platform[idx].num_sockets);
             exit(-1);
         }
 
-        g_platform.num_threads_per_core = g_platform.total_threads /
-                                          g_platform.total_cores;
-        if (g_platform.total_threads % g_platform.total_cores != 0)
+        g_platform[idx].num_threads_per_core = g_platform[idx].total_threads /
+                                               g_platform[idx].total_cores;
+        if (g_platform[idx].total_threads % g_platform[idx].total_cores != 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports the number of threads (%d) mod "
                     "the number of cores (%d) is not zero.  "
                     "Something is amiss.  Exiting.",
                     __FILE__, __LINE__,
-                    g_platform.total_threads,
-                    g_platform.total_cores);
+                    g_platform[idx].total_threads,
+                    g_platform[idx].total_cores);
             exit(-1);
         }
 

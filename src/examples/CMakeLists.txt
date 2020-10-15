@@ -10,9 +10,9 @@ target_link_libraries(variorum ${variorum_deps})
 set(BASIC_EXAMPLES
     variorum-cap-best-effort-node-power-limit-example
     variorum-cap-each-core-frequency-limit-example
-    variorum-cap-gpu-power-ratio-example
-    variorum-cap-socket-frequency-limit-example
-    variorum-cap-socket-power-limit-example
+#    variorum-cap-gpu-power-ratio-example
+#    variorum-cap-socket-frequency-limit-example
+#    variorum-cap-socket-power-limit-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
     variorum-get-node-power-json-example

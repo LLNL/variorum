@@ -12,8 +12,9 @@
 int main(int argc, char **argv)
 {
     int ret;
-    // 500W is based on minimum power on IBM Witherspoon
-    int node_pow_lim_watts = 500;
+    int *node_pow_lim_watts;
+    int num_power_limits = 0;
+    int i;
 
     const char *usage = "Usage: %s [-h] [-v] -l watts\n";
     int opt;

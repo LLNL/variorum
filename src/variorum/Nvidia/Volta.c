@@ -13,7 +13,6 @@
 
 int volta_get_power(int long_ver)
 {
-<<<<<<< HEAD
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -22,15 +21,7 @@ int volta_get_power(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
-=======
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-    int iter = 0;
-    int nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL, 1);
->>>>>>> 3f490ea (Initial commit build for two platforms -- IBM and Nvidia)
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_power_data(iter, long_ver, stdout);
@@ -48,7 +39,7 @@ int volta_get_thermals(int long_ver)
 
     int iter = 0;
     int nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL, 1);
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_thermal_data(iter, long_ver, stdout);
@@ -58,7 +49,6 @@ int volta_get_thermals(int long_ver)
 
 int volta_get_clocks(int long_ver)
 {
-<<<<<<< HEAD
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -67,15 +57,7 @@ int volta_get_clocks(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
-=======
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-    int iter = 0;
-    int nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL, 1);
->>>>>>> 3f490ea (Initial commit build for two platforms -- IBM and Nvidia)
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_clocks_data(iter, long_ver, stdout);
@@ -93,7 +75,7 @@ int volta_get_power_limits(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL, 1);
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_power_limits(iter, long_ver, stdout);
@@ -111,7 +93,7 @@ int volta_get_gpu_utilization(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL, 1);
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_gpu_utilization(iter, long_ver, stdout);

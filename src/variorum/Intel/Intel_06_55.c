@@ -69,9 +69,9 @@ static struct skylake_55_offsets msrs =
 
 int fm_06_55_get_power_limits(int long_ver)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -131,9 +131,9 @@ int fm_06_55_get_power_limits(int long_ver)
 
 int fm_06_55_cap_power_limits(int package_power_limit)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -444,8 +444,8 @@ int fm_06_55_cap_best_effort_node_power_limit(int node_limit)
 
 int fm_06_55_cap_frequency(int core_freq_mhz)
 {
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

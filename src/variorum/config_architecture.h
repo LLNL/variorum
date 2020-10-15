@@ -80,7 +80,8 @@ enum arm_arch_e
     ARMV8 = 1, //ARM Juno
 }
 
-enum supported_platforms_e {
+enum supported_platforms_e
+{
 #ifdef VARIORUM_WITH_INTEL
     P_INTEL_IDX,
 #endif
