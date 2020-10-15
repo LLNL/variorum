@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 #endif
 
     char *fname_dat = NULL;
-    int rc=0;
+    int rc = 0;
     char *fname_summary;
     if (highlander())
     {
@@ -197,12 +197,13 @@ int main(int argc, char **argv)
         gethostname(hostname, 64);
 
         rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
-	if( -1 == rc ){
-		fprintf(stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
-			__FILE__, __LINE__);
-		exit(-1);
-	}
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
                      S_IRUSR | S_IWUSR);
@@ -211,7 +212,7 @@ int main(int argc, char **argv)
             fprintf(stderr,
                     "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
                     hostname, fname_dat, strerror(errno));
-	    free(fname_dat);
+            free(fname_dat);
             return 1;
         }
         logfile = fdopen(logfd, "w");
@@ -219,7 +220,7 @@ int main(int argc, char **argv)
         {
             fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
                     hostname, fname_dat, strerror(errno));
-	    free(fname_dat);
+            free(fname_dat);
             return 1;
         }
 
@@ -267,12 +268,13 @@ int main(int argc, char **argv)
 
         /* Output summary data. */
         rc = asprintf(&fname_summary, "%s.power.summary", hostname);
-	if( -1 == rc ){
-		fprintf(stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
-			__FILE__, __LINE__);
-		exit(-1);
-	}
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
                      S_IRUSR | S_IWUSR);
@@ -281,7 +283,7 @@ int main(int argc, char **argv)
             fprintf(stderr,
                     "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
                     hostname, fname_summary, strerror(errno));
-	    free(fname_summary);
+            free(fname_summary);
             return 1;
         }
         summaryfile = fdopen(logfd, "w");
@@ -289,23 +291,25 @@ int main(int argc, char **argv)
         {
             fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
                     hostname, fname_summary, strerror(errno));
-	    free(fname_summary);
+            free(fname_summary);
             return 1;
         }
 
         char *msg;
         //rc = asprintf(&msg, "host: %s\npid: %d\ntotal: %lf\nallocated: %lf\nmax_watts: %lf\nmin_watts: %lf\nruntime ms: %lu\n,start: %lu\nend: %lu\n", hostname, app_pid, total_joules, limit_joules, max_watts, min_watts, end-start, start, end);
-        rc = asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
-                 hostname, app_pid, end - start, start, end);
-	if( -1 == rc ){
-		fprintf(stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
-			__FILE__, __LINE__);
-		exit(-1);
-	}
+        rc = asprintf(&msg,
+                      "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                      hostname, app_pid, end - start, start, end);
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         fprintf(summaryfile, "%s", msg);
-	free(msg);
+        free(msg);
         fclose(summaryfile);
         close(logfd);
 

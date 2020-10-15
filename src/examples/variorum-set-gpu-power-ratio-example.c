@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 {
     int ret;
     /*100 % is based on IBM Witherspoon default */
-    int gpu_power_ratio_pct=100;
+    int gpu_power_ratio_pct = 100;
 
     if (argc == 1)
     {

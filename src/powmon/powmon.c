@@ -184,21 +184,23 @@ int main(int argc, char **argv)
         {
             /* Output trace data into the specified location. */
             rc = asprintf(&fname_dat, "%s/%s.powmon.dat", logpath, hostname);
-	    if( -1 == rc ){
-		    fprintf( stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.\n",
-			__FILE__, __LINE__);
-	    }
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
         else
         {
             /* Output trace data into the default location. */
             rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
-	    if( -1 == rc ){
-		    fprintf( stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.\n",
-			__FILE__, __LINE__);
-	    }
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
 
         logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -266,21 +268,23 @@ int main(int argc, char **argv)
         {
             /* Output summary data into the specified location. */
             rc = asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
-	    if( -1 == rc ){
-		    fprintf( stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.\n",
-			__FILE__, __LINE__);
-	    }
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
         else
         {
             /* Output summary data into the default location. */
             rc = asprintf(&fname_summary, "%s.powmon.summary", hostname);
-	    if( -1 == rc ){
-		    fprintf( stderr, 
-			"%s:%d asprintf failed, perhaps out of memory.\n",
-			__FILE__, __LINE__);
-	    }
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
 
         logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -301,16 +305,18 @@ int main(int argc, char **argv)
         }
 
         char *msg;
-        rc = asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
-                 hostname, app_pid, end - start, start, end);
-	if( -1 == rc ){
-	    fprintf( stderr, 
-		"%s:%d asprintf failed, perhaps out of memory.\n",
-		__FILE__, __LINE__);
-	}
+        rc = asprintf(&msg,
+                      "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                      hostname, app_pid, end - start, start, end);
+        if (-1 == rc)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
+                    __FILE__, __LINE__);
+        }
 
         fprintf(summaryfile, "%s", msg);
-	free(msg);
+        free(msg);
         fclose(summaryfile);
         close(logfd);
 

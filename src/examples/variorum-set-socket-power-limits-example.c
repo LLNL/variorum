@@ -24,8 +24,8 @@ int main(int argc, char **argv)
     }
     else
     {
-	printf("Usage: set_socket_power_limit [limit in watts]\n");
-	exit(0);
+        printf("Usage: set_socket_power_limit [limit in watts]\n");
+        exit(0);
     }
 
     ret = variorum_set_each_socket_power_limit(pkg_pow_lim_watts);

@@ -141,89 +141,102 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads)
         // If something goes wrong, there's no sense in trying to keep
         // marching forward.  Thus the asserts.
         rc = hwloc_topology_init(&topology);
-        if(0 != rc) exit(-1);
+        if (rc != 0)
+        {
+            exit(-1);
+        }
         rc = hwloc_topology_load(topology);
-        if(0 != rc) exit(-1);
-
+        if (rc != 0)
+        {
+            exit(-1);
+        }
 
         g_platform.num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
         //-1 if Several levels exist with OBJ_SOCKET
-        if(-1 == g_platform.num_sockets){ 
-		fprintf( stderr,"%s:%d "
-				"hwloc reports that HWLOC_OBJ_SOCKETs exist "
-				"at multiple levels of the topology DAG.  "
-				"Variorum doesn't handle this case.  "
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
+        if (g_platform.num_sockets == -1)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports that HWLOC_OBJ_SOCKETs exist "
+                    "at multiple levels of the topology DAG.  "
+                    "Variorum doesn't handle this case.  "
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
         // 0 if No levels exist with OBJ_SOCKET
-        if(0 == g_platform.num_sockets){ 
-		fprintf( stderr, "%s:%d "
-				"hwloc reports no HWLOC_OBJ_SOCKETs exist.  "
-				"Variorum doesn't handle this case.  "
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
+        if (g_platform.num_sockets == 0)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports no HWLOC_OBJ_SOCKETs exist.  "
+                    "Variorum doesn't handle this case.  "
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
 
         g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
-        if(-1 == g_platform.total_cores){ 
-		fprintf( stderr, "%s:%d "
-				"hwloc reports HWLOC_OJB_COREs exist "
-				"at multiple levels of the topology DAG.  "
-				"Variorum doesn't handle this case.  "
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
-        if(0 == g_platform.total_cores){ 
-		fprintf( stderr, "%s:%d "
-				"hwloc reports no HWLOC_OBJ_COREs exist."
-				"Variorum doesn't handle this case."
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
+        if (g_platform.total_cores == -1)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports HWLOC_OJB_COREs exist "
+                    "at multiple levels of the topology DAG.  "
+                    "Variorum doesn't handle this case.  "
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
+        if (g_platform.total_cores == 0)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports no HWLOC_OBJ_COREs exist."
+                    "Variorum doesn't handle this case."
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
 
         g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
-        if(-1 == g_platform.total_threads){
-		fprintf( stderr, "%s:%d "
-				"hwloc reports that HWLOC_OBJ_PUs exist "
-				"at multiple levels of the topology DAG.  "
-				"Variorum doesn't handle this case."
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
-        if(0 == g_platform.total_threads){
-		fprintf( stderr, "%s:%d "
-				"hwloc reports no HWLOC_OBJ_COREs exist.  "
-				"Variorum doesn't handle this case.  "
-				"Exiting.", __FILE__, __LINE__);
-		exit(-1);
-	}
+        if (g_platform.total_threads == -1)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports that HWLOC_OBJ_PUs exist "
+                    "at multiple levels of the topology DAG.  "
+                    "Variorum doesn't handle this case."
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
+        if (g_platform.total_threads == 0)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports no HWLOC_OBJ_COREs exist.  "
+                    "Variorum doesn't handle this case.  "
+                    "Exiting.", __FILE__, __LINE__);
+            exit(-1);
+        }
 
         g_platform.num_cores_per_socket = g_platform.total_cores /
                                           g_platform.num_sockets;
-        if(0 != g_platform.total_cores % g_platform.num_sockets){
-		fprintf( stderr, "%s:%d "
-				"hwloc reports the number of cores (%d) mod "
-				"the number of sockets (%d) is not zero.  "
-				"Something is amiss.  Exiting.",
-				__FILE__, __LINE__,
-				g_platform.total_cores, 
-				g_platform.num_sockets);
-		exit(-1);
-	}
+        if (g_platform.total_cores % g_platform.num_sockets != 0)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports the number of cores (%d) mod "
+                    "the number of sockets (%d) is not zero.  "
+                    "Something is amiss.  Exiting.",
+                    __FILE__, __LINE__,
+                    g_platform.total_cores,
+                    g_platform.num_sockets);
+            exit(-1);
+        }
 
         g_platform.num_threads_per_core = g_platform.total_threads /
                                           g_platform.total_cores;
-        if(0 != g_platform.total_threads % g_platform.total_cores){
-		fprintf( stderr, "%s:%d "
-				"hwloc reports the number of threads (%d) mod "
-				"the number of cores (%d) is not zero.  "
-				"Something is amiss.  Exiting.",
-				__FILE__, __LINE__,
-				g_platform.total_threads, 
-				g_platform.total_cores);
-		exit(-1);
-	}
+        if (g_platform.total_threads % g_platform.total_cores != 0)
+        {
+            fprintf(stderr, "%s:%d "
+                    "hwloc reports the number of threads (%d) mod "
+                    "the number of cores (%d) is not zero.  "
+                    "Something is amiss.  Exiting.",
+                    __FILE__, __LINE__,
+                    g_platform.total_threads,
+                    g_platform.total_cores);
+            exit(-1);
+        }
 
         hwloc_topology_destroy(topology);
     }
