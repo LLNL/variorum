@@ -192,6 +192,11 @@ struct platform
     /// @return Error code.
     int (*variorum_get_node_power_json)(json_t *get_power_obj);
 
+    /// @brief Function pointer to get list of available frequencies.
+    ///
+    /// @return Error code.
+    int (*variorum_print_available_frequencies)(void);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/

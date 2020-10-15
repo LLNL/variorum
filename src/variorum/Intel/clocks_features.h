@@ -117,6 +117,22 @@ void print_clocks_data(FILE *writedest,
                        off_t msr_platform_info,
                        enum ctl_domains_e control_domain);
 
+void get_available_frequencies(FILE *writedest,
+                               off_t *msr_platform_info,
+                               off_t *msr_turbo_ratio_limit,
+                               off_t *msr_turbo_ratio_limit_cores,
+                               off_t *msr_config_tdp_l1,
+                               off_t *msr_config_tdp_l2,
+                               off_t *msr_config_tdp_nominal);
+
+void get_available_frequencies_skx(FILE *writedest,
+                                   off_t *msr_platform_info,
+                                   off_t *msr_turbo_ratio_limit,
+                                   off_t *msr_turbo_ratio_limit_cores,
+                                   off_t *msr_config_tdp_l1,
+                                   off_t *msr_config_tdp_l2,
+                                   off_t *msr_config_tdp_nominal);
+
 ///// @brief Print current p-state.
 /////
 ///// @param [in] writedest File stream where output will be written to.

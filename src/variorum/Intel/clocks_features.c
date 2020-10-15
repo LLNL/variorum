@@ -99,6 +99,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                       off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
                       enum ctl_domains_e control_domains)
 {
+#if 0
     static struct clocks_data *cd;
     static struct perf_data *pd;
     static int init = 0;
@@ -106,7 +107,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     int nsockets, ncores, nthreads;
     int idx;
     char hostname[1024];
-    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
+    //    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
@@ -167,6 +168,7 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
             fprintf(stderr, "Not a valid control domain.\n");
             break;
     }
+#endif
 }
 
 void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
@@ -179,7 +181,11 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     int idx;
     int nsockets, ncores, nthreads;
     char hostname[1024];
-    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
+    int max_non_turbo_ratio;
+    int err;
+
+
+    err = get_max_non_turbo_ratio(msr_platform_info, &max_non_turbo_ratio);
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
@@ -433,3 +439,119 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
 //    write_msr_by_coord(socket, core, 0, IA32_CLOCK_MODULATION, msrVal);
 //    return 0;
 //}
+
+void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
+                                   off_t *msr_turbo_ratio_limit, off_t *msr_turbo_ratio_limit_cores,
+                                   off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2,
+                                   off_t *msr_config_tdp_nominal)
+{
+    /* Turbo Range
+     * Default ratio for 1C Max Turbo == P01
+     * All core turbo == P0n
+     * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
+     */
+    fprintf(writedest, "=== Turbo Schedule ===\n");
+    if (get_turbo_ratio_limits_skx(*msr_turbo_ratio_limit,
+                                   *msr_turbo_ratio_limit_cores) != 0)
+    {
+        variorum_error_handler("Values do not match across sockets",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+    }
+
+    fprintf(writedest, "\n");
+
+    /* AVX2, AVX512 (i.e., AVX3) */
+    fprintf(writedest, "=== AVX Schedule ===\n");
+    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2,
+                   msr_config_tdp_nominal);
+
+    fprintf(writedest, "\n");
+
+    /* P-State Table -- P1, Pn, and Pm
+     * Read IA32_PLATFORM_INFO 0xCE
+     * Field "Maximum Efficiency Ratio: Bits 47:40 == Pn
+     * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
+     * Field "Minimum Operating Ratio: Bits 55:48 == Pm
+     */
+    fprintf(writedest, "=== P-State Table ===\n");
+    int max_non_turbo_ratio;
+    int max_eff_ratio;
+    int min_oper_ratio;
+
+    int err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Max Efficiency Ratio = %d MHz\n",
+                max_non_turbo_ratio);
+    }
+    err = get_max_efficiency_ratio(*msr_platform_info, &max_eff_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Max Non-Turbo Ratio  = %d MHz\n",
+                max_eff_ratio);
+    }
+    err = get_min_operating_ratio(*msr_platform_info, &min_oper_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Min Operating Ratio  = %d MHz\n",
+                min_oper_ratio);
+    }
+}
+
+void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
+                               off_t *msr_turbo_ratio_limit, off_t *msr_turbo_ratio_limit1,
+                               off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2,
+                               off_t *msr_config_tdp_nominal)
+{
+    /* Turbo Range
+     * Default ratio for 1C Max Turbo == P01
+     * All core turbo == P0n
+     * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
+     */
+    fprintf(writedest, "=== Turbo Schedule ===\n");
+    if (get_turbo_ratio_limits(*msr_turbo_ratio_limit,
+                               *msr_turbo_ratio_limit1) != 0)
+    {
+        variorum_error_handler("Values do not match across sockets",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+    }
+
+    fprintf(writedest, "\n");
+
+    /* AVX2, AVX512 (i.e., AVX3) */
+    fprintf(writedest, "=== AVX Schedule ===\n");
+    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2,
+                   msr_config_tdp_nominal);
+
+    fprintf(writedest, "\n");
+
+    /* P-State Table -- P1, Pn, and Pm
+     * Read IA32_PLATFORM_INFO 0xCE
+     * Field "Maximum Efficiency Ratio: Bits 47:40 == Pn
+     * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
+     * Field "Minimum Operating Ratio: Bits 55:48 == Pm
+     */
+    fprintf(writedest, "=== P-State Table ===\n");
+    int max_non_turbo_ratio;
+    int max_eff_ratio;
+    int min_oper_ratio;
+
+    int err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Max Efficiency Ratio = %d MHz\n",
+                max_non_turbo_ratio);
+    }
+    err = get_max_efficiency_ratio(*msr_platform_info, &max_eff_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Max Non-Turbo Ratio  = %d MHz\n",
+                max_eff_ratio);
+    }
+    err = get_min_operating_ratio(*msr_platform_info, &min_oper_ratio);
+    if (!err)
+    {
+        fprintf(writedest, "Min Operating Ratio  = %d MHz\n",
+                min_oper_ratio);
+    }
+}
