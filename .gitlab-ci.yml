@@ -32,7 +32,7 @@ build-quartz:
    - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -125,6 +125,48 @@ build-lassen-gpu:
    - which cmake
    - cmake --version
    - cd install-gitlab-lassen-gpu/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./variorum-print-power-example
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
+   - ./ep.W.x
+
+build-catalyst:
+ tags:
+   - batch
+   - catalyst
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
+   - cd build-gitlab-catalyst
+   - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@4.9.3.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON ../src
+   - make VERBOSE=1
+   - make install
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-catalyst/examples/using-with-cmake/c
    - echo -e "PWD:" ${PWD}
    - mkdir _test_build
    - cd _test_build
