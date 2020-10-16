@@ -484,45 +484,74 @@ static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
     {
         return -1;
     }
-    switch (avail)
+
+    if (avail == 8)
     {
-        case 8:
-            p->pmc7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 7:
-            p->pmc6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 6:
-            p->pmc5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 5:
-            p->pmc4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 4:
-            p->pmc3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 3:
-            p->pmc2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 2:
-            p->pmc1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 1:
-            p->pmc0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+        p->pmc7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
+    if (avail == 7)
+    {
+        p->pmc6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 6)
+    {
+        p->pmc5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 5)
+    {
+        p->pmc4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 4)
+    {
+        p->pmc3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 3)
+    {
+        p->pmc2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 2)
+    {
+        p->pmc1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 1)
+    {
+        p->pmc0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+
     allocate_batch(COUNTERS_DATA, avail * nthreads);
-    switch (avail)
+    if (avail == 8)
     {
-        case 8:
-            load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, COUNTERS_DATA);
-        case 7:
-            load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, COUNTERS_DATA);
-        case 6:
-            load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, COUNTERS_DATA);
-        case 5:
-            load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, COUNTERS_DATA);
-        case 4:
-            load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, COUNTERS_DATA);
-        case 3:
-            load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, COUNTERS_DATA);
-        case 2:
-            load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, COUNTERS_DATA);
-        case 1:
-            load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, COUNTERS_DATA);
+        load_thread_batch(msrs_perfmon_ctrs[7], p->pmc7, COUNTERS_DATA);
     }
+    if (avail == 7)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[6], p->pmc6, COUNTERS_DATA);
+    }
+    if (avail == 6)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[5], p->pmc5, COUNTERS_DATA);
+    }
+    if (avail == 5)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[4], p->pmc4, COUNTERS_DATA);
+    }
+    if (avail == 4)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[3], p->pmc3, COUNTERS_DATA);
+    }
+    if (avail == 3)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[2], p->pmc2, COUNTERS_DATA);
+    }
+    if (avail == 2)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[1], p->pmc1, COUNTERS_DATA);
+    }
+    if (avail == 1)
+    {
+        load_thread_batch(msrs_perfmon_ctrs[0], p->pmc0, COUNTERS_DATA);
+    }
+
     return 0;
 }
 
@@ -545,45 +574,74 @@ static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
     {
         return -1;
     }
-    switch (avail)
+
+    if (avail == 8)
     {
-        case 8:
-            evt->perf_evtsel7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 7:
-            evt->perf_evtsel6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 6:
-            evt->perf_evtsel5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 5:
-            evt->perf_evtsel4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 4:
-            evt->perf_evtsel3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 3:
-            evt->perf_evtsel2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 2:
-            evt->perf_evtsel1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
-        case 1:
-            evt->perf_evtsel0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+        evt->perf_evtsel7 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
     }
+    if (avail == 7)
+    {
+        evt->perf_evtsel6 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 6)
+    {
+        evt->perf_evtsel5 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 5)
+    {
+        evt->perf_evtsel4 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 4)
+    {
+        evt->perf_evtsel3 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 3)
+    {
+        evt->perf_evtsel2 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 2)
+    {
+        evt->perf_evtsel1 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+    if (avail == 1)
+    {
+        evt->perf_evtsel0 = (uint64_t **) calloc(nthreads, sizeof(uint64_t *));
+    }
+
     allocate_batch(COUNTERS_CTRL, avail * nthreads);
-    switch (avail)
+    if (avail == 8)
     {
-        case 8:
-            load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, COUNTERS_CTRL);
-        case 7:
-            load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, COUNTERS_CTRL);
-        case 6:
-            load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, COUNTERS_CTRL);
-        case 5:
-            load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, COUNTERS_CTRL);
-        case 4:
-            load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, COUNTERS_CTRL);
-        case 3:
-            load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, COUNTERS_CTRL);
-        case 2:
-            load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, COUNTERS_CTRL);
-        case 1:
-            load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, COUNTERS_CTRL);
+        load_thread_batch(msrs_perfevtsel_ctrs[7], evt->perf_evtsel7, COUNTERS_CTRL);
     }
+    if (avail == 7)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[6], evt->perf_evtsel6, COUNTERS_CTRL);
+    }
+    if (avail == 6)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[5], evt->perf_evtsel5, COUNTERS_CTRL);
+    }
+    if (avail == 5)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[4], evt->perf_evtsel4, COUNTERS_CTRL);
+    }
+    if (avail == 4)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[3], evt->perf_evtsel3, COUNTERS_CTRL);
+    }
+    if (avail == 3)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[2], evt->perf_evtsel2, COUNTERS_CTRL);
+    }
+    if (avail == 2)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[1], evt->perf_evtsel1, COUNTERS_CTRL);
+    }
+    if (avail == 1)
+    {
+        load_thread_batch(msrs_perfevtsel_ctrs[0], evt->perf_evtsel0, COUNTERS_CTRL);
+    }
+
     return 0;
 }
 
@@ -718,24 +776,37 @@ void clear_all_pmc(off_t *msrs_perfmon_ctrs)
     }
     for (i = 0; i < nthreads; i++)
     {
-        switch (avail)
+        if (avail == 8)
         {
-            case 8:
-                *p->pmc7[i] = 0;
-            case 7:
-                *p->pmc6[i] = 0;
-            case 6:
-                *p->pmc5[i] = 0;
-            case 5:
-                *p->pmc4[i] = 0;
-            case 4:
-                *p->pmc3[i] = 0;
-            case 3:
-                *p->pmc2[i] = 0;
-            case 2:
-                *p->pmc1[i] = 0;
-            case 1:
-                *p->pmc0[i] = 0;
+            *p->pmc7[i] = 0;
+        }
+        if (avail == 7)
+        {
+            *p->pmc6[i] = 0;
+        }
+        if (avail == 6)
+        {
+            *p->pmc5[i] = 0;
+        }
+        if (avail == 5)
+        {
+            *p->pmc4[i] = 0;
+        }
+        if (avail == 4)
+        {
+            *p->pmc3[i] = 0;
+        }
+        if (avail == 3)
+        {
+            *p->pmc2[i] = 0;
+        }
+        if (avail == 2)
+        {
+            *p->pmc1[i] = 0;
+        }
+        if (avail == 1)
+        {
+            *p->pmc0[i] = 0;
         }
     }
     write_batch(COUNTERS_DATA);

@@ -391,25 +391,26 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
      */
     int nvalues = (int)(MASK_VAL(*val[0], 34, 33));
     int max_non_turbo_ratio;
-    switch (nvalues)
+
+    if (nvalues == 2)
     {
-        case 2:
-            config_tdp(2, *msr_config_tdp_l2);
-        case 1:
-            config_tdp(1, *msr_config_tdp_l1);
-        case 0:
-            // Read 648h = normal P1
-            /// @todo Should we be reading from PLATFORM_INFO or CONFIG_TDP_NOMINAL 0x648?
-            err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
-            if (!err)
-            {
-                printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
-            }
-            break;
-        case 3:
-            // Reserved
-            break;
+        config_tdp(2, *msr_config_tdp_l2);
     }
+    if (nvalues == 1)
+    {
+        config_tdp(1, *msr_config_tdp_l1);
+    }
+    if (nvalues == 0)
+    {
+        // Read 648h = normal P1
+        /// @todo Should we be reading from PLATFORM_INFO or CONFIG_TDP_NOMINAL 0x648?
+        err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
+        if (!err)
+        {
+            printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
+        }
+    }
+
     return 0;
 }
 

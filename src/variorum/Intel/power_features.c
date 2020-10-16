@@ -54,6 +54,11 @@ static int translate(const unsigned socket, uint64_t *bits, double *units,
 #endif
                 return 0;
             }
+            else
+            {
+                *units = (double)(*bits) / ru[socket].joules;
+            }
+            break;
         /* No break statement, if not Haswell or Broadwell, use energy units defined in MSR_RAPL_POWER_UNIT. */
         case BITS_TO_JOULES:
             *units = (double)(*bits) / ru[socket].joules;
