@@ -334,13 +334,13 @@ int fm_06_4f_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_power_data(stdout, 
+        dump_power_data(stdout,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_power_data(stdout, 
+        print_power_data(stdout,
                          msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                          msrs.msr_dram_energy_status);
     }

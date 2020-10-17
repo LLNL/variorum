@@ -133,7 +133,8 @@ int variorum_detect_arch(void)
 }
 
 
-void variorum_get_topology(unsigned *nsockets, unsigned *ncores, unsigned *nthreads)
+void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
+                           unsigned *nthreads)
 {
     hwloc_topology_t topology;
     int rc;
