@@ -16,8 +16,8 @@ int volta_get_power(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -32,8 +32,8 @@ int volta_get_thermals(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -47,8 +47,8 @@ int volta_get_clocks(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -62,8 +62,8 @@ int volta_get_power_limits(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -77,8 +77,8 @@ int volta_get_gpu_utilization(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
