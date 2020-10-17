@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include <config_architecture.h>
 #include <Power9.h>
@@ -20,9 +21,8 @@ int p9_get_power(int long_ver)
     int fd;
     int rc;
     int bytes;
-    int initial_bytes;
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -82,62 +82,65 @@ int p9_get_power_limits(int long_ver)
     int psr_1 = 0;
     int psr_2 = 0;
 
-    gethostname(hostname, 1024);
-
-    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
-    if (fp == NULL)
+    if (long_ver == 0)
     {
-        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-current",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    fscanf(fp, "%d", &pcap_current);
-    fclose(fp);
+        gethostname(hostname, 1024);
 
-    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-max", "r");
-    if (fp == NULL)
-    {
-        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-max",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    fscanf(fp, "%d", &pcap_max);
-    fclose(fp);
+        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
+        if (fp == NULL)
+        {
+            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-current",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        fscanf(fp, "%d", &pcap_current);
+        fclose(fp);
 
-    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-min", "r");
-    if (fp == NULL)
-    {
-        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-min",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    fscanf(fp, "%d", &pcap_min);
-    fclose(fp);
+        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-max", "r");
+        if (fp == NULL)
+        {
+            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-max",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        fscanf(fp, "%d", &pcap_max);
+        fclose(fp);
 
-    fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_0", "r");
-    if (fp == NULL)
-    {
-        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_0",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    fscanf(fp, "%d", &psr_1);
-    fclose(fp);
+        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-min", "r");
+        if (fp == NULL)
+        {
+            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-min",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        fscanf(fp, "%d", &pcap_min);
+        fclose(fp);
 
-    fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_8", "r");
-    if (fp == NULL)
-    {
-        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_8",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    fscanf(fp, "%d", &psr_2);
-    fclose(fp);
+        fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_0", "r");
+        if (fp == NULL)
+        {
+            variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_0",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        fscanf(fp, "%d", &psr_1);
+        fclose(fp);
 
-    fprintf(stdout,
-            "_POWERCAP CurrentWatts MaxWatts MinWatts CPU_to_GPU_0 PSR CPU_to_GPU_8 PSR\n");
-    fprintf(stdout, "_POWERCAP %d %d %d %d %d \n", pcap_current, pcap_max, pcap_min,
-            psr_1, psr_2);
+        fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_8", "r");
+        if (fp == NULL)
+        {
+            variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_8",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        fscanf(fp, "%d", &psr_2);
+        fclose(fp);
+
+        fprintf(stdout,
+                "_POWERCAP CurrentWatts MaxWatts MinWatts CPU_to_GPU_0 PSR CPU_to_GPU_8 PSR\n");
+        fprintf(stdout, "_POWERCAP %d %d %d %d %d \n", pcap_current, pcap_max, pcap_min,
+                psr_1, psr_2);
+    }
     return 0;
 }
 
@@ -307,11 +310,9 @@ int p9_monitoring(FILE *output)
     int fd;
     int rc;
     int bytes;
-    int initial_bytes;
-    int iter = 0;
-    int nsockets;
-    int long_ver = 0;
-    static int count = 0;
+    unsigned iter = 0;
+    unsigned nsockets;
+    static unsigned count = 0;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -364,13 +365,16 @@ int p9_monitoring(FILE *output)
     return 0;
 }
 
-int p9_set_socket_power_limit(int pcap_new)
+int p9_set_socket_power_limit(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    printf("Socket limits cannot be set separately on IBM Power9 architecture. Please use set_node_power_limit API.\n");
+    if (long_ver == 0 || long_ver == 1)
+    {
+        printf("Socket limits cannot be set separately on IBM Power9 architecture. Please use set_node_power_limit API.\n");
+    }
 
     return 0;
 }
@@ -385,9 +389,8 @@ int p9_get_node_power_json(json_t *get_power_obj)
     int fd;
     int rc;
     int bytes;
-    int initial_bytes;
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
