@@ -37,16 +37,19 @@ uint64_t *detect_intel_arch(void)
     //return (((rax >> 28) & 0x0F)+((rax >> 8) & 0x0F) << 8) | ((rax >> 12) & 0xF0)+((rax >> 4) & 0xF);
 }
 
-int gpu_power_ratio_unimplemented(void)
+int gpu_power_ratio_unimplemented(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    variorum_error_handler("GPU power ratio is unavailable on Intel platforms",
-                           VARIORUM_ERROR_FEATURE_NOT_AVAILABLE,
-                           getenv("HOSTNAME"), __FILE__,
-                           __FUNCTION__, __LINE__);
+    if (long_ver == 0 || long_ver == 1)
+    {
+        variorum_error_handler("GPU power ratio is unavailable on Intel platforms",
+                               VARIORUM_ERROR_FEATURE_NOT_AVAILABLE,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+    }
     return 0;
 }
 
