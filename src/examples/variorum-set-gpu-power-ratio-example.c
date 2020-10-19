@@ -11,12 +11,12 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int gpu_power_ratio_pct;
+    /*100 % is based on IBM Witherspoon default */
+    int gpu_power_ratio_pct = 100;
 
     if (argc == 1)
     {
         printf("No GPU power ratio specified...using default ratio of 100 percent.\n");
-        gpu_power_ratio_pct = 100; /*100 % is based on IBM Witherspoon default */
     }
     else if (argc == 2)
     {

@@ -62,8 +62,8 @@ TEST_P(MsrDriverTest, Exists)
 {
     int testparam = GetParam();
     char *filename;
-
-    asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
+    int rc = asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
+    EXPECT_NE(-1, rc);
     EXPECT_EQ(0, is_file_exist(filename));
     free(filename);
 }
@@ -72,9 +72,10 @@ TEST_P(MsrDriverTest, GroupID)
 {
     int testparam = GetParam();
     char *filename;
+    int rc = asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
 
-    asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
     /* Check if group owner is not root */
+    EXPECT_NE(-1, rc);
     EXPECT_NE(0, check_group_id(filename));
     free(filename);
 }
@@ -84,8 +85,9 @@ TEST_P(MsrDriverTest, GroupPerms)
     int testparam = GetParam();
     char *filename;
 
-    asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
+    int rc = asprintf(&filename, "/dev/cpu/%d/msr_safe", testparam);
     /* Check if group owner is not root */
+    EXPECT_NE(-1, rc);
     EXPECT_EQ(1, check_group_permissions(filename));
     free(filename);
 }

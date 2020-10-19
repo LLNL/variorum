@@ -37,7 +37,7 @@ uint64_t *detect_intel_arch(void)
     //return (((rax >> 28) & 0x0F)+((rax >> 8) & 0x0F) << 8) | ((rax >> 12) & 0xF0)+((rax >> 4) & 0xF);
 }
 
-int gpu_power_ratio_unimplemented(int long_ver)
+int gpu_power_ratio_unimplemented(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

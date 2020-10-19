@@ -25,7 +25,8 @@ enum variorum_error_e
     VARIORUM_ERROR_UNSUPPORTED_PLATFORM    = -11,
     VARIORUM_ERROR_UNSUPPORTED_ARCH        = -12,
     VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED = -13,
-    VARIORUM_ERROR_FEATURE_NOT_AVAILABLE   = -14
+    VARIORUM_ERROR_FEATURE_NOT_AVAILABLE   = -14,
+    VARIORUM_ERROR_FUNCTION                = -15
 };
 
 void variorum_error_handler(const char *desc,

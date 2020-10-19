@@ -148,49 +148,25 @@ struct msr_batch_op
 ///
 /// @param [in] socket Unique socket/package identifier.
 ///
-/// @param [in] location Line number in source file where error occurred (use
-///        standard predefined macro __LINE__).
-///
-/// @param [in] file Name of source file where error occurred (use standard
-///        predefined macro __FILE__).
-///
 /// @return 0 if successful, else -1 if socket requested is greater than number
 /// of sockets in the platform.
-int sockets_assert(const unsigned *socket,
-                   const int location,
-                   const char *file);
+int sockets_assert(const unsigned *socket);
 
 /// @brief Validate specific thread exists in the platform configuration.
 ///
 /// @param [in] thread Unique thread identifier.
 ///
-/// @param [in] location Line number in source file where error occurred (use
-///        standard predefined macro __LINE__).
-///
-/// @param [in] file Name of source file where error occurred (use standard
-///        predefined macro __FILE__).
-///
 /// @return 0 if successful, else -1 if thread requested is greater than number
 /// of threads per core in the platform.
-int threads_assert(const unsigned *thread,
-                   const int location,
-                   const char *file);
+int threads_assert(const unsigned *thread);
 
 /// @brief Validate specific core exists in the platform configuration.
 ///
 /// @param [in] core Unique core identifier.
 ///
-/// @param [in] location Line number in source file where error occurred (use
-///        standard predefined macro __LINE__).
-///
-/// @param [in] file Name of source file where error occurred (use standard
-///        predefined macro __FILE__).
-///
 /// @return 0 if successful, else -1 if core requested is greater than number
 /// of cores per socket in the platform.
-int cores_assert(const unsigned *core,
-                 const int location,
-                 const char *file);
+int cores_assert(const unsigned *core);
 
 /// @brief Check status of a file.
 ///

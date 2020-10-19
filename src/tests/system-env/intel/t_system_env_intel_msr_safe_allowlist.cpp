@@ -70,41 +70,32 @@ int allowlist_size(const char *file)
 
 TEST(MsrAllowlist, Exists)
 {
-    char *filename;
-
 #ifdef USE_MSR_SAFE_BEFORE_1_5_0
-    asprintf(&filename, "/dev/cpu/msr_whitelist");
+    const char *const filename = "/dev/cpu/msr_whitelist";
 #else
-    asprintf(&filename, "/dev/cpu/msr_allowlist");
+    const char *const filename = "/dev/cpu/msr_allowlist";
 #endif
     EXPECT_EQ(0, is_file_exist(filename));
-    free(filename);
 }
 
 TEST(MsrAllowlist, Perms)
 {
-    char *filename;
-
 #ifdef USE_MSR_SAFE_BEFORE_1_5_0
-    asprintf(&filename, "/dev/cpu/msr_whitelist");
+    const char *const filename = "/dev/cpu/msr_whitelist";
 #else
-    asprintf(&filename, "/dev/cpu/msr_allowlist");
+    const char *const filename = "/dev/cpu/msr_allowlist";
 #endif
     EXPECT_EQ(1, check_other_permissions(filename));
-    free(filename);
 }
 
 TEST(MsrAllowlist, Size)
 {
-    char *filename;
-
 #ifdef USE_MSR_SAFE_BEFORE_1_5_0
-    asprintf(&filename, "/dev/cpu/msr_whitelist");
+    const char *const filename = "/dev/cpu/msr_whitelist";
 #else
-    asprintf(&filename, "/dev/cpu/msr_allowlist");
+    const char *const filename = "/dev/cpu/msr_allowlist";
 #endif
     /* Valid list should not be empty */
     EXPECT_NE(0, allowlist_size(filename));
-    free(filename);
 }
 

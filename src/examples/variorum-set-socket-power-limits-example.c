@@ -11,17 +11,21 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int pkg_pow_lim_watts;
+    int pkg_pow_lim_watts = 100;
 
     if (argc == 1)
     {
         printf("No power limit specified...using default limit of 100W.\n");
-        pkg_pow_lim_watts = 100;
     }
     else if (argc == 2)
     {
         pkg_pow_lim_watts = atoi(argv[1]);
         printf("Setting each socket to %dW.\n", pkg_pow_lim_watts);
+    }
+    else
+    {
+        printf("Usage: set_socket_power_limit [limit in watts]\n");
+        exit(0);
     }
 
     ret = variorum_set_each_socket_power_limit(pkg_pow_lim_watts);

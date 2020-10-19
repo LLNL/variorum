@@ -12,10 +12,10 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-void initNVML()
+void initNVML(void)
 {
     unsigned int d;
-    int m_num_package;
+    unsigned m_num_package;
     /* Initialize GPU reading */
     nvmlReturn_t result = nvmlInit();
     nvmlDeviceGetCount(&m_total_unit_devices);
@@ -43,7 +43,7 @@ void initNVML()
     gethostname(m_hostname, 1024);
 }
 
-void shutdownNVML()
+void shutdownNVML(void)
 {
     nvmlShutdown();
 }
@@ -56,8 +56,8 @@ void dump_power_data(int chipid, int verbose, FILE *output)
     static int init_output = 0;
 
     //Iterate over all GPU device handles for this socket and print power
-    for (d = chipid * m_gpus_per_socket;
-         d < (chipid + 1) * m_gpus_per_socket; ++d)
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
         value = (double)power * 0.001f;
@@ -83,13 +83,13 @@ void dump_power_data(int chipid, int verbose, FILE *output)
 
 void dump_thermal_data(int chipid, int verbose, FILE *output)
 {
-    unsigned int gpu_temp;
+    unsigned gpu_temp;
     int d;
     static int init_output = 0;
 
     /* Iterate over all GPU device handles populated at init and print temperature (SM) */
-    for (d = chipid * m_gpus_per_socket;
-         d < (chipid + 1) * m_gpus_per_socket; ++d)
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU,
                                  &gpu_temp);
@@ -97,7 +97,7 @@ void dump_thermal_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_TEMPERATURE Host: %s, Socket:%d, Device ID: %d, Temperature: %ld\n",
+                    "_GPU_TEMPERATURE Host: %s, Socket:%d, Device ID: %d, Temperature: %u\n",
                     m_hostname, chipid, d, gpu_temp);
         }
         else
@@ -107,7 +107,7 @@ void dump_thermal_data(int chipid, int verbose, FILE *output)
                 fprintf(output, "_GPU_TEMPERATURE Host Socket Device Temperature\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_TEMPERATURE %s %d %d %ld\n",
+            fprintf(output, "_GPU_TEMPERATURE %s %d %d %d\n",
                     m_hostname, chipid, d, gpu_temp);
         }
     }
@@ -123,8 +123,8 @@ void dump_power_limits(int chipid, int verbose, FILE *output)
     static int init_output = 0;
 
     /* Iterate over all GPU device handles populated at init and print GPU power limit */
-    for (d = chipid * m_gpus_per_socket;
-         d < (chipid + 1) * m_gpus_per_socket; ++d)
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetPowerManagementLimit(m_unit_devices_file_desc[d], &power_limit);
         value = (double) power_limit * 0.001f;
@@ -156,8 +156,8 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
     static int init_output = 0;
 
     /* Iterate over all GPU device handles and print GPU clock */
-    for (d = chipid * m_gpus_per_socket;
-         d < (chipid + 1) * m_gpus_per_socket; ++d)
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetClock(m_unit_devices_file_desc[d], NVML_CLOCK_SM,
                            NVML_CLOCK_ID_CURRENT, &gpu_clock);
@@ -188,15 +188,15 @@ void dump_gpu_utilization(int chipid, int verbose, FILE *output)
     static int init_output = 0;
 
     /* Iterate over all GPU device handles and print GPU SM and memory utilization */
-    for (d = chipid * m_gpus_per_socket;
-         d < (chipid + 1) * m_gpus_per_socket; ++d)
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
 
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_UTILIZATION Host: %s, Socket: %d, Device ID: %d, GPU Utilization (%): SM: %d, Memory: %d\n",
+                    "_GPU_UTILIZATION Host: %s, Socket: %d, Device ID: %d, GPU Utilization (%%): SM: %d, Memory: %d\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
         else

@@ -20,7 +20,7 @@
 int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **raw_val = NULL;
     int max_non_turbo_ratio;
 
@@ -63,10 +63,9 @@ int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
 int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **raw_val = NULL;
     int max_efficiency_ratio;
-    int socket;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
@@ -108,10 +107,9 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
 int get_min_operating_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **raw_val = NULL;
     int min_operating_ratio;
-    int socket;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
@@ -146,9 +144,9 @@ int get_min_operating_ratio(off_t msr_platform_info, int *val)
 int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **val = NULL;
-    int socket, ncores, nbits;
+    unsigned ncores, nbits;
 
     variorum_get_topology(&nsockets, &ncores, NULL);
     if (!init)
@@ -169,7 +167,7 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
         }
     }
 
-    int core = 1;
+    unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
@@ -195,10 +193,10 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
                            off_t msr_turbo_ratio_limit1)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **val = NULL;
     static uint64_t **val2 = NULL;
-    int socket, ncores, nbits;
+    unsigned ncores, nbits;
 
     variorum_get_topology(&nsockets, &ncores, NULL);
     if (!init)
@@ -224,7 +222,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
         }
     }
 
-    int core = 1;
+    unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
@@ -253,10 +251,10 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
                                off_t msr_turbo_ratio_limit_cores)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **val = NULL;
     static uint64_t **val2 = NULL;
-    int socket, ncores, nbits;
+    unsigned ncores, nbits;
 
     variorum_get_topology(&nsockets, &ncores, NULL);
     if (!init)
@@ -282,7 +280,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
         }
     }
 
-    int core;
+    unsigned core;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
         core = (int)(MASK_VAL(*val2[0], nbits + 7, nbits));
@@ -302,10 +300,9 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
 int config_tdp(int nlevels, off_t msr_config_tdp_level)
 {
     static int init = 0;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
     static uint64_t **l = NULL;
     int level;
-    int socket;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
@@ -357,13 +354,11 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
  * ratio
  */
 int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
-                   off_t *msr_config_tdp_l2, off_t *msr_config_tdp_nominal)
+                   off_t *msr_config_tdp_l2)
 {
     static int init = 0;
-    static int nsockets = 0;
-    static uint64_t **val, **l1, **l2 = NULL;
-    int socket;
-    uint64_t nominal;
+    static unsigned nsockets = 0;
+    static uint64_t **val = NULL;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     if (!init)
@@ -396,33 +391,35 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
      */
     int nvalues = (int)(MASK_VAL(*val[0], 34, 33));
     int max_non_turbo_ratio;
-    switch (nvalues)
+
+    if (nvalues == 2)
     {
-        case 2:
-            config_tdp(2, *msr_config_tdp_l2);
-        case 1:
-            config_tdp(1, *msr_config_tdp_l1);
-        case 0:
-            // Read 648h = normal P1
-            /// @todo Should we be reading from PLATFORM_INFO or CONFIG_TDP_NOMINAL 0x648?
-            err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
-            if (!err)
-            {
-                printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
-            }
-            break;
-        case 3:
-            // Reserved
-            break;
+        config_tdp(2, *msr_config_tdp_l2);
     }
+    if (nvalues == 1)
+    {
+        config_tdp(1, *msr_config_tdp_l1);
+    }
+    if (nvalues == 0)
+    {
+        // Read 648h = normal P1
+        /// @todo Should we be reading from PLATFORM_INFO or CONFIG_TDP_NOMINAL 0x648?
+        err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
+        if (!err)
+        {
+            printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
+        }
+    }
+
+    return 0;
 }
 
 /// For socket level
 int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    int socket;
-    int nsockets;
+    unsigned socket;
+    unsigned nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
@@ -466,8 +463,8 @@ int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    int socket;
-    int nsockets;
+    unsigned socket;
+    unsigned nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
@@ -512,8 +509,8 @@ int dump_turbo_status(FILE *writedest, off_t msr_misc_enable,
                       unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    int socket;
-    int nsockets;
+    unsigned socket;
+    unsigned nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 

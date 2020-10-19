@@ -170,8 +170,9 @@ int main(int argc, char **argv)
     }
 #endif
 
-    char *fname_dat;
-    char *fname_summary;
+    char *fname_dat = NULL;
+    char *fname_summary = NULL;
+    int rc;
     if (highlander())
     {
         /* Start the log file. */
@@ -182,12 +183,24 @@ int main(int argc, char **argv)
         if (logpath)
         {
             /* Output trace data into the specified location. */
-            asprintf(&fname_dat, "%s/%s.powmon.dat", logpath, hostname);
+            rc = asprintf(&fname_dat, "%s/%s.powmon.dat", logpath, hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
         else
         {
             /* Output trace data into the default location. */
-            asprintf(&fname_dat, "%s.powmon.dat", hostname);
+            rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
 
         logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -254,12 +267,24 @@ int main(int argc, char **argv)
         if (logpath)
         {
             /* Output summary data into the specified location. */
-            asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
+            rc = asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
         else
         {
             /* Output summary data into the default location. */
-            asprintf(&fname_summary, "%s.powmon.summary", hostname);
+            rc = asprintf(&fname_summary, "%s.powmon.summary", hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
         }
 
         logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -280,10 +305,18 @@ int main(int argc, char **argv)
         }
 
         char *msg;
-        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
-                 hostname, app_pid, end - start, start, end);
+        rc = asprintf(&msg,
+                      "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                      hostname, app_pid, end - start, start, end);
+        if (-1 == rc)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
+                    __FILE__, __LINE__);
+        }
 
         fprintf(summaryfile, "%s", msg);
+        free(msg);
         fclose(summaryfile);
         close(logfd);
 
@@ -313,5 +346,7 @@ int main(int argc, char **argv)
            "  %s\n"
            "  %s\n\n", fname_dat, fname_summary);
     highlander_clean();
+    free(fname_dat);
+    free(fname_summary);
     return 0;
 }

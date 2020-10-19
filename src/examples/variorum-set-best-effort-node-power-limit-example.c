@@ -11,7 +11,8 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int node_pow_lim_watts;
+    // 500W is based on minimum power on IBM Witherspoon
+    int node_pow_lim_watts = 500;
 
     if (argc == 1)
     {

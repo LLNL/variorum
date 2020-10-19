@@ -127,14 +127,10 @@ void disable_fixed_counters(off_t *msrs_fixed_ctrs,
                             off_t msr2);
 
 void dump_fixed_counter_data(FILE *writedest,
-                             off_t *msrs_fixed_ctrs,
-                             off_t perf_global,
-                             off_t fixed_ctr_ctrl);
+                             off_t *msrs_fixed_ctrs);
 
 void print_fixed_counter_data(FILE *writedest,
-                              off_t *msrs_fixed_ctrs,
-                              off_t msr_perf_global_ctrl,
-                              off_t msr_fixed_counter_ctrl);
+                              off_t *msrs_fixed_ctrs);
 
 void dump_perfmon_counter_data(FILE *writedest,
                                off_t *msrs_perfevtsel_ctrs,
@@ -146,8 +142,6 @@ void print_perfmon_counter_data(FILE *writedest,
 
 void dump_all_counter_data(FILE *writedest,
                            off_t *msrs_fixed_ctrs,
-                           off_t msr_perf_global_ctrl,
-                           off_t msr_fixed_counter_ctrl,
                            off_t *msrs_perfevtsel_ctrs,
                            off_t *msrs_perfmon_ctrs,
                            off_t *msrs_pcu_pmon_evtsel,
@@ -155,8 +149,6 @@ void dump_all_counter_data(FILE *writedest,
 
 void print_all_counter_data(FILE *writedest,
                             off_t *msrs_fixed_ctrs,
-                            off_t msr_perf_global_ctrl,
-                            off_t msr_fixed_counter_ctrl,
                             off_t *msrs_perfevtsel_ctrs,
                             off_t *msrs_perfmon_ctrs,
                             off_t *msrs_pcu_pmon_evtsel,

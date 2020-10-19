@@ -186,7 +186,8 @@ int main(int argc, char **argv)
     }
 #endif
 
-    char *fname_dat;
+    char *fname_dat = NULL;
+    int rc = 0;
     char *fname_summary;
     if (highlander())
     {
@@ -195,7 +196,14 @@ int main(int argc, char **argv)
         char hostname[64];
         gethostname(hostname, 64);
 
-        asprintf(&fname_dat, "%s.powmon.dat", hostname);
+        rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
                      S_IRUSR | S_IWUSR);
@@ -204,6 +212,7 @@ int main(int argc, char **argv)
             fprintf(stderr,
                     "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
                     hostname, fname_dat, strerror(errno));
+            free(fname_dat);
             return 1;
         }
         logfile = fdopen(logfd, "w");
@@ -211,6 +220,7 @@ int main(int argc, char **argv)
         {
             fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
                     hostname, fname_dat, strerror(errno));
+            free(fname_dat);
             return 1;
         }
 
@@ -257,7 +267,14 @@ int main(int argc, char **argv)
         end = now_ms();
 
         /* Output summary data. */
-        asprintf(&fname_summary, "%s.power.summary", hostname);
+        rc = asprintf(&fname_summary, "%s.power.summary", hostname);
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
                      S_IRUSR | S_IWUSR);
@@ -266,6 +283,7 @@ int main(int argc, char **argv)
             fprintf(stderr,
                     "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
                     hostname, fname_summary, strerror(errno));
+            free(fname_summary);
             return 1;
         }
         summaryfile = fdopen(logfd, "w");
@@ -273,15 +291,25 @@ int main(int argc, char **argv)
         {
             fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
                     hostname, fname_summary, strerror(errno));
+            free(fname_summary);
             return 1;
         }
 
         char *msg;
-        //asprintf(&msg, "host: %s\npid: %d\ntotal: %lf\nallocated: %lf\nmax_watts: %lf\nmin_watts: %lf\nruntime ms: %lu\n,start: %lu\nend: %lu\n", hostname, app_pid, total_joules, limit_joules, max_watts, min_watts, end-start, start, end);
-        asprintf(&msg, "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
-                 hostname, app_pid, end - start, start, end);
+        //rc = asprintf(&msg, "host: %s\npid: %d\ntotal: %lf\nallocated: %lf\nmax_watts: %lf\nmin_watts: %lf\nruntime ms: %lu\n,start: %lu\nend: %lu\n", hostname, app_pid, total_joules, limit_joules, max_watts, min_watts, end-start, start, end);
+        rc = asprintf(&msg,
+                      "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                      hostname, app_pid, end - start, start, end);
+        if (rc == -1)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    __FILE__, __LINE__);
+            exit(-1);
+        }
 
         fprintf(summaryfile, "%s", msg);
+        free(msg);
         fclose(summaryfile);
         close(logfd);
 
@@ -289,6 +317,7 @@ int main(int argc, char **argv)
         shmdt(shmseg);
 
         pthread_attr_destroy(&mattr);
+        free(fname_summary);
     }
     else
     {
@@ -310,6 +339,8 @@ int main(int argc, char **argv)
     printf("Output Files\n"
            "  %s\n"
            "  %s\n\n", fname_dat, fname_summary);
+
+    free(fname_dat);
     highlander_clean();
     return 0;
 }

@@ -14,10 +14,10 @@
 
 void get_temp_target(struct msr_temp_target *s, off_t msr)
 {
-    int nsockets;
+    unsigned nsockets;
     static uint64_t **val = NULL;
     static int init_tt = 0;
-    int i;
+    unsigned i;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -44,10 +44,10 @@ void get_temp_target(struct msr_temp_target *s, off_t msr)
 
 void get_therm_stat(struct therm_stat *s, off_t msr)
 {
-    int nthreads;
+    unsigned nthreads;
     static uint64_t **val = NULL;
     static int init_ts = 0;
-    int i;
+    unsigned i;
 
     variorum_get_topology(NULL, NULL, &nthreads);
 
@@ -150,10 +150,10 @@ void get_therm_stat(struct therm_stat *s, off_t msr)
 
 int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
 {
-    int nsockets;
+    unsigned nsockets;
     static uint64_t **val = NULL;
     static int init_pkg_ts = 0;
-    int i;
+    unsigned i;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -241,9 +241,9 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
     struct therm_stat *t_stat = NULL;
-    int idx;
-    int i, j, k;
-    int nsockets, ncores, nthreads;
+    unsigned idx;
+    unsigned i, j, k;
+    unsigned nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
@@ -300,9 +300,9 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
     struct therm_stat *t_stat = NULL;
-    int idx;
-    int i, j, k;
-    int nsockets, ncores, nthreads;
+    unsigned idx;
+    unsigned i, j, k;
+    unsigned nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 

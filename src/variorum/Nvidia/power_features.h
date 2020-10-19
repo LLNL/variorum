@@ -11,9 +11,9 @@
 
 #include <nvml.h>
 
-unsigned int m_total_unit_devices;
+unsigned m_total_unit_devices;
 nvmlDevice_t *m_unit_devices_file_desc;
-unsigned int m_gpus_per_socket;
+unsigned m_gpus_per_socket;
 char m_hostname[1024];
 
 void initNVML(void);

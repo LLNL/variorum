@@ -20,7 +20,7 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
 {
     static int init = 0;
     static struct clocks_data d;
-    static int nthreads = 0;
+    static unsigned nthreads = 0;
 
     if (!init)
     {
@@ -40,12 +40,12 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
     }
 }
 
-void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status,
-                       off_t msr_perf_ctl, enum ctl_domains_e control_domains)
+void perf_storage_temp(struct perf_data **pd, off_t msr_perf_ctl,
+                       enum ctl_domains_e control_domains)
 {
     static int init = 0;
     static struct perf_data d;
-    int nsockets, ncores, nthreads;
+    unsigned nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
@@ -77,7 +77,7 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_status,
 void perf_storage(struct perf_data **pd, off_t msr_perf_status)
 {
     static struct perf_data d;
-    static int nsockets = 0;
+    static unsigned nsockets = 0;
 
     if (!nsockets)
     {
@@ -95,19 +95,28 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
     }
 }
 
-void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
-                      off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
-                      enum ctl_domains_e control_domains)
+int dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                     off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                     enum ctl_domains_e control_domains)
 {
-#if 0
     static struct clocks_data *cd;
     static struct perf_data *pd;
     static int init = 0;
-    int i, j, k;
-    int nsockets, ncores, nthreads;
+    unsigned i, j, k;
+    unsigned nsockets, ncores, nthreads;
     int idx;
     char hostname[1024];
-    //    int max_non_turbo_ratio = get_max_non_turbo_ratio(msr_platform_info);
+    int max_non_turbo_ratio;
+    int err;
+
+    err = get_max_non_turbo_ratio(msr_platform_info, &max_non_turbo_ratio);
+    if (err)
+    {
+        variorum_error_handler("Error retrieving max non-turbo ratio",
+                               VARIORUM_ERROR_FUNCTION, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
@@ -168,24 +177,30 @@ void dump_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
             fprintf(stderr, "Not a valid control domain.\n");
             break;
     }
-#endif
+    return 0;
 }
 
-void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
-                       off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
-                       enum ctl_domains_e control_domains)
+int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                      off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                      enum ctl_domains_e control_domains)
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
-    int i, j, k;
+    unsigned i, j, k;
     int idx;
-    int nsockets, ncores, nthreads;
+    unsigned nsockets, ncores, nthreads;
     char hostname[1024];
     int max_non_turbo_ratio;
     int err;
 
-
     err = get_max_non_turbo_ratio(msr_platform_info, &max_non_turbo_ratio);
+    if (err)
+    {
+        variorum_error_handler("Error retrieving max non-turbo ratio",
+                               VARIORUM_ERROR_FUNCTION, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
     gethostname(hostname, 1024);
@@ -235,6 +250,7 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
             fprintf(stderr, "Not a valid control domain.\n");
             break;
     }
+    return 0;
 }
 
 //void print_clocks_data_socket(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
@@ -300,10 +316,10 @@ void print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //}
 
 void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
-                 off_t msr_perf_status, off_t msr_perf_ctl)
+                 off_t msr_perf_status)
 {
-    int nsockets, ncores, nthreads;
-    int i;
+    unsigned nsockets, ncores, nthreads;
+    unsigned i;
     static struct perf_data *pd;
     static int init = 0;
 
@@ -311,7 +327,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     if (!init)
     {
         init = 1;
-        perf_storage_temp(&pd, msr_perf_status, msr_perf_ctl, domain);
+        perf_storage_temp(&pd, msr_perf_status, domain);
     }
 
     switch (domain)
@@ -442,8 +458,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
 
 void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
                                    off_t *msr_turbo_ratio_limit, off_t *msr_turbo_ratio_limit_cores,
-                                   off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2,
-                                   off_t *msr_config_tdp_nominal)
+                                   off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2)
 {
     /* Turbo Range
      * Default ratio for 1C Max Turbo == P01
@@ -462,8 +477,7 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
 
     /* AVX2, AVX512 (i.e., AVX3) */
     fprintf(writedest, "=== AVX Schedule ===\n");
-    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2,
-                   msr_config_tdp_nominal);
+    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2);
 
     fprintf(writedest, "\n");
 
@@ -500,8 +514,7 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
 
 void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
                                off_t *msr_turbo_ratio_limit, off_t *msr_turbo_ratio_limit1,
-                               off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2,
-                               off_t *msr_config_tdp_nominal)
+                               off_t *msr_config_tdp_l1, off_t *msr_config_tdp_l2)
 {
     /* Turbo Range
      * Default ratio for 1C Max Turbo == P01
@@ -520,8 +533,7 @@ void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
 
     /* AVX2, AVX512 (i.e., AVX3) */
     fprintf(writedest, "=== AVX Schedule ===\n");
-    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2,
-                   msr_config_tdp_nominal);
+    get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2);
 
     fprintf(writedest, "\n");
 

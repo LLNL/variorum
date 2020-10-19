@@ -7,7 +7,7 @@
 
 #include <variorum.h>
 
-int main(int argc, char **argv)
+int main(void)
 {
     variorum_print_topology();
     return 0;

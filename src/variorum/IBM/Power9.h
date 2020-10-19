@@ -12,7 +12,7 @@ int p9_get_power(int long_ver);
 
 int p9_get_power_limits(int long_ver);
 
-int p9_set_socket_power_limit(int pcap_new);
+int p9_set_socket_power_limit(int long_ver);
 
 int p9_set_node_power_limit(int pcap_new);
 
