@@ -32,7 +32,7 @@ build-quartz:
    - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -74,7 +74,7 @@ build-lassen-cpu:
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -116,7 +116,7 @@ build-lassen-gpu:
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -158,7 +158,7 @@ build-catalyst:
    - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
