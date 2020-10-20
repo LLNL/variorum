@@ -4,13 +4,14 @@
 .. # SPDX-License-Identifier: MIT
 
 
-.. _quick_start:
-
 Quick Start Guide
 =================
 
 Installing Variorum
 -------------------
+
+The simplest way to install Variorum is using the default CMake settings (note,
+the default build targets an Intel architecture).
 
 .. code:: bash
 
@@ -23,6 +24,11 @@ Installing Variorum
     make install
 
 After this completes, ``build/`` will contain a Variorum install.
+
+For more details about building and installing Variorum, see
+:doc:`BuildingVariorum`. This page provides detailed info about building
+Variorum from CMake initial-cache files (i.e., host config files) for specific
+hosts, and Variorum's other CMake options and spack package.
 
 Accessing Low-Level Registers
 -----------------------------
@@ -52,3 +58,6 @@ The stock MSR driver provides the following device files:
 .. code:: bash
 
     ls /dev/cpu/<CPU>/msr
+
+For more details about accessing low-level counters and control knobs on other
+architectures supported by Variorum, see :doc:`HWArchitectures`.
