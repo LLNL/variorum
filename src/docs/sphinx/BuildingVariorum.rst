@@ -69,11 +69,11 @@ Build Options
 
 Variorum's build system supports the following CMake options:
 
-* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ). *(default = ON)*
+* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ) *(default = ON)*.
 
-* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built. *(default = ON)*
+* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built *(default = ON)*.
 
-* **BUILD_TESTS** - Controls if unit tests are built. *(default = ON)*
+* **BUILD_TESTS** - Controls if unit tests are built *(default = ON)*.
 
 * **HWLOC_DIR** - Path to an HWLOC install.
 
@@ -84,17 +84,27 @@ Variorum's build system supports the following CMake options:
 * **VARIORUM_DEBUG** - Enable Variorum debug statements, useful if values are
   not translating correctly *(default = OFF)*.
 
-* **VARIORUM_LOG** - Enable Variorum log statements, useful for tracking what
-  code path is being taken *(default = OFF)*.
+* **VARIORUM_LOG** - Enable Variorum logging statements, useful for tracking what
+  code path is being taken *(default = ON)*.
 
-* **VARIORUM_AMD** - Enable Variorum build for AMD architecture *(default = ON)*.
+* **VARIORUM_WITH_AMD** - (not yet implemented) Enable Variorum build for AMD architecture *(default = OFF)*.
 
-* **VARIORUM_GPU** - Enable Variorum build for GPU architecture *(default = ON)*.
+* **VARIORUM_WITH_NVIDIA** - Enable Variorum build for Nvidia architecture *(default = OFF)*.
 
-* **VARIORUM_IBM** - Enable Variorum build for IBM architecture *(default = ON)*.
+* **VARIORUM_WITH_IBM** - Enable Variorum build for IBM architecture *(default = OFF)*.
 
-* **VARIORUM_INTEL** - Enable Variorum build for Intel architecture *(default = ON)*.
+* **VARIORUM_WITH_INTEL** - Enable Variorum build for Intel architecture *(default = ON)*.
 
+* **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of
+Intel architectures for accessing counters from userspace *(default =
+ON)*.
+
+* **ENABLE_FORTRAN** - Enable fortran compiler for building example
+integration with fortran application, fortran compiler must exist *(default = ON)*.
+
+* **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra
+-Werror, used primarily by developers
+*(default = OFF)*.
 
 Host Config Files
 -----------------

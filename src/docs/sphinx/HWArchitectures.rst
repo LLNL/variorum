@@ -14,3 +14,4 @@ These are the currently supported architectures in Variorum.
 
    IBM
    Intel
+   Nvidia
