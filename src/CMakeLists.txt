@@ -37,11 +37,11 @@ if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
 endif()
 
+include(CMake/VariorumBuildType.cmake)
+
 include(CMake/CMakeBasics.cmake)
 
 include(CMake/SetupFortran.cmake)
-
-include(CMake/VariorumBuildType.cmake)
 
 include(CMake/SetupCompilerOptions.cmake)
 
