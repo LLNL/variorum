@@ -78,6 +78,7 @@ Variorum Documentation
   BuildingVariorum
   Variorum
   VariorumAPI
+  VariorumTools
 
 .. toctree::
   :maxdepth: 2
