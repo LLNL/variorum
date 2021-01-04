@@ -1,4 +1,4 @@
-.. # Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+.. # Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
 .. # Variorum Project Developers. See the top-level LICENSE file for details.
 .. #
 .. # SPDX-License-Identifier: MIT
@@ -22,7 +22,7 @@ The build dependencies for a minimal build require the following:
 
     * C
     * hwloc
-    * jansson 
+    * jansson
 
 
 Build Dependencies
