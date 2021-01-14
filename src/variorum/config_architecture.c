@@ -27,6 +27,10 @@
 #include <config_nvidia.h>
 #endif
 
+#ifdef VARIORUM_WITH_ARM
+#include <config_arm.h>
+#endif
+
 #ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 #else
@@ -92,6 +96,9 @@ int variorum_exit()
 #ifdef VARIORUM_WITH_NVIDIA
     free(g_platform.nvidia_arch);
 #endif
+#ifdef VARIORUM_WITH_ARM
+    free(g_platform.arm_arch);
+#endif
 
     return err;
 }
@@ -110,6 +117,9 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_NVIDIA
     g_platform.nvidia_arch = detect_gpu_arch();
 #endif
+#ifdef VARIORUM_WITH_ARM
+    g_platform.arm_arch = detect_arm_arch();
+#endif
 
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
@@ -121,7 +131,8 @@ int variorum_detect_arch(void)
     if (g_platform.intel_arch   == NULL &&
         g_platform.amd_arch     == NULL &&
         g_platform.ibm_arch     == NULL &&
-        g_platform.nvidia_arch  == NULL)
+        g_platform.nvidia_arch  == NULL &&
+        g_platform.arm_arch     == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
@@ -307,7 +318,9 @@ int variorum_set_func_ptrs()
 #ifdef VARIORUM_WITH_NVIDIA
     err = set_nvidia_func_ptrs();
 #endif
-
+#ifdef VARIORUM_WITH_ARM
+    err = set_arm_func_ptrs();
+#endif
     return err;
 }
 

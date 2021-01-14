@@ -75,6 +75,11 @@ enum nvidia_arch_e
     VOLTA = 1, // Volta
 };
 
+enum arm_arch_e
+{
+    ARMV8 = 1, //ARM Juno
+};
+
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -208,6 +213,8 @@ struct platform
     uint64_t *ibm_arch;
     /// @brief Identifier for NVIDIA architecture.
     uint64_t *nvidia_arch;
+    /// @brief Identifier for ARM architecture.
+    uint64_t *arm_arch;
 
     /// @brief Hostname.
     char hostname[1024];
