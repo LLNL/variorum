@@ -23,4 +23,7 @@ void dump_thermal_data(int verbose, FILE *output);
 void dump_frequencies(int chipid, FILE *output);
 
 void dump_clocks_data(int chipid, int verbose, FILE *output);
+
+void set_socket_frequency(int socketid, int new_freq);
+
 #endif

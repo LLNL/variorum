@@ -31,6 +31,7 @@ int set_arm_func_ptrs(void)
         g_platform.variorum_dump_thermals        		    = arm_get_thermals;
         g_platform.variorum_dump_clocks          		    = arm_get_clocks;
         g_platform.variorum_print_available_frequencies 	= arm_get_frequencies;
+        g_platform.variorum_set_socket_frequency     	    = arm_set_socket_frequency;
     }
     else
     {

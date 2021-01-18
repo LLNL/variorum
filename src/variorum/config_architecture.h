@@ -115,6 +115,13 @@ struct platform
     /// @return Error code.
     int (*variorum_set_and_verify_node_power_limit)(int node_power_limit);
 
+    /// @brief Function pointer to set socket frequency
+    ///
+    /// @param [in] socket_frequency Desired socket frequency in Hertz.
+    ///
+    /// @return Error code.
+    int (*variorum_set_socket_frequency)(int chipid, int socket_frequency);
+
     /// @brief Set the GPU power shifting ratio (uniform across sockets).
     ///
     /// @param [in] gpu_power_ratio Desired power ratio (percent) for the

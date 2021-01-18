@@ -24,12 +24,10 @@ set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
 set(VARIORUM_WITH_ARM ON CACHE BOOL "")
 
 set(ENABLE_FORTRAN OFF CACHE BOOL "")
+set(VARIORUM_LOG OFF CACHE BOOL "")
 
 # path to global hwloc install
 set(HWLOC_DIR "/usr/local/share/hwloc-1.11.7-install/" CACHE PATH "")
 
 # Path to JANSSON build
 set(JANSSON_DIR "/usr/local/" CACHE PATH "")
-
-#SPHINX documentation building
-#set("SPHINX_EXECUTABLE" "/collab/usr/gapps/python/build/spack-toss3.2/opt/spack/linux-rhel7-x86_64/gcc-4.9.3/py-sphinx-1.6.3-pd3yayuuejdpggkyqvhxbljwh4fhpo43/bin/sphinx-build" CACHE PATH "")

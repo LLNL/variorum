@@ -63,3 +63,20 @@ int arm_get_frequencies(void)
     }
     return 0;
 }
+
+int arm_set_socket_frequency(int cpuid, int freq)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL);
+    if(cpuid < 0 || cpuid >= nsockets)
+    {
+        fprintf(stdout, "The specified CPU ID does not exist\n");
+        return -1;
+    }
+    set_socket_frequency(cpuid, freq);
+    return 0;
+}

@@ -24,6 +24,13 @@ void read_file_ui64(const int file, uint64_t* val)
     sscanf(buf, "%"SCNu64, val);
 }
 
+void write_file_ui64(const int file, uint64_t val)
+{
+    char buf[32];
+    sprintf(buf, "%lu", val);
+    write(file, buf, strlen(buf));
+}
+
 int read_array_ui64(const int fd, uint64_t**array)
 {
     int num_freq = 0;
@@ -135,7 +142,7 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
     sprintf(freq_fname, "%s%d/scaling_cur_freq", freq_path, chipid);
     int freq_fd = open(freq_fname,O_RDONLY);
     read_file_ui64(freq_fd, &freq_val);
-    fprintf(output, "%"PRIu64"\n", freq_val);
+    fprintf(output, "%"PRIu64"\n", freq_val/1000);
     close(freq_fd);
 }
 
@@ -149,8 +156,23 @@ void dump_frequencies(int chipid, FILE *output)
     uint64_t* freq_array;
     int arr_size = read_array_ui64(freq_fd, &freq_array);
     for (int i = 0; i < arr_size; i++){
-        fprintf(output, "%"PRIu64"\n", freq_array[i]);
+        fprintf(output, "%"PRIu64"\n", freq_array[i]/1000);
     }
     close(freq_fd);
     free(freq_array);
 }
+
+void set_socket_frequency(int socketid, int new_freq)
+{
+    static int init_output = 0;
+    uint64_t freq_val;
+    char freq_fname[4096];
+    char* freq_path = "/sys/devices/system/cpu/cpufreq/policy";
+    sprintf(freq_fname, "%s%d/scaling_setspeed", freq_path, socketid);
+    int freq_fd = open(freq_fname, O_WRONLY);
+    write_file_ui64(freq_fd, new_freq);
+    close(freq_fd);
+}
+
+
+
