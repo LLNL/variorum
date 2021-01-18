@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -72,7 +72,7 @@ int arm_set_socket_frequency(int cpuid, int freq)
     unsigned iter = 0;
     unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
-    if(cpuid < 0 || cpuid >= nsockets)
+    if (cpuid < 0 || cpuid >= nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
         return -1;
