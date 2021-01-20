@@ -9,6 +9,8 @@ set(CMAKE_C_COMPILER "gcc" CACHE PATH "")
 # cpp compiler
 set(CMAKE_CXX_COMPILER "g++" CACHE PATH "")
 
+set(ENABLE_MPI ON CACHE BOOL "")
+
 set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS ON CACHE BOOL "")
 

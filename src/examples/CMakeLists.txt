@@ -46,7 +46,16 @@ foreach(EXAMPLE ${BASIC_EXAMPLES})
     target_link_libraries(${EXAMPLE} variorum ${variorum_deps})
 endforeach()
 
+if(MPI_FOUND)
+    add_subdirectory(mpi-openmp-examples)
+endif()
+
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
 install(DIRECTORY using-with-make using-with-cmake
         DESTINATION examples)
+
+if(MPI_FOUND)
+    install(DIRECTORY using-with-mpi
+            DESTINATION examples)
+endif()
