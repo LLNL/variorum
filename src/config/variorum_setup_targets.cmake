@@ -18,32 +18,24 @@ set_property(TARGET variorum::variorum
 
 if(TARGET hwloc::hwloc)
     set_property(TARGET variorum::variorum
-                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
-                 hwloc::hwloc)
+                 APPEND PROPERTY
+                 INTERFACE_LINK_LIBRARIES hwloc::hwloc)
 else()
     # if not, bottle hwloc
     set_property(TARGET variorum::variorum
                  APPEND PROPERTY
-                 INTERFACE_INCLUDE_DIRECTORIES ${HWLOC_INCLUDE_DIRS})
-
-    set_property(TARGET variorum::variorum
-                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
-                 hwloc)
+                 INTERFACE_INCLUDE_DIRECTORIES ${VARIORUM_HWLOC_INCLUDE_DIR})
 endif()
 
 if(TARGET jansson::jansson)
     set_property(TARGET variorum::variorum
-                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
-                 jansson::jansson)
+                 APPEND PROPERTY
+                 INTERFACE_LINK_LIBRARIES jansson::jansson)
 else()
     # if not, bottle jansson
     set_property(TARGET variorum::variorum
                  APPEND PROPERTY
-                 INTERFACE_INCLUDE_DIRECTORIES ${JANSSON_INCLUDE_DIRS})
-
-    set_property(TARGET variorum::variorum
-                 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
-                 jansson)
+                 INTERFACE_INCLUDE_DIRECTORIES ${VARIORUM_JANSSON_INCLUDE_DIR})
 endif()
 
 if(NOT Variorum_FIND_QUIETLY)
@@ -56,4 +48,3 @@ if(NOT Variorum_FIND_QUIETLY)
     message(STATUS "Variorum imported targets: ${_print_targets}")
     unset(_print_targets)
 endif()
-
