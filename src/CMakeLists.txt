@@ -16,7 +16,9 @@ option(BUILD_SHARED_LIBS         "Build shared libraries"       ON)
 option(BUILD_DOCS                "Build documentation"          ON)
 option(BUILD_TESTS               "Build tests"                  ON)
 
-option(ENABLE_FORTRAN            "Build Fortran support"        ON)
+option(ENABLE_FORTRAN            "Build Fortran support (for examples)" ON)
+option(ENABLE_MPI                "Build MPI support (for examples)" ON)
+option(ENABLE_OPENMP             "Build OpenMP support (for examples)" ON)
 option(ENABLE_WARNINGS           "Enable warnings"              OFF)
 
 option(VARIORUM_WITH_INTEL       "Support Intel architectures"  ON)
@@ -30,12 +32,23 @@ option(VARIORUM_LOG              "Enable logging statements"    ON)
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
 
+if(USE_MSR_SAFE_BEFORE_1_5_0)
+    add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
+endif()
+
+### Invoke CMake Fortran setup
 if(ENABLE_FORTRAN)
     enable_language(Fortran)
 endif()
 
-if(USE_MSR_SAFE_BEFORE_1_5_0)
-    add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
+### Invoke CMake MPI setup
+if(ENABLE_MPI)
+    find_package(MPI REQUIRED)
+endif()
+
+### Invoke CMake OpenMP setup
+if(ENABLE_OPENMP)
+    find_package(OpenMP REQUIRED)
 endif()
 
 include(CMake/VariorumBuildType.cmake)
@@ -65,11 +78,6 @@ endif()
 
 ### Add our libs
 add_subdirectory(variorum)
-
-### Invoke CMake Fortran setup
-if(ENABLE_FORTRAN)
-    enable_language(Fortran)
-endif()
 
 ### Add our tests
 if(BUILD_TESTS)

@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+#add_subdirectory(proxies/lulesh-2.0.3)
+
 target_link_libraries(variorum ${variorum_deps})
 
 add_definitions(-DSECOND_RUN)
@@ -48,5 +50,5 @@ endforeach()
 
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
-install(DIRECTORY using-with-make using-with-cmake
+install(DIRECTORY using-with-make using-with-cmake using-with-mpi
         DESTINATION examples)
