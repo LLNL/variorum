@@ -4,15 +4,6 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum Supported Architectures
+ARM Overview (under development)
 ================================
 
-These are the currently supported architectures in Variorum.
-
-.. toctree::
-   :maxdepth: 2
-
-   ARM
-   IBM
-   Intel
-   Nvidia

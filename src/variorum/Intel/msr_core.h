@@ -268,7 +268,8 @@ int read_msr_by_idx(int dev_idx,
                     off_t msr,
                     uint64_t *val);
 
-/// @brief Write new value to an MSR based on the index of a core or thread.
+/// @brief Write new value to an MSR based on the continuous index of a core
+/// or thread.
 ///
 /// A user can request to read from index 8, which is core 0 on socket 1 in a
 /// dual socket system with 8 cores per socket.  This index is a continuous
@@ -286,27 +287,106 @@ int write_msr_by_idx(int dev_idx,
                      off_t msr,
                      uint64_t val);
 
+/// @brief Write new value to an MSR based on a tuple of socket, core, and
+/// thread.
+///
+/// A user can request to read from index 8, which is core 0 on socket 1 in a
+/// dual socket system with 8 cores per socket.  This index is a continuous
+/// value based on the the number of cores on socket 0.
+///
+/// @param [in] socket Socket identifier.
+///
+/// @param [in] core Core identifier.
+///
+/// @param [in] thread Thread identifier.
+///
+/// @param [in] msr Address of register to read.
+///
+/// @param [out] val Value read from MSR.
+///
+/// @return 0 if successful, else -1 if file descriptor was NULL or if the
+/// number of bytes read was not the size of uint64_t.
 int write_msr_by_coord(unsigned socket,
                        unsigned core,
                        unsigned thread,
                        off_t msr,
                        uint64_t val);
 
+/// @brief Create a batch for a thread-level MSR.
+///
+/// This function associates an existing allocated array (for the MSR values)
+/// with an existing batch handle. After this function call, issuing a read or
+/// write to the batched MSR can be done with read/write_batch.
+///
+/// @param [in] msr Address of register to read.
+///
+/// @param [out] val Array to store values for reading from or writing to
+///              batched MSR.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @return 0 if successful, else -1 if val is NULL.
 int load_thread_batch(off_t msr,
                       uint64_t **val,
                       int batchnum);
 
+/// @brief Create a batch for a socket-level MSR.
+///
+/// This function associates an existing allocated array (for the MSR values)
+/// with an existing batch handle. After this function call, issuing a read or
+/// write to the batched MSR can be done with read/write_batch.
+///
+/// @param [in] msr Address of register to read.
+///
+/// @param [out] val Array to store values for reading from or writing to
+///              batched MSR.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @return 0 if successful, else -1 if val is NULL.
 int load_socket_batch(off_t msr,
                       uint64_t **val,
                       int batchnum);
 
+/// @brief Allocate a batch handle.
+///
+/// This function initializes a batch handle with a given size.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @param [in] bsize Length of array to allocate.
+///
+/// @return 0 if successful, else -1 if batch handle is NULL or if trying to
+/// reallocate an existing batch.
 int allocate_batch(int batchnum,
                    size_t bsize);
 
+/// @brief Read from a batched set of MSRs.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @return 0 if successful, else -1.
 int read_batch(const int batchnum);
 
+/// @brief Write to a batched set of MSRs.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @return 0 if successful, else -1.
 int write_batch(const int batchnum);
 
+/// @brief Create a batch operation for a given CPU.
+///
+/// @param [in] msr Address of register to read.
+///
+/// @param [in] cpu Unique index on where to issue operation.
+///
+/// @param [out] dest Location to store batch operation.
+///
+/// @param [in] batchnum Identify a unique batch.
+///
+/// @return 0 if successful, else -1 if batch handle is NULL or if batched
+/// allocation size does not match.
 int create_batch_op(off_t msr,
                     uint64_t cpu,
                     uint64_t **dest,

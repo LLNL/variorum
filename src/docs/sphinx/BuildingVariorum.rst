@@ -16,7 +16,7 @@ Overview
 --------
 
 Variorum uses CMake for its build system.
-Building Variorum creates the libvariorum library.
+Building Variorum creates the variorum library.
 
 The build dependencies for a minimal build require the following:
 
@@ -40,7 +40,7 @@ hwloc (Required)
 No dependencies.
 
 jansson (Required)
-""""""""""""""""
+""""""""""""""""""
 
 No dependencies.
 
@@ -50,7 +50,7 @@ Clone the Variorum repo from GitHub:
 
 .. code:: bash
 
-    git clone https://lc.llnl.gov/bitbucket/scm/var/variorum.git
+    git clone https://github.com/llnl/variorum
 
 
 Build, test, and install Variorum:
@@ -69,17 +69,21 @@ Build Options
 
 Variorum's build system supports the following CMake options:
 
-* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ) *(default = ON)*.
+* **ENABLE_FORTRAN** - Enable fortran compiler for building example integration with fortran application, fortran compiler must exist *(default = ON)*.
 
-* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built *(default = ON)*.
-
-* **BUILD_TESTS** - Controls if unit tests are built *(default = ON)*.
+* **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra -Werror, used primarily by developers *(default = OFF)*.
 
 * **HWLOC_DIR** - Path to an HWLOC install.
 
 * **JANSSON_DIR** - Path to a JANSSON install.
 
 * **SPHINX_EXECUTABLE** - Path to sphinx-build binary *(required for documentation)*.
+
+* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ) *(default = ON)*.
+
+* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built *(default = ON)*.
+
+* **BUILD_TESTS** - Controls if unit tests are built *(default = ON)*.
 
 * **VARIORUM_DEBUG** - Enable Variorum debug statements, useful if values are
   not translating correctly *(default = OFF)*.
@@ -95,16 +99,7 @@ Variorum's build system supports the following CMake options:
 
 * **VARIORUM_WITH_INTEL** - Enable Variorum build for Intel architecture *(default = ON)*.
 
-* **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of
-Intel architectures for accessing counters from userspace *(default =
-ON)*.
-
-* **ENABLE_FORTRAN** - Enable fortran compiler for building example
-integration with fortran application, fortran compiler must exist *(default = ON)*.
-
-* **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra
--Werror, used primarily by developers
-*(default = OFF)*.
+* **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of Intel architectures for accessing counters from userspace *(default = ON)*.
 
 Host Config Files
 -----------------
@@ -114,7 +109,7 @@ initial-cache file mechanism.
 
 .. code:: bash
 
-    cmake -C config_file.cmake
+    cmake -C config_file.cmake ../src
 
 
 We call these initial-cache files *host-config* files, since we typically
@@ -160,7 +155,7 @@ that customize the options and dependencies used to build Variorum:
   **shared**      Build Variorum as shared library         ON (+shared)
   **docs**        Build Variorum's Documentation           OFF (~docs)
   **log**         Enable Variorum's logging infrastructure OFF (~docs)
-  **build_type**  Specify build type                       Release (build_type=Release)
+  **build_type**  Specify build type                       RelWithDebugInfo (build_type=RelWithDebugInfo)
  ================ ======================================== ============================
 
 Variants are enabled using ``+`` and disabled using ``~``. For example, to
