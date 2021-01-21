@@ -221,7 +221,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
                         fprintf(writedest,
-                                "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
+                                "_CLOCKS_DATA Host: %s, Socket: %d, APERF: %lu, MPERF: %lu, TSC: %lu, Curr_Freq: %lu MHz, Avg_Freq: %f MHz\n",
                                 hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
@@ -238,7 +238,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
                         fprintf(writedest,
-                                "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
+                                "_CLOCKS_DATA Host: %s, Socket: %d, Core: %d, Thread_Phy: %d, Thread_Log: %d, APERF: %lu, MPERF: %lu, TSC: %lu, Curr_Freq: %lu MHz, Avg_Freq: %f MHz\n",
                                 hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
@@ -277,7 +277,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //            for (k = 0; k < nthreads/ncores; k+=nthreads/ncores)
 //            {
 //                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-//                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
+//                fprintf(writedest, "_CLOCKS_DATA Host: %s Socket: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_MHz: %lu Avg_Freq_MHz: %f\n",
 //                        hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
 //            }
 //        }
@@ -308,7 +308,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //            for (k = 0; k < nthreads/ncores; k++)
 //            {
 //                idx = (k * nsockets * (ncores/nsockets)) + (i * (ncores/nsockets)) + j;
-//                fprintf(writedest, "_CLOCKS_DATA Hostname: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
+//                fprintf(writedest, "_CLOCKS_DATA Host: %s Socket: %d Core: %d Thread_Phy: %d Thread_Log: %d APERF: %lu MPERF: %lu TSC: %lu Curr_Freq_Mhz: %lu Avg_Freq_Mhz: %f\n",
 //                        hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx], MASK_VAL(*pd->perf_status[i], 15, 8) * 100, max_non_turbo_ratio*((*cd->aperf[idx])/(double)(*cd->mperf[idx])));
 //            }
 //        }

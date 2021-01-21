@@ -144,7 +144,7 @@ int p9_get_power_limits(int long_ver)
     else
     {
         fprintf(stdout,
-                "_POWERCAP Host: %s, CurrentWatts: %d Watts, MaxWatts: %d Watts, MinWatts: %d Watts, PSR_CPU_to_GPU_0: %d%, PSR_CPU_to_GPU_8: %d%\n",
+                "_POWERCAP Host: %s, CurrentWatts: %d W, MaxWatts: %d W, MinWatts: %d W, PSR_CPU_to_GPU_0: %d%, PSR_CPU_to_GPU_8: %d%\n",
                 hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
     }
     return 0;

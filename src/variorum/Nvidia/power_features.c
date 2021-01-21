@@ -65,7 +65,7 @@ void dump_power_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_POWER_USAGE Host: %s, Socket: %d, Device ID: %d, Power: %lf\n",
+                    "_GPU_POWER_USAGE Host: %s, Socket: %d, Device_ID: %d, Power: %lf W\n",
                     m_hostname, chipid, d, value);
         }
         else
@@ -97,7 +97,7 @@ void dump_thermal_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_TEMPERATURE Host: %s, Socket:%d, Device ID: %d, Temperature: %u\n",
+                    "_GPU_TEMPERATURE Host: %s, Socket: %d, Device_ID: %d, Temperature: %u C\n",
                     m_hostname, chipid, d, gpu_temp);
         }
         else
@@ -132,7 +132,7 @@ void dump_power_limits(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_POWER_LIMIT Host: %s, Socket:%d, Device ID: %d, Power limit: %0.3lf\n",
+                    "_GPU_POWER_LIMIT Host: %s, Socket: %d, Device_ID: %d, Power_Limit: %0.3lf W\n",
                     m_hostname, chipid, d, value);
         }
         else
@@ -165,7 +165,7 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_CLOCKS Host: %s, Socket:%d, Device ID: %d, GPU Clock: %d\n",
+                    "_GPU_CLOCKS Host: %s, Socket: %d, Device_ID: %d, GPU_Clock: %d MHz\n",
                     m_hostname, chipid, d, gpu_clock);
         }
         else
@@ -196,7 +196,7 @@ void dump_gpu_utilization(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_UTILIZATION Host: %s, Socket: %d, Device ID: %d, GPU Utilization (%%): SM: %d, Memory: %d\n",
+                    "_GPU_UTILIZATION Host: %s, Socket: %d, Device_ID: %d, SM_Utilization: %d%, Memory_Utilization: %d%\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
         else
