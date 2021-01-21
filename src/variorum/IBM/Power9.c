@@ -82,64 +82,70 @@ int p9_get_power_limits(int long_ver)
     int psr_1 = 0;
     int psr_2 = 0;
 
+    gethostname(hostname, 1024);
+
+    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-current",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    fscanf(fp, "%d", &pcap_current);
+    fclose(fp);
+
+    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-max", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-max",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    fscanf(fp, "%d", &pcap_max);
+    fclose(fp);
+
+    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-min", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- powercap-min",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    fscanf(fp, "%d", &pcap_min);
+    fclose(fp);
+
+    fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_0", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_0",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    fscanf(fp, "%d", &psr_1);
+    fclose(fp);
+
+    fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_8", "r");
+    if (fp == NULL)
+    {
+        variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_8",
+                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+    fscanf(fp, "%d", &psr_2);
+    fclose(fp);
+
     if (long_ver == 0)
     {
-        gethostname(hostname, 1024);
-
-        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current", "r");
-        if (fp == NULL)
-        {
-            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-current",
-                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-            return -1;
-        }
-        fscanf(fp, "%d", &pcap_current);
-        fclose(fp);
-
-        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-max", "r");
-        if (fp == NULL)
-        {
-            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-max",
-                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-            return -1;
-        }
-        fscanf(fp, "%d", &pcap_max);
-        fclose(fp);
-
-        fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-min", "r");
-        if (fp == NULL)
-        {
-            variorum_error_handler("Incorrect permissions on OPAL files -- powercap-min",
-                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-            return -1;
-        }
-        fscanf(fp, "%d", &pcap_min);
-        fclose(fp);
-
-        fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_0", "r");
-        if (fp == NULL)
-        {
-            variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_0",
-                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-            return -1;
-        }
-        fscanf(fp, "%d", &psr_1);
-        fclose(fp);
-
-        fp = fopen("/sys/firmware/opal/psr/cpu_to_gpu_8", "r");
-        if (fp == NULL)
-        {
-            variorum_error_handler("Incorrect permissions on OPAL files -- cpu_to_gpu_8",
-                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-            return -1;
-        }
-        fscanf(fp, "%d", &psr_2);
-        fclose(fp);
-
         fprintf(stdout,
-                "_POWERCAP CurrentWatts MaxWatts MinWatts CPU_to_GPU_0 PSR CPU_to_GPU_8 PSR\n");
-        fprintf(stdout, "_POWERCAP %d %d %d %d %d \n", pcap_current, pcap_max, pcap_min,
-                psr_1, psr_2);
+                "_POWERCAP Host CurrentWatts MaxWatts MinWatts PSR_CPU_to_GPU_0 PSR_CPU_to_GPU_8\n");
+        fprintf(stdout, "_POWERCAP %s %d %d %d %d %d \n",
+                hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+    }
+    else
+    {
+        fprintf(stdout,
+                "_POWERCAP Host: %s, CurrentWatts: %d Watts, MaxWatts: %d Watts, MinWatts: %d Watts, PSR_CPU_to_GPU_0: %d%, PSR_CPU_to_GPU_8: %d%\n",
+                hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
     }
     return 0;
 }
@@ -200,7 +206,7 @@ int p9_set_and_verify_node_power_limit(int pcap_new)
     {
         fprintf(stdout, "Could not verify if the power cap was set correctly.\n");
         fprintf(stdout, "Verification check after 100ms failed.\n");
-        fprintf(stdout, "Please verify again with dump_power_limits.\n");
+        fprintf(stdout, "Please verify again with print_power_limits.\n");
         return -1;
     }
 
@@ -241,7 +247,7 @@ int p9_set_node_power_limit(int pcap_new)
     fprintf(stdout, "\nNOTE: \n");
     fprintf(stdout,
             "  It may take 100-500ms for power cap to propagate out of band, so please\n"
-            "  verify again with dump_power_limits before setting the cap again.\n");
+            "  verify again with print_power_limits before setting the cap again.\n");
     return 0;
 }
 
@@ -288,7 +294,7 @@ int p9_set_gpu_power_ratio(int gpu_power_ratio)
     fprintf(stdout,
             "  A 100ms delay was added to allow for file operations to propagate out of band.\n"
             "  This delay may not be sufficient, so please verify again with\n"
-            "  dump_power_limits before setting the ratio again. We have seen delays of up to\n"
+            "  print_power_limits before setting the ratio again. We have seen delays of up to\n"
             "  2 seconds with out of band enforcement for GPU ratio.\n");
 
     return 0;
