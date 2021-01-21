@@ -21,4 +21,7 @@ set(VARIORUM_WITH_IBM ON CACHE BOOL "")
 set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
 
 # path to global hwloc install
-#set(HWLOC_DIR "/usr/local/share/hwloc-1.11.7-install" CACHE PATH "")
+set(HWLOC_DIR "/usr/local/share/hwloc-1.11.7-install" CACHE PATH "")
+
+# path to global jansson install
+set(JANSSON_DIR "/usr/local/share/jansson-2.6-install" CACHE PATH "")
