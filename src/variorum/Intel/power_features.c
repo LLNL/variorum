@@ -434,7 +434,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     for (socket = 0; socket < nsockets; socket++)
     {
         fprintf(writedest,
-                "_RAPL_POWER_UNITS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx PowerUnit: %fW EnergyUnit: %fJ TimeUnit: %f\n",
+                "_RAPL_POWER_UNITS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, PowerUnit: %f W, EnergyUnit: %f J, TimeUnit: %f sec\n",
                 msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
     }
@@ -474,7 +474,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!get_rapl_power_info(socket, &info, msr))
     {
         fprintf(writedest,
-                "_PACKAGE_POWER_INFO Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx MaxPower: %lfW MinPower: %lfW MaxWindow: %lf sec ThermPower: %lfW\n",
+                "_PACKAGE_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxWindow: %lf sec, ThermPower: %lf W\n",
                 msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
                 info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
@@ -542,7 +542,7 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
         fprintf(writedest,
-                "_PACKAGE_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim1: %lfW SecTimeWin1: %lf sec WattsPowerLim2: %lfW SecTimeWin2: %lf sec\n",
+                "_PACKAGE_POWER_LIMIT Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, PowerLimit1: %lf W, TimeWindow1: %lf sec, PowerLimit2: %lf W, TimeWindow2: %lf sec\n",
                 msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
                 l2.seconds);
     }
@@ -559,7 +559,7 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
     {
         fprintf(writedest,
-                "_DRAM_POWER_LIMIT Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx WattsPowerLim: %lfW SecTimeWin: %lf sec\n",
+                "_DRAM_POWER_LIMIT Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, PowerLimit: %lf W, TimeWindow: %lf sec\n",
                 msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
     }
 }
@@ -868,12 +868,12 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
                 *rapl->pkg_bits[i], i, rapl->pkg_joules[i]);
 #endif
         fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, EnergyConsumed: %lf J, PowerConsumed: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
                 rapl->pkg_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         fprintf(writedest,
-                "_DRAM_ENERGY_STATUS Offset: 0x%lx Host: %s Socket: %d Bits: 0x%lx Joules: %lf Watts: %lf Elapsed: %lf s Timestamp: %lf s\n",
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, EnergyConsumed: %lf J, PowerConsumed: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
                 rapl->dram_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
@@ -900,7 +900,7 @@ void dump_power_data(FILE *writedest, off_t msr_rapl_unit,
     {
         gettimeofday(&start, NULL);
         fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
+                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy Power Elapsed Timestamp\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
@@ -915,7 +915,7 @@ void dump_power_data(FILE *writedest, off_t msr_rapl_unit,
     if (!init)
     {
         fprintf(writedest,
-                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Joules Watts Elapsed Timestamp\n");
+                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy Power Elapsed Timestamp\n");
         init = 1;
     }
     for (i = 0; i < nsockets; i++)

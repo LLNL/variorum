@@ -193,8 +193,8 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
     else
     {
         fprintf(output,
-                "_IBMPOWER Hostname: %s Socket: %d PWRSYS: %lu Watts PWRPROC: %lu Watts"
-                " PWRMEM: %lu Watts PWRGPU: %lu Watts Timestamp: %lf seconds\n",
+                "_IBMPOWER Host: %s, Socket: %d, PWRSYS: %lu W, PWRPROC: %lu W,"
+                " PWRMEM: %lu W, PWRGPU: %lu W, Timestamp: %lf sec\n",
                 hostname, chipid, pwrsys, pwrproc, pwrmem, pwrgpu,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
@@ -209,7 +209,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-    fprintf(output, "_IBMPOWER%d Timestamp_s Hostname Socket", chipid);
+    fprintf(output, "_IBMPOWER%d Timestamp_s Host Socket", chipid);
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {

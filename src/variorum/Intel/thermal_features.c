@@ -265,15 +265,16 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
             for (k = 0; k < nthreads / ncores; k++)
             {
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                fprintf(writedest, "socket: %d, phys_core: %d, log_thread: %d, ", i, j, idx);
+                fprintf(writedest, "Socket: %d, PhysicalCore: %d, LogicalThread: %d, ", i, j,
+                        idx);
                 fprintf(writedest, "TCC: %d C, ", (int)t_target[i].temp_target);
-                fprintf(writedest, "pkg_reading: %d C, ", pkg_stat[i].readout);
-                fprintf(writedest, "pkg_actual: %d C, ",
+                fprintf(writedest, "PkgReading: %d C, ", pkg_stat[i].readout);
+                fprintf(writedest, "PkgActual: %d C, ",
                         (int)t_target[i].temp_target - pkg_stat[i].readout);
-                fprintf(writedest, "thread_reading: %d C, ", t_stat[idx].readout);
-                fprintf(writedest, "thread_actual: %d C, ",
+                fprintf(writedest, "ThreadReading: %d C, ", t_stat[idx].readout);
+                fprintf(writedest, "ThreadActual: %d C, ",
                         (int)t_target[i].temp_target - t_stat[idx].readout);
-                fprintf(writedest, "thread_digital_reading_valid: %d\n",
+                fprintf(writedest, "ThreadDigitalReadingValid: %d\n",
                         t_stat[idx].readout_valid);
             }
         }
