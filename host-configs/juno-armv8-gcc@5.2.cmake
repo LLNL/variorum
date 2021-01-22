@@ -10,7 +10,7 @@ set(CMAKE_C_COMPILER "/usr/bin/gcc" CACHE PATH "")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE PATH "")
 
 # fortran compiler
-# set(CMAKE_Fortran_COMPILER  "/usr/bin/gfortran" CACHE PATH "")
+set(ENABLE_FORTRAN OFF CACHE BOOL "")
 
 set(USE_MSR_SAFE_BEFORE_1_5_0 ON CACHE BOOL "")
 

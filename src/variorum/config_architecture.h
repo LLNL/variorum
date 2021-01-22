@@ -117,6 +117,7 @@ struct platform
 
     /// @brief Function pointer to set socket frequency
     ///
+    /// @param [in] chipid Socket ID.
     /// @param [in] socket_frequency Desired socket frequency in Hertz.
     ///
     /// @return Error code.

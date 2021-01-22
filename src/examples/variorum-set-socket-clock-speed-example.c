@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     int cpu_id;
     int cpu_freq_mhz;
 
-    if (argc == 1)
+    if (argc < 3 || argc > 3)
     {
         printf("%s <socket_id> <cpu_freq_mhz>\n", argv[0]);
         return 1;

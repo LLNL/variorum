@@ -76,11 +76,9 @@ int variorum_cap_each_core_frequency(int cpu_freq_mhz);
 
 /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
 ///
-/// @param [in] gpu_power_ratio Desired power ratio (percentage).
-//  for the processor and GPU.
+/// @param [in] socketid Target socket ID.
+/// @param [in] socket_frequency Desired socket frequency in MHz.
 ///
-/// @note Only valid on IBM P9 systems for now. Same ratio on both sockets.
-/////
 ///// @return Error code.
 int variorum_set_socket_frequency(int socketid, int socket_frequency);
 

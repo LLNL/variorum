@@ -86,13 +86,13 @@ void dump_power_data(int verbose, FILE *output)
     uint64_t gpu_power_val;
 
     /* The filesystem interfaces used here and in the rest of the ARM port
-     * are based on the ARM Juno R2 board technical reference documentation.
+     * are based on the ARM Juno R2 board technical reference documentation:
+     * ARM Versatile Express Juno r2 Development Platform (V2M-Juno r2)
+     * Technical Reference Manual.
+     * https://developer.arm.com/documentation/100114/0200/.
      * Other ARM implementations should have the same common interfaces
-     * available on ARM distributions of Linux. This port does not cover
-     * implementation-specific interfaces. The interfaces used here are
-     * defined in the ARM Versatile Express Juno r2 Development Platform
-     * (V2M-Juno r2) Technical Reference Manual:
-     * https://developer.arm.com/documentation/100114/0200/
+     * available through ARM distributions of Linux. This port does not cover
+     * ARM hardware implementation-specific interfaces.
      */
 
     char *sys_power_fname = "/sys/class/hwmon/hwmon0/power1_input";
