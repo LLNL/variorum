@@ -8,19 +8,19 @@ Releases
 ========
 
 Variorum is under constant development. So, we recommend using our ``dev``
-branch, which contains our latest features. The ``master`` branch will be
+branch, which contains our latest features. The ``main`` branch will be
 updated as releases occur.
 
 v0.3.0
 ------
-04/23/2020: Updated version includes general infrastructure updates, such as unit tests, example integrations, and small bug fixes throughout. `Tarball here <https://github.com/LLNL/variorum/archive/v0.3.0.tar.gz>`_.
+04/23/2020: Updated version includes general infrastructure updates, such as unit tests, example integrations, and small bug fixes throughout. `v0.3.0 tarball here <https://github.com/LLNL/variorum/archive/v0.3.0.tar.gz>`_.
 
 v0.2.0
 ------
 
-03/13/2020: Updated version includes support for Nvidia GPGPUs. `Tarball here <https://github.com/LLNL/variorum/archive/v0.2.0.tar.gz>`_.
+03/13/2020: Updated version includes support for Nvidia GPGPUs. `v0.2.0 tarball here <https://github.com/LLNL/variorum/archive/v0.2.0.tar.gz>`_.
 
 v0.1.0
 ------
 
-11/11/2019: Initial release of Variorum. `Tarball here <https://github.com/LLNL/variorum/archive/v0.1.0.tar.gz>`_.
+11/11/2019: Initial release of Variorum. `v0.1.0 tarball here <https://github.com/LLNL/variorum/archive/v0.1.0.tar.gz>`_.

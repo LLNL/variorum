@@ -61,9 +61,9 @@ physical socket.
 
 
 jansson (Required)
-""""""""""""""""
-`jansson <https://digip.org/jansson/>`_ is an open-source C library for 
+""""""""""""""""""
+`jansson <https://digip.org/jansson/>`_ is an open-source C library for
 encoding, decoding and manipulating JSON data.
- 
-Variorum leverages JANSSON to provide a JSON-based API that can retrieve 
-power data for external tools/software.
+
+Variorum leverages JANSSON to provide a JSON-based API that can retrieve power
+data for external tools/software.
