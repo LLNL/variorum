@@ -133,6 +133,11 @@ void dump_power_data(int verbose, FILE *output)
     close(little_power_fd);
     close(gpu_power_fd);
 
+    /* The power telemetry obtained from the power registers is in
+     * microwatts. To improve readability of verbose output, Variorum
+     * converts power into milliwatts before reporting.
+     */
+
     if (verbose)
     {
         fprintf(output,
@@ -256,7 +261,11 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
     }
     close(freq_fd);
 
-
+    /* The clocks telemetry obtained from the sysfs interface is in
+     * KHz. Variorum converts and reports this telemetry in MHz to
+     * keep it consistent with the clocks reported for other
+     * supported architectures.
+     */
     if (verbose)
     {
         fprintf(output,

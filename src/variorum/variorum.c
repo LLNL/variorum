@@ -437,7 +437,7 @@ int variorum_cap_each_core_frequency(int core_freq_mhz)
     return err;
 }
 
-int variorum_set_socket_frequency(int socketid, int socket_frequency)
+int variorum_set_socket_frequency(int socketid, int socket_freq_mhz)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -457,7 +457,7 @@ int variorum_set_socket_frequency(int socketid, int socket_frequency)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_set_socket_frequency(socketid, socket_frequency);
+    err = g_platform.variorum_set_socket_frequency(socketid, socket_freq_mhz);
     if (err)
     {
         return -1;
