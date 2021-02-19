@@ -76,7 +76,7 @@ void shutdown_arm(void)
     printf("Shutdown ARM\n");
 }
 
-void dump_power_data(int verbose, FILE *output)
+int dump_power_data(int verbose, FILE *output)
 {
     static int init_output = 0;
 
@@ -110,7 +110,7 @@ void dump_power_data(int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
 
     /* Power values are reported in micro Watts */
@@ -125,7 +125,7 @@ void dump_power_data(int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
 
     close(sys_power_fd);
@@ -163,9 +163,10 @@ void dump_power_data(int verbose, FILE *output)
                 (double)(little_power_val) / 1000.0f,
                 (double)(gpu_power_val) / 1000.0f);
     }
+    return 0;
 }
 
-void dump_thermal_data(int verbose, FILE *output)
+int dump_thermal_data(int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t sys_therm_val;
@@ -188,7 +189,7 @@ void dump_thermal_data(int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
 
     int sys_bytes = read_file_ui64(sys_therm_fd, &sys_therm_val);
@@ -201,7 +202,7 @@ void dump_thermal_data(int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
 
     close(sys_therm_fd);
@@ -234,9 +235,10 @@ void dump_thermal_data(int verbose, FILE *output)
                 (double)(little_therm_val) / 1000.0f,
                 (double)(gpu_therm_val) / 1000.0f);
     }
+    return 0;
 }
 
-void dump_clocks_data(int chipid, int verbose, FILE *output)
+int dump_clocks_data(int chipid, int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t freq_val;
@@ -249,7 +251,7 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing sysfs interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
     int bytes_read = read_file_ui64(freq_fd, &freq_val);
     if (!bytes_read)
@@ -257,7 +259,7 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
         variorum_error_handler("Error encountered in accessing sysfs interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
     close(freq_fd);
 
@@ -282,9 +284,10 @@ void dump_clocks_data(int chipid, int verbose, FILE *output)
         fprintf(output, "_ARM_CLOCKS %s %s %d %"PRIu64"\n",
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
     }
+    return 0;
 }
 
-void dump_frequencies(int chipid, FILE *output)
+int dump_frequencies(int chipid, FILE *output)
 {
     static int init_output = 0;
     char freq_fname[4096];
@@ -301,7 +304,7 @@ void dump_frequencies(int chipid, FILE *output)
         variorum_error_handler("Error encountered in accessing sysfs interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
 
     arr_size = read_array_ui64(freq_fd, &freq_array);
@@ -310,7 +313,7 @@ void dump_frequencies(int chipid, FILE *output)
         variorum_error_handler("Error encountered in accessing sysfs interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
     }
     close(freq_fd);
 
@@ -322,9 +325,10 @@ void dump_frequencies(int chipid, FILE *output)
     }
     fprintf(output, "\n");
     free(freq_array);
+    return 0;
 }
 
-void set_socket_frequency(int socketid, int new_freq)
+int set_socket_frequency(int socketid, int new_freq)
 {
     static int init_output = 0;
     uint64_t freq_val;
@@ -334,18 +338,20 @@ void set_socket_frequency(int socketid, int new_freq)
     int freq_fd = open(freq_fname, O_WRONLY);
     if (!freq_fd)
     {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
+        variorum_error_handler("Error encountered in opening the sysfs interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
-        return;
+        return -1;
+    } else {
+        int bytes_written = write_file_ui64(freq_fd, new_freq * 1000);
+        if (!bytes_written)
+        {
+            variorum_error_handler("Error encountered in writing to the sysfs interface",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        close(freq_fd);
     }
-    int bytes_written = write_file_ui64(freq_fd, new_freq * 1000);
-    if (!bytes_written)
-    {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return;
-    }
-    close(freq_fd);
+    return 0;
 }

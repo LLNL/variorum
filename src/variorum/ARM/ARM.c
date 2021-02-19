@@ -17,20 +17,22 @@
 
 int arm_get_power(int long_ver)
 {
+    int ret;
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    dump_power_data(long_ver, stdout);
-    return 0;
+    ret = dump_power_data(long_ver, stdout);
+    return ret;
 }
 
 int arm_get_thermals(int long_ver)
 {
+    int ret;
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    dump_thermal_data(long_ver, stdout);
-    return 0;
+    ret = dump_thermal_data(long_ver, stdout);
+    return ret;
 }
 
 int arm_get_clocks(int long_ver)
@@ -41,12 +43,13 @@ int arm_get_clocks(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
+    int ret;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
-        dump_clocks_data(iter, long_ver, stdout);
+        ret = dump_clocks_data(iter, long_ver, stdout);
     }
-    return 0;
+    return ret;
 }
 
 int arm_get_frequencies(void)
@@ -56,12 +59,13 @@ int arm_get_frequencies(void)
 #endif
     unsigned iter = 0;
     unsigned nsockets;
+    int ret;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
-        dump_frequencies(iter, stdout);
+        ret = dump_frequencies(iter, stdout);
     }
-    return 0;
+    return ret;
 }
 
 int arm_set_socket_frequency(int cpuid, int freq)
@@ -77,6 +81,6 @@ int arm_set_socket_frequency(int cpuid, int freq)
         fprintf(stdout, "The specified CPU ID does not exist\n");
         return -1;
     }
-    set_socket_frequency(cpuid, freq);
-    return 0;
+    int ret = set_socket_frequency(cpuid, freq);
+    return ret;
 }

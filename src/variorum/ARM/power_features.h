@@ -16,14 +16,14 @@ void init_arm(void);
 
 void shutdown_arm(void);
 
-void dump_power_data(int verbose, FILE *output);
+int dump_power_data(int verbose, FILE *output);
 
-void dump_thermal_data(int verbose, FILE *output);
+int dump_thermal_data(int verbose, FILE *output);
 
-void dump_frequencies(int chipid, FILE *output);
+int dump_frequencies(int chipid, FILE *output);
 
-void dump_clocks_data(int chipid, int verbose, FILE *output);
+int dump_clocks_data(int chipid, int verbose, FILE *output);
 
-void set_socket_frequency(int socketid, int new_freq);
+int set_socket_frequency(int socketid, int new_freq);
 
 #endif

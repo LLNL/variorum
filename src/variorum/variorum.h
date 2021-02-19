@@ -79,7 +79,7 @@ int variorum_cap_each_core_frequency(int cpu_freq_mhz);
 /// @param [in] socketid Target socket ID.
 /// @param [in] socket_freq_mhz Desired socket frequency in MHz.
 ///
-///// @return Error code.
+/// @return Error code.
 int variorum_set_socket_frequency(int socketid, int socket_freq_mhz);
 
 /*******************/

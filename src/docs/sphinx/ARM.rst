@@ -83,6 +83,11 @@ for the following user-facing interfaces:
 New frequency is specified in KHz to these interfaces. Variorum takes the new
 frequency as input in MHz.
 
+Note that these interfaces only accept valid values for frequencies as
+output by ``policy*/scaling_available_frequencies``. Also, the assigned
+frequency is only applied when the governor in
+``policy*/scaling_governor`` is set to 'userspace'.
+
 References:
 -----------
 

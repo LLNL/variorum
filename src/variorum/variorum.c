@@ -455,7 +455,7 @@ int variorum_set_socket_frequency(int socketid, int socket_freq_mhz)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        return 0;
+        return -1;
     }
     err = g_platform.variorum_set_socket_frequency(socketid, socket_freq_mhz);
     if (err)

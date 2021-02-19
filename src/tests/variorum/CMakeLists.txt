@@ -18,6 +18,7 @@ set(BASIC_TESTS
     t_variorum_query_turbo
     t_variorum_socket_power_limit
     t_variorum_toggle_turbo
+    t_variorum_set_socket_frequency
 )
 
 set(UNIT_TEST_BASE_LIBS gtest_main gtest)
