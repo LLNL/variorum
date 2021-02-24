@@ -17,12 +17,12 @@ JSON API
 The current JSON API depends on the JANSSON-C library and has a vendor-neutral
 format. The API has been tested on Intel Broadwell and IBM Witherspoon 
 architectures. The API to obtain node power has the following format. 
-It takes a json_t object by reference as input, and populates this JSON object 
+It takes a ``json_t`` object by reference as input, and populates this JSON object 
 with CPU, memory, GPU (when available), and total node power. The total node 
 power is estimated as a summation of available domains if it is not directly 
 reported by the underlying architecture (such as Intel). 
 
-Currently, only `variorum_get_node_power_json(json_t *)` is supported, and the 
+Currently, only ``variorum_get_node_power_json(json_t *)`` is supported, and the 
 JSON object has the following keys:
 
 * hostname (string value)
@@ -40,7 +40,7 @@ On Intel Broadwell, total node power is not reported by hardware, thus total nod
 power is estimated by adding CPU and DRAM power on both sockets. 
 For GPU power, IBM Witherspoon reports a single value, which is the sum of power 
 consumed by all the GPUs on a particular socket. Our JSON object captures this 
-with a "power_gpu_socket_*" interface, and does not report individual GPU power
+with a ``power_gpu_socket_*`` interface, and does not report individual GPU power
 in the JSON object (this data is however available separately without JSON). 
 On Intel Broadwell, on our system without GPUs, this value is currently set 
 to -1.0 to indicate that the GPU power value cannot be measured directly through 
@@ -48,7 +48,7 @@ MSRs. This has been done to ensure that the JSON object in itself is
 vendor-neutral from a tools perspective. A future extension through NVML 
 integration in the JSON object will allow for this information to report 
 individual GPU power as well as total GPU power per socket with a 
-cross-architectural build, similar to Variorum's "variorum_get_node_power" API.
+cross-architectural build, similar to Variorum's ``variorum_get_node_power()`` API.
  
 Best Effort Power Capping
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -68,7 +68,7 @@ caps can be dialed in using MSRs. Note that IBM Witherspoon does not provide
 fine-grained capping for CPU and DRAM level, but allows for a power-shifting
 ratio between the CPU and GPU components on a socket (see IBM documentation.)
 
-Our API, variorum_set_best_effort_node_power_limit(), allows us to set a 
+Our API, ``variorum_set_best_effort_node_power_limit()``, allows us to set a 
 best effort power cap on Intel architectures by taking the input power cap value, 
 and uniformly distributing it across sockets as CPU power caps. Currently, we do
 not set memory power caps, but we plan to develop better techniques for 
