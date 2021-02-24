@@ -30,6 +30,7 @@ but the JSON object can also be retrieved in a similar manner by other JSON
 libraries and supporting tools.  
 
 .. code-block:: c
+
     #include <jansson.h>
     
     void parse_variorum_data() 
