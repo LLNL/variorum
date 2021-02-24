@@ -25,10 +25,12 @@ reported by the underlying architecture (such as Intel).
 Currently, only `variorum_get_node_power_json(json_t *)` is supported, and the 
 JSON object has the following keys:
 
-* power_node
-* power_cpu_socket_*
-* power_mem_socket_*
-* power_gpu_socket_*
+* hostname (string value)
+* timestamp (integer value)
+* power_node (real value) 
+* power_cpu_socket_* (real value)
+* power_mem_socket_* (real value)
+* power_gpu_socket_* (real value) 
 
 The "*" here refers to Socket ID. While more than one socket is supported, 
 our test systems had only 2 sockets. Note that on IBM Witherspoon platform, 
