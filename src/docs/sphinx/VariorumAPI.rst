@@ -57,7 +57,7 @@ We support setting best effort node power limits in a vendor-neutral manner.
 This interface has been developed from the point of view of higher-level tools 
 that utilize Variorum on diverse architectures and need to make node-level 
 decisions. When the underlying hardware does not directly support a node-level 
-power cap, a best-effort power cap is determined in sofware to provide an 
+power cap, a best-effort power cap is determined in software to provide an 
 easier interface for higher-level tools (e.g. Flux, Kokkos, etc). 
 
 For example, while IBM Witherspoon inherently provides the ability to set a 
@@ -66,7 +66,7 @@ Intel architectures currently do not support a direct node level power cap throu
 MSRs. Instead, on Intel architectures, fine-grained CPU and DRAM level power 
 caps can be dialed in using MSRs. Note that IBM Witherspoon does not provide
 fine-grained capping for CPU and DRAM level, but allows for a power-shifting
-ratio between the CPU and GPU components on a socket (see IBM documentation.)
+ratio between the CPU and GPU components on a socket (`see IBM documentation <https://variorum.readthedocs.io/en/latest/IBM.html>`_)
 
 Our API, ``variorum_set_best_effort_node_power_limit()``, allows us to set a 
 best effort power cap on Intel architectures by taking the input power cap value, 
