@@ -66,7 +66,8 @@ Intel architectures currently do not support a direct node level power cap throu
 MSRs. Instead, on Intel architectures, fine-grained CPU and DRAM level power 
 caps can be dialed in using MSRs. Note that IBM Witherspoon does not provide
 fine-grained capping for CPU and DRAM level, but allows for a power-shifting
-ratio between the CPU and GPU components on a socket (`see IBM documentation <https://variorum.readthedocs.io/en/latest/IBM.html>`_)
+ratio between the CPU and GPU components on a socket 
+(see `IBM documentation <https://variorum.readthedocs.io/en/latest/IBM.html>`_).
 
 Our API, ``variorum_set_best_effort_node_power_limit()``, allows us to set a 
 best effort power cap on Intel architectures by taking the input power cap value, 
