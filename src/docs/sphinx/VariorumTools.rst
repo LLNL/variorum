@@ -10,6 +10,7 @@ Using Tools with Variorum
 The JSON API enables Variorum to interface with higher-level system software.
 Current integration efforts include a Kokkos connector for power monitoring and
 a Flux power management module.
+
 Links to each of these frameworks can be found 
 below. Note that these integrations with Variorum are in early development 
 stages and are expected to be updated to support more features and tests.
@@ -22,6 +23,7 @@ In order for tools to interact with Variorum, a simple JANSSON based parser
 is sufficient. The format of the JSON object has been documented, and includes
 total node power, as well as CPU, Memory, and GPU power (current assumption is
 that of two sockets per node). It also includes the hostname and the timestamp.
+
 We describe a simple example of how the data from 
 the JSON object can be extracted from Variorum in the client tool below, 
 and we point developers to the Kokkos and Flux integration links shown above 
