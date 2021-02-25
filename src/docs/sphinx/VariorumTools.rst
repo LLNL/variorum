@@ -1,4 +1,4 @@
-.. # Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
+.. # Copyright 2021 Lawrence Livermore National Security, LLC and other
 .. # Variorum Project Developers. See the top-level LICENSE file for details.
 .. #
 .. # SPDX-License-Identifier: MIT
@@ -9,7 +9,7 @@ Using Tools with Variorum
 
 The JSON API enables Variorum to interface with higher-level system software.
 Current integration efforts include a Kokkos connector for power monitoring and
-a Flux power managment module.
+a Flux power management module.
 Links to each of these frameworks can be found 
 below. Note that these integrations with Variorum are in early development 
 stages and are expected to be updated to support more features and tests.
@@ -18,7 +18,7 @@ Upcoming integration also includes developing a Variorum service for Caliper.
     * Kokkos connector: https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector
     * Flux Power Manager Module: https://github.com/rountree/flux-power-mgr 
 
-In order for tools to interact with Variorum, a simple Jansson based parser 
+In order for tools to interact with Variorum, a simple JANSSON based parser 
 is sufficient. The format of the JSON object has been documented, and includes
 total node power, as well as CPU, Memory, and GPU power (current assumption is
 that of two sockets per node). It also includes the hostname and the timestamp.
