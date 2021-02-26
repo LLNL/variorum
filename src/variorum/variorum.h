@@ -36,7 +36,7 @@ int variorum_monitoring(FILE *output);
 int variorum_set_each_socket_power_limit(int socket_power_limit);
 
 /// @brief Set a power limit to the node and verify if it was set correctly
-//  (10ms delay).
+/// (10ms delay).
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
@@ -53,11 +53,11 @@ int variorum_set_best_effort_node_power_limit(int node_power_limit);
 /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
 ///
 /// @param [in] gpu_power_ratio Desired power ratio (percentage).
-//  for the processor and GPU.
+/// for the processor and GPU.
 ///
 /// @note Only valid on IBM P9 systems for now. Same ratio on both sockets.
-/////
-///// @return Error code.
+///
+/// @return Error code.
 int variorum_set_gpu_power_ratio(int gpu_power_ratio);
 
 /// @brief Set identical CPU frequencies to all cores within a socket.
@@ -129,11 +129,6 @@ int variorum_print_verbose_clock_speed(void);
 /// @return Error code.
 int variorum_print_clock_speed(void);
 
-/// @todo Print discrete frequencies from P0 to Pn.
-///
-/// @return Error code.
-//int variorum_print_available_frequencies(void) {};
-
 /// @brief Print if hyperthreading is enabled or disabled.
 ///
 /// @return Error code.
@@ -181,34 +176,18 @@ int variorum_enable_turbo(void);
 /// @return Error code.
 int variorum_disable_turbo(void);
 
-/***************************/
+/****************/
 /* JSON Support */
-/***************************/
+/****************/
 /// @brief Populate json_t object parameter with total node power.
-/////
-///// @return Error code.
+///
+/// @return Error code.
 int variorum_get_node_power_json(json_t *get_power_obj);
 
-/***************************/
+/***********/
 /* Testing */
-/***************************/
+/***********/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
-
-///* Do we need these? */
-//int print_cap_package_frequency(void);
-//int print_available_frequencies(void);
-
-///// @brief Print desired frequency setting (i.e., upper bound on the operating
-///// frequency; the processor may grant up to this frequency) in long format.
-/////
-///// @return Error code.
-//int print_verbose_cap_frequency(void);
-
-///// @brief Print desired frequency setting (i.e., upper bound on the operating
-///// frequency; the processor may grant up to this frequency) in CSV format.
-/////
-///// @return Error code.
-//int print_cap_frequency(void);
 
 #endif
