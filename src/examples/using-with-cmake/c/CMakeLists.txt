@@ -12,7 +12,7 @@
 #   cd build
 #   cmake -DVARIORUM_DIR={variorum install path} ../
 #   make
-#   ./ex-print-power
+#   ./variorum-print-power-example
 #
 # If run in-sub directory below using-with-cmake in an variorum install,
 # VARIORUM_DIR will be defaulted to ../../..
@@ -21,7 +21,7 @@
 #   cd build
 #   cmake ..
 #   make
-#   ./ex-print-power
+#   ./variorum-print-power-example
 ###############################################################################
 
 cmake_minimum_required(VERSION 3.0)
