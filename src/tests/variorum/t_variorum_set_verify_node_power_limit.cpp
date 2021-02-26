@@ -9,10 +9,10 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_power_limit, test_set_verify_node_power_limit)
+TEST(variorum_power_limit, test_cap_verify_node_power_limit)
 {
     int node_power_limit = 200;
-    EXPECT_EQ(0, variorum_set_and_verify_node_power_limit(node_power_limit));
+    EXPECT_EQ(0, variorum_cap_and_verify_node_power_limit(node_power_limit));
 }
 
 int main(int argc, char **argv)
