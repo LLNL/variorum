@@ -29,11 +29,11 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
     variorum-print-verbose-gpu-utilization-example
-    variorum-set-and-verify-node-power-limit-example
-    variorum-cap-cpu-clock-speed-example
-    variorum-set-gpu-power-ratio-example
-    variorum-set-best-effort-node-power-limit-example
-    variorum-set-socket-power-limits-example
+    variorum-cap-and-verify-node-power-limit-example
+    variorum-cap-each-core-frequency-example
+    variorum-cap-gpu-power-ratio-example
+    variorum-cap-best-effort-node-power-limit-example
+    variorum-cap-socket-power-limits-example
     variorum-get-node-power-json-example
     variorum-print-available-frequencies-example
     variorum-set-socket-clock-speed-example

@@ -11,28 +11,28 @@
 int main(int argc, char **argv)
 {
     int ret;
-    // 500W is based on minimum power on IBM Witherspoon
+    /* 500 W is based on minimum power on IBM Witherspoon */
     int node_pow_lim_watts = 500;
 
     if (argc == 1)
     {
-        printf("Please specify an input value in Watts for correctness.\n");
-        printf("Cannot set defaults due to architecture dependence.\n");
-        return 0;
+        printf("No power limit specified...using default limit of 500W.\n");
+        node_pow_lim_watts = 500;
     }
     else if (argc == 2)
     {
         node_pow_lim_watts = atoi(argv[1]);
-        printf("Setting node to %dW.\n", node_pow_lim_watts);
+        printf("Capping node to %dW.\n", node_pow_lim_watts);
     }
 
-    ret = variorum_set_best_effort_node_power_limit(node_pow_lim_watts);
+    ret = variorum_cap_and_verify_node_power_limit(node_pow_lim_watts);
     if (ret != 0)
     {
-        printf("Set node power limit failed!\n");
+        printf("Cap and verify node power limit failed!\n");
         return ret;
     }
     printf("\n");
+
     ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {
