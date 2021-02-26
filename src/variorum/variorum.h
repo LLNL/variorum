@@ -25,17 +25,17 @@ int variorum_poll_power(FILE *output);
 /// @return Error code.
 int variorum_monitoring(FILE *output);
 
-/********************/
-/* Cap Power Limits */
-/********************/
-/// @brief Set identical power limits to all sockets within the node.
+/*****************/
+/* Cap Functions */
+/*****************/
+/// @brief Cap the power limits for all sockets within the node.
 ///
 /// @param [in] socket_power_limit Desired power limit for each socket.
 ///
 /// @return Error code.
 int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
-/// @brief Set a power limit to the node and verify if it was set correctly
+/// @brief Cap the power limit of the node and verify it was set correctly
 /// (10ms delay).
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
@@ -43,14 +43,14 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 /// @return Error code.
 int variorum_cap_and_verify_node_power_limit(int node_power_limit);
 
-/// @brief Set a power limit to the node.
+/// @brief Cap the power limit of the node.
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
 /// @return Error code.
 int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 
-/// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
+/// @brief Cap the power shifting ratio for the GPU (uniform on both sockets).
 ///
 /// @param [in] gpu_power_ratio Desired power ratio (percentage).
 /// for the processor and GPU.
@@ -58,21 +58,21 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 /// @note Only valid on IBM P9 systems for now. Same ratio on both sockets.
 ///
 /// @return Error code.
-int variorum_set_gpu_power_ratio(int gpu_power_ratio);
+int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 
-/// @brief Set identical CPU frequencies to all cores within a socket.
+/// @brief Cap the CPU frequency for all cores within a socket.
 ///
 /// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
 ///
 /// @return Error code.
 int variorum_cap_each_core_frequency(int cpu_freq_mhz);
 
-///// @brief Set a power limit to the gpu domain.
+///// @brief Cap the power limit of the GPU domain.
 /////
 ///// @param [in] gpu_power_limit Desired power limit for each GPU.
 /////
 ///// @return Error code.
-//int set_each_gpu_power_limit(int gpu_power_limit);
+//int cap_each_gpu_power_limit(int gpu_power_limit);
 
 /// @brief Set the frequency of the target processor.
 ///
@@ -170,6 +170,18 @@ int variorum_print_gpu_utilization(void);
 ///
 /// @return Error code.
 int variorum_print_available_frequencies(void);
+
+///// @brief Print CSV-formatted desired frequency setting (i.e., upper bound
+///// on the operating frequency; the processor may grant up to this frequency).
+/////
+///// @return Error code.
+//int print_cap_frequency(void);
+
+///// @brief Print verbose desired frequency setting (i.e., upper bound on the
+///// operating frequency; the processor may grant up to this frequency).
+/////
+///// @return Error code.
+//int print_verbose_cap_frequency(void);
 
 /***************************/
 /* Enable/Disable Features */
