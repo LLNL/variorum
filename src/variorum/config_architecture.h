@@ -105,7 +105,7 @@ struct platform
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
-    int (*variorum_set_best_effort_node_power_limit)(int node_power_limit);
+    int (*variorum_cap_best_effort_node_power_limit)(int node_power_limit);
 
     /// @brief Function pointer to set a power limit to each node and then
     /// verify that the cap was set correctly.
@@ -113,7 +113,7 @@ struct platform
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
     /// @return Error code.
-    int (*variorum_set_and_verify_node_power_limit)(int node_power_limit);
+    int (*variorum_cap_and_verify_node_power_limit)(int node_power_limit);
 
     /// @brief Function pointer to set socket frequency
     ///
@@ -132,14 +132,14 @@ struct platform
     /// both sockets.
     ///
     /// @return Error code.
-    int (*variorum_set_gpu_power_ratio)(int gpu_power_ratio);
+    int (*variorum_cap_gpu_power_ratio)(int gpu_power_ratio);
 
     /// @brief Function pointer to set a power limit to each socket.
     ///
     /// @param [in] socket_power_limit Desired socket power limit in Watts.
     ///
     /// @return Error code.
-    int (*variorum_set_each_socket_power_limit)(int socket_power_limit);
+    int (*variorum_cap_each_socket_power_limit)(int socket_power_limit);
 
     int (*variorum_cap_each_core_frequency)(int core_freq_mhz);
 

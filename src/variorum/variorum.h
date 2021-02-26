@@ -26,14 +26,14 @@ int variorum_poll_power(FILE *output);
 int variorum_monitoring(FILE *output);
 
 /********************/
-/* Set Power Limits */
+/* Cap Power Limits */
 /********************/
 /// @brief Set identical power limits to all sockets within the node.
 ///
 /// @param [in] socket_power_limit Desired power limit for each socket.
 ///
 /// @return Error code.
-int variorum_set_each_socket_power_limit(int socket_power_limit);
+int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
 /// @brief Set a power limit to the node and verify if it was set correctly
 /// (10ms delay).
@@ -41,14 +41,14 @@ int variorum_set_each_socket_power_limit(int socket_power_limit);
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
 /// @return Error code.
-int variorum_set_and_verify_node_power_limit(int node_power_limit);
+int variorum_cap_and_verify_node_power_limit(int node_power_limit);
 
 /// @brief Set a power limit to the node.
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
 /// @return Error code.
-int variorum_set_best_effort_node_power_limit(int node_power_limit);
+int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 
 /// @brief Set the power shifting ratio to the GPU (uniform on both sockets).
 ///
