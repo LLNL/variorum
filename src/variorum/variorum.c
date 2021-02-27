@@ -400,7 +400,7 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit)
     return err;
 }
 
-int variorum_cap_each_core_frequency(int core_freq_mhz)
+int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
 {
     int err = 0;
 #ifdef VARIORUM_LOG

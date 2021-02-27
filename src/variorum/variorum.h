@@ -65,7 +65,7 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 /// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
 ///
 /// @return Error code.
-int variorum_cap_each_core_frequency(int cpu_freq_mhz);
+int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 
 ///// @brief Cap the power limit of the GPU domain.
 /////
