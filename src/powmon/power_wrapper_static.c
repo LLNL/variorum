@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     }
 
     int opt;
-    char *app;
+    char *app = NULL;
     char **arg = NULL;
 
     while ((opt = getopt(argc, argv, "cw:a:")) != -1)
