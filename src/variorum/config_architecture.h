@@ -108,7 +108,7 @@ struct platform
     int (*variorum_set_best_effort_node_power_limit)(int node_power_limit);
 
     /// @brief Function pointer to set a power limit to each node and then
-    //  verify that the cap was set correctly.
+    /// verify that the cap was set correctly.
     ///
     /// @param [in] node_power_limit Desired node power limit in Watts.
     ///
@@ -126,10 +126,10 @@ struct platform
     /// @brief Set the GPU power shifting ratio (uniform across sockets).
     ///
     /// @param [in] gpu_power_ratio Desired power ratio (percent) for the
-    //  processor and GPU.
+    ///        processor and GPU.
     ///
-    /// @note Only valid on IBM P9 systems for now.
-    //  Same ratio will be set on both sockets.
+    /// @note Only valid on IBM P9 systems for now. Same ratio will be set on
+    /// both sockets.
     ///
     /// @return Error code.
     int (*variorum_set_gpu_power_ratio)(int gpu_power_ratio);
