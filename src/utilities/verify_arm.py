@@ -13,27 +13,28 @@ import sys
 import getopt
 
 hwmon_files = [
-	"/sys/class/hwmon/hwmon0/power1_input",
-	"/sys/class/hwmon/hwmon0/power2_input",
-	"/sys/class/hwmon/hwmon0/power3_input",
-	"/sys/class/hwmon/hwmon0/power4_input",
-	"/sys/class/hwmon/hwmon0/temp1_input",
-	"/sys/class/hwmon/hwmon0/temp2_input",
-	"/sys/class/hwmon/hwmon0/temp3_input",
-	"/sys/class/hwmon/hwmon0/temp4_input"
+    "/sys/class/hwmon/hwmon0/power1_input",
+    "/sys/class/hwmon/hwmon0/power2_input",
+    "/sys/class/hwmon/hwmon0/power3_input",
+    "/sys/class/hwmon/hwmon0/power4_input",
+    "/sys/class/hwmon/hwmon0/temp1_input",
+    "/sys/class/hwmon/hwmon0/temp2_input",
+    "/sys/class/hwmon/hwmon0/temp3_input",
+    "/sys/class/hwmon/hwmon0/temp4_input",
 ]
 
 cpufreq_read_files = [
-	"/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq",
-	"/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies",
-	"/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq",
-	"/sys/devices/system/cpu/cpufreq/policy1/scaling_available_frequencies"
+    "/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq",
+    "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies",
+    "/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq",
+    "/sys/devices/system/cpu/cpufreq/policy1/scaling_available_frequencies",
 ]
 
 cpufreq_write_files = [
-	"/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed",
-	"/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed"
+    "/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed",
+    "/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed",
 ]
+
 
 def check_hwmon_files_presence(verbose):
     if verbose:
@@ -62,20 +63,21 @@ def check_hwmon_files_access(verbose):
         if os.access(fname, os.R_OK):
             if verbose:
                 print(
-	    		    "-- Check if the hwmon interface is accessible by user:",
-	    			fname,
-	    			"-- yes"
-	    		)
+                    "-- Check if the hwmon interface is accessible by user:",
+                    fname,
+                    "-- yes",
+                )
         else:
             if verbose:
                 print(
-	    		    "-- Check if the hwmon interface is accessible by user:",
-	    			fname,
-	    			"-- no"
-	    		)
+                    "-- Check if the hwmon interface is accessible by user:",
+                    fname,
+                    "-- no",
+                )
             ret = 1
 
     return ret
+
 
 def check_cpufreq_files_presence(verbose):
     if verbose:
@@ -113,37 +115,38 @@ def check_cpufreq_files_access(verbose):
         if os.access(fname, os.R_OK):
             if verbose:
                 print(
-	    		    "-- Check if the cpufreq interface is accessible by user:",
-	    			fname,
-	    			"-- yes"
-	    		)
+                    "-- Check if the cpufreq interface is accessible by user:",
+                    fname,
+                    "-- yes",
+                )
         else:
             if verbose:
                 print(
-	    		    "-- Check if the cpufreq interface is accessible by user:",
-	    			fname,
-	    			"-- no"
-	    		)
+                    "-- Check if the cpufreq interface is accessible by user:",
+                    fname,
+                    "-- no",
+                )
             ret = 1
 
     for fname in cpufreq_write_files:
         if os.access(fname, os.W_OK):
             if verbose:
                 print(
-	    		    "-- Check if the cpufreq interface is writable by user:",
-	    			fname,
-	    			"-- yes"
-	    		)
+                    "-- Check if the cpufreq interface is writable by user:",
+                    fname,
+                    "-- yes",
+                )
         else:
             if verbose:
                 print(
-	    		    "-- Check if the cpufreq interface is writable by user:",
-	    			fname,
-	    			"-- no"
-	    		)
+                    "-- Check if the cpufreq interface is writable by user:",
+                    fname,
+                    "-- no",
+                )
             ret = 1
 
     return ret
+
 
 if __name__ == "__main__":
     usage = """

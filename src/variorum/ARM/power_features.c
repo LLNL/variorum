@@ -342,7 +342,9 @@ int set_socket_frequency(int socketid, int new_freq)
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                __FILE__, __FUNCTION__, __LINE__);
         return -1;
-    } else {
+    }
+    else
+    {
         int bytes_written = write_file_ui64(freq_fd, new_freq * 1000);
         if (!bytes_written)
         {
