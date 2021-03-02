@@ -81,10 +81,12 @@ frequency for the following user-facing interfaces:
     * LITTLE clocks: ``/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed``
 
 New frequency is specified in KHz to these interfaces. Variorum takes the new
-frequency as input in MHz.
+frequency as input in MHz and performs this conversion internally.
 
-Note that these interfaces only accept valid values for frequencies as output
-by ``policy*/scaling_available_frequencies``. Also, the assigned frequency is
+If you run into an error accessing the sysfs interface, this could be due to an
+the specified frequency value or the set governor. The sysfs interface only
+accepts valid values for frequencies as output by
+``policy*/scaling_available_frequencies``. Also, the specified frequency is
 only applied when the governor in ``policy*/scaling_governor`` is set to
 `userspace`.
 
