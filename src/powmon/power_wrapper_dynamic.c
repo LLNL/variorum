@@ -80,7 +80,7 @@ void *power_set_measurement(void *arg)
             }
             watts += poll_dir;
             //set_rapl_power(watts, watts);
-            printf("Setting each package power limit to %dW\n", watts);
+            printf("Capping each package power limit to %dW\n", watts);
             variorum_cap_each_socket_power_limit(watts);
         }
         poll_num++;
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 
         /* Set the cap. */
         //set_rapl_power(watt_cap, watt_cap);
-        printf("Setting each package power limit to %dW\n", watt_cap);
+        printf("Capping each package power limit to %dW\n", watt_cap);
         variorum_cap_each_socket_power_limit(watt_cap);
 
         /* Start power measurement thread. */

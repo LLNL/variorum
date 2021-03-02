@@ -333,7 +333,7 @@ void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     switch (domain)
     {
         case SOCKET:
-            printf("Set frequencies per socket\n");
+            printf("Cap frequencies per socket\n");
             for (i = 0; i < nsockets; i++)
             {
                 *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
@@ -341,7 +341,7 @@ void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
             write_batch(PERF_CTRL);
             break;
         case CORE:
-            printf("Set frequencies per core\n");
+            printf("Cap frequencies per core\n");
             for (i = 0; i < nthreads; i++)
             {
                 *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;

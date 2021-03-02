@@ -22,12 +22,12 @@ int main(int argc, char **argv)
 
     cpu_id = atoi(argv[1]);
     cpu_freq_mhz = atoi(argv[2]);
-    printf("Setting CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
+    printf("Capping CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
 
     ret = variorum_cap_socket_frequency(cpu_id, cpu_freq_mhz);
     if (ret != 0)
     {
-        printf("Set socket clock speed failed!\n");
+        printf("Cap socket clock speed failed!\n");
     }
     printf("\n");
     ret = variorum_print_clock_speed();

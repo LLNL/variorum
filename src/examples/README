@@ -4,7 +4,7 @@ The examples directory contains some simple programs highlighting some of
 Variorum's features and capabilities. We categorize the existing examples
 into three categories:
 1. Query functions: Query if feature is enabled or disabled.
-2. Set functions: Provide control of a particular hardware-level feature
+2. Cap functions: Provide control of a particular hardware-level feature
 3. Print functions: Show current value of a particular hardware-level feature in
    a column-delimited format
 4. Print verbose functions: Show current value of a particular hardware-level feature
@@ -34,23 +34,23 @@ physical core.
 
     $ ./variorum-print-topology-example
 
-variorum-print-features-example 
+variorum-print-features-example
 -------------------------------
 Query list of supported features for the current architecture. Show register
 name and address.
 
-    $ ./variorum-print-features-example 
+    $ ./variorum-print-features-example
 
 
 CAP FUNCTIONS
 =============
 
-variorum-cap-power-limits-example 
+variorum-cap-power-limits-example
 ---------------------------------
-Set a power cap (across all sockets in a node) based on user-specified input
+Apply a power cap (across all sockets in a node) based on user-specified input
 parameter. If no power cap is specified, then use a default power cap of 100W.
-The API is referred to as "cap" as it specifies the upper limit on the socket 
-or node. 
+The API is referred to as "cap" as it specifies the upper limit on the socket
+or node.
 
     $ ./variorum-cap-power-limits-example <pkg_power_limit>
 
@@ -58,7 +58,7 @@ or node.
 PRINT FUNCTIONS
 ===============
 
-variorum-print-clock-speed-example 
+variorum-print-clock-speed-example
 ----------------------------------
 Show current clock frequency (reading IA32_PERF_STATUS on Intel platforms) and
 average clock frequency (dividing IA32_APERF by IA32_MPERF on Intel platforms)

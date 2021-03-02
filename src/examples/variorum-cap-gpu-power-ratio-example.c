@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     ret = variorum_cap_gpu_power_ratio(gpu_power_ratio_pct);
     if (ret != 0)
     {
-        printf("Set GPU power ratio failed!\n");
+        printf("Cap GPU power ratio failed!\n");
         return ret;
     }
     printf("\n");
