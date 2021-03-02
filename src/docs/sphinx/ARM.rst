@@ -92,4 +92,3 @@ References
 ----------
 
 * `Arm Juno r2 technical reference <https://developer.arm.com/documentation/100114/0200/>`_
-
