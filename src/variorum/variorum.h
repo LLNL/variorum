@@ -171,18 +171,6 @@ int variorum_print_gpu_utilization(void);
 /// @return Error code.
 int variorum_print_available_frequencies(void);
 
-///// @brief Print CSV-formatted desired frequency setting (i.e., upper bound
-///// on the operating frequency; the processor may grant up to this frequency).
-/////
-///// @return Error code.
-//int variorum_print_cap_frequency(void);
-
-///// @brief Print verbose desired frequency setting (i.e., upper bound on the
-///// operating frequency; the processor may grant up to this frequency).
-/////
-///// @return Error code.
-//int variorum_print_verbose_cap_frequency(void);
-
 /***************************/
 /* Enable/Disable Features */
 /***************************/
