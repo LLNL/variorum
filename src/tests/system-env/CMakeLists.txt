@@ -6,3 +6,7 @@
 if(VARIORUM_WITH_INTEL)
   add_subdirectory("intel")
 endif()
+
+if(VARIORUM_WITH_ARM)
+  add_subdirectory("ARM")
+endif()

@@ -63,6 +63,11 @@ if(VARIORUM_WITH_NVIDIA)
 else()
     message(STATUS "Building without support for Nvidia architectures (VARIORUM_WITH_NVIDIA == OFF)")
 endif()
+if(VARIORUM_WITH_ARM)
+    message(STATUS "Building support for ARM architectures (VARIORUM_WITH_ARM == ON)")
+else()
+    message(STATUS "Building without support for ARM architectures (VARIORUM_WITH_ARM == OFF)")
+endif()
 
 #############
 # DEBUGGING #

@@ -36,6 +36,7 @@ set(BASIC_EXAMPLES
     variorum-set-socket-power-limits-example
     variorum-get-node-power-json-example
     variorum-print-available-frequencies-example
+    variorum-set-socket-clock-speed-example
 )
 
 message(STATUS "Adding variorum examples")

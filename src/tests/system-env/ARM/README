@@ -1,0 +1,8 @@
+VARIORUM UNIT TESTS
+===================
+
+t_system_env_ARM_hwmon.cpp
+--------------------------
+Test the hwmon interface on the system. Check that the driver exists on each
+processor. Check if the msr driver is owned by root. Check that the user has
+read and write permissions on the driver. Do the same check for the group.
