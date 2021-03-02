@@ -82,7 +82,7 @@ struct haswell_3f_offsets
 
 int fm_06_3f_get_power_limits(int long_ver);
 
-int fm_06_3f_set_power_limits(int package_power_limit);
+int fm_06_3f_cap_power_limits(int package_power_limit);
 
 int fm_06_3f_get_features(void);
 

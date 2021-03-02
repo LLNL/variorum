@@ -113,7 +113,7 @@ int fm_06_55_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_55_set_power_limits(int package_power_limit)
+int fm_06_55_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -125,7 +125,7 @@ int fm_06_55_set_power_limits(int package_power_limit)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        set_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
+        cap_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
                                 msrs.msr_rapl_power_unit);
     }
     return 0;
@@ -335,7 +335,7 @@ int fm_06_55_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_55_set_frequency(int core_freq_mhz)
+int fm_06_55_cap_frequency(int core_freq_mhz)
 {
     unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
@@ -344,7 +344,7 @@ int fm_06_55_set_frequency(int core_freq_mhz)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    set_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status);
+    cap_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status);
     return 0;
 }
 

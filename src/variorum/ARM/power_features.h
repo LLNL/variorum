@@ -24,6 +24,6 @@ int dump_frequencies(int chipid, FILE *output);
 
 int dump_clocks_data(int chipid, int verbose, FILE *output);
 
-int set_socket_frequency(int socketid, int new_freq);
+int cap_socket_frequency(int socketid, int new_freq);
 
 #endif

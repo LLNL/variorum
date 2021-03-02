@@ -315,7 +315,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //    }
 //}
 
-void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
+void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
                  off_t msr_perf_status)
 {
     unsigned nsockets, ncores, nthreads;

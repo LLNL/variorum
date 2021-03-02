@@ -203,7 +203,7 @@ void print_package_power_info(FILE *writedest,
                               off_t msr,
                               int socket);
 
-int set_package_power_limit(const unsigned socket,
+int cap_package_power_limit(const unsigned socket,
                             int package_power_limit,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit);

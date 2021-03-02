@@ -133,7 +133,7 @@ int fm_06_4f_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_4f_set_power_limits(int package_power_limit)
+int fm_06_4f_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -145,7 +145,7 @@ int fm_06_4f_set_power_limits(int package_power_limit)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        set_package_power_limit(socket, package_power_limit,
+        cap_package_power_limit(socket, package_power_limit,
                                 msrs.msr_pkg_power_limit,
                                 msrs.msr_rapl_power_unit);
     }
@@ -426,7 +426,7 @@ int fm_06_4f_get_node_power_json(json_t *get_power_obj)
     return 0;
 }
 
-int fm_06_4f_set_best_effort_node_power_limit(int node_limit)
+int fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -452,7 +452,7 @@ int fm_06_4f_set_best_effort_node_power_limit(int node_limit)
 
     int pkg_limit = node_limit / nsockets;
 
-    fm_06_4f_set_power_limits(pkg_limit);
+    fm_06_4f_cap_power_limits(pkg_limit);
 
     return 0;
 }

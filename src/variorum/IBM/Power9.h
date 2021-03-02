@@ -12,13 +12,13 @@ int p9_get_power(int long_ver);
 
 int p9_get_power_limits(int long_ver);
 
-int p9_set_socket_power_limit(int long_ver);
+int p9_cap_socket_power_limit(int long_ver);
 
-int p9_set_node_power_limit(int pcap_new);
+int p9_cap_node_power_limit(int pcap_new);
 
-int p9_set_and_verify_node_power_limit(int pcap_new);
+int p9_cap_and_verify_node_power_limit(int pcap_new);
 
-int p9_set_gpu_power_ratio(int gpu_power_ratio);
+int p9_cap_gpu_power_ratio(int gpu_power_ratio);
 
 int p9_monitoring(FILE *output);
 

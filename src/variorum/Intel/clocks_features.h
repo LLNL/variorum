@@ -147,7 +147,7 @@ void get_available_frequencies_skx(FILE *writedest,
 ///// @param [in] pstate Desired p-state.
 //void set_p_state(unsigned socket,
 //                 uint64_t pstate);
-void set_p_state(int cpu_freq_mhz,
+void cap_p_state(int cpu_freq_mhz,
                  enum ctl_domains_e domain,
                  off_t msr_perf_status);
 //

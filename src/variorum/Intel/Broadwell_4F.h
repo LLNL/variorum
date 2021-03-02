@@ -83,7 +83,7 @@ struct broadwell_4f_offsets
 
 int fm_06_4f_get_power_limits(int long_ver);
 
-int fm_06_4f_set_power_limits(int package_power_limit);
+int fm_06_4f_cap_power_limits(int package_power_limit);
 
 int fm_06_4f_get_features(void);
 
@@ -107,7 +107,7 @@ int fm_06_4f_monitoring(FILE *output);
 
 int fm_06_4f_get_node_power_json(json_t *get_power_obj);
 
-int fm_06_4f_set_best_effort_node_power_limit(int node_power_limit);
+int fm_06_4f_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_4f_get_frequencies(void);
 
