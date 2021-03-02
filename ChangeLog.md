@@ -1,9 +1,8 @@
-# Fri Feb 26 2021 Stephanie Brink <brink2@llnl.gov> v0.4.0
+# Tue Mar 2 2021 Stephanie Brink <brink2@llnl.gov> v0.4.0
 * Add support for ARM Juno architecture
 * Add top-level API to query available frequencies, add support for Intel
 * Add JANSSON-C dependency
 * Introduce JSON API to return monitoring data into a structure
-* Change frequency-set to frequency-cap
 * Update variorum to work with both msr-safe < v1.5 (msr_whitelist) msr-safe >=
   v1.5 (msr_allowlist)
 * Add node power cap support for Intel Broadwell
@@ -13,6 +12,8 @@
 * Update year in license headers
 * Update docs throughout -- JSON API, best effort power cap, architectures
   supported, add output to examples
+* Replace set with cap throughout top-level API, since setting an upper bound
+  rather than a hard limit
 
 # Thu Apr 23 2020 Stephanie Brink <brink2@llnl.gov> v0.3.0
 * Setup unit test infrastructure, test on gitlab to leverage msr-safe and OPAL
