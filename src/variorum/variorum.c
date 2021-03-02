@@ -437,7 +437,7 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
     return err;
 }
 
-int variorum_set_socket_frequency(int socketid, int socket_freq_mhz)
+int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -449,7 +449,7 @@ int variorum_set_socket_frequency(int socketid, int socket_freq_mhz)
     {
         return -1;
     }
-    if (g_platform.variorum_set_socket_frequency == NULL)
+    if (g_platform.variorum_cap_socket_frequency == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -457,7 +457,7 @@ int variorum_set_socket_frequency(int socketid, int socket_freq_mhz)
                                __FUNCTION__, __LINE__);
         return -1;
     }
-    err = g_platform.variorum_set_socket_frequency(socketid, socket_freq_mhz);
+    err = g_platform.variorum_cap_socket_frequency(socketid, socket_freq_mhz);
     if (err)
     {
         return -1;

@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     cpu_freq_mhz = atoi(argv[2]);
     printf("Setting CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
 
-    ret = variorum_set_socket_frequency(cpu_id, cpu_freq_mhz);
+    ret = variorum_cap_socket_frequency(cpu_id, cpu_freq_mhz);
     if (ret != 0)
     {
         printf("Set socket clock speed failed!\n");

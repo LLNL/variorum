@@ -121,7 +121,7 @@ struct platform
     /// @param [in] socket_frequency Desired socket frequency in Hertz.
     ///
     /// @return Error code.
-    int (*variorum_set_socket_frequency)(int chipid, int socket_frequency);
+    int (*variorum_cap_socket_frequency)(int chipid, int socket_frequency);
 
     /// @brief Set the GPU power shifting ratio (uniform across sockets).
     ///

@@ -74,13 +74,13 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 ///// @return Error code.
 //int cap_each_gpu_power_limit(int gpu_power_limit);
 
-/// @brief Set the frequency of the target processor.
+/// @brief Cap the frequency of the target processor.
 ///
 /// @param [in] socketid Target socket ID.
 /// @param [in] socket_freq_mhz Desired socket frequency in MHz.
 ///
 /// @return Error code.
-int variorum_set_socket_frequency(int socketid, int socket_freq_mhz);
+int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz);
 
 /*******************/
 /* Print Functions */
