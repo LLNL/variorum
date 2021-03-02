@@ -328,7 +328,7 @@ int dump_frequencies(int chipid, FILE *output)
     return 0;
 }
 
-int set_socket_frequency(int socketid, int new_freq)
+int cap_socket_frequency(int socketid, int new_freq)
 {
     static int init_output = 0;
     uint64_t freq_val;

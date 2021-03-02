@@ -1,4 +1,4 @@
-// Copyright 2021 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -11,23 +11,21 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int cpu_id;
     int cpu_freq_mhz;
 
-    if (argc != 3)
+    if (argc == 1)
     {
-        printf("%s <socket_id> <cpu_freq_mhz>\n", argv[0]);
+        printf("%s <cpu_freq_mhz>\n", argv[0]);
         return 1;
     }
 
-    cpu_id = atoi(argv[1]);
-    cpu_freq_mhz = atoi(argv[2]);
-    printf("Setting CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
+    cpu_freq_mhz = atoi(argv[1]);
+    printf("Capping each CPU to %d MHz.\n", cpu_freq_mhz);
 
-    ret = variorum_set_socket_frequency(cpu_id, cpu_freq_mhz);
+    ret = variorum_cap_each_core_frequency_limit(cpu_freq_mhz);
     if (ret != 0)
     {
-        printf("Set socket clock speed failed!\n");
+        printf("Cap each core frequency limit failed!\n");
     }
     printf("\n");
     ret = variorum_print_clock_speed();

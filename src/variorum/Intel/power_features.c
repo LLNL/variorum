@@ -593,7 +593,7 @@ int get_dram_rapl_limit(const unsigned socket, struct rapl_limit *limit,
     return 0;
 }
 
-int set_package_power_limit(const unsigned socket, int package_power_limit,
+int cap_package_power_limit(const unsigned socket, int package_power_limit,
                             off_t msr_power_limit, off_t msr_rapl_unit)
 {
     uint64_t val = 0;

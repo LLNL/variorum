@@ -9,10 +9,10 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_power_limit, test_set_socket_power_limit)
+TEST(variorum_power_limit, test_cap_socket_power_limit)
 {
     int socket_power_limit = 100;
-    EXPECT_EQ(0, variorum_set_each_socket_power_limit(socket_power_limit));
+    EXPECT_EQ(0, variorum_cap_each_socket_power_limit(socket_power_limit));
 }
 
 int main(int argc, char **argv)

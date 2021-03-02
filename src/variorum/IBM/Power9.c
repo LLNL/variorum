@@ -144,13 +144,13 @@ int p9_get_power_limits(int long_ver)
     else
     {
         fprintf(stdout,
-                "_POWERCAP Host: %s, CurrentWatts: %d W, MaxWatts: %d W, MinWatts: %d W, PSR_CPU_to_GPU_0: %d%, PSR_CPU_to_GPU_8: %d%\n",
+                "_POWERCAP Host: %s, CurrentWatts: %d W, MaxWatts: %d W, MinWatts: %d W, PSR_CPU_to_GPU_0: %d%%, PSR_CPU_to_GPU_8: %d%%\n",
                 hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
     }
     return 0;
 }
 
-int p9_set_and_verify_node_power_limit(int pcap_new)
+int p9_cap_and_verify_node_power_limit(int pcap_new)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
@@ -214,7 +214,7 @@ int p9_set_and_verify_node_power_limit(int pcap_new)
     return 0;
 }
 
-int p9_set_node_power_limit(int pcap_new)
+int p9_cap_node_power_limit(int pcap_new)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
@@ -251,7 +251,7 @@ int p9_set_node_power_limit(int pcap_new)
     return 0;
 }
 
-int p9_set_gpu_power_ratio(int gpu_power_ratio)
+int p9_cap_gpu_power_ratio(int gpu_power_ratio)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s with value %d\n", __FUNCTION__, gpu_power_ratio);
@@ -280,7 +280,7 @@ int p9_set_gpu_power_ratio(int gpu_power_ratio)
     fclose(fp1);
     fclose(fp2);
 
-    /* Similar to set_and_verify, the delay here is about 100ms after
+    /* Similar to cap_and_verify, the delay here is about 100ms after
      * experimentation. Here, we don't implement two separate functions to
      * ensure simplicity of user-facing API. We assume that users would like to
      * verify that their GPU power ratio has been set correctly.
@@ -371,7 +371,7 @@ int p9_monitoring(FILE *output)
     return 0;
 }
 
-int p9_set_socket_power_limit(int long_ver)
+int p9_cap_socket_power_limit(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -379,7 +379,7 @@ int p9_set_socket_power_limit(int long_ver)
 
     if (long_ver == 0 || long_ver == 1)
     {
-        printf("Socket limits cannot be set separately on IBM Power9 architecture. Please use set_node_power_limit API.\n");
+        printf("Socket limits cannot be set separately on IBM Power9 architecture. Please use cap_node_power_limit API.\n");
     }
 
     return 0;

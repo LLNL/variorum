@@ -4,7 +4,7 @@ The examples directory contains some simple programs highlighting some of
 Variorum's features and capabilities. We categorize the existing examples
 into three categories:
 1. Query functions: Query if feature is enabled or disabled.
-2. Set functions: Provide control of a particular hardware-level feature
+2. Cap functions: Provide control of a particular hardware-level feature
 3. Print functions: Show current value of a particular hardware-level feature in
    a column-delimited format
 4. Print verbose functions: Show current value of a particular hardware-level feature
@@ -13,137 +13,139 @@ into three categories:
 QUERY FUNCTIONS
 ===============
 
-ex-print-hyperthreading
-----------------------
+variorum-print-hyperthreading-example
+-------------------------------------
 Query if architecture has hyperthreading enabled. Return the number of threads
 per core.
 
-    $ ./ex-print-hyperthreading
+    $ ./variorum-print-hyperthreading-example
 
-ex-print-turbo
--------------
+variorum-print-turbo-example
+----------------------------
 Query if architecture has TurboBoost (or equivalent) enabled.
 
-    $ ./ex-print-turbo
+    $ ./variorum-print-turbo-example
 
-ex-print-topology
------------------
+variorum-print-topology-example
+-------------------------------
 Query topology of the node (e.g., number of sockets, number of cores per
 socket, number of threads per core, etc.). Show a mapping of logical thread to
 physical core.
 
-    $ ./ex-print-topology
+    $ ./variorum-print-topology-example
 
-ex-print-features
------------------
+variorum-print-features-example
+-------------------------------
 Query list of supported features for the current architecture. Show register
 name and address.
 
-    $ ./ex-print-features
+    $ ./variorum-print-features-example
 
 
-SET FUNCTIONS
+CAP FUNCTIONS
 =============
 
-ex-set-power-limits
--------------------
-Set a power cap (across all sockets in a node) based on user-specified input
+variorum-cap-power-limits-example
+---------------------------------
+Apply a power cap (across all sockets in a node) based on user-specified input
 parameter. If no power cap is specified, then use a default power cap of 100W.
+The API is referred to as "cap" as it specifies the upper limit on the socket
+or node.
 
-    $ ./ex-set-power-limits <pkg_power_limit>
+    $ ./variorum-cap-power-limits-example <pkg_power_limit>
 
 
 PRINT FUNCTIONS
 ===============
 
-ex-print-clock-speed
--------------------
+variorum-print-clock-speed-example
+----------------------------------
 Show current clock frequency (reading IA32_PERF_STATUS on Intel platforms) and
 average clock frequency (dividing IA32_APERF by IA32_MPERF on Intel platforms)
 in column format. Search for tag `_CLOCKS_DATA` to filter out non-column
 formatted information. The granularity of the reported clock frequency will
 vary based on the architecture.
 
-    $ ./ex-print-clock-speed | grep _CLOCKS_DATA
+    $ ./variorum-print-clock-speed-example | grep _CLOCKS_DATA
 
-ex-print-counters
-----------------
+variorum-print-counters-example
+-------------------------------
 Show fixed counters, performance monitoring counters, and uncore counters in
 column format.  Search for tag `_FIXED_COUNTERS`,
 `_PERFORMANCE_MONITORING_COUNTERS`, and `_UNCORE_COUNTERS` to filter out
 non-column formatted information for each particular set of counters.
 
-    $ ./ex-print-counters | grep _FIXED_COUNTERS
-    $ ./ex-print-counters | grep _PERFORMANCE_MONITORING_COUNTERS
-    $ ./ex-print-counters | grep _UNCORE_COUNTERS
+    $ ./variorum-print-counters-example | grep _FIXED_COUNTERS
+    $ ./variorum-print-counters-example | grep _PERFORMANCE_MONITORING_COUNTERS
+    $ ./variorum-print-counters-example | grep _UNCORE_COUNTERS
 
-ex-print-power-limits
---------------------
+variorum-print-power-limits-example
+-----------------------------------
 Show the current power limits for the known domains (e.g., package, DRAM), as
 well as the units fused into the hardware. Search for tag
 `_PACKAGE_POWER_LIMITS`, `_DRAM_POWER_LIMIT`, `_PACKAGE_POWER_INFO`, and
 `_RAPL_POWER_UNITS` to filter out non-column formatted information.
 
-    $ ./ex-print-power-limits | grep _PACKAGE_POWER_LIMITS
-    $ ./ex-print-power-limits | grep _DRAM_POWER_LIMITS
-    $ ./ex-print-power-limits | grep _PACKAGE_POWER_INFO
-    $ ./ex-print-power-limits | grep _RAPL_POWER_UNITS
+    $ ./variorum-print-power-limits-example | grep _PACKAGE_POWER_LIMITS
+    $ ./variorum-print-power-limits-example | grep _DRAM_POWER_LIMITS
+    $ ./variorum-print-power-limits-example | grep _PACKAGE_POWER_INFO
+    $ ./variorum-print-power-limits-example | grep _RAPL_POWER_UNITS
 
-ex-print-power
--------------
+variorum-print-power-example
+----------------------------
 Show current energy (raw) and power (derived over two samples) usage for the
 known domains (e.g., package, DRAM). Search for tag `_PACKAGE_ENERGY_STATUS`
 and `_DRAM_ENERGY_STATUS` to filter out non-column formatted information. The
 first sample will show that 0 Watts were used, since the energy sample is taken
 at time t_0.
 
-    $ ./ex-print-power | grep _PACKAGE_ENERGY_STATUS
-    $ ./ex-print-power | grep _DRAM_ENERGY_STATUS
+    $ ./variorum-print-power-example | grep _PACKAGE_ENERGY_STATUS
+    $ ./variorum-print-power-example | grep _DRAM_ENERGY_STATUS
 
-ex-print-thermals
-----------------
+variorum-print-thermals-example
+-------------------------------
 Show current temperature information. Search for tag `_THERMALS` to filter out
 non-column delimited information.
 
-    $ ./ex-print-thermals | grep _THERMALS
+    $ ./variorum-print-thermals-example | grep _THERMALS
 
 
 PRINT VERBOSE FUNCTIONS
 =======================
 
-ex-print-verbose-clock-speed
---------------------
+variorum-print-verbose-clock-speed-example
+------------------------------------------
 Show current clock frequency (reading IA32_PERF_STATUS on Intel platforms) and
 average clock frequency (dividing IA32_APERF by IA32_MPERF on Intel platforms)
 in a verbose format (not meant for parsing). The granularity of the reported
 clock frequency will vary based on the architecture.
 
-    $ ./ex-print-verbose-clock-speed
+    $ ./variorum-print-verbose-clock-speed-example
 
-ex-print-verbose-counters
------------------
+variorum-print-verbose-counters-example
+---------------------------------------
 Show fixed counters, performance monitoring counters, and uncore counters in
 a verbose format (not meant for parsing).
 
-    $ ./ex-print-verbose-counters
+    $ ./variorum-print-verbose-counters-example
 
-ex-print-verbose-power-limits
----------------------
+variorum-print-verbose-power-limits-example
+-------------------------------------------
 Show the current power limits for the known domains (e.g., package, DRAM), as
 well as the units fused into the hardware.
 
-    $ ./ex-print-verbose-power-limits
+    $ ./variorum-print-verbose-power-limits-example
 
-ex-print-verbose-power
---------------
+variorum-print-verbose-power-example
+------------------------------------
 Show current energy (raw) and power (derived over two samples) usage for the
 known domains (e.g., package, DRAM). The first sample will show that 0 Watts
 were used, since the energy sample is taken at time t_0.
 
-    $ ./ex-print-verbose-power
+    $ ./variorum-print-verbose-power-example
 
-ex-print-verbose-thermals
------------------
+variorum-print-verbose-thermals-example
+---------------------------------------
 Show current temperature information.
 
-    $ ./ex-print-verbose-thermals
+    $ ./variorum-print-verbose-thermals-example

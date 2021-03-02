@@ -77,7 +77,7 @@ struct sandybridge_2a_offsets
 
 int fm_06_2a_get_power_limits(int long_ver);
 
-int fm_06_2a_set_power_limits(int package_power_limit);
+int fm_06_2a_cap_power_limits(int package_power_limit);
 
 int fm_06_2a_get_features(void);
 

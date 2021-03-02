@@ -27,13 +27,13 @@ int set_ibm_func_ptrs(void)
     {
         g_platform.variorum_dump_power = p9_get_power;
         g_platform.variorum_dump_power_limits = p9_get_power_limits;
-        g_platform.variorum_set_best_effort_node_power_limit =
-            p9_set_node_power_limit;
-        g_platform.variorum_set_each_socket_power_limit =
-            p9_set_socket_power_limit;
-        g_platform.variorum_set_gpu_power_ratio = p9_set_gpu_power_ratio;
-        g_platform.variorum_set_and_verify_node_power_limit =
-            p9_set_and_verify_node_power_limit;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            p9_cap_node_power_limit;
+        g_platform.variorum_cap_each_socket_power_limit =
+            p9_cap_socket_power_limit;
+        g_platform.variorum_cap_gpu_power_ratio = p9_cap_gpu_power_ratio;
+        g_platform.variorum_cap_and_verify_node_power_limit =
+            p9_cap_and_verify_node_power_limit;
         g_platform.variorum_monitoring = p9_monitoring;
         g_platform.variorum_get_node_power_json = p9_get_node_power_json;
     }

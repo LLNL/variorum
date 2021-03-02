@@ -63,14 +63,14 @@ int set_intel_func_ptrs(void)
 
     // GPU power ratio doesn't apply to Intel architectures.
     // So specify a common function that exits with a log message.
-    g_platform.variorum_set_gpu_power_ratio = gpu_power_ratio_unimplemented;
+    g_platform.variorum_cap_gpu_power_ratio = gpu_power_ratio_unimplemented;
 
     // Sandy Bridge 06_2A
     if (*g_platform.intel_arch == FM_06_2A)
     {
         g_platform.variorum_dump_power_limits = fm_06_2a_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_2a_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_2a_cap_power_limits;
         g_platform.variorum_print_features = fm_06_2a_get_features;
         g_platform.variorum_dump_thermals = fm_06_2a_get_thermals;
         g_platform.variorum_dump_counters = fm_06_2a_get_counters;
@@ -82,14 +82,14 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_2a_poll_power;
         g_platform.variorum_monitoring = fm_06_2a_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //    fm_06_2a_set_frequency;
+        //    fm_06_2a_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_2a_get_frequencies;
     }
     else if (*g_platform.intel_arch == FM_06_2D)
     {
         g_platform.variorum_dump_power_limits = fm_06_2d_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit = fm_06_2d_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit = fm_06_2d_cap_power_limits;
         g_platform.variorum_print_features = fm_06_2d_get_features;
         g_platform.variorum_dump_thermals = fm_06_2d_get_thermals;
         g_platform.variorum_dump_counters = fm_06_2d_get_counters;
@@ -101,7 +101,7 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_2d_poll_power;
         g_platform.variorum_monitoring = fm_06_2d_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //    fm_06_2d_set_frequency;
+        //    fm_06_2d_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_2d_get_frequencies;
     }
@@ -109,8 +109,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_3E)
     {
         g_platform.variorum_dump_power_limits = fm_06_3e_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_3e_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_3e_cap_power_limits;
         g_platform.variorum_print_features = fm_06_3e_get_features;
         g_platform.variorum_dump_thermals = fm_06_3e_get_thermals;
         g_platform.variorum_dump_counters = fm_06_3e_get_counters;
@@ -122,7 +122,7 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_3e_poll_power;
         g_platform.variorum_monitoring = fm_06_3e_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //    fm_06_3e_set_frequency;
+        //    fm_06_3e_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_3e_get_frequencies;
     }
@@ -130,8 +130,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_3F)
     {
         g_platform.variorum_dump_power_limits = fm_06_3f_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_3f_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_3f_cap_power_limits;
         g_platform.variorum_print_features = fm_06_3f_get_features;
         g_platform.variorum_dump_thermals = fm_06_3f_get_thermals;
         g_platform.variorum_dump_counters = fm_06_3f_get_counters;
@@ -143,7 +143,7 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_3f_poll_power;
         g_platform.variorum_monitoring = fm_06_3f_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //    fm_06_3f_set_frequency;
+        //    fm_06_3f_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_3f_get_frequencies;
     }
@@ -151,8 +151,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_4F)
     {
         g_platform.variorum_dump_power_limits = fm_06_4f_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_4f_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_4f_cap_power_limits;
         g_platform.variorum_print_features = fm_06_4f_get_features;
         g_platform.variorum_dump_thermals = fm_06_4f_get_thermals;
         g_platform.variorum_dump_counters = fm_06_4f_get_counters;
@@ -164,11 +164,11 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_poll_power = fm_06_4f_poll_power;
         g_platform.variorum_monitoring = fm_06_4f_monitoring;
         //g_platform.variorum_cap_each_core_frequency =
-        //    fm_06_4f_set_frequency;
+        //    fm_06_4f_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_4f_get_node_power_json;
-        g_platform.variorum_set_best_effort_node_power_limit =
-            fm_06_4f_set_best_effort_node_power_limit;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_4f_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_4f_get_frequencies;
     }
@@ -176,8 +176,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_55)
     {
         g_platform.variorum_dump_power_limits = fm_06_55_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_55_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_55_cap_power_limits;
         g_platform.variorum_print_features = fm_06_55_get_features;
         g_platform.variorum_dump_thermals = fm_06_55_get_thermals;
         g_platform.variorum_dump_counters = fm_06_55_get_counters;
@@ -188,7 +188,7 @@ int set_intel_func_ptrs(void)
         //g_platform.variorum_disable_turbo = fm_06_55_disable_turbo;
         g_platform.variorum_poll_power = fm_06_55_poll_power;
         g_platform.variorum_monitoring = fm_06_55_monitoring;
-        g_platform.variorum_cap_each_core_frequency = fm_06_55_set_frequency;
+        g_platform.variorum_cap_each_core_frequency = fm_06_55_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_55_get_frequencies;
     }
@@ -196,8 +196,8 @@ int set_intel_func_ptrs(void)
     else if (*g_platform.intel_arch == FM_06_9E)
     {
         g_platform.variorum_dump_power_limits = fm_06_9e_get_power_limits;
-        g_platform.variorum_set_each_socket_power_limit =
-            fm_06_9e_set_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit =
+            fm_06_9e_cap_power_limits;
         g_platform.variorum_print_features = fm_06_9e_get_features;
         g_platform.variorum_dump_thermals = fm_06_9e_get_thermals;
         g_platform.variorum_dump_counters = fm_06_9e_get_counters;

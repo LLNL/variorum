@@ -82,7 +82,7 @@ struct skylake_55_offsets
 
 int fm_06_55_get_power_limits(int long_ver);
 
-int fm_06_55_set_power_limits(int package_power_limit);
+int fm_06_55_cap_power_limits(int package_power_limit);
 
 int fm_06_55_get_features(void);
 
@@ -98,7 +98,7 @@ int fm_06_55_poll_power(FILE *output);
 
 int fm_06_55_monitoring(FILE *output);
 
-int fm_06_55_set_frequency(int core_freq_mhz);
+int fm_06_55_cap_frequency(int core_freq_mhz);
 
 int fm_06_55_get_frequencies(void);
 

@@ -315,7 +315,7 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 //    }
 //}
 
-void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
+void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
                  off_t msr_perf_status)
 {
     unsigned nsockets, ncores, nthreads;
@@ -333,7 +333,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     switch (domain)
     {
         case SOCKET:
-            printf("Set frequencies per socket\n");
+            printf("Cap frequencies per socket\n");
             for (i = 0; i < nsockets; i++)
             {
                 *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;
@@ -341,7 +341,7 @@ void set_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
             write_batch(PERF_CTRL);
             break;
         case CORE:
-            printf("Set frequencies per core\n");
+            printf("Cap frequencies per core\n");
             for (i = 0; i < nthreads; i++)
             {
                 *pd->perf_ctl[i] = cpu_freq_mhz / 100 * 256;

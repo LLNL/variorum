@@ -121,7 +121,7 @@ int fm_06_2a_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_2a_set_power_limits(int package_power_limit)
+int fm_06_2a_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -133,7 +133,7 @@ int fm_06_2a_set_power_limits(int package_power_limit)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-        set_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
+        cap_package_power_limit(socket, package_power_limit, msrs.msr_pkg_power_limit,
                                 msrs.msr_rapl_power_unit);
     }
     return 0;

@@ -34,39 +34,39 @@ module variorum
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_set_each_socket_power_limit(socket_power_limit) &
+            function variorum_cap_each_socket_power_limit(socket_power_limit) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::socket_power_limit
-    end function variorum_set_each_socket_power_limit
+    end function variorum_cap_each_socket_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_set_and_verify_node_power_limit(node_power_limit) &
+            function variorum_cap_and_verify_node_power_limit(node_power_limit) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::node_power_limit
-    end function variorum_set_and_verify_node_power_limit
+    end function variorum_cap_and_verify_node_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_set_node_power_limit(node_power_limit) &
+            function variorum_cap_node_power_limit(node_power_limit) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::node_power_limit
-    end function variorum_set_node_power_limit
+    end function variorum_cap_node_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_set_gpu_power_ratio(gpu_power_ratio) &
+            function variorum_cap_gpu_power_ratio(gpu_power_ratio) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::gpu_power_ratio
-    end function variorum_set_gpu_power_ratio
+    end function variorum_cap_gpu_power_ratio
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &

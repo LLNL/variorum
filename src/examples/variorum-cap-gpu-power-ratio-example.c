@@ -11,28 +11,26 @@
 int main(int argc, char **argv)
 {
     int ret;
-    /* 500 W is based on minimum power on IBM Witherspoon */
-    int node_pow_lim_watts = 500;
+    /*100 % is based on IBM Witherspoon default */
+    int gpu_power_ratio_pct = 100;
 
     if (argc == 1)
     {
-        printf("No power limit specified...using default limit of 500W.\n");
-        node_pow_lim_watts = 500;
+        printf("No GPU power ratio specified...using default ratio of 100 percent.\n");
     }
     else if (argc == 2)
     {
-        node_pow_lim_watts = atoi(argv[1]);
-        printf("Setting node to %dW.\n", node_pow_lim_watts);
+        gpu_power_ratio_pct = atoi(argv[1]);
+        printf("Capping GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
     }
 
-    ret = variorum_set_and_verify_node_power_limit(node_pow_lim_watts);
+    ret = variorum_cap_gpu_power_ratio(gpu_power_ratio_pct);
     if (ret != 0)
     {
-        printf("Set and verify node power limit failed!\n");
+        printf("Cap GPU power ratio failed!\n");
         return ret;
     }
     printf("\n");
-
     ret = variorum_print_verbose_power_limits();
     if (ret != 0)
     {

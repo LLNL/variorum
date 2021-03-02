@@ -11,23 +11,27 @@
 int main(int argc, char **argv)
 {
     int ret;
-    /*100 % is based on IBM Witherspoon default */
-    int gpu_power_ratio_pct = 100;
+    int pkg_pow_lim_watts = 100;
 
     if (argc == 1)
     {
-        printf("No GPU power ratio specified...using default ratio of 100 percent.\n");
+        printf("No power limit specified...using default limit of 100W.\n");
     }
     else if (argc == 2)
     {
-        gpu_power_ratio_pct = atoi(argv[1]);
-        printf("Setting GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
+        pkg_pow_lim_watts = atoi(argv[1]);
+        printf("Capping each socket to %dW.\n", pkg_pow_lim_watts);
+    }
+    else
+    {
+        printf("Usage: variorum_cap_socket_power_limit [limit in watts]\n");
+        exit(0);
     }
 
-    ret = variorum_set_gpu_power_ratio(gpu_power_ratio_pct);
+    ret = variorum_cap_each_socket_power_limit(pkg_pow_lim_watts);
     if (ret != 0)
     {
-        printf("Set GPU power ratio failed!\n");
+        printf("Cap each socket power limit failed!\n");
         return ret;
     }
     printf("\n");
@@ -35,7 +39,6 @@ int main(int argc, char **argv)
     if (ret != 0)
     {
         printf("Print power limits failed!\n");
-        return ret;
     }
     return ret;
 }

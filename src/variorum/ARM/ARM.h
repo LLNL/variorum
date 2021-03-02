@@ -14,6 +14,6 @@ int arm_get_clocks(int long_ver);
 
 int arm_get_frequencies(void);
 
-int arm_set_socket_frequency(int cpuid, int freq);
+int arm_cap_socket_frequency(int cpuid, int freq);
 
 #endif

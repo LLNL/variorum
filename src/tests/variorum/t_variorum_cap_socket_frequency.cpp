@@ -9,12 +9,12 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_socket_frequency, test_set_socket_frequency)
+TEST(variorum_socket_frequency, test_cap_socket_frequency)
 {
     int socket0_frequency = 950;
     int socket1_frequency = 1200;
-    EXPECT_EQ(0, variorum_set_socket_frequency(0, socket0_frequency));
-    EXPECT_EQ(0, variorum_set_socket_frequency(1, socket1_frequency));
+    EXPECT_EQ(0, variorum_cap_socket_frequency(0, socket0_frequency));
+    EXPECT_EQ(0, variorum_cap_socket_frequency(1, socket1_frequency));
 }
 
 int main(int argc, char **argv)

@@ -82,7 +82,7 @@ struct kabylake_9e_offsets
 
 int fm_06_9e_get_power_limits(int long_ver);
 
-int fm_06_9e_set_power_limits(int package_power_limit);
+int fm_06_9e_cap_power_limits(int package_power_limit);
 
 int fm_06_9e_get_features(void);
 
