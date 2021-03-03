@@ -13,7 +13,7 @@ updated as releases occur.
 
 v0.4.0
 ------
-02/26/2021: Updated version includes support for ARM Juno architecture, introduction of the JSON API, and Intel support for two versions of msr-safe. `v0.4.0 tarball here <https://github.com/LLNL/variorum/archive/v0.4.0.tar.gz>`_.
+03/03/2021: Updated version includes support for ARM Juno architecture, introduction of the JSON API, and Intel support for two versions of msr-safe. `v0.4.0 tarball here <https://github.com/LLNL/variorum/archive/v0.4.0.tar.gz>`_.
 
 v0.3.0
 ------
