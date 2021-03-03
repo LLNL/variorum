@@ -22,7 +22,7 @@ Best Practices
 These are the most common mistakes we have seen when using these registers.
 
 * IA32_PERF_CTL does not set clock frequency
-    * In the distant pass prior to multicore and turbo, setting IA32_PERF_CTL
+    * In the distant past prior to multicore and turbo, setting IA32_PERF_CTL
       might have had the effect of dialing in the requested CPU clock
       frequency. In any processor since Nehalem, however, it sets a frequency
       cap.
