@@ -134,7 +134,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         if (long_ver == 0)
         {
             fprintf(output,
-                    "_IBMPOWER Host Socket PWRSYS PWRPROC PWRMEM PWRGPU Timestamp\n");
+                    "_IBMPOWER Host Socket PWRSYS_W PWRPROC_W PWRMEM_W PWRGPU_W Timestamp_sec\n");
         }
     }
 
@@ -209,7 +209,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-    fprintf(output, "_IBMPOWER%d Timestamp_s Host Socket", chipid);
+    fprintf(output, "_IBMPOWER%d Timestamp_sec Host Socket", chipid);
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {

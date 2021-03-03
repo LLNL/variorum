@@ -127,12 +127,12 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         if (control_domains == SOCKET)
         {
             fprintf(writedest,
-                    "_CLOCKS_DATA hostname socket aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
+                    "_CLOCKS_DATA Host Socket APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
         }
         else if (control_domains == CORE)
         {
             fprintf(writedest,
-                    "_CLOCKS_DATA hostname socket core thread_phy thread_log aperf mperf tsc curr_freq_mhz avg_freq_mhz\n");
+                    "_CLOCKS_DATA Host Socket Core PhysicalThread LogicalThread APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
         }
         init = 1;
     }
@@ -221,7 +221,7 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
                         fprintf(writedest,
-                                "_CLOCKS_DATA Host: %s, Socket: %d, APERF: %lu, MPERF: %lu, TSC: %lu, Curr_Freq: %lu MHz, Avg_Freq: %f MHz\n",
+                                "_CLOCKS_DATA Host: %s, Socket: %d, APERF: %lu, MPERF: %lu, TSC: %lu, CurrFreq: %lu MHz, AvgFreq: %f MHz\n",
                                 hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
@@ -238,7 +238,7 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
                         fprintf(writedest,
-                                "_CLOCKS_DATA Host: %s, Socket: %d, Core: %d, Thread_Phy: %d, Thread_Log: %d, APERF: %lu, MPERF: %lu, TSC: %lu, Curr_Freq: %lu MHz, Avg_Freq: %f MHz\n",
+                                "_CLOCKS_DATA Host: %s, Socket: %d, Core: %d, PhysicalThread: %d, LogicalThread: %d, APERF: %lu, MPERF: %lu, TSC: %lu, CurrFreq: %lu MHz, AvgFreq: %f MHz\n",
                                 hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));

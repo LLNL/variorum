@@ -153,7 +153,7 @@ int get_power_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_POWER Host Sys Big Little GPU\n");
+            fprintf(output, "_ARM_POWER Host Sys_mW Big_mW Little_mW GPU_mW\n");
             init_output = 1;
         }
         fprintf(output, "_ARM_POWER %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
@@ -225,7 +225,7 @@ int get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_TEMPERATURE Host Sys Big Little GPU\n");
+            fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
             init_output = 1;
         }
         fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
@@ -278,7 +278,7 @@ int get_clocks_data(int chipid, int verbose, FILE *output)
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_CLOCKS Host CPU Socket Clock\n");
+            fprintf(output, "_ARM_CLOCKS Host CPU Socket Clock_MHz\n");
             init_output = 1;
         }
         fprintf(output, "_ARM_CLOCKS %s %s %d %"PRIu64"\n",
