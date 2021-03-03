@@ -265,8 +265,8 @@ int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
             for (k = 0; k < nthreads / ncores; k++)
             {
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                fprintf(writedest, "_THERMALS Socket: %d, PhysicalCore: %d, LogicalThread: %d, ", i, j,
-                        idx);
+                fprintf(writedest,
+                        "_THERMALS Socket: %d, PhysicalCore: %d, LogicalThread: %d, ", i, j, idx);
                 fprintf(writedest, "TCC: %d C, ", (int)t_target[i].temp_target);
                 fprintf(writedest, "Pkg_Reading: %d C, ", pkg_stat[i].readout);
                 fprintf(writedest, "Pkg_Actual: %d C, ",
