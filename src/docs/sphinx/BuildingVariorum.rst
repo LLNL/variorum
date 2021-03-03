@@ -69,19 +69,24 @@ Build Options
 
 Variorum's build system supports the following CMake options:
 
-* **ENABLE_FORTRAN** - Enable fortran compiler for building example integration with fortran application, fortran compiler must exist *(default = ON)*.
+* **ENABLE_FORTRAN** - Enable fortran compiler for building example integration
+  with fortran application, fortran compiler must exist *(default = ON)*.
 
-* **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra -Werror, used primarily by developers *(default = OFF)*.
+* **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra
+  -Werror, used primarily by developers *(default = OFF)*.
 
 * **HWLOC_DIR** - Path to an HWLOC install.
 
 * **JANSSON_DIR** - Path to a JANSSON install.
 
-* **SPHINX_EXECUTABLE** - Path to sphinx-build binary *(required for documentation)*.
+* **SPHINX_EXECUTABLE** - Path to sphinx-build binary *(required for
+  documentation)*.
 
-* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx and doxygen are found ) *(default = ON)*.
+* **BUILD_DOCS** - Controls if the Variorum documentation is built (when sphinx
+  and doxygen are found ) *(default = ON)*.
 
-* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are built *(default = ON)*.
+* **BUILD_SHARED_LIBS** - Controls if shared (ON) or static (OFF) libraries are
+  built *(default = ON)*.
 
 * **BUILD_TESTS** - Controls if unit tests are built *(default = ON)*.
 
@@ -91,18 +96,27 @@ Variorum's build system supports the following CMake options:
 * **VARIORUM_LOG** - Enable Variorum logging statements, useful for tracking what
   code path is being taken *(default = ON)*.
 
-* **VARIORUM_WITH_AMD** - (not yet implemented) Enable Variorum build for AMD architecture *(default = OFF)*.
+* **VARIORUM_WITH_AMD** - (not yet implemented) Enable Variorum build for AMD
+  architecture *(default = OFF)*.
 
-* **VARIORUM_WITH_NVIDIA** - Enable Variorum build for Nvidia architecture *(default = OFF)*.
+* **VARIORUM_WITH_NVIDIA** - Enable Variorum build for Nvidia architecture
+  *(default = OFF)*.
 
-* **VARIORUM_WITH_IBM** - Enable Variorum build for IBM architecture *(default = OFF)*.
+* **VARIORUM_WITH_IBM** - Enable Variorum build for IBM architecture *(default
+  = OFF)*.
 
-* **VARIORUM_WITH_INTEL** - Enable Variorum build for Intel architecture *(default = ON)*.
+* **VARIORUM_WITH_ARM** - Enable Variorum build for ARM architecture
+  *(default = OFF)*.
 
-* **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of Intel architectures for accessing counters from userspace *(default = ON)*.
+* **VARIORUM_WITH_INTEL** - Enable Variorum build for Intel architecture
+  *(default = ON)*.
+
+* **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of
+  Intel architectures for accessing counters from userspace *(default = ON)*.
 
 Host Config Files
 -----------------
+
 To handle build options, third party library paths, etc., we rely on CMake's
 initial-cache file mechanism.
 

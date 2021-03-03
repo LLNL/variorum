@@ -7,6 +7,7 @@
 Quick Start Guide
 =================
 
+
 Installing Variorum
 -------------------
 
@@ -29,6 +30,7 @@ For more details about building and installing Variorum, see
 :doc:`BuildingVariorum`. This page provides detailed info about building
 Variorum from CMake initial-cache files (i.e., host config files) for specific
 hosts, and Variorum's other CMake options and spack package.
+
 
 Accessing Low-Level Registers
 -----------------------------

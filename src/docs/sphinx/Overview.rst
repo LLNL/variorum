@@ -15,6 +15,7 @@ different generations within a particular device. More specifically, Variorum's
 flexible design supports a set of features that may exist on one generation of
 hardware, but not on another.
 
+
 Requirements
 ------------
 
@@ -39,6 +40,7 @@ Here are Variorum's requirements:
 
 System Diagram
 --------------
+
 ..  image:: images/VariorumSystemDesign.png
     :height: 400px
     :align: center
@@ -48,6 +50,7 @@ Dependencies
 ------------
 
 This section describes Variorum's key dependencies.
+
 
 hwloc (Required)
 """"""""""""""""

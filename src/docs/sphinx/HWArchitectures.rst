@@ -4,10 +4,10 @@
 .. # SPDX-License-Identifier: MIT
 
 
-Variorum Supported Architectures
-================================
+Variorum Supported Platforms
+============================
 
-These are the currently supported architectures in Variorum.
+These are the currently supported platforms in Variorum.
 
 .. toctree::
    :maxdepth: 2
