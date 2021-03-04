@@ -21,7 +21,7 @@ int arm_get_power(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    ret = dump_power_data(long_ver, stdout);
+    ret = get_power_data(long_ver, stdout);
     return ret;
 }
 
@@ -31,7 +31,7 @@ int arm_get_thermals(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    ret = dump_thermal_data(long_ver, stdout);
+    ret = get_thermal_data(long_ver, stdout);
     return ret;
 }
 
@@ -47,7 +47,7 @@ int arm_get_clocks(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
-        ret = dump_clocks_data(iter, long_ver, stdout);
+        ret = get_clocks_data(iter, long_ver, stdout);
     }
     return ret;
 }
@@ -63,7 +63,7 @@ int arm_get_frequencies(void)
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
-        ret = dump_frequencies(iter, stdout);
+        ret = get_frequencies(iter, stdout);
     }
     return ret;
 }
