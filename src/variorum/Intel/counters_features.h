@@ -126,26 +126,19 @@ void disable_fixed_counters(off_t *msrs_fixed_ctrs,
                             off_t msr1,
                             off_t msr2);
 
-void dump_fixed_counter_data(FILE *writedest,
-                             off_t *msrs_fixed_ctrs);
-
 void print_fixed_counter_data(FILE *writedest,
                               off_t *msrs_fixed_ctrs);
 
-void dump_perfmon_counter_data(FILE *writedest,
-                               off_t *msrs_perfevtsel_ctrs,
-                               off_t *msrs_perfmon_ctrs);
+void print_verbose_fixed_counter_data(FILE *writedest,
+                                      off_t *msrs_fixed_ctrs);
 
 void print_perfmon_counter_data(FILE *writedest,
                                 off_t *msrs_perfevtsel_ctrs,
                                 off_t *msrs_perfmon_ctrs);
 
-void dump_all_counter_data(FILE *writedest,
-                           off_t *msrs_fixed_ctrs,
-                           off_t *msrs_perfevtsel_ctrs,
-                           off_t *msrs_perfmon_ctrs,
-                           off_t *msrs_pcu_pmon_evtsel,
-                           off_t *msrs_pcu_pmon_ctrs);
+void print_verbose_perfmon_counter_data(FILE *writedest,
+                                        off_t *msrs_perfevtsel_ctrs,
+                                        off_t *msrs_perfmon_ctrs);
 
 void print_all_counter_data(FILE *writedest,
                             off_t *msrs_fixed_ctrs,
@@ -153,6 +146,13 @@ void print_all_counter_data(FILE *writedest,
                             off_t *msrs_perfmon_ctrs,
                             off_t *msrs_pcu_pmon_evtsel,
                             off_t *msrs_pcu_pmon_ctrs);
+
+void print_verbose_all_counter_data(FILE *writedest,
+                                    off_t *msrs_fixed_ctrs,
+                                    off_t *msrs_perfevtsel_ctrs,
+                                    off_t *msrs_perfmon_ctrs,
+                                    off_t *msrs_pcu_pmon_evtsel,
+                                    off_t *msrs_pcu_pmon_ctrs);
 
 /*************************************/
 /* Programmable Performance Counters */
@@ -347,13 +347,13 @@ void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs);
 ///        PCU_PMON_EVTSEL.
 /// @param [in] msrs_pcu_pmon_ctrs Array of unique addresses for
 ///        PCU_PMON_CTRS.
-void dump_unc_counter_data(FILE *writedest,
-                           off_t *msrs_pcu_pmon_evtsel,
-                           off_t *msrs_pcu_pmon_ctrs);
-
 void print_unc_counter_data(FILE *writedest,
                             off_t *msrs_pcu_pmon_evtsel,
                             off_t *msrs_pcu_pmon_ctrs);
+
+void print_verbose_unc_counter_data(FILE *writedest,
+                                    off_t *msrs_pcu_pmon_evtsel,
+                                    off_t *msrs_pcu_pmon_ctrs);
 
 void get_all_power_data_fixed(FILE *writedest,
                               off_t msr_pkg_power_limit,

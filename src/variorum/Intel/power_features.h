@@ -154,20 +154,20 @@ int get_package_power_limits(struct rapl_units *ru,
 int get_rapl_power_unit(struct rapl_units *ru,
                         off_t msr);
 
-void dump_package_power_limit(FILE *writedest,
-                              off_t msr_power_limit,
-                              off_t msr_rapl_unit,
-                              int socket);
-
-void dump_dram_power_limit(FILE *writedest,
-                           off_t msr_power_limit,
-                           off_t msr_rapl_unit,
-                           int socket);
+void print_package_power_limit(FILE *writedest,
+                               off_t msr_power_limit,
+                               off_t msr_rapl_unit,
+                               int socket);
 
 void print_dram_power_limit(FILE *writedest,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit,
                             int socket);
+
+void print_verbose_dram_power_limit(FILE *writedest,
+                                    off_t msr_power_limit,
+                                    off_t msr_rapl_unit,
+                                    int socket);
 
 int get_package_rapl_limit(const unsigned socket,
                            struct rapl_limit *limit1,
@@ -180,50 +180,49 @@ int get_dram_rapl_limit(const unsigned socket,
                         off_t msr_power_limit,
                         off_t msr_rapl_unit);
 
-void dump_rapl_power_unit(FILE *writedest,
-                          off_t msr);
+void print_rapl_power_unit(FILE *writedest,
+                           off_t msr);
 
 int get_rapl_power_info(const unsigned socket,
                         struct rapl_power_info *info,
                         off_t msr);
 
-void dump_package_power_info(FILE *writedest,
-                             off_t msr,
-                             int socket);
-
-void print_rapl_power_unit(FILE *writedest,
-                           off_t msr);
-
-void print_package_power_limit(FILE *writedest,
-                               off_t msr_power_limit,
-                               off_t msr_rapl_unit,
-                               int socket);
-
 void print_package_power_info(FILE *writedest,
                               off_t msr,
                               int socket);
+
+void print_verbose_rapl_power_unit(FILE *writedest,
+                                   off_t msr);
+
+void print_verbose_package_power_limit(FILE *writedest,
+                                       off_t msr_power_limit,
+                                       off_t msr_rapl_unit,
+                                       int socket);
+
+void print_verbose_package_power_info(FILE *writedest,
+                                      off_t msr,
+                                      int socket);
 
 int cap_package_power_limit(const unsigned socket,
                             int package_power_limit,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit);
 
-void dump_power_data(FILE *writedest,
-                     off_t msr_rapl_unit,
-                     off_t msr_pkg_energy_status,
-                     off_t msr_dram_energy_status);
-
 void print_power_data(FILE *writedest,
                       off_t msr_rapl_unit,
                       off_t msr_pkg_energy_status,
                       off_t msr_dram_energy_status);
 
+void print_verbose_power_data(FILE *writedest,
+                              off_t msr_rapl_unit,
+                              off_t msr_pkg_energy_status,
+                              off_t msr_dram_energy_status);
 
-void json_dump_power_data(json_t *get_power_obj,
-                          off_t msr_power_limit,
-                          off_t msr_rapl_unit,
-                          off_t msr_pkg_energy_status,
-                          off_t msr_dram_energy_status);
+void json_get_power_data(json_t *get_power_obj,
+                         off_t msr_power_limit,
+                         off_t msr_rapl_unit,
+                         off_t msr_pkg_energy_status,
+                         off_t msr_dram_energy_status);
 
 /// @brief Store the RAPL data on the heap.
 ///
