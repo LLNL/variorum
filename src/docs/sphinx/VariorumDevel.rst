@@ -8,10 +8,10 @@
 ##################################
 
 Here is some information on how to extend Variorum to support additional
-platforms and/or architectures.
+platforms and/or microarchitectures.
 
 A **platform** refers to a hardware vendor, for example, Intel, IBM, or ARM. An
-**architecture** refers to a generation of hardware within a platform, for
+**microarchitecture** refers to a generation of hardware within a platform, for
 example, Broadwell or Ivy Bridge for Intel Xeon processors; or Power8 and
 Power9 for IBM Power processors.
 
@@ -25,31 +25,31 @@ Power9 for IBM Power processors.
    `detect_pfm_arch` and `set_pfm_func_ptrs` functions. The former identifies
    the new platform, and the latter sets function pointers for get/set power,
    thermals, etc. on the new platform. These function pointers refer to
-   internal functions that are defined in architecture-specific files (see next
-   section).
+   internal functions that are defined in microarchitecture-specific files (see
+   next section).
 
-#. Add a struct listing all the architectures implemented on the new platform
-   in `src/variorum/config_architecture.c`. Refer to the enum for Intel
-   architectures as an example. You may need to check for the platform in a few
-   places in the `config_architecture.c` file. Examples of Intel and IBM are
-   included, so these can be referred to.
+#. Add a struct listing all the microarchitectures implemented on the new
+   platform in `src/variorum/config_architecture.c`. Refer to the enum for
+   Intel microarchitectures as an example. You may need to check for the
+   platform in a few places in the `config_architecture.c` file. Examples of
+   Intel and IBM are included, so these can be referred to.
 
 #. If you need to modify front-facing APIs, add them to `variorum.h` and
    `variorum.c`.
 
-********************************************************
- Steps to Add Support for a New Architecture (pfm_arch)
-********************************************************
+*************************************************************
+ Steps to Add Support for a New Microarchitecture (pfm_arch)
+*************************************************************
 
 #. Follow the steps listed above to create a new platform if the platform does
    not already exist in the Variorum source.
 
-#. For each architecture, add a `pfm_arch.h` and `pfm_arch.c` file, define the
-   internal get/set functions for capturing power, thermal, performance data.
-   These need to be added as function pointers in the platform file
+#. For each microarchitecture, add a `pfm_arch.h` and `pfm_arch.c` file, define
+   the internal get/set functions for capturing power, thermal, performance
+   data. These need to be added as function pointers in the platform file
    (`config_pfm.h` and `config_pfm.c` files).
 
 #. The internal implementation will depend on the interfaces, such as sensors,
    MSRs, OPAL, IPMI, etc. If applicable, these can be re-used across
-   architectures (i.e., the same implementation is used for many
-   architectures).
+   microarchitectures (i.e., the same implementation is used for many
+   microarchitectures).
