@@ -1,20 +1,22 @@
 .. # Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
-.. # Variorum Project Developers. See the top-level LICENSE file for details.
-.. #
-.. # SPDX-License-Identifier: MIT
+   # Variorum Project Developers. See the top-level LICENSE file for details.
+   #
+   # SPDX-License-Identifier: MIT
 
-
-Example Programs
-================
+##################
+ Example Programs
+##################
 
 Variorum provides some examples in the `examples/` directory.
 
 .. note::
+
     All example codes have a print and print_verbose version showcasing the
     different printouts supported by Variorum.
 
-Print Power Limits
-^^^^^^^^^^^^^^^^^^
+********************
+ Print Power Limits
+********************
 
 The example below gets the power limits of the platform. The ``print`` API
 prints the output in tabular format that can be filtered and parsed by a data
@@ -64,8 +66,9 @@ On an IBM Power9 platform, the output may look similar to:
     _GPU_POWER_LIMIT lassen1 1 3 300.000
     _LOG_VARIORUM_EXIT:~/variorum/src/variorum/variorum.c:variorum_print_power_limits::165
 
-Print Verbose Power Limits
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+****************************
+ Print Verbose Power Limits
+****************************
 
 The example below gets the power limits of the platform. The ``print_verbose``
 API prints the output in verbose format that is more human-readable (with units,

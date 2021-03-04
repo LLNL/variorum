@@ -1,20 +1,20 @@
 .. # Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
-.. # Variorum Project Developers. See the top-level LICENSE file for details.
-.. #
-.. # SPDX-License-Identifier: MIT
+   # Variorum Project Developers. See the top-level LICENSE file for details.
+   #
+   # SPDX-License-Identifier: MIT
 
-
-Variorum API
-============
+##############
+ Variorum API
+##############
 
 The top-level API for Variorum consists of the following calls:
 
 .. literalinclude:: ../../variorum/variorum.h
    :language: c
 
-
-JSON API
-^^^^^^^^
+**********
+ JSON API
+**********
 
 The current JSON API depends on the JANSSON-C library and has a vendor-neutral
 format. The API has been tested on Intel Broadwell and IBM Witherspoon
@@ -53,9 +53,9 @@ individual GPU power as well as total GPU power per socket with a
 cross-architectural build, similar to Variorum's ``variorum_get_node_power()``
 API.
 
-
-Best Effort Power Capping
-^^^^^^^^^^^^^^^^^^^^^^^^^
+***************************
+ Best Effort Power Capping
+***************************
 
 We support setting best effort node power limits in a vendor-neutral manner.
 This interface has been developed from the point of view of higher-level tools
