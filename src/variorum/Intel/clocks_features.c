@@ -95,7 +95,9 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
     }
 }
 
-int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info, enum ctl_domains_e control_domains)
+int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                      off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                      enum ctl_domains_e control_domains)
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
@@ -178,7 +180,9 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t m
     return 0;
 }
 
-int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info, enum ctl_domains_e control_domains)
+int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
+                              off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                              enum ctl_domains_e control_domains)
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;

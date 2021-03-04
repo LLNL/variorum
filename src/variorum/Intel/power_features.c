@@ -481,7 +481,7 @@ void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
 }
 
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
-                              off_t msr_rapl_unit, int socket)
+                               off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
     static int init_print_package_power_limit = 0;
@@ -506,7 +506,8 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     }
 }
 
-void print_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                            off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
     static int init_print_dram_power_limit = 0;
@@ -530,7 +531,8 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_ra
     }
 }
 
-void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit,
+                                       off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
     char hostname[1024];
@@ -546,7 +548,8 @@ void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit, o
     }
 }
 
-void print_verbose_dram_power_limit(FILE *writedest, off_t msr_power_limit, off_t msr_rapl_unit, int socket)
+void print_verbose_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                                    off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
     char hostname[1024];
@@ -835,7 +838,8 @@ int delta_rapl_data(off_t msr_rapl_unit)
     return 0;
 }
 
-void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
+                              off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -876,7 +880,8 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit, off_t msr_pk
     }
 }
 
-void print_power_data(FILE *writedest, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void print_power_data(FILE *writedest, off_t msr_rapl_unit,
+                      off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -922,7 +927,8 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit, off_t msr_pkg_energy
     }
 }
 
-void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
+                         off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;

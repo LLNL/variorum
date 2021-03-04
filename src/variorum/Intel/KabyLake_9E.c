@@ -80,11 +80,13 @@ int fm_06_9e_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
-            print_package_power_limit(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, socket);
+            print_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                      msrs.msr_rapl_power_unit, socket);
         }
         else if (long_ver == 1)
         {
-            print_verbose_package_power_limit(stdout, msrs.msr_pkg_power_limit, msrs.msr_rapl_power_unit, socket);
+            print_verbose_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                              msrs.msr_rapl_power_unit, socket);
         }
     }
 
@@ -237,11 +239,13 @@ int fm_06_9e_get_thermals(int long_ver)
 
     if (long_ver == 0)
     {
-        print_therm_temp_reading(stdout, msrs.ia32_therm_status, msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        print_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                 msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     else if (long_ver == 1)
     {
-        print_verbose_therm_temp_reading(stdout, msrs.ia32_therm_status, msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        print_verbose_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                         msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     return 0;
 }
@@ -254,13 +258,15 @@ int fm_06_9e_get_counters(int long_ver)
 
     if (long_ver == 0)
     {
-        print_all_counter_data(stdout, msrs.ia32_fixed_counters, msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters, msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+        print_all_counter_data(stdout, msrs.ia32_fixed_counters,
+                               msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
+                               msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     else if (long_ver == 1)
     {
         print_verbose_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                               msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
-                               msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+                                       msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
+                                       msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     return 0;
 }
@@ -273,13 +279,15 @@ int fm_06_9e_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf, msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info, CORE);
+        print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
+                          msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                          CORE);
     }
     else if (long_ver == 1)
     {
         print_verbose_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
-                          msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                          CORE);
+                                  msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                                  CORE);
     }
     return 0;
 }
@@ -292,11 +300,13 @@ int fm_06_9e_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_verbose_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_verbose_power_data(stdout, msrs.msr_rapl_power_unit,
+                                 msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     return 0;
 }

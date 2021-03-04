@@ -235,7 +235,8 @@ int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
     return 0;
 }
 
-int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat, off_t msr_pkg_therm_stat, off_t msr_temp_target)
+int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
+                                     off_t msr_pkg_therm_stat, off_t msr_temp_target)
 {
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
@@ -294,7 +295,8 @@ int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat, off_
     return 0;
 }
 
-int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat, off_t msr_pkg_therm_stat, off_t msr_temp_target)
+int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
+                             off_t msr_pkg_therm_stat, off_t msr_temp_target)
 {
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
