@@ -954,16 +954,16 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
         /* Defined here so as to reset the string for each socket
          * and append correctly */
-        char cpu_str[24] = "power_cpu_socket_";
-        char mem_str[24] = "power_mem_socket_";
-        char gpu_str[24] = "power_gpu_socket_";
+        char cpu_str[24] = "power_cpu_watts_socket_";
+        char mem_str[24] = "power_mem_watts_socket_";
+        char gpu_str[24] = "power_gpu_watts_socket_";
 
         snprintf(sockID, sockID_len, "%d", i);
         strcat(cpu_str, sockID);
@@ -998,7 +998,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(get_power_obj, "power_node", json_real(node_power));
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 }
 
 
