@@ -114,9 +114,9 @@ echo -e "PWD:" ${PWD}
 cmake ${CMAKE_OPTS} ../src
 
 # build
-make VERBOSE=1
+VERBOSE=1 make -j
 
 # install
-make install
+make -j install
 
 #

@@ -32,7 +32,7 @@ MSR_SAFE_VERSION=`cat /sys/module/msr_safe/version`
 
 # coreutils-7 and later have the -V option for sort.  Verify via sort --version,
 #  which puts the earlier version first.
-if [ `echo -e "${MSR_SAFE_VERSION}\n1.5" | sort -V | head -n1` = "1.5" ]; then 
+if [ `echo -e "${MSR_SAFE_VERSION}\n1.5" | sort -V | head -n1` = "1.5" ]; then
 	# MSR_SAFE_VERSION is 1.5 or greater, so we need to deal with allowlists.
 	AL=$(printf 'al_%.2x%x\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
 	echo -e "AL:" ${AL}
