@@ -406,7 +406,7 @@ int p9_get_node_power_json(json_t *get_power_obj)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
