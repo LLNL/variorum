@@ -10,7 +10,7 @@
 Here is some information on how to extend Variorum to support additional
 platforms and/or microarchitectures.
 
-A **platform** refers to a hardware vendor, for example, Intel, IBM, or ARM. An
+A **platform** refers to a hardware vendor, for example, Intel, IBM, or ARM. A
 **microarchitecture** refers to a generation of hardware within a platform, for
 example, Broadwell or Ivy Bridge for Intel Xeon processors; or Power8 and
 Power9 for IBM Power processors.
