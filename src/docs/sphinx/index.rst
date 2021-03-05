@@ -23,7 +23,7 @@ metrics for the devices contained within the node. Additionally, the APIs may
 enable system software to control hardware knobs to optimize for a particular
 goal.
 
-Variorum focuses on ease of use and reduced integration burden for code teams:
+Variorum focuses on ease of use and reduced integration burden in applications:
 
 -  It includes examples which demonstrate how to use Variorum in a stand-alone
    program.
