@@ -137,7 +137,7 @@ the `-C` command line option.
 
 .. code:: bash
 
-   cmake {other options} -C host-configs/{config_file}.cmake ../src
+   cmake {other options} -C ../host-configs/{config_file}.cmake ../src
 
 These files use standard CMake commands. CMake *set* commands need to specify
 the root cache path as follows:
