@@ -1002,7 +1002,6 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
     json_object_set_new(get_power_obj, "power_node", json_real(node_power));
 }
 
-
 //int dump_rapl_data(FILE *writedest)
 //{
 //    static int init = 0;

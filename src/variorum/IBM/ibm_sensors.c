@@ -363,10 +363,11 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     }
 
     if (chipid == 0)
+    {
         json_object_set_new(get_power_obj, "power_node", json_real(pwrsys));
+    }
 
     json_object_set_new(get_power_obj, cpu_str, json_real(pwrproc));
     json_object_set_new(get_power_obj, mem_str, json_real(pwrmem));
     json_object_set_new(get_power_obj, gpu_str, json_real(pwrgpu));
-
 }
