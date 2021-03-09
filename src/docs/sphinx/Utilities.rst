@@ -1,26 +1,30 @@
 .. # Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
-.. # Variorum Project Developers. See the top-level LICENSE file for details.
-.. #
-.. # SPDX-License-Identifier: MIT
+   # Variorum Project Developers. See the top-level LICENSE file for details.
+   #
+   # SPDX-License-Identifier: MIT
 
+####################
+ Variorum Utilities
+####################
 
-Variorum Utilities
-==================
 Variorum provides some utilities to assist users and developers. Currently,
 Variorum provides two main utilities:
 
-* ``verify_opal.py``: A python script to verify the system environment (i.e.,
-  OPAL) for IBM platforms.
-* ``verify_msr_kernel.py``: A python script to verify the system environment
-  (i.e., msr kernel or msr-safe kernel) for Intel.
+-  ``verify_opal.py``: A python script to verify the system environment (i.e.,
+   OPAL) for IBM platforms.
+-  ``verify_msr_kernel.py``: A python script to verify the system environment
+   (i.e., msr kernel or msr-safe kernel) for Intel.
 
-Verify OPAL
------------
+*************
+ Verify OPAL
+*************
+
 This python script verifies that the OPAL files are present and have the
 required R/W permissions on the target IBM hardware.
 
 How do I use it?
-""""""""""""""""
+================
+
 From the top-level Variorum directory:
 
 .. code:: bash
@@ -50,17 +54,20 @@ verbose output, which can be helpful if your programs are running to
 permissions issues. The output of this script is helpful to send to the mailing
 list for debugging system issues.
 
-The last line of the output will (verbose or not) will indicate if the IBM
-OPAL files exist and have the appropriate permissions.
+The last line of the output will (verbose or not) will indicate if the IBM OPAL
+files exist and have the appropriate permissions.
 
 Why Do I Need This?
-"""""""""""""""""""
+===================
+
 This is a helpful utility to run before launching any examples or tests, as it
 can verify that the required environment for Variorum is configured
 successfully.
 
-Verify MSR Kernel
------------------
+*******************
+ Verify MSR Kernel
+*******************
+
 This utility will check if the stock msr kernel or the msr-safe kernel are
 loaded and configured correctly with the appropriate R/W permissions. It will
 first check if the msr kernel is loaded and has appropriate permissions. If
@@ -68,7 +75,8 @@ this fails, then it will check if the msr-safe kernel is loaded and has
 appropriate permissions.
 
 How do I use it?
-""""""""""""""""
+================
+
 From the top-level Variorum directory:
 
 .. code:: bash
@@ -108,7 +116,8 @@ The last line of the output will (verbose or not) will indicate if the msr or
 msr-safe kernel is configured correctly and has the appropriate permissions.
 
 Why Do I Need This?
-"""""""""""""""""""
+===================
+
 This is a helpful utility to run before launching any examples or tests, as it
 can verify that the required environment for Variorum is configured
 successfully.

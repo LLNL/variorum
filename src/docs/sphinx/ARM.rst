@@ -1,11 +1,11 @@
 .. # Copyright 2021 Lawrence Livermore National Security, LLC and other
-.. # Variorum Project Developers. See the top-level LICENSE file for details.
-.. #
-.. # SPDX-License-Identifier: MIT
+   # Variorum Project Developers. See the top-level LICENSE file for details.
+   #
+   # SPDX-License-Identifier: MIT
 
-
-ARM Overview
-============
+##############
+ ARM Overview
+##############
 
 This implementation of the ARM port of Variorum supports the Arm Juno r2 SoC.
 The Arm Juno r2 platform is a big.LITTLE cluster with Cortex-A72 (big) and
@@ -18,8 +18,9 @@ Monitoring (hwmon) subsystem for access to the telemetry and control interfaces
 on the tested ARM platform. The standardized data interfaces provided by the
 hwmon framework enable a generic ARM implementation of Variorum.
 
-Monitoring and Control Through Sysfs Interface
-----------------------------------------------
+************************************************
+ Monitoring and Control Through Sysfs Interface
+************************************************
 
 The built-in monitoring interface on the Arm Juno r2 board is implemented by
 the on-board FPGA. Since this interface is not universally available on most
@@ -28,15 +29,15 @@ monitoring and control. The following subsections provide the specific metrics
 that are monitored on Arm Juno r2:
 
 Power telemetry
-^^^^^^^^^^^^^^^
+===============
 
 The sysfs interface provides a file for each of the following Advanced
 Peripheral Bus (APB) energy meter registers:
 
-    * SYS_POW_SYS : ``/sys/class/hwmon/hwmon0/power1_input``
-    * SYS_POW_A72 : ``/sys/class/hwmon/hwmon0/power2_input``
-    * SYS_POW_A53 : ``/sys/class/hwmon/hwmon0/power3_input``
-    * SYS_POW_GPU : ``/sys/class/hwmon/hwmon0/power4_input``
+   -  SYS_POW_SYS : ``/sys/class/hwmon/hwmon0/power1_input``
+   -  SYS_POW_A72 : ``/sys/class/hwmon/hwmon0/power2_input``
+   -  SYS_POW_A53 : ``/sys/class/hwmon/hwmon0/power3_input``
+   -  SYS_POW_GPU : ``/sys/class/hwmon/hwmon0/power4_input``
 
 Instantaneous power is recorded in bits 0-23 and reported in microwatts by the
 sysfs interface. To improve readability of the verbose output Variorum converts
@@ -44,41 +45,43 @@ power into milliwatts before reporting. All registers are updated every 100
 microseconds.
 
 Thermal telemetry
-^^^^^^^^^^^^^^^^^
+=================
 
 The sysfs interface provides a file for thermal telemetry for each system
 component through the GetSensorValue command in CSS System Control and Power
 Interface (SCPI).
 
-    * SoC temperature:       ``/sys/class/hwmon/hwmon0/temp1_input``
-    * big temperature:       ``/sys/class/hwmon/hwmon0/temp2_input``
-    * LITTLE temperature:    ``/sys/class/hwmon/hwmon0/temp3_input``
-    * GPU temperature:       ``/sys/class/hwmon/hwmon0/temp4_input``
+   -  SoC temperature: ``/sys/class/hwmon/hwmon0/temp1_input``
+   -  big temperature: ``/sys/class/hwmon/hwmon0/temp2_input``
+   -  LITTLE temperature: ``/sys/class/hwmon/hwmon0/temp3_input``
+   -  GPU temperature: ``/sys/class/hwmon/hwmon0/temp4_input``
 
 Instantaneous temperatures are reported in degree Celsius.
 
 Clocks telemetry
-^^^^^^^^^^^^^^^^
+================
 
 Clocks are collected by the sysfs interface using the GetClockValue command in
 SCPI. A separate ``policy*/`` subdirectory is provided for the big and LITTLE
 cluster.
 
-    * big clocks:    ``/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq``
-    * LITTLE clocks: ``/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq``
+   -  big clocks: ``/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq``
+   -  LITTLE clocks:
+      ``/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq``
 
 Frequencies are reported by the sysfs interface in KHz. Variorum reports the
 clocks in MHz to keep it consistent with the clocks reported for other
 supported architectures.
 
 Frequency control
-^^^^^^^^^^^^^^^^^
+=================
 
 The sysfs interface uses the SetClockValue SCPI command to set processor
 frequency for the following user-facing interfaces:
 
-    * big clocks:    ``/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed``
-    * LITTLE clocks: ``/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed``
+   -  big clocks: ``/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed``
+   -  LITTLE clocks:
+      ``/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed``
 
 New frequency is specified in KHz to these interfaces. Variorum takes the new
 frequency as input in MHz and performs this conversion internally.
@@ -90,7 +93,9 @@ accepts valid values for frequencies as output by
 only applied when the governor in ``policy*/scaling_governor`` is set to
 `userspace`.
 
-References
-----------
+************
+ References
+************
 
-* `Arm Juno r2 technical reference <https://developer.arm.com/documentation/100114/0200/>`_
+-  `Arm Juno r2 technical reference
+   <https://developer.arm.com/documentation/100114/0200/>`_
