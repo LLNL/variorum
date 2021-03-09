@@ -235,8 +235,8 @@ int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
     return 0;
 }
 
-int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
-                             off_t msr_pkg_therm_stat, off_t msr_temp_target)
+int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
+                                     off_t msr_pkg_therm_stat, off_t msr_temp_target)
 {
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
@@ -295,8 +295,8 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     return 0;
 }
 
-int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
-                            off_t msr_pkg_therm_stat, off_t msr_temp_target)
+int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
+                             off_t msr_pkg_therm_stat, off_t msr_temp_target)
 {
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
@@ -579,7 +579,7 @@ int dump_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 //    return 0;
 //}
 //
-//int dump_therm2_ctl(FILE *writedest)
+//int print_therm2_ctl(FILE *writedest)
 //{
 //    int ret = 0;
 //    int i;

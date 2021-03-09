@@ -266,10 +266,10 @@ struct pkg_therm_stat
 /// @param [in] msr_therm_stat Unique MSR address for IA32_THERM_STATUS.
 /// @param [in] msr_pkg_therm_stat Unique MSR address for IA32_PACKAGE_THERM_STATUS.
 /// @param [in] msr_temp_target Unique MSR address for TEMPERATURE_TARGET.
-int dump_therm_temp_reading(FILE *writedest,
-                            off_t msr_therm_stat,
-                            off_t msr_pkg_therm_stat,
-                            off_t msr_temp_target);
+int print_therm_temp_reading(FILE *writedest,
+                             off_t msr_therm_stat,
+                             off_t msr_pkg_therm_stat,
+                             off_t msr_temp_target);
 
 /// @brief Print only temperature data in long format.
 ///
@@ -277,10 +277,10 @@ int dump_therm_temp_reading(FILE *writedest,
 /// @param [in] msr_therm_stat Unique MSR address for IA32_THERM_STATUS.
 /// @param [in] msr_pkg_therm_stat Unique MSR address for IA32_PACKAGE_THERM_STATUS.
 /// @param [in] msr_temp_target Unique MSR address for TEMPERATURE_TARGET.
-int print_therm_temp_reading(FILE *writedest,
-                             off_t msr_therm_stat,
-                             off_t msr_pkg_therm_stat,
-                             off_t msr_temp_target);
+int print_verbose_therm_temp_reading(FILE *writedest,
+                                     off_t msr_therm_stat,
+                                     off_t msr_pkg_therm_stat,
+                                     off_t msr_temp_target);
 
 /// @brief Read value of the IA32_PACKAGE_THERM_STATUS register and translate
 /// bit fields to human-readable values.
@@ -332,7 +332,7 @@ void get_therm_stat(struct therm_stat *s,
 /////
 ///// @return 0 if successful, else return a value less than 0 if
 ///// therm2_ctl_storage() fails.
-//int dump_therm2_ctl(FILE *writedest);
+//int print_therm2_ctl(FILE *writedest);
 //
 ///// @brief Set value for IA32_THERM_STATUS across all cores.
 /////
@@ -347,7 +347,7 @@ void get_therm_stat(struct therm_stat *s,
 ///// @brief Print detailed thermal status and interrupt data.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_therm_data_verbose(FILE *writedest);
+//void print_therm_data_verbose(FILE *writedest);
 //
 ///// @brief Store the per-core thermal interrupt data on the heap.
 /////
@@ -385,17 +385,17 @@ void get_therm_stat(struct therm_stat *s,
 ///// data printout.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_therm_data_terse_label(FILE *writedest);
+//void print_therm_data_terse_label(FILE *writedest);
 //
 ///// @brief Print abbreviated thermal status and interrupt data.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_therm_data_terse(FILE *writedest);
+//void print_therm_data_terse(FILE *writedest);
 //
 ///// @brief Print the label for the detailed thermal status and interrupt data
 ///// printout.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_therm_data_verbose_label(FILE *writedest);
+//void print_therm_data_verbose_label(FILE *writedest);
 
 #endif

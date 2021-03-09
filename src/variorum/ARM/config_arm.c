@@ -27,11 +27,11 @@ int set_arm_func_ptrs(void)
     if (*g_platform.arm_arch == ARMV8)
     {
         /* Initialize interfaces */
-        g_platform.variorum_dump_power                      = arm_get_power;
-        g_platform.variorum_dump_thermals                   = arm_get_thermals;
-        g_platform.variorum_dump_clocks                     = arm_get_clocks;
-        g_platform.variorum_print_available_frequencies     = arm_get_frequencies;
-        g_platform.variorum_cap_socket_frequency            = arm_cap_socket_frequency;
+        g_platform.variorum_print_power                 = arm_get_power;
+        g_platform.variorum_print_thermals              = arm_get_thermals;
+        g_platform.variorum_print_clocks                = arm_get_clocks;
+        g_platform.variorum_print_available_frequencies = arm_get_frequencies;
+        g_platform.variorum_cap_socket_frequency        = arm_cap_socket_frequency;
     }
     else
     {

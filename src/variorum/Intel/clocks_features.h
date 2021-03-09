@@ -85,26 +85,9 @@ void perf_storage_temp(struct perf_data **pd,
 ///// @brief Print the label for the abbreviated clocks data print out.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_clocks_data_terse_label(FILE *writedest);
+//void print_clocks_data_terse_label(FILE *writedest);
 
 /// @brief Print clocks data in CSV format.
-///
-/// @param [in] writedest File stream where output will be written to.
-/// @param [in] msr_aperf Unique MSR address for IA32_APERF.
-/// @param [in] msr_mperf Unique MSR address for IA32_MPERF.
-/// @param [in] msr_tsc Unique MSR address for IA32_TIME_STAMP_COUNTER.
-/// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
-/// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
-/// @param [in] control_domain Specific granularity of control.
-int dump_clocks_data(FILE *writedest,
-                     off_t msr_aperf,
-                     off_t msr_mperf,
-                     off_t msr_tsc,
-                     off_t msr_perf_status,
-                     off_t msr_platform_info,
-                     enum ctl_domains_e control_domain);
-
-/// @brief Print clocks data in long format.
 ///
 /// @param [in] writedest File stream where output will be written to.
 /// @param [in] msr_aperf Unique MSR address for IA32_APERF.
@@ -120,6 +103,23 @@ int print_clocks_data(FILE *writedest,
                       off_t msr_perf_status,
                       off_t msr_platform_info,
                       enum ctl_domains_e control_domain);
+
+/// @brief Print clocks data in long format.
+///
+/// @param [in] writedest File stream where output will be written to.
+/// @param [in] msr_aperf Unique MSR address for IA32_APERF.
+/// @param [in] msr_mperf Unique MSR address for IA32_MPERF.
+/// @param [in] msr_tsc Unique MSR address for IA32_TIME_STAMP_COUNTER.
+/// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
+/// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
+/// @param [in] control_domain Specific granularity of control.
+int print_verbose_clocks_data(FILE *writedest,
+                              off_t msr_aperf,
+                              off_t msr_mperf,
+                              off_t msr_tsc,
+                              off_t msr_perf_status,
+                              off_t msr_platform_info,
+                              enum ctl_domains_e control_domain);
 
 void get_available_frequencies(FILE *writedest,
                                off_t *msr_platform_info,
@@ -138,7 +138,7 @@ void get_available_frequencies_skx(FILE *writedest,
 ///// @brief Print current p-state.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_p_state(FILE *writedest);
+//void print_p_state(FILE *writedest);
 //
 ///// @brief Request new current p-state.
 /////
@@ -160,8 +160,8 @@ void cap_p_state(int cpu_freq_mhz,
 ///// @param [in] s Data for clock modulation.
 /////
 ///// @param [in] writedest File stream where output will be written to.
-//void dump_clock_mod(struct clock_mod *s,
-//                    FILE *writedest);
+//void print_clock_mod(struct clock_mod *s,
+//                     FILE *writedest);
 //
 ///// @brief Get contents of IA32_CLOCK_MODULATION.
 /////

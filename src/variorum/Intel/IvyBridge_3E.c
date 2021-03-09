@@ -84,49 +84,49 @@ int fm_06_3e_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
-            dump_package_power_limit(stdout, msrs.msr_pkg_power_limit,
-                                     msrs.msr_rapl_power_unit, socket);
+            print_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                      msrs.msr_rapl_power_unit, socket);
         }
         else if (long_ver == 1)
         {
-            print_package_power_limit(stdout, msrs.msr_pkg_power_limit,
-                                      msrs.msr_rapl_power_unit, socket);
+            print_verbose_package_power_limit(stdout, msrs.msr_pkg_power_limit,
+                                              msrs.msr_rapl_power_unit, socket);
         }
     }
 
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
-        {
-            dump_dram_power_limit(stdout, msrs.msr_dram_power_limit,
-                                  msrs.msr_rapl_power_unit, socket);
-        }
-        else if (long_ver == 1)
         {
             print_dram_power_limit(stdout, msrs.msr_dram_power_limit,
                                    msrs.msr_rapl_power_unit, socket);
         }
+        else if (long_ver == 1)
+        {
+            print_verbose_dram_power_limit(stdout, msrs.msr_dram_power_limit,
+                                           msrs.msr_rapl_power_unit, socket);
+        }
     }
 
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
         {
-            dump_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
+            print_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
         }
         else if (long_ver == 1)
         {
-            print_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
+            print_verbose_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
         }
     }
 
     if (long_ver == 0)
     {
-        dump_rapl_power_unit(stdout, msrs.msr_rapl_power_unit);
+        print_rapl_power_unit(stdout, msrs.msr_rapl_power_unit);
     }
     else if (long_ver == 1)
     {
-        print_rapl_power_unit(stdout, msrs.msr_rapl_power_unit);
+        print_verbose_rapl_power_unit(stdout, msrs.msr_rapl_power_unit);
     }
 
     return 0;
@@ -265,13 +265,13 @@ int fm_06_3e_get_thermals(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_therm_temp_reading(stdout, msrs.ia32_therm_status,
-                                msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        print_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                 msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     else if (long_ver == 1)
     {
-        print_therm_temp_reading(stdout, msrs.ia32_therm_status,
-                                 msrs.ia32_package_therm_status, msrs.msr_temperature_target);
+        print_verbose_therm_temp_reading(stdout, msrs.ia32_therm_status,
+                                         msrs.ia32_package_therm_status, msrs.msr_temperature_target);
     }
     return 0;
 }
@@ -284,15 +284,15 @@ int fm_06_3e_get_counters(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_all_counter_data(stdout, msrs.ia32_fixed_counters,
-                              msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
-                              msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
-    }
-    else if (long_ver == 1)
-    {
         print_all_counter_data(stdout, msrs.ia32_fixed_counters,
                                msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
                                msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
+    }
+    else if (long_ver == 1)
+    {
+        print_verbose_all_counter_data(stdout, msrs.ia32_fixed_counters,
+                                       msrs.ia32_perfevtsel_counters, msrs.ia32_perfmon_counters,
+                                       msrs.msrs_pcu_pmon_evtsel, msrs.ia32_perfevtsel_counters);
     }
     return 0;
 }
@@ -305,15 +305,15 @@ int fm_06_3e_get_clocks(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
-                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                         SOCKET);
-    }
-    else if (long_ver == 1)
-    {
         print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
                           msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
                           SOCKET);
+    }
+    else if (long_ver == 1)
+    {
+        print_verbose_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
+                                  msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                                  SOCKET);
     }
     return 0;
 }
@@ -326,13 +326,13 @@ int fm_06_3e_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-        dump_power_data(stdout, msrs.msr_rapl_power_unit,
-                        msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {
-        print_power_data(stdout, msrs.msr_rapl_power_unit,
-                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_verbose_power_data(stdout, msrs.msr_rapl_power_unit,
+                                 msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
     }
     return 0;
 }
@@ -368,7 +368,7 @@ int fm_06_3e_get_turbo_status(void)
 #endif
 
     unsigned int turbo_mode_disable_bit = 38;
-    dump_turbo_status(stdout, msrs.ia32_misc_enable, turbo_mode_disable_bit);
+    print_turbo_status(stdout, msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
 }

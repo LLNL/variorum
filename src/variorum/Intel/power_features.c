@@ -394,7 +394,7 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
     return 0;
 }
 
-void dump_rapl_power_unit(FILE *writedest, off_t msr)
+void print_rapl_power_unit(FILE *writedest, off_t msr)
 {
     unsigned socket;
     struct rapl_units *ru;
@@ -418,7 +418,7 @@ void dump_rapl_power_unit(FILE *writedest, off_t msr)
     free(ru);
 }
 
-void print_rapl_power_unit(FILE *writedest, off_t msr)
+void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 {
     unsigned socket;
     struct rapl_units *ru;
@@ -441,17 +441,17 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     free(ru);
 }
 
-void dump_package_power_info(FILE *writedest, off_t msr, int socket)
+void print_package_power_info(FILE *writedest, off_t msr, int socket)
 {
     struct rapl_power_info info;
     char hostname[1024];
-    static int init_dump_package_power_info = 0;
+    static int init_print_package_power_info = 0;
 
     gethostname(hostname, 1024);
 
-    if (!init_dump_package_power_info)
+    if (!init_print_package_power_info)
     {
-        init_dump_package_power_info = 1;
+        init_print_package_power_info = 1;
         fprintf(writedest,
                 "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower MinPower MaxTimeWindow ThermPower\n");
     }
@@ -464,7 +464,7 @@ void dump_package_power_info(FILE *writedest, off_t msr, int socket)
     }
 }
 
-void print_package_power_info(FILE *writedest, off_t msr, int socket)
+void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
 {
     struct rapl_power_info info;
     char hostname[1024];
@@ -480,20 +480,20 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     }
 }
 
-void dump_package_power_limit(FILE *writedest, off_t msr_power_limit,
-                              off_t msr_rapl_unit, int socket)
+void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
+                               off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
-    static int init_dump_package_power_limit = 0;
+    static int init_print_package_power_limit = 0;
     char hostname[1024];
     unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
-    if (!init_dump_package_power_limit)
+    if (!init_print_package_power_limit)
     {
-        init_dump_package_power_limit = 1;
+        init_print_package_power_limit = 1;
         fprintf(writedest,
                 "_PACKAGE_POWER_LIMITS Offset Host Socket PowerLimBits Watts1 Seconds1 Watts2 Seconds2\n");
     }
@@ -506,20 +506,20 @@ void dump_package_power_limit(FILE *writedest, off_t msr_power_limit,
     }
 }
 
-void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit,
-                           off_t msr_rapl_unit, int socket)
+void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                            off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
-    static int init_dump_dram_power_limit = 0;
+    static int init_print_dram_power_limit = 0;
     char hostname[1024];
     unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
     gethostname(hostname, 1024);
 
-    if (!init_dump_dram_power_limit)
+    if (!init_print_dram_power_limit)
     {
-        init_dump_dram_power_limit = 1;
+        init_print_dram_power_limit = 1;
         fprintf(writedest,
                 "_DRAM_POWER_LIMIT Offset Host Socket PowerLimBits Watts Seconds\n");
     }
@@ -531,8 +531,8 @@ void dump_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     }
 }
 
-void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
-                               off_t msr_rapl_unit, int socket)
+void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit,
+                                       off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1, l2;
     char hostname[1024];
@@ -548,8 +548,8 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     }
 }
 
-void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
-                            off_t msr_rapl_unit, int socket)
+void print_verbose_dram_power_limit(FILE *writedest, off_t msr_power_limit,
+                                    off_t msr_rapl_unit, int socket)
 {
     struct rapl_limit l1;
     char hostname[1024];
@@ -838,8 +838,8 @@ int delta_rapl_data(off_t msr_rapl_unit)
     return 0;
 }
 
-void print_power_data(FILE *writedest, off_t msr_rapl_unit,
-                      off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
+                              off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -880,8 +880,8 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     }
 }
 
-void dump_power_data(FILE *writedest, off_t msr_rapl_unit,
-                     off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void print_power_data(FILE *writedest, off_t msr_rapl_unit,
+                      off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -927,9 +927,8 @@ void dump_power_data(FILE *writedest, off_t msr_rapl_unit,
     }
 }
 
-void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
-                          off_t msr_rapl_unit, off_t msr_pkg_energy_status,
-                          off_t msr_dram_energy_status)
+void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
+                         off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -1003,7 +1002,7 @@ void json_dump_power_data(json_t *get_power_obj, off_t msr_power_limit,
 }
 
 
-//int dump_rapl_data(FILE *writedest)
+//int print_rapl_data(FILE *writedest)
 //{
 //    static int init = 0;
 //    static uint64_t *rapl_flags = NULL;

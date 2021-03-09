@@ -505,8 +505,8 @@ int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
     return ret;
 }
 
-int dump_turbo_status(FILE *writedest, off_t msr_misc_enable,
-                      unsigned int turbo_mode_disable_bit)
+int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
+                       unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
     unsigned socket;

@@ -213,15 +213,6 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
     }
 }
 
-void dump_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
-                           off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs,
-                           off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
-{
-    dump_fixed_counter_data(writedest, msrs_fixed_ctrs);
-    dump_perfmon_counter_data(writedest, msrs_perfevtsel_ctrs, msrs_perfmon_ctrs);
-    dump_unc_counter_data(writedest, msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
-}
-
 void print_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
                             off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs,
                             off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
@@ -231,7 +222,18 @@ void print_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
     print_unc_counter_data(writedest, msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
 }
 
-void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
+void print_verbose_all_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs,
+                                    off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs,
+                                    off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
+{
+    print_verbose_fixed_counter_data(writedest, msrs_fixed_ctrs);
+    print_verbose_perfmon_counter_data(writedest, msrs_perfevtsel_ctrs,
+                                       msrs_perfmon_ctrs);
+    print_verbose_unc_counter_data(writedest, msrs_pcu_pmon_evtsel,
+                                   msrs_pcu_pmon_ctrs);
+}
+
+void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
@@ -257,8 +259,8 @@ void dump_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     }
 }
 
-void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
-                               off_t *msrs_perfmon_ctrs)
+void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
+                                off_t *msrs_perfmon_ctrs)
 {
     static struct pmc *p = NULL;
     static int init = 0;
@@ -362,7 +364,7 @@ void dump_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
     }
 }
 
-void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
+void print_verbose_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
@@ -387,8 +389,8 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     }
 }
 
-void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
-                                off_t *msrs_perfmon_ctrs)
+void print_verbose_perfmon_counter_data(FILE *writedest,
+                                        off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs)
 {
     static struct pmc *p = NULL;
     static int init = 0;
@@ -1046,8 +1048,8 @@ void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs)
     write_batch(UNCORE_COUNT);
 }
 
-void dump_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
-                           off_t *msrs_pcu_pmon_ctrs)
+void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
+                            off_t *msrs_pcu_pmon_ctrs)
 {
     static int init = 0;
     struct unc_counters *uc;
@@ -1073,8 +1075,8 @@ void dump_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
     }
 }
 
-void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
-                            off_t *msrs_pcu_pmon_ctrs)
+void print_verbose_unc_counter_data(FILE *writedest,
+                                    off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 {
     struct unc_counters *uc;
     unsigned i;

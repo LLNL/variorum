@@ -76,7 +76,7 @@ void shutdown_arm(void)
     printf("Shutdown ARM\n");
 }
 
-int dump_power_data(int verbose, FILE *output)
+int get_power_data(int verbose, FILE *output)
 {
     static int init_output = 0;
 
@@ -166,7 +166,7 @@ int dump_power_data(int verbose, FILE *output)
     return 0;
 }
 
-int dump_thermal_data(int verbose, FILE *output)
+int get_thermal_data(int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t sys_therm_val;
@@ -238,7 +238,7 @@ int dump_thermal_data(int verbose, FILE *output)
     return 0;
 }
 
-int dump_clocks_data(int chipid, int verbose, FILE *output)
+int get_clocks_data(int chipid, int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t freq_val;
@@ -287,7 +287,7 @@ int dump_clocks_data(int chipid, int verbose, FILE *output)
     return 0;
 }
 
-int dump_frequencies(int chipid, FILE *output)
+int get_frequencies(int chipid, FILE *output)
 {
     static int init_output = 0;
     char freq_fname[4096];

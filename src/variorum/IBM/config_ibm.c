@@ -25,8 +25,8 @@ int set_ibm_func_ptrs(void)
 
     if (*g_platform.ibm_arch == POWER9)
     {
-        g_platform.variorum_dump_power = p9_get_power;
-        g_platform.variorum_dump_power_limits = p9_get_power_limits;
+        g_platform.variorum_print_power = p9_get_power;
+        g_platform.variorum_print_power_limits = p9_get_power_limits;
         g_platform.variorum_cap_best_effort_node_power_limit =
             p9_cap_node_power_limit;
         g_platform.variorum_cap_each_socket_power_limit =

@@ -279,22 +279,22 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
 void variorum_init_func_ptrs()
 {
-    g_platform.variorum_dump_power_limits = NULL;
+    g_platform.variorum_print_power_limits = NULL;
     g_platform.variorum_cap_socket_frequency = NULL;
     g_platform.variorum_cap_best_effort_node_power_limit = NULL;
     g_platform.variorum_cap_and_verify_node_power_limit = NULL;
     g_platform.variorum_cap_gpu_power_ratio = NULL;
     g_platform.variorum_cap_each_socket_power_limit = NULL;
     g_platform.variorum_print_features = NULL;
-    g_platform.variorum_dump_thermals = NULL;
-    g_platform.variorum_dump_counters = NULL;
-    g_platform.variorum_dump_clocks = NULL;
-    g_platform.variorum_dump_power = NULL;
+    g_platform.variorum_print_thermals = NULL;
+    g_platform.variorum_print_counters = NULL;
+    g_platform.variorum_print_clocks = NULL;
+    g_platform.variorum_print_power = NULL;
     g_platform.variorum_enable_turbo = NULL;
     g_platform.variorum_disable_turbo = NULL;
-    g_platform.variorum_dump_turbo = NULL;
+    g_platform.variorum_print_turbo = NULL;
     g_platform.variorum_poll_power = NULL;
-    g_platform.variorum_dump_gpu_utilization = NULL;
+    g_platform.variorum_print_gpu_utilization = NULL;
     g_platform.variorum_cap_each_core_frequency = NULL;
     g_platform.variorum_monitoring = NULL;
     g_platform.variorum_get_node_power_json = NULL;

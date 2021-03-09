@@ -98,7 +98,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_dump_power_limits)(int long_ver);
+    int (*variorum_print_power_limits)(int long_ver);
 
     /// @brief Function pointer to set a power limit on the node.
     ///
@@ -154,7 +154,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_dump_thermals)(int long_ver);
+    int (*variorum_print_thermals)(int long_ver);
 
     /// @brief Function pointer to print out counter data.
     ///
@@ -162,7 +162,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_dump_counters)(int long_ver);
+    int (*variorum_print_counters)(int long_ver);
 
     /// @brief Function pointer to print out clocks data.
     ///
@@ -170,7 +170,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_dump_clocks)(int long_ver);
+    int (*variorum_print_clocks)(int long_ver);
 
     /// @brief Function pointer to print out power consumption data.
     ///
@@ -178,7 +178,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_dump_power)(int long_ver);
+    int (*variorum_print_power)(int long_ver);
 
     /// @brief Function pointer to enable turbo.
     ///
@@ -193,12 +193,12 @@ struct platform
     /// @brief Function pointer to get print turbo data.
     ///
     /// @return Error code.
-    int (*variorum_dump_turbo)(void);
+    int (*variorum_print_turbo)(void);
 
     /// @brief Function pointer to print GPU utilization.
     ///
     /// @return Error code.
-    int (*variorum_dump_gpu_utilization)(int long_ver);
+    int (*variorum_print_gpu_utilization)(int long_ver);
 
     /// @brief Function pointer to get JSON object for node power data.
     ///
