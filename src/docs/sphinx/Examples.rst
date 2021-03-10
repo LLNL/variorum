@@ -22,9 +22,6 @@ The example below gets the power limits of the platform. The ``print`` API
 prints the output in tabular format that can be filtered and parsed by a data
 analysis framework, such as `R` or `Python`.
 
-.. literalinclude:: ../../examples/variorum-print-power-limits-example.c
-    :language: c
-
 On an Intel platform, the output of this example should be similar to the
 following:
 
