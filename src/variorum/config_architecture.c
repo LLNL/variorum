@@ -131,12 +131,6 @@ int variorum_detect_arch(void)
     g_platform[P_NVIDIA_IDX].arch_id = detect_gpu_arch();
     printf("Nvidia -- idx%d\n", P_NVIDIA_IDX);
 #endif
-//#ifdef VARIORUM_WITH_ARM
-//    g_platform.arm_arch = detect_arm_arch();
-//#endif
-//#ifdef VARIORUM_WITH_AMD
-//    g_platform.amd_arch = detect_amd_arch();
-//#endif
 //#ifdef VARIORUM_WITH_AMD_GPU
 //    g_platform.amd_gpu_arch = detect_amd_gpu_arch();
 //#endif
@@ -144,10 +138,12 @@ int variorum_detect_arch(void)
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
-#if defined(VARIORUM_WITH_IBM)
-        printf("IBM Model: 0x%lx\n", *g_platform[P_IBM_IDX].arch_id);
+#ifdef VARIORUM_WITH_ARM
+    g_platform[P_ARM_IDX].arch_id = detect_arm_arch();
+    printf("ARM -- idx%d\n", P_ARM_IDX);
+    printf("Arm Model: 0x%lx\n", *g_platform[P_ARM_IDX].arch_id);
 #endif
-#if defined(VARIORUM_WITH_INTEL)
+#ifdef VARIORUM_WITH_INTEL
         printf("Intel Model: 0x%lx\n", *g_platform[P_INTEL_IDX].arch_id);
 #endif
 #if defined(VARIORUM_WITH_IBM)
@@ -155,13 +151,6 @@ int variorum_detect_arch(void)
 #if defined(VARIORUM_WITH_NVIDIA_GPU)
     printf("Nvidia Model: 0x%lx\n", *g_platform[P_NVIDIA_IDX].arch_id);
 #endif
-//#if defined(VARIORUM_WITH_AMD)
-//        printf("AMD Family: 0x%lx, Model: 0x%lx\n",
-//               (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
-//#endif
-//#if defined(VARIORUM_WITH_AMD_GPU)
-//        printf("AMD GPU Model: MI-%ld\n", *g_platform.amd_gpu_arch);
-//#endif
     }
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
@@ -330,6 +319,7 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_print_turbo = NULL;
         g_platform[i].variorum_poll_power = NULL;
         g_platform[i].variorum_print_gpu_utilization = NULL;
+        g_platform[i].variorum_cap_each_core_frequency = NULL;
         g_platform[i].variorum_monitoring = NULL;
         g_platform[i].variorum_get_node_power_json = NULL;
         g_platform[i].variorum_get_node_power_domain_info_json = NULL;
@@ -359,15 +349,15 @@ int variorum_set_func_ptrs()
         return err;
     }
 #endif
-//#ifdef VARIORUM_WITH_ARM
-//    err = set_arm_func_ptrs();
-//#endif
 //#ifdef VARIORUM_WITH_AMD
-//    err = set_amd_func_ptrs();
+//    err = set_amd_func_ptrs(P_AMD_IDX);
 //#endif
 //#ifdef VARIORUM_WITH_AMD_GPU
-//    err = set_amd_gpu_func_ptrs();
+//    err = set_amd_gpu_func_ptrs(P_AMD_GPU_IDX);
 //#endif
+#ifdef VARIORUM_WITH_ARM
+    err = set_arm_func_ptrs(P_ARM_IDX);
+#endif
     return err;
 }
 
