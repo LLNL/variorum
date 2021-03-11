@@ -408,7 +408,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     get_rapl_power_unit(ru, msr);
 
     fprintf(writedest,
-            "_RAPL_POWER_UNITS Offset Host Socket Bits WattsUnit JoulesUnit SecondsUnit\n");
+            "_RAPL_POWER_UNITS Offset Host Socket Bits PowerUnit_W EnergyUnit_J TimeUnit_sec\n");
     for (socket = 0; socket < nsockets; socket++)
     {
         fprintf(writedest, "_RAPL_POWER_UNITS 0x%lx %s %d 0x%lx %f %f %f\n", msr,
@@ -453,7 +453,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     {
         init_print_package_power_info = 1;
         fprintf(writedest,
-                "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower MinPower MaxTimeWindow ThermPower\n");
+                "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
     }
 
     if (!get_rapl_power_info(socket, &info, msr))
@@ -474,7 +474,7 @@ void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!get_rapl_power_info(socket, &info, msr))
     {
         fprintf(writedest,
-                "_PACKAGE_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxWindow: %lf sec, ThermPower: %lf W\n",
+                "_PACKAGE_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
                 msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
                 info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
@@ -495,12 +495,12 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     {
         init_print_package_power_limit = 1;
         fprintf(writedest,
-                "_PACKAGE_POWER_LIMITS Offset Host Socket PowerLimBits Watts1 Seconds1 Watts2 Seconds2\n");
+                "_PACKAGE_POWER_LIMIT Offset Host Socket Bits PowerLimit1_W TimeWindow1_sec PowerLimit2_W TimeWindow2_sec\n");
     }
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-        fprintf(writedest, "_PACKAGE_POWER_LIMITS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+        fprintf(writedest, "_PACKAGE_POWER_LIMIT 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
                 l2.seconds);
     }
@@ -521,7 +521,7 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     {
         init_print_dram_power_limit = 1;
         fprintf(writedest,
-                "_DRAM_POWER_LIMIT Offset Host Socket PowerLimBits Watts Seconds\n");
+                "_DRAM_POWER_LIMIT Offset Host Socket Bits PowerLimit_W TimeWindow_sec\n");
     }
 
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
@@ -868,12 +868,12 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
                 *rapl->pkg_bits[i], i, rapl->pkg_joules[i]);
 #endif
         fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, EnergyConsumed: %lf J, PowerConsumed: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Power: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
                 rapl->pkg_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         fprintf(writedest,
-                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, EnergyConsumed: %lf J, PowerConsumed: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Power: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
                 rapl->dram_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
@@ -900,7 +900,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     {
         gettimeofday(&start, NULL);
         fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy Power Elapsed Timestamp\n");
+                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J Power_W Elapsed_sec Timestamp_sec\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
@@ -915,7 +915,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     if (!init)
     {
         fprintf(writedest,
-                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy Power Elapsed Timestamp\n");
+                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy_J Power_W Elapsed_sec Timestamp_sec\n");
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
@@ -954,16 +954,16 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_object_set_new(get_power_obj, "hostname", json_string(hostname));
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
         /* Defined here so as to reset the string for each socket
          * and append correctly */
-        char cpu_str[24] = "power_cpu_socket_";
-        char mem_str[24] = "power_mem_socket_";
-        char gpu_str[24] = "power_gpu_socket_";
+        char cpu_str[24] = "power_cpu_watts_socket_";
+        char mem_str[24] = "power_mem_watts_socket_";
+        char gpu_str[24] = "power_gpu_watts_socket_";
 
         snprintf(sockID, sockID_len, "%d", i);
         strcat(cpu_str, sockID);
@@ -998,7 +998,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(get_power_obj, "power_node", json_real(node_power));
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 }
 
 

@@ -265,16 +265,16 @@ int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
             for (k = 0; k < nthreads / ncores; k++)
             {
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                fprintf(writedest, "Socket: %d, PhysicalCore: %d, LogicalThread: %d, ", i, j,
-                        idx);
+                fprintf(writedest,
+                        "_THERMALS Socket: %d, PhysicalCore: %d, LogicalThread: %d, ", i, j, idx);
                 fprintf(writedest, "TCC: %d C, ", (int)t_target[i].temp_target);
-                fprintf(writedest, "PkgReading: %d C, ", pkg_stat[i].readout);
-                fprintf(writedest, "PkgActual: %d C, ",
+                fprintf(writedest, "Pkg_Reading: %d C, ", pkg_stat[i].readout);
+                fprintf(writedest, "Pkg_Actual: %d C, ",
                         (int)t_target[i].temp_target - pkg_stat[i].readout);
-                fprintf(writedest, "ThreadReading: %d C, ", t_stat[idx].readout);
-                fprintf(writedest, "ThreadActual: %d C, ",
+                fprintf(writedest, "Thread_Reading: %d C, ", t_stat[idx].readout);
+                fprintf(writedest, "Thread_Actual: %d C, ",
                         (int)t_target[i].temp_target - t_stat[idx].readout);
-                fprintf(writedest, "ThreadDigitalReadingValid: %d\n",
+                fprintf(writedest, "Thread_DigitalReadingValid: %d\n",
                         t_stat[idx].readout_valid);
             }
         }
@@ -319,7 +319,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     get_therm_stat(t_stat, msr_therm_stat);
 
     fprintf(writedest,
-            "_THERMALS socket phys_core log_thread TCC_celsius pkg_reading_celsius pkg_actual_celsius thread_reading_celsius thread_actual_celsius thread_digital_reading_valid\n");
+            "_THERMALS Socket PhysicalCore LogicalThread TCC_C Pkg_Reading_C Pkg_Actual_C Thread_Reading_C Thread_Actual_C Thread_DigitalReadingValid\n");
     for (i = 0; i < nsockets; i++)
     {
         for (j = 0; j < ncores / nsockets; j++)

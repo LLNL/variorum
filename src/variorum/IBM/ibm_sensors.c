@@ -134,7 +134,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         if (long_ver == 0)
         {
             fprintf(output,
-                    "_IBMPOWER Host Socket PWRSYS PWRPROC PWRMEM PWRGPU Timestamp\n");
+                    "_IBMPOWER Host Socket PWRSYS_W PWRPROC_W PWRMEM_W PWRGPU_W Timestamp_sec\n");
         }
     }
 
@@ -209,7 +209,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-    fprintf(output, "_IBMPOWER%d Timestamp_s Host Socket", chipid);
+    fprintf(output, "_IBMPOWER%d Timestamp_sec Host Socket", chipid);
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
@@ -309,9 +309,9 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     uint64_t pwrgpu = 0;
     char sockID[4];
 
-    char cpu_str[24] = "power_cpu_socket_";
-    char mem_str[24] = "power_mem_socket_";
-    char gpu_str[24] = "power_gpu_socket_";
+    char cpu_str[28] = "power_cpu_watts_socket_";
+    char mem_str[28] = "power_mem_watts_socket_";
+    char gpu_str[28] = "power_gpu_watts_socket_";
 
     sprintf(sockID, "%d", chipid);
     strcat(cpu_str, sockID);
@@ -364,7 +364,7 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
 
     if (chipid == 0)
     {
-        json_object_set_new(get_power_obj, "power_node", json_real(pwrsys));
+        json_object_set_new(get_power_obj, "power_node_watts", json_real(pwrsys));
     }
 
     json_object_set_new(get_power_obj, cpu_str, json_real(pwrproc));
