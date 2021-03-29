@@ -7,9 +7,32 @@
  NVIDIA Overview
 #################
 
+This page provides a detailed description of the the NVIDIA port of Variorum.
+The functionality of this port depends on NVIDIA-specific proprietary
+software stack as well as open-source software components described below.
+The high-level API provided by Variorum is read-only (i.e., monitoring-only),
+primarily because of the access limitations on our target platform.
 
-Dependencies
-============
+*********************
+ Build Configuration
+*********************
+
+We provide an example CMake hostfile
+(lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake)
+which defines the CMake build variables set on our test platform (Lassen
+supercomputer at LLNL). For your build system, you will need to modify
+two CMake variables:
+
+    - Modify the path for libnvidia-ml.so (prefixed with the '-L' flag) in
+      the ``CMAKE_SHARED_LINKER_FLAGS`` variable.
+    - Modify the path for the CUDA-aware version of libhwloc in the
+      ``HWLOC_DIR`` variable.
+
+You should also make sure that the ``VARIORUM_WITH_NVIDIA`` flag is switched ON.
+
+**************
+ Dependencies
+**************
 
 The NVIDIA port of Variorum depends on the NVIDIA Management Library (NVML)
 for access to the telemetry and control interfaces. NVML provides standardized
@@ -21,9 +44,12 @@ Locality (hwloc) library to enumerate the GPU devices and their mappings
 to the host CPUs.
 We have tested our NVIDIA port with CUDA 9.2 and CUDA-enabled build of hwloc
 1.11.10.
+The NVIDIA port has been tested on the Tesla GPU architecture (NVIDIA
+Volta SM200).
 
-Device Enumeration
-==================
+********************
+ Device Enumeration
+********************
 
 The NVIDIA port enumerates the system GPU devices and populates global
 GPU device handles at initialization in the
@@ -44,9 +70,9 @@ While the high-level Variorum APIs operate over all devices, the
 internal routines in the NVIDIA port use CPU ID to perform operations
 on the associated GPUs.
 
-**************************************************
+***************************************************
  Telemetry Collection Through NVML Query Interface
-**************************************************
+***************************************************
 
 The NVIDIA port of Variorum leverages the device and unit query APIs provided
 by NVML to collect per-GPU telemetry. The text below describes the specific
