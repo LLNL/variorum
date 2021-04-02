@@ -12,6 +12,15 @@ branch, which contains our latest features. The ``main`` branch will be updated
 as releases occur.
 
 ********
+ v0.4.1
+********
+
+04/02/2021: New release adds documentation for Nvidia port, adds units to the
+tabular and JSON output formats, and finishes renaming dump and print internal
+functions to print and print_verbose, respectively.  `v0.4.1 tarball here
+<https://github.com/LLNL/variorum/archive/v0.4.1.tar.gz>`_.
+
+********
  v0.4.0
 ********
 
