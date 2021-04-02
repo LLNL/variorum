@@ -1,3 +1,12 @@
+# Fri Apr 2 2021 Stephanie Brink <brink2@llnl.gov> v0.4.1
+* Add docs for NVIDIA port
+* Add units to tabular and JSON output formats
+* Rename dump and print internal functions to print and print_verbose,
+  respectively
+* Standardize sphinx docs with rstfmt python package
+* Update variorum system design figure in docs
+* Speed up travis builds with parallel make
+
 # Wed Mar 3 2021 Stephanie Brink <brink2@llnl.gov> v0.4.0
 * Add support for ARM Juno architecture
 * Add top-level API to query available frequencies, add support for Intel and ARM
