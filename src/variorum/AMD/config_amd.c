@@ -37,7 +37,7 @@ uint64_t *detect_amd_arch(void)
 
 int set_amd_func_ptrs(void)
 {
-    int err = 0;
+    int ret = 0;
     uint8_t family, model;
     family = (*g_platform.amd_arch >> 8) & 0xFF;
     model = *g_platform.amd_arch & 0xFF;
@@ -58,22 +58,24 @@ int set_amd_func_ptrs(void)
         return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
 
     /* smi monitor initialization */
-    err = esmi_init();
-    if (err != 0)
+    ret = esmi_init();
+    switch (ret)
     {
+    case 0:
+        g_platform.variorum_print_power = epyc_get_power;
+        g_platform.variorum_print_power_limits = epyc_get_power_limits;
+        g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
+        g_platform.variorum_cap_and_verify_node_power_limit = epyc_set_and_verify_node_power_limit;
+        g_platform.variorum_print_energy = epyc_print_energy;
+        g_platform.variorum_print_boostlimit = epyc_print_boostlimit;
+        g_platform.variorum_set_and_verify_core_boostlimit = epyc_set_and_verify_core_boostlimit;
+        g_platform.variorum_set_socket_boostlimit = epyc_set_socket_boostlimit;
+        break;
+    default:
         fprintf(stdout, "ESMI not initialized, drivers not found. "
-                "Err[%d]: %s\n", err, esmi_get_err_msg(err));
-        return err;
+                "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
+        g_platform.variorum_print_energy = epyc_print_energy;
+        ret = 0;
     }
-
-    g_platform.variorum_print_power = epyc_get_power;
-    g_platform.variorum_print_power_limits = epyc_get_power_limits;
-    g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
-    g_platform.variorum_cap_and_verify_node_power_limit = epyc_set_and_verify_node_power_limit;
-    g_platform.variorum_print_energy = epyc_print_energy;
-    g_platform.variorum_print_boostlimit = epyc_print_boostlimit;
-    g_platform.variorum_set_and_verify_core_boostlimit = epyc_set_and_verify_core_boostlimit;
-    g_platform.variorum_set_socket_boostlimit = epyc_set_socket_boostlimit;
-
-    return err;
+    return ret;
 }

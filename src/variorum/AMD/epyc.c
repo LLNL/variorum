@@ -12,6 +12,9 @@
 #include <variorum_error.h>
 #include <e_smi/e_smi.h>
 
+#include "msr_core.h"
+#include "energy_feature.h"
+
 int epyc_get_power(int long_ver)
 {
 #ifdef VARIORUM_LOG
@@ -205,52 +208,67 @@ int epyc_set_socket_power_limit(int pcap_new)
     return 0;
 }
 
+static struct EPYC_19h_offsets msrs =
+{
+    .msr_rapl_power_unit         = 0xC0010299,
+    .msr_core_energy_stat        = 0xC001029A,
+    .msr_pkg_energy_stat         = 0xC001029B
+};
+
 int epyc_print_energy(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-
-    int i, ret;
-    uint64_t energy;
-
-    fprintf(stdout, "_SOCKET_ENERGY :\n");
-    fprintf(stdout, " Socket |  Energy (uJoules) |\n");
-    for (i = 0; i < g_platform.num_sockets; i++)
+    int ret;
+    if (!esmi_init())
     {
-        energy = 0;
-        ret = esmi_socket_energy_get(i, &energy);
-        if(ret != 0)
+        int i;
+        uint64_t energy;
+
+        fprintf(stdout, "_SOCKET_ENERGY :\n");
+        fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+        for (i = 0; i < g_platform.num_sockets; i++)
         {
-            fprintf(stdout, "Failed to get socket[%d] _SOCKENERGY, Err[%d]:%s\n",
-                    i, ret, esmi_get_err_msg(ret));
-            return ret;
+            energy = 0;
+            ret = esmi_socket_energy_get(i, &energy);
+            if(ret != 0)
+            {
+                fprintf(stdout, "Failed to get socket[%d] _SOCKENERGY, Err[%d]:%s\n",
+                        i, ret, esmi_get_err_msg(ret));
+                goto energy_batch;
+            }
+            else
+            {
+                fprintf(stdout, "%6d  | %17.06f | \n",
+                        i, (double)energy/1000000);
+            }
         }
-        else
+        printf("\n_CORE_ENERGY :\n");
+        fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+        for (i = 0; i < g_platform.total_cores; i++)
         {
-            fprintf(stdout, "%6d  | %17.06f | \n",
-                    i, (double)energy/1000000);
+            energy = 0;
+            ret = esmi_core_energy_get(i, &energy);
+            if(ret != 0)
+            {
+                fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
+                        i, ret, esmi_get_err_msg(ret));
+                continue;
+            }
+            else
+            {
+                fprintf(stdout, " %6d | %17.06f | \n",
+                        i, (double)energy/1000000);
+            }
         }
+        return 0;
     }
-    printf("\n_CORE_ENERGY :\n");
-    fprintf(stdout, "   Core |  Energy (uJoules) |\n");
-    for (i = 0; i < g_platform.total_cores; i++)
-    {
-        energy = 0;
-        ret = esmi_core_energy_get(i, &energy);
-        if(ret != 0)
-        {
-            fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
-                    i, ret, esmi_get_err_msg(ret));
-	    continue;
-        }
-        else
-        {
-            fprintf(stdout, " %6d | %17.06f | \n",
-                    i, (double)energy/1000000);
-        }
-    }
-    return 0;
+energy_batch:
+    fprintf(stdout, "Msg: Checking msr-safe module...\n");
+    ret = print_energy_data(stdout, msrs.msr_rapl_power_unit,
+                     msrs.msr_core_energy_stat);
+    return ret;
 }
 
 int epyc_print_boostlimit(void)
