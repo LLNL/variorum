@@ -7,6 +7,7 @@
 #define SANDYBRIDGE_2D_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Sandy Bridge Family/Model 2DH.
 struct sandybridge_2d_offsets
