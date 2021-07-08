@@ -10,6 +10,6 @@
 
 uint64_t *detect_arm_arch(void);
 
-int set_arm_func_ptrs(void);
+int set_arm_func_ptrs(int idx);
 
 #endif

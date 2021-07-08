@@ -48,7 +48,7 @@ int variorum_cap_and_verify_node_power_limit(int node_power_limit);
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
 /// @return Error code.
-int variorum_cap_best_effort_node_power_limit(int node_power_limit);
+int variorum_cap_best_effort_node_power_limit(int *node_power_limits);
 
 /// @brief Cap the power shifting ratio for the GPU (uniform on both sockets).
 ///

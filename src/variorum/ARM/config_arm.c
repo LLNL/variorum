@@ -20,18 +20,18 @@ uint64_t *detect_arm_arch(void)
     return model;
 }
 
-int set_arm_func_ptrs(void)
+int set_arm_func_ptrs(int idx)
 {
     int err = 0;
 
     if (*g_platform.arm_arch == ARMV8)
     {
         /* Initialize interfaces */
-        g_platform.variorum_print_power                 = arm_get_power;
-        g_platform.variorum_print_thermals              = arm_get_thermals;
-        g_platform.variorum_print_clocks                = arm_get_clocks;
-        g_platform.variorum_print_available_frequencies = arm_get_frequencies;
-        g_platform.variorum_cap_socket_frequency        = arm_cap_socket_frequency;
+        g_platform[idx].variorum_print_power                 = arm_get_power;
+        g_platform[idx].variorum_print_thermals              = arm_get_thermals;
+        g_platform[idx].variorum_print_clocks                = arm_get_clocks;
+        g_platform[idx].variorum_print_available_frequencies = arm_get_frequencies;
+        g_platform[idx].variorum_cap_socket_frequency        = arm_cap_socket_frequency;
     }
     else
     {

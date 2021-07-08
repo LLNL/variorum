@@ -16,9 +16,9 @@ int volta_get_power(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    int iter = 0;
+    int nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_power_data(iter, long_ver, stdout);
@@ -32,9 +32,9 @@ int volta_get_thermals(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    unsigned iter = 0;
-    unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    int iter = 0;
+    int nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_thermal_data(iter, long_ver, stdout);
@@ -47,9 +47,9 @@ int volta_get_clocks(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    int iter = 0;
+    int nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_clocks_data(iter, long_ver, stdout);
@@ -62,9 +62,9 @@ int volta_get_power_limits(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    int iter = 0;
+    int nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_power_limits(iter, long_ver, stdout);
@@ -77,9 +77,9 @@ int volta_get_gpu_utilization(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    int iter = 0;
+    int nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_gpu_utilization(iter, long_ver, stdout);

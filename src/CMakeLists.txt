@@ -79,8 +79,8 @@ endif()
 ### Add our examples
 add_subdirectory(examples)
 
-### Add powmon sampler
-add_subdirectory(powmon)
+#### Add powmon sampler
+#add_subdirectory(powmon)
 
 ### Add config helpers
 add_subdirectory(config)

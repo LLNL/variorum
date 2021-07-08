@@ -68,9 +68,9 @@ static struct kabylake_9e_offsets msrs =
 
 int fm_06_9e_get_power_limits(int long_ver)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -116,9 +116,9 @@ int fm_06_9e_get_power_limits(int long_ver)
 
 int fm_06_9e_cap_power_limits(int package_power_limit)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

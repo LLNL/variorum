@@ -38,14 +38,20 @@ int variorum_enter()
 #endif
 {
     int err = 0;
+    int i;
 #ifdef VARIORUM_LOG
     printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
 #endif
 
+    printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
+
     variorum_init_func_ptrs();
 
     //Triggers initialization on first call.  Errors assert.
-    variorum_get_topology(NULL, NULL, NULL);
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        variorum_get_topology(NULL, NULL, NULL, i);
+    }
     err = variorum_detect_arch();
     if (err)
     {
@@ -72,6 +78,7 @@ int variorum_exit()
 #endif
 {
     int err = 0;
+    int i;
 #ifdef VARIORUM_LOG
     printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
 #endif
@@ -84,78 +91,78 @@ int variorum_exit()
     }
 #endif
 
-#ifdef VARIORUM_WITH_INTEL
-    free(g_platform.intel_arch);
-#endif
-#ifdef VARIORUM_WITH_AMD
-    free(g_platform.amd_arch);
-#endif
-#ifdef VARIORUM_WITH_IBM
-    free(g_platform.ibm_arch);
-#endif
-#ifdef VARIORUM_WITH_NVIDIA
-    free(g_platform.nvidia_arch);
-#endif
-#ifdef VARIORUM_WITH_ARM
-    free(g_platform.arm_arch);
-#endif
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        free(g_platform[i].arch_id);
+    }
 
     return err;
 }
 
 int variorum_detect_arch(void)
 {
+    int i;
 #ifdef VARIORUM_WITH_INTEL
-    g_platform.intel_arch = detect_intel_arch();
+    g_platform[P_INTEL_IDX].arch_id = detect_intel_arch();
+    printf("Intel -- idx%d\n", P_INTEL_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD
-    //g_platform.amd_arch = detect_amd_arch();
+    //g_platform[P_AMD_IDX].arch_id = detect_amd_arch();
+    //printf("AMD -- idx%d\n", idx);
 #endif
 #ifdef VARIORUM_WITH_IBM
-    g_platform.ibm_arch = detect_ibm_arch();
+    g_platform[P_IBM_IDX].arch_id = detect_ibm_arch();
+    printf("IBM -- idx%d\n", P_IBM_IDX);
 #endif
 #ifdef VARIORUM_WITH_NVIDIA
-    g_platform.nvidia_arch = detect_gpu_arch();
+    g_platform[P_NVIDIA_IDX].arch_id = detect_gpu_arch();
+    printf("Nvidia -- idx%d\n", P_NVIDIA_IDX);
 #endif
 #ifdef VARIORUM_WITH_ARM
     g_platform.arm_arch = detect_arm_arch();
+    printf("ARM -- idx%d\n", P_ARM_IDX);
 #endif
 
+    // @todo Need to know what idx maps to which architecture
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
-    printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
+    printf("Intel Model: 0x%lx\n", *g_platform[P_INTEL_IDX].arch_id);
 #endif
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_IBM)
-    printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
+    printf("IBM Model: 0x%lx\n", *g_platform[P_IBM_IDX].arch_id);
+#endif
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_NVIDIA)
+    printf("Nvidia Model: 0x%lx\n", *g_platform[P_NVIDIA_IDX].arch_id);
+#endif
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_ARM)
+    printf("Arm Model: 0x%lx\n", *g_platform[P_ARM_IDX].arch_id);
 #endif
 
-    if (g_platform.intel_arch   == NULL &&
-        g_platform.amd_arch     == NULL &&
-        g_platform.ibm_arch     == NULL &&
-        g_platform.nvidia_arch  == NULL &&
-        g_platform.arm_arch     == NULL)
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        return VARIORUM_ERROR_UNSUPPORTED_ARCH;
+        if (g_platform[i].arch_id == NULL)
+        {
+            variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+            return VARIORUM_ERROR_UNSUPPORTED_ARCH;
+        }
     }
 
     return 0;
 }
 
 
-void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
-                           unsigned *nthreads)
+void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
 {
     hwloc_topology_t topology;
     int rc;
     static int init_variorum_get_topology = 0;
 
-    gethostname(g_platform.hostname, 1024);
+    gethostname(g_platform[idx].hostname, 1024);
 
     if (!init_variorum_get_topology)
     {
-        init_variorum_get_topology = 1;
+        //init_variorum_get_topology = 1;
 
         // hwloc should give us expected results on any reasonable arch.
         // If something goes wrong, there's no sense in trying to keep
@@ -171,9 +178,10 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
+        g_platform[idx].num_sockets = hwloc_get_nbobjs_by_type(topology,
+                                      HWLOC_OBJ_SOCKET);
         //-1 if Several levels exist with OBJ_SOCKET
-        if (g_platform.num_sockets == -1)
+        if (g_platform[idx].num_sockets == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports that HWLOC_OBJ_SOCKETs exist "
@@ -183,7 +191,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
         // 0 if No levels exist with OBJ_SOCKET
-        if (g_platform.num_sockets == 0)
+        if (g_platform[idx].num_sockets == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_SOCKETs exist.  "
@@ -192,8 +200,9 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
-        if (g_platform.total_cores == -1)
+        g_platform[idx].total_cores = hwloc_get_nbobjs_by_type(topology,
+                                      HWLOC_OBJ_CORE);
+        if (g_platform[idx].total_cores == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports HWLOC_OJB_COREs exist "
@@ -202,7 +211,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
                     "Exiting.", __FILE__, __LINE__);
             exit(-1);
         }
-        if (g_platform.total_cores == 0)
+        if (g_platform[idx].total_cores == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_COREs exist."
@@ -211,8 +220,9 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
-        if (g_platform.total_threads == -1)
+        g_platform[idx].total_threads = hwloc_get_nbobjs_by_type(topology,
+                                        HWLOC_OBJ_PU);
+        if (g_platform[idx].total_threads == -1)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports that HWLOC_OBJ_PUs exist "
@@ -221,7 +231,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
                     "Exiting.", __FILE__, __LINE__);
             exit(-1);
         }
-        if (g_platform.total_threads == 0)
+        if (g_platform[idx].total_threads == 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports no HWLOC_OBJ_COREs exist.  "
@@ -230,31 +240,31 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.num_cores_per_socket = g_platform.total_cores /
-                                          g_platform.num_sockets;
-        if (g_platform.total_cores % g_platform.num_sockets != 0)
+        g_platform[idx].num_cores_per_socket = g_platform[idx].total_cores /
+                                               g_platform[idx].num_sockets;
+        if (g_platform[idx].total_cores % g_platform[idx].num_sockets != 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports the number of cores (%d) mod "
                     "the number of sockets (%d) is not zero.  "
                     "Something is amiss.  Exiting.",
                     __FILE__, __LINE__,
-                    g_platform.total_cores,
-                    g_platform.num_sockets);
+                    g_platform[idx].total_cores,
+                    g_platform[idx].num_sockets);
             exit(-1);
         }
 
-        g_platform.num_threads_per_core = g_platform.total_threads /
-                                          g_platform.total_cores;
-        if (g_platform.total_threads % g_platform.total_cores != 0)
+        g_platform[idx].num_threads_per_core = g_platform[idx].total_threads /
+                                               g_platform[idx].total_cores;
+        if (g_platform[idx].total_threads % g_platform[idx].total_cores != 0)
         {
             fprintf(stderr, "%s:%d "
                     "hwloc reports the number of threads (%d) mod "
                     "the number of cores (%d) is not zero.  "
                     "Something is amiss.  Exiting.",
                     __FILE__, __LINE__,
-                    g_platform.total_threads,
-                    g_platform.total_cores);
+                    g_platform[idx].total_threads,
+                    g_platform[idx].total_cores);
             exit(-1);
         }
 
@@ -263,42 +273,44 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
     if (nsockets != NULL)
     {
-        *nsockets = g_platform.num_sockets;
+        *nsockets = g_platform[idx].num_sockets;
     }
 
     if (ncores != NULL)
     {
-        *ncores = g_platform.total_cores;
+        *ncores = g_platform[idx].total_cores;
     }
 
     if (nthreads != NULL)
     {
-        *nthreads = g_platform.total_threads;
+        *nthreads = g_platform[idx].total_threads;
     }
 }
 
 void variorum_init_func_ptrs()
 {
-    g_platform.variorum_print_power_limits = NULL;
-    g_platform.variorum_cap_socket_frequency = NULL;
-    g_platform.variorum_cap_best_effort_node_power_limit = NULL;
-    g_platform.variorum_cap_and_verify_node_power_limit = NULL;
-    g_platform.variorum_cap_gpu_power_ratio = NULL;
-    g_platform.variorum_cap_each_socket_power_limit = NULL;
-    g_platform.variorum_print_features = NULL;
-    g_platform.variorum_print_thermals = NULL;
-    g_platform.variorum_print_counters = NULL;
-    g_platform.variorum_print_clocks = NULL;
-    g_platform.variorum_print_power = NULL;
-    g_platform.variorum_enable_turbo = NULL;
-    g_platform.variorum_disable_turbo = NULL;
-    g_platform.variorum_print_turbo = NULL;
-    g_platform.variorum_poll_power = NULL;
-    g_platform.variorum_print_gpu_utilization = NULL;
-    g_platform.variorum_cap_each_core_frequency = NULL;
-    g_platform.variorum_monitoring = NULL;
-    g_platform.variorum_get_node_power_json = NULL;
-    g_platform.variorum_print_available_frequencies = NULL;
+    int i = 0;
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        g_platform[i].variorum_print_power_limits = NULL;
+        g_platform[i].variorum_cap_best_effort_node_power_limit = NULL;
+        g_platform[i].variorum_cap_and_verify_node_power_limit = NULL;
+        g_platform[i].variorum_cap_gpu_power_ratio = NULL;
+        g_platform[i].variorum_cap_each_socket_power_limit = NULL;
+        g_platform[i].variorum_print_features = NULL;
+        g_platform[i].variorum_print_thermals = NULL;
+        g_platform[i].variorum_print_counters = NULL;
+        g_platform[i].variorum_print_clocks = NULL;
+        g_platform[i].variorum_print_power = NULL;
+        g_platform[i].variorum_enable_turbo = NULL;
+        g_platform[i].variorum_disable_turbo = NULL;
+        g_platform[i].variorum_print_turbo = NULL;
+        g_platform[i].variorum_poll_power = NULL;
+        g_platform[i].variorum_print_gpu_utilization = NULL;
+        g_platform[i].variorum_cap_each_core_frequency = NULL;
+        g_platform[i].variorum_monitoring = NULL;
+        g_platform[i].variorum_get_node_power_json = NULL;
+    }
 }
 
 int variorum_set_func_ptrs()
@@ -306,7 +318,7 @@ int variorum_set_func_ptrs()
     int err = 0;
 
 #ifdef VARIORUM_WITH_INTEL
-    err = set_intel_func_ptrs();
+    err = set_intel_func_ptrs(P_INTEL_IDX);
     if (err)
     {
         return err;
@@ -314,13 +326,17 @@ int variorum_set_func_ptrs()
     err = init_msr();
 #endif
 #ifdef VARIORUM_WITH_IBM
-    err = set_ibm_func_ptrs();
+    err = set_ibm_func_ptrs(P_IBM_IDX);
 #endif
 #ifdef VARIORUM_WITH_NVIDIA
-    err = set_nvidia_func_ptrs();
+    err = set_nvidia_func_ptrs(P_NVIDIA_IDX);
+    if (err)
+    {
+        return err;
+    }
 #endif
 #ifdef VARIORUM_WITH_ARM
-    err = set_arm_func_ptrs();
+    err = set_arm_func_ptrs(P_ARM_IDX);
 #endif
     return err;
 }

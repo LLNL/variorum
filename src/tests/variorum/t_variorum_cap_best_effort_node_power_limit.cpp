@@ -11,8 +11,9 @@ extern "C" {
 
 TEST(variorum_power_limit, test_cap_best_effort_node_power_limit)
 {
-    int node_pow_limit = 200;
-    EXPECT_EQ(0, variorum_cap_best_effort_node_power_limit(node_pow_limit));
+    int *node_pow_lim_watts;
+    node_pow_lim_watts = (int *) malloc(1 * sizeof(int));
+    EXPECT_EQ(0, variorum_cap_best_effort_node_power_limit(node_pow_lim_watts));
 }
 
 int main(int argc, char **argv)

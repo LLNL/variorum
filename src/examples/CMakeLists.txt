@@ -5,18 +5,18 @@
 
 target_link_libraries(variorum ${variorum_deps})
 
-add_definitions(-DSECOND_RUN)
+#add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
-    variorum-cap-and-verify-node-power-limit-example
+#    variorum-cap-and-verify-node-power-limit-example
     variorum-cap-best-effort-node-power-limit-example
     variorum-cap-each-core-frequency-limit-example
-    variorum-cap-gpu-power-ratio-example
-    variorum-cap-socket-clock-speed-example
-    variorum-cap-socket-power-limits-example
+#    variorum-cap-gpu-power-ratio-example
+#    variorum-cap-socket-clock-speed-example
+#    variorum-cap-socket-power-limits-example
+    variorum-get-node-power-json-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
-    variorum-get-node-power-json-example
     variorum-monitoring-to-file-example
     variorum-poll-power-to-file-example
     variorum-poll-power-to-stdout-example

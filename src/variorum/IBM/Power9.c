@@ -24,7 +24,7 @@ int p9_get_power(int long_ver)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_IDX);
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -320,7 +320,7 @@ int p9_monitoring(FILE *output)
     unsigned nsockets;
     static unsigned count = 0;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_IDX);
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -401,7 +401,7 @@ int p9_get_node_power_json(json_t *get_power_obj)
     struct timeval tv;
     uint64_t ts;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_IDX);
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
