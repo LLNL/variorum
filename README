@@ -1,6 +1,6 @@
 # VARIORUM
 
-[![Build Status](https://travis-ci.com/LLNL/variorum.svg?branch=dev)](https://travis-ci.com/LLNL/variorum)
+[![Build Status](https://github.com/llnl/variorum/actions/workflows/github-actions.yml/badge.svg)](https://github.com/LLNL/variorum/actions)
 [![Read the Docs](https://readthedocs.org/projects/variorum/badge/?version=latest)](http://variorum.readthedocs.io)
 
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
@@ -177,7 +177,7 @@ We welcome all kinds of contributions: new features, bug fixes, documentation,
 edits, etc.!
 
 To contribute, make a pull request, with `dev` as the destination branch. We
-use Travis to run CI tests, and your branch must pass these tests before being
+use GitHub Actions to run CI tests, and your branch must pass these tests before being
 merged.
 
 See the [CONTRIBUTING](./CONTRIBUTING.md) for more information.

@@ -4,7 +4,7 @@ This runs all unit tests, which includes variorum APIs as well as system
 environment checks, e.g., msr-safe validation, OPAL access. Most of these tests
 will fail unless the environment has these access modules.
 
-Travis: Need to install msr-safe. Cannot test OPAL access since the
+GitHub Actions: Need to install msr-safe. Cannot test OPAL access since the
 architecture is Intel.
 
 GitLab: Need to run on a compute node for Intel or IBM.

@@ -35,16 +35,16 @@ Next, push it to your remote fork and create a pull request (PR):
 GitHub provides a tutorial on how to file a PR. When you send the request, make
 `dev` the destination branch.
 
-Travis CI will run on all PRs, and will (1) build and compile the source code,
-and (2) enforce style format.
+GitHub Actions will run on all PRs, and will (1) build and compile the source
+code, and (2) enforce style format.
 
 
 Code Formatting
 ---------------
 
-Code formatting is automatically checked on travis. We use the Allman style in
-[astyle](http://astyle.sourceforge.net/). See `scripts/astyle-format.sh` for
-the specific astyle options we use.
+Code formatting is automatically checked on GitHub Actions. We use the Allman
+style in [astyle](http://astyle.sourceforge.net/). See
+`scripts/astyle-format.sh` for the specific astyle options we use.
 
 A good vim recipe for code formatting is:
 
