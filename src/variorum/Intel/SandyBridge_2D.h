@@ -101,6 +101,8 @@ int fm_06_2d_poll_power(FILE *output);
 
 int fm_06_2d_monitoring(FILE *output);
 
+int fm_06_2d_get_node_power_json(json_t *get_power_obj);
+
 int fm_06_2d_get_frequencies(void);
 
 #endif

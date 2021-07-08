@@ -104,6 +104,8 @@ int fm_06_3f_poll_power(FILE *output);
 
 int fm_06_3f_monitoring(FILE *output);
 
+int fm_06_3f_get_node_power_json(json_t *get_power_obj);
+
 int fm_06_3f_get_frequencies(void);
 
 #endif

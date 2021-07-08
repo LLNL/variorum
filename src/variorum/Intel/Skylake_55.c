@@ -335,6 +335,19 @@ int fm_06_55_monitoring(FILE *output)
     return 0;
 }
 
+int fm_06_55_get_node_power_json(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
+                        msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                        msrs.msr_dram_energy_status);
+
+    return 0;
+}
+
 int fm_06_55_cap_frequency(int core_freq_mhz)
 {
     unsigned nsockets, ncores, nthreads;
