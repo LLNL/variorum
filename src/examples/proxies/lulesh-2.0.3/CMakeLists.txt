@@ -40,19 +40,16 @@ if(MPI_FOUND)
     set(my_compiler_flags -DUSE_MPI=1 ${lulesh_openmp_flags})
 
     set(lulesh_par_deps variorum)
-    if(OPENMP_FOUND)
-        list(APPEND lulesh_par_deps openmp)
-    endif()
 
     add_executable(lulesh_par ${LULESH_SOURCES})
     target_include_directories(lulesh_par PUBLIC ${MPI_CXX_INCLUDE_PATH})
     target_compile_options(lulesh_par PUBLIC ${my_compiler_flags})
     target_link_libraries(lulesh_par ${MPI_CXX_LIBRARIES} ${MPI_CXX_LINK_FLAGS} ${lulesh_par_deps})
 
-#    install(TARGETS lulesh_par
-#            EXPORT  ascent
-#            LIBRARY DESTINATION examples/ascent/proxies/lulesh
-#            ARCHIVE DESTINATION examples/ascent/proxies/lulesh
-#            RUNTIME DESTINATION examples/ascent/proxies/lulesh
-#    )
+    install(TARGETS lulesh_par
+            EXPORT  variorum
+            LIBRARY DESTINATION examples/proxies/lulesh
+            ARCHIVE DESTINATION examples/proxies/lulesh
+            RUNTIME DESTINATION examples/proxies/lulesh
+    )
 endif()

@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-#add_subdirectory(proxies/lulesh-2.0.3)
+add_subdirectory(proxies/lulesh-2.0.3)
 
 target_link_libraries(variorum ${variorum_deps})
 
