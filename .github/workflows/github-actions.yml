@@ -112,7 +112,7 @@ jobs:
       - name: Install deps on ubuntu
         run: |
           sudo apt-get update
-          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen
+          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen openmpi-dev libopenmpi-dev
           cmake --version
           gcc --version
 
