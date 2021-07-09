@@ -79,27 +79,54 @@ if(FORTRAN_FOUND)
             DESTINATION include)
 endif()
 
-if(BUILD_SHARED_LIBS)
-    add_library(variorum SHARED
-                ${variorum_sources}
-                ${variorum_headers}
-                ${variorum_deps})
-else()
-    add_library(variorum STATIC
-                ${variorum_sources}
-                ${variorum_headers}
-                ${variorum_deps})
+if(ENABLE_SERIAL)
+    if(BUILD_SHARED_LIBS)
+        add_library(variorum SHARED
+                    ${variorum_sources}
+                    ${variorum_headers}
+                    ${variorum_deps})
+    else()
+        add_library(variorum STATIC
+                    ${variorum_sources}
+                    ${variorum_headers}
+                    ${variorum_deps})
+    endif()
+
+    target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
+    target_link_libraries(variorum PUBLIC ${JANSSON_LIBRARY})
+    target_link_libraries(variorum PUBLIC m)
+
+    install(TARGETS variorum
+            EXPORT  variorum
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            RUNTIME DESTINATION lib)
 endif()
 
-target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
-target_link_libraries(variorum PUBLIC ${JANSSON_LIBRARY})
-target_link_libraries(variorum PUBLIC m)
+if(MPI_FOUND)
+    if(BUILD_SHARED_LIBS)
+        add_library(variorum_mpi SHARED
+                    ${variorum_sources}
+                    ${variorum_headers}
+                    ${variorum_deps})
+    else()
+        add_library(variorum_mpi STATIC
+                    ${variorum_sources}
+                    ${variorum_headers}
+                    ${variorum_deps})
+    endif()
 
-install(TARGETS variorum
-        EXPORT  variorum
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION lib)
+    target_link_libraries(variorum_mpi PUBLIC ${HWLOC_LIBRARY})
+    target_link_libraries(variorum_mpi PUBLIC ${JANSSON_LIBRARY})
+    target_link_libraries(variorum_mpi PUBLIC m)
+    target_link_libraries(variorum_mpi PUBLIC ${MPI_C_LIBRARIES})
+
+    install(TARGETS variorum_mpi
+            EXPORT  variorum
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            RUNTIME DESTINATION lib)
+endif()
 
 set(variorum_install_headers
     variorum.h

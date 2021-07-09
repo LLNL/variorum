@@ -3,7 +3,12 @@
 #
 # SPDX-License-Identifier: MIT
 
-target_link_libraries(variorum ${variorum_deps})
+if(ENABLE_SERIAL)
+    target_link_libraries(variorum ${variorum_deps})
+endif()
+if(MPI_FOUND)
+    target_link_libraries(variorum_mpi ${variorum_deps})
+endif()
 
 add_definitions(-DSECOND_RUN)
 
@@ -42,8 +47,14 @@ set(BASIC_EXAMPLES
 message(STATUS "Adding variorum examples")
 foreach(EXAMPLE ${BASIC_EXAMPLES})
     message(STATUS " [*] Adding example: ${EXAMPLE}")
-    add_executable(${EXAMPLE} ${EXAMPLE}.c)
-    target_link_libraries(${EXAMPLE} variorum ${variorum_deps})
+    if(ENABLE_SERIAL)
+        add_executable(${EXAMPLE}_ser ${EXAMPLE}.c)
+        target_link_libraries(${EXAMPLE}_ser variorum ${variorum_deps})
+    endif()
+    if(MPI_FOUND)
+        add_executable(${EXAMPLE}_par ${EXAMPLE}.c)
+        target_link_libraries(${EXAMPLE}_par variorum_mpi ${variorum_deps})
+    endif()
 endforeach()
 
 include_directories(${CMAKE_SOURCE_DIR}/variorum)

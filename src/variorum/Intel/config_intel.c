@@ -60,6 +60,8 @@ int gpu_power_ratio_unimplemented(int long_ver)
 int set_intel_func_ptrs(void)
 {
     int err = 0;
+    int comm_size = 1;
+    int rank = 0;
 
     // GPU power ratio doesn't apply to Intel architectures.
     // So specify a common function that exits with a log message.

@@ -16,6 +16,7 @@ if(NOT VARIORUM_FOUND)
     set(VARIORUM_JANSSON_DIR "@JANSSON_DIR@")
     set(VARIORUM_JANSSON_LIB "@JANSSON_LIBRARY@")
     set(VARIORUM_JANSSON_INCLUDE_DIR "@JANSSON_INCLUDE_DIRS@")
+    set(VARIORUM_MPI_ENABLED "@ENABLE_MPI@")
 
     # pull in vars with details about configured paths
     get_filename_component(VARIORUM_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)

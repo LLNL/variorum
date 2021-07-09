@@ -16,6 +16,8 @@ option(BUILD_SHARED_LIBS         "Build shared libraries"                 ON)
 option(BUILD_DOCS                "Build documentation"                    ON)
 option(BUILD_TESTS               "Build tests"                            ON)
 
+option(ENABLE_MPI                "Build MPI support"              ON)
+option(ENABLE_SERIAL             "Build serial (non-MPI) support" ON)
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 
@@ -27,6 +29,10 @@ option(VARIORUM_WITH_ARM         "Support ARM architectures"              OFF)
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 option(VARIORUM_LOG              "Enable logging statements"              ON)
 
+if(NOT ENABLE_MPI AND NOT ENABLE_SERIAL)
+    message(FATAL_ERROR "No libraries will be built. Please set ENABLE_SERIAL | ENABLE_MPI | BOTH to ON")
+endif()
+
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
 
@@ -36,6 +42,11 @@ endif()
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
+endif()
+
+### Invoke CMake MPI setup
+if(ENABLE_MPI)
+    find_package(MPI REQUIRED)
 endif()
 
 include(CMake/VariorumBuildType.cmake)
@@ -71,6 +82,9 @@ if(ENABLE_FORTRAN)
     enable_language(Fortran)
 endif()
 
+### Add config helpers
+add_subdirectory(config)
+
 ### Add our tests
 if(BUILD_TESTS)
     add_subdirectory(tests)
@@ -81,9 +95,6 @@ add_subdirectory(examples)
 
 ### Add powmon sampler
 add_subdirectory(powmon)
-
-### Add config helpers
-add_subdirectory(config)
 
 ### Create CMake importable exports
 install(EXPORT variorum DESTINATION lib/cmake)
