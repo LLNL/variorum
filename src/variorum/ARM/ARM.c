@@ -93,3 +93,4 @@ int arm_get_power_json(json_t *get_power_obj)
 #endif
     ret = json_get_power_data(get_power_obj);
     return ret;
+}
