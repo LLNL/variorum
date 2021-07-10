@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <jansson.h>
 
 unsigned m_num_package;
 char m_hostname[1024];

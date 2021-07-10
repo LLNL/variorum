@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <fcntl.h>
 #include <string.h>
 #include <inttypes.h>
@@ -369,15 +370,14 @@ int json_get_power_data(json_t *get_power_obj)
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
+    int i; 
 
     char sockID[4];
-    char mem_str[36] = "power_mem_watts_socket_";                               
-    char gpu_str[36] = "power_gpu_watts_socket_";                               
                                                                                 
     gethostname(hostname,1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostanme));
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
  
     /* Read power data from hwmon interfaces, similar to the get_power_data() 
@@ -423,12 +423,12 @@ int json_get_power_data(json_t *get_power_obj)
 
     /* Initialize GPU and memory to -1 first, as there is no memory power, 
        and GPU power exists only on socket 0. 
-       The value for m_num_packages has been obtained in the init_arm() call.
-       The for loop ends with socket 0 being appended to cpu_str
-       and gpu_str, allowing us to set things more easily later.  */    
+       The value for m_num_package has been obtained in the init_arm() call. */
  
-    for (i = m_num_packages; i >= 0; i--)
+    for (i = 0; i < m_num_package; i++)
     {
+        char mem_str[36] = "power_mem_watts_socket_";                               
+        char gpu_str[36] = "power_gpu_watts_socket_";                               
         sprintf(sockID, "%d", i);                                              
         strcat(mem_str, sockID);                                                    
         strcat(gpu_str, sockID);
