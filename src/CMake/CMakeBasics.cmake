@@ -35,9 +35,9 @@ endif()
 # Msr-Safe Dependency #
 #######################
 if(USE_MSR_SAFE_BEFORE_1_5_0)
-    message(STATUS "Building for msr-safe before v1.5.0 (USE_MSR_SAFE_BEFORE_1_5_0 == ON)")
+    message(STATUS "Building for msr-safe<1.5.0 msr_whitelist interface (USE_MSR_SAFE_BEFORE_1_5_0 == ON)")
 else()
-    message(STATUS "Building for msr-safe v1.5.0 and beyond (USE_MSR_SAFE_BEFORE_1_5_0 == OFF)")
+    message(STATUS "Building for msr-safe==1.5.0 msr_allowlist interface (USE_MSR_SAFE_BEFORE_1_5_0 == OFF)")
 endif()
 
 ##########################
