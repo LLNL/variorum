@@ -441,10 +441,14 @@ int json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big, 
        and Socket 1 is little. */
 
-    json_object_set_new(get_power_obj, "power_node_watts", json_real((double)(sys_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0", json_real((double)(big_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1", json_real((double)(little_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0", json_real((double)(gpu_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_node_watts", 
+                        json_real((double)(sys_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0", 
+                        json_real((double)(big_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1", 
+                        json_real((double)(little_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0", 
+                        json_real((double)(gpu_power_val) / 1000000.0f));
     return 0;
 }
 
