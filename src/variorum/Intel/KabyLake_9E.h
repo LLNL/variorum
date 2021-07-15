@@ -7,6 +7,7 @@
 #define KABYLAKE_9E_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Kaby Lake Family/Model 9EH.
 struct kabylake_9e_offsets
@@ -97,6 +98,10 @@ int fm_06_9e_get_power(int long_ver);
 int fm_06_9e_poll_power(FILE *output);
 
 int fm_06_9e_monitoring(FILE *output);
+
+int fm_06_9e_get_node_power_json(json_t *get_power_obj);
+
+int fm_06_9e_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_9e_get_frequencies(void);
 

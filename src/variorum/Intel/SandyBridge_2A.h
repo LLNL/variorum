@@ -7,6 +7,7 @@
 #define SANDYBRIDGE_2A_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Sandy Bridge Family/Model 2AH.
 struct sandybridge_2a_offsets
@@ -98,6 +99,10 @@ int fm_06_2a_get_turbo_status(void);
 int fm_06_2a_poll_power(FILE *output);
 
 int fm_06_2a_monitoring(FILE *output);
+
+int fm_06_2a_get_node_power_json(json_t *get_power_obj);
+
+int fm_06_2a_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_2a_get_frequencies(void);
 
