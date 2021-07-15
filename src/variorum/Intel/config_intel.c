@@ -85,6 +85,8 @@ int set_intel_func_ptrs(void)
         //    fm_06_2a_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_2a_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_2a_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_2a_get_frequencies;
     }
@@ -106,6 +108,8 @@ int set_intel_func_ptrs(void)
         //    fm_06_2d_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_2d_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_2d_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_2d_get_frequencies;
     }
@@ -129,6 +133,8 @@ int set_intel_func_ptrs(void)
         //    fm_06_3e_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_3e_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_3e_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_3e_get_frequencies;
     }
@@ -152,6 +158,8 @@ int set_intel_func_ptrs(void)
         //    fm_06_3f_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_3f_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_3f_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_3f_get_frequencies;
     }
@@ -198,6 +206,8 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_monitoring = fm_06_55_monitoring;
         g_platform.variorum_get_node_power_json =
             fm_06_55_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_55_cap_best_effort_node_power_limit;
         g_platform.variorum_cap_each_core_frequency = fm_06_55_cap_frequency;
         g_platform.variorum_print_available_frequencies =
             fm_06_55_get_frequencies;
@@ -220,6 +230,8 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_monitoring = fm_06_9e_monitoring;
         g_platform.variorum_get_node_power_json =
             fm_06_9e_get_node_power_json;
+        g_platform.variorum_cap_best_effort_node_power_limit =
+            fm_06_9e_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_9e_get_frequencies;
     }
