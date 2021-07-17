@@ -98,7 +98,11 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
+#ifdef VARIORUM_MPI_ENABLED
+    int (*variorum_print_power_limits)(int long_ver, int rank);
+#else
     int (*variorum_print_power_limits)(int long_ver);
+#endif
 
     /// @brief Function pointer to set a power limit on the node.
     ///

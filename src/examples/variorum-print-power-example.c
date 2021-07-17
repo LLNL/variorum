@@ -47,5 +47,6 @@ int main(void)
         printf("Print power failed!\n");
     }
 #endif
+
     return ret;
 }

@@ -136,7 +136,11 @@ int variorum_monitoring(FILE *output)
     return err;
 }
 
+#ifdef VARIORUM_MPI_ENABLED
+int variorum_print_power_limits(int rank)
+#else
 int variorum_print_power_limits(void)
+#endif
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -156,7 +160,11 @@ int variorum_print_power_limits(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
+#ifdef VARIORUM_MPI_ENABLED
+    err = g_platform.variorum_print_power_limits(0, rank);
+#else
     err = g_platform.variorum_print_power_limits(0);
+#endif
     if (err)
     {
         return -1;
@@ -173,6 +181,7 @@ int variorum_print_power_limits(void)
     return err;
 }
 
+/*
 int variorum_print_verbose_power_limits(void)
 {
     int err = 0;
@@ -209,6 +218,7 @@ int variorum_print_verbose_power_limits(void)
     }
     return err;
 }
+*/
 
 void variorum_print_topology(void)
 {

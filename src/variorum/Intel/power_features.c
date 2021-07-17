@@ -480,8 +480,13 @@ void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
     }
 }
 
+#ifdef VARIORUM_MPI_ENABLED
+void print_package_power_limit(FILE *writedest, int rank, off_t msr_power_limit,
+                               off_t msr_rapl_unit, int socket)
+#else
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                                off_t msr_rapl_unit, int socket)
+#endif
 {
     struct rapl_limit l1, l2;
     static int init_print_package_power_limit = 0;
@@ -494,15 +499,26 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     if (!init_print_package_power_limit)
     {
         init_print_package_power_limit = 1;
+#ifdef VARIORUM_MPI_ENABLED
+        fprintf(writedest,
+                "_PACKAGE_POWER_LIMIT Rank Offset Host Socket Bits PowerLimit1_W TimeWindow1_sec PowerLimit2_W TimeWindow2_sec\n");
+#else
         fprintf(writedest,
                 "_PACKAGE_POWER_LIMIT Offset Host Socket Bits PowerLimit1_W TimeWindow1_sec PowerLimit2_W TimeWindow2_sec\n");
+#endif
     }
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
+#ifdef VARIORUM_MPI_ENABLED
+        fprintf(writedest, "_PACKAGE_POWER_LIMIT %d 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+                rank, msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
+                l2.seconds);
+#else
         fprintf(writedest, "_PACKAGE_POWER_LIMIT 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
                 l2.seconds);
+#endif
     }
 }
 
@@ -880,8 +896,13 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
     }
 }
 
+#ifdef VARIORUM_MPI_ENABLED
+void print_power_data(FILE *writedest, off_t msr_rapl_unit,
+                      off_t msr_pkg_energy_status, off_t msr_dram_energy_status, int rank)
+#else
 void print_power_data(FILE *writedest, off_t msr_rapl_unit,
                       off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+#endif
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;

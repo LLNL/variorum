@@ -154,10 +154,18 @@ int get_package_power_limits(struct rapl_units *ru,
 int get_rapl_power_unit(struct rapl_units *ru,
                         off_t msr);
 
+#ifdef VARIORUM_MPI_ENABLED
+void print_package_power_limit(FILE *writedest,
+                               int rank,
+                               off_t msr_power_limit,
+                               off_t msr_rapl_unit,
+                               int socket);
+#else
 void print_package_power_limit(FILE *writedest,
                                off_t msr_power_limit,
                                off_t msr_rapl_unit,
                                int socket);
+#endif
 
 void print_dram_power_limit(FILE *writedest,
                             off_t msr_power_limit,
@@ -208,10 +216,18 @@ int cap_package_power_limit(const unsigned socket,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit);
 
+#ifdef VARIORUM_MPI_ENABLED
+void print_power_data(FILE *writedest,
+                      off_t msr_rapl_unit,
+                      off_t msr_pkg_energy_status,
+                      off_t msr_dram_energy_status,
+                      int rank);
+#else
 void print_power_data(FILE *writedest,
                       off_t msr_rapl_unit,
                       off_t msr_pkg_energy_status,
                       off_t msr_dram_energy_status);
+#endif
 
 void print_verbose_power_data(FILE *writedest,
                               off_t msr_rapl_unit,

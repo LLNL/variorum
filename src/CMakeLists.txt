@@ -47,6 +47,7 @@ endif()
 ### Invoke CMake MPI setup
 if(ENABLE_MPI)
     find_package(MPI REQUIRED)
+    add_definitions(-DVARIORUM_MPI_ENABLED)
 endif()
 
 include(CMake/VariorumBuildType.cmake)
@@ -92,9 +93,11 @@ endif()
 
 ### Add our examples
 add_subdirectory(examples)
-
-### Add powmon sampler
-add_subdirectory(powmon)
+#
+#### Add powmon sampler
+#if(ENABLE_SERIAL)
+#    add_subdirectory(powmon)
+#endif()
 
 ### Create CMake importable exports
 install(EXPORT variorum DESTINATION lib/cmake)

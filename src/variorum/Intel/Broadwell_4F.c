@@ -71,7 +71,11 @@ static struct broadwell_4f_offsets msrs =
     .msrs_pcu_pmon_evtsel[3]      = 0xC33
 };
 
+#ifdef VARIORUM_MPI_ENABLED
+int fm_06_4f_get_power_limits(int long_ver, int rank)
+#else
 int fm_06_4f_get_power_limits(int long_ver)
+#endif
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -85,8 +89,13 @@ int fm_06_4f_get_power_limits(int long_ver)
     {
         if (long_ver == 0)
         {
+#ifdef VARIORUM_MPI_ENABLED
+            print_package_power_limit(stdout, rank, msrs.msr_pkg_power_limit,
+                                      msrs.msr_rapl_power_unit, socket);
+#else
             print_package_power_limit(stdout, msrs.msr_pkg_power_limit,
                                       msrs.msr_rapl_power_unit, socket);
+#endif
         }
         else if (long_ver == 1)
         {
@@ -324,7 +333,11 @@ int fm_06_4f_get_clocks(int long_ver)
     return 0;
 }
 
+#ifdef VARIORUM_MPI_ENABLED
+int fm_06_4f_get_power(int long_ver, int rank)
+#else
 int fm_06_4f_get_power(int long_ver)
+#endif
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -332,8 +345,13 @@ int fm_06_4f_get_power(int long_ver)
 
     if (long_ver == 0)
     {
+#ifdef VARIORUM_MPI_ENABLED
+        print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                         msrs.msr_dram_energy_status, rank);
+#else
         print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                          msrs.msr_dram_energy_status);
+#endif
     }
     else if (long_ver == 1)
     {

@@ -81,7 +81,11 @@ struct broadwell_4f_offsets
     off_t msr_config_tdp_nominal;
 };
 
+#ifdef VARIORUM_MPI_ENABLED
+int fm_06_4f_get_power_limits(int long_ver, int rank);
+#else
 int fm_06_4f_get_power_limits(int long_ver);
+#endif
 
 int fm_06_4f_cap_power_limits(int package_power_limit);
 
@@ -93,7 +97,11 @@ int fm_06_4f_get_counters(int long_ver);
 
 int fm_06_4f_get_clocks(int long_ver);
 
+#ifdef VARIORUM_MPI_ENABLED
+int fm_06_4f_get_power(int long_ver, int rank);
+#else
 int fm_06_4f_get_power(int long_ver);
+#endif
 
 int fm_06_4f_enable_turbo(void);
 

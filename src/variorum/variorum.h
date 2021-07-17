@@ -93,7 +93,11 @@ int variorum_print_verbose_power_limits(void);
 /// @brief Print power limits for all known domains in CSV format.
 ///
 /// @return Error code.
+#ifdef VARIORUM_MPI_ENABLED
+int variorum_print_power_limits(int rank);
+#else
 int variorum_print_power_limits(void);
+#endif
 
 /// @brief Print thermal data in long format.
 ///
