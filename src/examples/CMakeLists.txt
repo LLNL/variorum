@@ -3,12 +3,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-add_definitions(-DSECOND_RUN)
-
-if(MPI_FOUND)
-    add_definitions(-DPARALLEL)
-endif()
-
 set(BASIC_EXAMPLES
 #    variorum-cap-and-verify-node-power-limit-example
 #    variorum-cap-best-effort-node-power-limit-example
@@ -46,20 +40,27 @@ foreach(EXAMPLE ${BASIC_EXAMPLES})
     message(STATUS " [*] Adding example: ${EXAMPLE}")
 
     if(ENABLE_SERIAL)
+        set(variorum_deps variorum)
+        message(STATUS "RRR-serial ${variorum_deps}")
         add_executable(${EXAMPLE}_ser ${EXAMPLE}.c)
+        target_compile_definitions(${EXAMPLE}_ser PUBLIC -DSECOND_RUN)
         target_link_libraries(${EXAMPLE}_ser variorum ${variorum_deps})
     endif()
 
     if(MPI_FOUND)
+        set(variorum_par_deps variorum_mpi mpi)
+        message(STATUS "RRR-par ${variorum_par_deps}")
         add_executable(${EXAMPLE}_par ${EXAMPLE}.c)
-        target_link_libraries(${EXAMPLE}_par variorum_mpi ${variorum_deps})
+        target_compile_definitions(${EXAMPLE}_par PUBLIC -DSECOND_RUN -DPARALLEL)
+        target_link_libraries(${EXAMPLE}_par variorum_mpi ${variorum_par_deps})
     endif()
 endforeach()
 
+if(ENABLE_SERIAL)
+    include_directories(${CMAKE_SOURCE_DIR}/variorum)
+endif()
 if(MPI_FOUND)
     include_directories(${CMAKE_SOURCE_DIR}/variorum ${MPI_INCLUDE_PATH})
-else()
-    include_directories(${CMAKE_SOURCE_DIR}/variorum)
 endif()
 
 install(DIRECTORY using-with-make using-with-cmake

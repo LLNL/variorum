@@ -35,12 +35,22 @@ set(variorum_includes
     ${HWLOC_INCLUDE_DIRS}
 )
 
+if(ENABLE_MPI)
+    list(APPEND variorum_includes ${MPI_INCLUDE_PATH})
+endif()
+
 if(VARIORUM_WITH_INTEL)
     add_subdirectory(Intel)
     list(APPEND variorum_headers Intel/config_intel.h ${variorum_intel_headers})
     list(APPEND variorum_sources Intel/config_intel.c)
-    list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_intel>)
-    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+    if(ENABLE_SERIAL)
+        list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_intel>)
+        list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+    endif()
+    if(ENABLE_MPI)
+        list(APPEND variorum_par_deps $<TARGET_OBJECTS:variorum_intel_par>)
+        list(APPEND variorum_par_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+    endif()
 endif()
 
 if(VARIORUM_WITH_IBM)
@@ -79,6 +89,8 @@ if(FORTRAN_FOUND)
             DESTINATION include)
 endif()
 
+message(STATUS "RRR ${variorum_deps}")
+message(STATUS "RRR ${variorum_par_deps}")
 if(ENABLE_SERIAL)
     if(BUILD_SHARED_LIBS)
         add_library(variorum SHARED
@@ -108,18 +120,20 @@ if(MPI_FOUND)
         add_library(variorum_mpi SHARED
                     ${variorum_sources}
                     ${variorum_headers}
-                    ${variorum_deps})
+                    ${variorum_par_deps})
     else()
         add_library(variorum_mpi STATIC
                     ${variorum_sources}
                     ${variorum_headers}
-                    ${variorum_deps})
+                    ${variorum_par_deps})
     endif()
 
     target_link_libraries(variorum_mpi PUBLIC ${HWLOC_LIBRARY})
     target_link_libraries(variorum_mpi PUBLIC ${JANSSON_LIBRARY})
     target_link_libraries(variorum_mpi PUBLIC m)
     target_link_libraries(variorum_mpi PUBLIC ${MPI_C_LIBRARIES})
+
+    target_compile_definitions(variorum_mpi PUBLIC -DVARIORUM_MPI_ENABLED)
 
     install(TARGETS variorum_mpi
             EXPORT  variorum

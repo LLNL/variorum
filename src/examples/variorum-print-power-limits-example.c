@@ -15,12 +15,13 @@ int main(void)
     int ret;
 
 #ifdef PARALLEL
-    int rank;
+    int mpi_comm;
     MPI_Init(NULL, NULL);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    mpi_comm = MPI_Comm_c2f(MPI_COMM_WORLD);
+    ret = variorum_print_power_limits(mpi_comm);
+#else
+    ret = variorum_print_power_limits();
 #endif
-
-    ret = variorum_print_power_limits(rank);
     if (ret != 0)
     {
         printf("Print power limits failed!\n");

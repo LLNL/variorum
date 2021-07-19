@@ -137,7 +137,7 @@ int variorum_monitoring(FILE *output)
 }
 
 #ifdef VARIORUM_MPI_ENABLED
-int variorum_print_power_limits(int rank)
+int variorum_print_power_limits(int mpi_comm_id)
 #else
 int variorum_print_power_limits(void)
 #endif
@@ -161,7 +161,7 @@ int variorum_print_power_limits(void)
         return 0;
     }
 #ifdef VARIORUM_MPI_ENABLED
-    err = g_platform.variorum_print_power_limits(0, rank);
+    err = g_platform.variorum_print_power_limits(0, mpi_comm_id);
 #else
     err = g_platform.variorum_print_power_limits(0);
 #endif

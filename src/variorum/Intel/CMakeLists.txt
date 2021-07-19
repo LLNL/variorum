@@ -37,11 +37,22 @@ set(variorum_intel_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/variorum_cpuid.c
   CACHE INTERNAL "")
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${variorum_includes})
+if(ENABLE_SERIAL)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${variorum_includes})
+    add_library(variorum_intel OBJECT
+                ${variorum_intel_sources}
+                ${variorum_intel_headers})
 
-add_library(variorum_intel OBJECT
-            ${variorum_intel_sources}
-            ${variorum_intel_headers})
+    ### Shared libraries need PIC
+    set_property(TARGET ${variorum_intel} PROPERTY POSITION_INDEPENDENT_CODE 1)
+endif()
 
-### Shared libraries need PIC
-set_property(TARGET ${variorum_intel} PROPERTY POSITION_INDEPENDENT_CODE 1)
+if(ENABLE_MPI)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${variorum_par_includes})
+    add_library(variorum_intel_par OBJECT
+                ${variorum_intel_sources}
+                ${variorum_intel_headers})
+
+    ### Shared libraries need PIC
+    set_property(TARGET ${variorum_intel_par} PROPERTY POSITION_INDEPENDENT_CODE 1)
+endif()

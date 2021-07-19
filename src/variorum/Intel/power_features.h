@@ -216,18 +216,10 @@ int cap_package_power_limit(const unsigned socket,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit);
 
-#ifdef VARIORUM_MPI_ENABLED
-void print_power_data(FILE *writedest,
-                      off_t msr_rapl_unit,
-                      off_t msr_pkg_energy_status,
-                      off_t msr_dram_energy_status,
-                      int rank);
-#else
 void print_power_data(FILE *writedest,
                       off_t msr_rapl_unit,
                       off_t msr_pkg_energy_status,
                       off_t msr_dram_energy_status);
-#endif
 
 void print_verbose_power_data(FILE *writedest,
                               off_t msr_rapl_unit,

@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#ifdef VARIORUM_MPI_ENABLED
+#include <mpi.h>
+#endif
 
 #include <Broadwell_4F.h>
 #include <clocks_features.h>
@@ -72,7 +75,7 @@ static struct broadwell_4f_offsets msrs =
 };
 
 #ifdef VARIORUM_MPI_ENABLED
-int fm_06_4f_get_power_limits(int long_ver, int rank)
+int fm_06_4f_get_power_limits(int long_ver, int mpi_comm_id)
 #else
 int fm_06_4f_get_power_limits(int long_ver)
 #endif
@@ -85,6 +88,12 @@ int fm_06_4f_get_power_limits(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
+#ifdef VARIORUM_MPI_ENABLED
+    int rank;
+    MPI_Comm mpi_comm = MPI_Comm_f2c(mpi_comm_id);
+    MPI_Comm_rank(mpi_comm, &rank);
+    printf("Translating int to communicator %d\n", rank);
+#endif
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
@@ -333,11 +342,7 @@ int fm_06_4f_get_clocks(int long_ver)
     return 0;
 }
 
-#ifdef VARIORUM_MPI_ENABLED
-int fm_06_4f_get_power(int long_ver, int rank)
-#else
 int fm_06_4f_get_power(int long_ver)
-#endif
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -345,13 +350,8 @@ int fm_06_4f_get_power(int long_ver)
 
     if (long_ver == 0)
     {
-#ifdef VARIORUM_MPI_ENABLED
-        print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
-                         msrs.msr_dram_energy_status, rank);
-#else
         print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                          msrs.msr_dram_energy_status);
-#endif
     }
     else if (long_ver == 1)
     {

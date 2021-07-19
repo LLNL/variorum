@@ -16,8 +16,8 @@ option(BUILD_SHARED_LIBS         "Build shared libraries"                 ON)
 option(BUILD_DOCS                "Build documentation"                    ON)
 option(BUILD_TESTS               "Build tests"                            ON)
 
-option(ENABLE_MPI                "Build MPI support"              ON)
 option(ENABLE_SERIAL             "Build serial (non-MPI) support" ON)
+option(ENABLE_MPI                "Build MPI support"              ON)
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 
@@ -47,7 +47,6 @@ endif()
 ### Invoke CMake MPI setup
 if(ENABLE_MPI)
     find_package(MPI REQUIRED)
-    add_definitions(-DVARIORUM_MPI_ENABLED)
 endif()
 
 include(CMake/VariorumBuildType.cmake)
@@ -93,7 +92,7 @@ endif()
 
 ### Add our examples
 add_subdirectory(examples)
-#
+
 #### Add powmon sampler
 #if(ENABLE_SERIAL)
 #    add_subdirectory(powmon)
