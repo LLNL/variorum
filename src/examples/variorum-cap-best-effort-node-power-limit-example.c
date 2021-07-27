@@ -3,8 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <variorum.h>
 
@@ -14,17 +16,36 @@ int main(int argc, char **argv)
     // 500W is based on minimum power on IBM Witherspoon
     int node_pow_lim_watts = 500;
 
-    if (argc == 1)
+    const char *usage = "%s [--help | -h] -l power_lim_watts\n";
+
+    if (argc == 1 || (argc > 1 && (
+                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
+                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
     {
-        printf("Please specify an input value in Watts for correctness.\n");
-        printf("Cannot set defaults due to architecture dependence.\n");
+        printf(usage, argv[0]);
         return 0;
     }
-    else if (argc == 2)
+    if (argc <= 2)
     {
-        node_pow_lim_watts = atoi(argv[1]);
-        printf("Capping node to %dW.\n", node_pow_lim_watts);
+        printf(usage, argv[0]);
+        return 1;
     }
+
+    int opt;
+    while ((opt = getopt(argc, argv, "l:")) != -1)
+    {
+        switch (opt)
+        {
+            case 'l':
+                node_pow_lim_watts = atoi(optarg);
+                break;
+            default:
+                fprintf(stderr, usage, argv[0]);
+                return -1;
+        }
+    }
+
+    printf("Capping node to %dW.\n", node_pow_lim_watts);
 
     ret = variorum_cap_best_effort_node_power_limit(node_pow_lim_watts);
     if (ret != 0)
