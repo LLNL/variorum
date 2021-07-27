@@ -3,30 +3,48 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <variorum.h>
 
 int main(int argc, char **argv)
 {
     int ret;
-    int pkg_pow_lim_watts = 100;
+    int pkg_pow_lim_watts;
 
-    if (argc == 1)
+    const char *usage = "%s [--help | -h] -l power_lim_watts\n";
+
+    if (argc == 1 || (argc > 1 && (
+                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
+                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
     {
-        printf("No power limit specified...using default limit of 100W.\n");
+        printf(usage, argv[0]);
+        return 0;
     }
-    else if (argc == 2)
+    if (argc <= 2)
     {
-        pkg_pow_lim_watts = atoi(argv[1]);
-        printf("Capping each socket to %dW.\n", pkg_pow_lim_watts);
+        printf(usage, argv[0]);
+        return 1;
     }
-    else
+
+    int opt;
+    while ((opt = getopt(argc, argv, "l:")) != -1)
     {
-        printf("Usage: variorum_cap_socket_power_limit [limit in watts]\n");
-        exit(0);
+        switch (opt)
+        {
+            case 'l':
+                pkg_pow_lim_watts = atoi(optarg);
+                break;
+            default:
+                fprintf(stderr, usage, argv[0]);
+                return -1;
+        }
     }
+
+    printf("Capping each socket to %dW.\n", pkg_pow_lim_watts);
 
     ret = variorum_cap_each_socket_power_limit(pkg_pow_lim_watts);
     if (ret != 0)

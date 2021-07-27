@@ -3,26 +3,48 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <variorum.h>
 
 int main(int argc, char **argv)
 {
     int ret;
-    /*100 % is based on IBM Witherspoon default */
-    int gpu_power_ratio_pct = 100;
+    int gpu_power_ratio_pct;
 
-    if (argc == 1)
+    const char *usage = "%s [--help | -h] -r gpu_power_ratio_pct\n";
+
+    if (argc == 1 || (argc > 1 && (
+                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
+                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
     {
-        printf("No GPU power ratio specified...using default ratio of 100 percent.\n");
+        printf(usage, argv[0]);
+        return 0;
     }
-    else if (argc == 2)
+    if (argc <= 2)
     {
-        gpu_power_ratio_pct = atoi(argv[1]);
-        printf("Capping GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
+        printf(usage, argv[0]);
+        return 1;
     }
+
+    int opt;
+    while ((opt = getopt(argc, argv, "r:")) != -1)
+    {
+        switch (opt)
+        {
+            case 'r':
+                gpu_power_ratio_pct = atoi(optarg);
+                break;
+            default:
+                printf(usage, argv[0]);
+                return -1;
+        }
+    }
+
+    printf("Capping GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
 
     ret = variorum_cap_gpu_power_ratio(gpu_power_ratio_pct);
     if (ret != 0)
