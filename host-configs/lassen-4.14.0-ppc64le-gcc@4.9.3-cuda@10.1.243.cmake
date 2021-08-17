@@ -13,9 +13,10 @@ set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS ON CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD OFF CACHE BOOL "")
-set(VARIORUM_WITH_NVIDIA ON CACHE BOOL "")
+set(VARIORUM_WITH_ARM OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
+set(VARIORUM_WITH_NVIDIA ON CACHE BOOL "")
 
 # You need to load CUDA 9.2.* to build this on Lassen
 # because hwloc was built with CUDA 9.2.* and not the default CUDA version (10.1.*)

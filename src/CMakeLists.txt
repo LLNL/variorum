@@ -19,11 +19,12 @@ option(BUILD_TESTS               "Build tests"                            ON)
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 
-option(VARIORUM_WITH_INTEL       "Support Intel architectures"            ON)
 option(VARIORUM_WITH_AMD         "Support AMD architectures"              OFF)
-option(VARIORUM_WITH_IBM         "Support IBM architectures"              OFF)
-option(VARIORUM_WITH_NVIDIA      "Support Nvidia architectures"           OFF)
 option(VARIORUM_WITH_ARM         "Support ARM architectures"              OFF)
+option(VARIORUM_WITH_IBM         "Support IBM architectures"              OFF)
+option(VARIORUM_WITH_INTEL       "Support Intel architectures"            ON)
+option(VARIORUM_WITH_NVIDIA      "Support Nvidia architectures"           OFF)
+
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 option(VARIORUM_LOG              "Enable logging statements"              ON)
 
