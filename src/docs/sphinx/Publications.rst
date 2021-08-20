@@ -18,9 +18,9 @@
 - Introduction to Variorum, ECP Tutorial Series 2021.
 
       -  :download:`Module 1 Slides
-         <_static/2021-ecp-tutorial-series/2021_08_06_Variorum_Module1_ECPLectureSeries.pdf>`
+         <_static/2021-ecp-tutorial-series/2021_Variorum_Module1_ECPLectureSeries.pdf>` | `Video Recording <https://youtu.be/fAoXsOloqwU>`_
       -  :download:`Module 2 Slides
-         <_static/2021-ecp-tutorial-series/2021_08_13_Variorum_Module2_ECPLectureSeries.pdf>`
+         <_static/2021-ecp-tutorial-series/2021_Variorum_Module2_ECPLectureSeries.pdf>` | `Video Recording <https://youtu.be/mjmRc9Xnd1o>`_
 
 -  Managing Power Efficiency of HPC Applications with Variorum and GEOPM, ECP
    2020 Tutorial, February 4, 2020, Houston, TX.
