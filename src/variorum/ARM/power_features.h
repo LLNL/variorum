@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <jansson.h>
 
 unsigned m_num_package;
 char m_hostname[1024];
@@ -25,5 +26,7 @@ int get_frequencies(int chipid, FILE *output);
 int get_clocks_data(int chipid, int verbose, FILE *output);
 
 int cap_socket_frequency(int socketid, int new_freq);
+
+int json_get_power_data(json_t *get_power_obj);
 
 #endif
