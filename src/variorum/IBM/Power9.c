@@ -451,3 +451,8 @@ int p9_get_node_power_json(json_t *get_power_obj)
     close(fd);
     return 0;
 }
+
+int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
+{
+    
+}

@@ -205,6 +205,11 @@ struct platform
     /// @return Error code.
     int (*variorum_get_node_power_json)(json_t *get_power_obj);
 
+    /// @brief Function pointer to get JSON object for power domain information.
+    ///
+    /// @return Error code.
+    int (*variorum_get_node_power_domain_info_json)(json_t *get_domain_obj);
+
     /// @brief Function pointer to get list of available frequencies.
     ///
     /// @return Error code.
