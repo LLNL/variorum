@@ -454,5 +454,27 @@ int p9_get_node_power_json(json_t *get_power_obj)
 
 int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
 {
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
 
+    unsigned nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+
+    variorum_get_topology(&nsockets, NULL, NULL);
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_domain_obj, "host", json_string(hostname));
+    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
+
+    json_object_set_new(get_domain_obj, "power_node", json_string("C (Min 500 W, Max 3050 W)"));
+    json_object_set_new(get_domain_obj, "power_cpu", json_string("M"));
+    json_object_set_new(get_domain_obj, "power_mem", json_string("M"));
+    json_object_set_new(get_domain_obj, "power_gpu", json_string("C (Shifting Ratio 0-100%"));
+
+    return 0;
 }
