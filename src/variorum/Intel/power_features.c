@@ -1002,6 +1002,31 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 }
 
 
+void json_get_power_domain_info(json_t *get_domain_obj)
+{
+
+   char hostname[1024];                                                           
+    struct timeval tv;                                                             
+    uint64_t ts;                                                                   
+                                                                                   
+    gethostname(hostname, 1024);                                                   
+    gettimeofday(&tv, NULL);                                                       
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;                               
+    json_object_set_new(get_domain_obj, "host", json_string(hostname));            
+    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));            
+                                                                                   
+    json_object_set_new(get_domain_obj, "power_node",                              
+                        json_string("N"));                 
+   
+    // Need to figure out a way to specify capping limits.
+    json_object_set_new(get_domain_obj, "power_cpu", json_string("C"));            
+    json_object_set_new(get_domain_obj, "power_mem", json_string("C"));
+    // If we have an NVIDIA + Intel build, the following should be updated.            
+    json_object_set_new(get_domain_obj, "power_gpu", json_string("N");                  
+                                                                                   
+    return 0;                                                                       
+} 
+
 //int print_rapl_data(FILE *writedest)
 //{
 //    static int init = 0;

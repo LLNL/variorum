@@ -167,6 +167,8 @@ int set_intel_func_ptrs(void)
         //    fm_06_4f_cap_frequency;
         g_platform.variorum_get_node_power_json =
             fm_06_4f_get_node_power_json;
+        g_platform.variorum_get_node_power_domain_info_json =
+            fm_06_4f_get_node_power_domain_info_json;
         g_platform.variorum_cap_best_effort_node_power_limit =
             fm_06_4f_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
