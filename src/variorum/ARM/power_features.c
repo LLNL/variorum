@@ -364,23 +364,23 @@ int json_get_power_data(json_t *get_power_obj)
 {
     char hostname[1024];
     struct timeval tv;
-    uint64_t ts;    
+    uint64_t ts;
 
     uint64_t sys_power_val;
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
-    int i; 
+    int i;
 
     char sockID[4];
-                                                                                
-    gethostname(hostname,1024);
+
+    gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
     json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
- 
-    /* Read power data from hwmon interfaces, similar to the get_power_data() 
+
+    /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
 
     char *sys_power_fname = "/sys/class/hwmon/hwmon0/power1_input";
@@ -421,33 +421,33 @@ int json_get_power_data(json_t *get_power_obj)
     close(little_power_fd);
     close(gpu_power_fd);
 
-    /* Initialize GPU and memory to -1 first, as there is no memory power, 
-       and GPU power exists only on socket 0. 
+    /* Initialize GPU and memory to -1 first, as there is no memory power,
+       and GPU power exists only on socket 0.
        The value for m_num_package has been obtained in the init_arm() call. */
- 
+
     for (i = 0; i < m_num_package; i++)
     {
-        char mem_str[36] = "power_mem_watts_socket_";                               
-        char gpu_str[36] = "power_gpu_watts_socket_";                               
-        sprintf(sockID, "%d", i);                                              
-        strcat(mem_str, sockID);                                                    
+        char mem_str[36] = "power_mem_watts_socket_";
+        char gpu_str[36] = "power_gpu_watts_socket_";
+        sprintf(sockID, "%d", i);
+        strcat(mem_str, sockID);
         strcat(gpu_str, sockID);
-        json_object_set_new(get_power_obj, mem_str, json_real(-1.0)); 
-        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0)); 
+        json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
+        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
     }
 
     /* The power telemetry obtained from the power registers is in
-       microwatts. To allow for vendor neutral compatibility with the JSON API, 
-       Variorum converts power into watts before reporting. Socket 0 is big, 
+       microwatts. To allow for vendor neutral compatibility with the JSON API,
+       Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
-    json_object_set_new(get_power_obj, "power_node_watts", 
+    json_object_set_new(get_power_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0", 
+    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0",
                         json_real((double)(big_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1", 
+    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1",
                         json_real((double)(little_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0", 
+    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0",
                         json_real((double)(gpu_power_val) / 1000000.0f));
     return 0;
 }
