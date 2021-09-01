@@ -1015,16 +1015,15 @@ void json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "host", json_string(hostname));
     json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "power_node",
-                        json_string("N"));
+    json_object_set_new(get_domain_obj, "power_node", json_string("N"));
 
     // Need to figure out a way to specify capping limits.
     json_object_set_new(get_domain_obj, "power_cpu", json_string("C"));
     json_object_set_new(get_domain_obj, "power_mem", json_string("C"));
     // If we have an NVIDIA + Intel build, the following should be updated.
-    json_object_set_new(get_domain_obj, "power_gpu", json_string("N");
+    json_object_set_new(get_domain_obj, "power_gpu", json_string("N"));
 
-                        return 0;
+    return 0;
 }
 
 //int print_rapl_data(FILE *writedest)
