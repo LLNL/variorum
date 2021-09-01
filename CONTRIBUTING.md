@@ -42,9 +42,10 @@ code, and (2) enforce style format.
 Code Formatting
 ---------------
 
-Code formatting is automatically checked on GitHub Actions. We use the Allman
-style in [astyle](http://astyle.sourceforge.net/). See
-`scripts/astyle-format.sh` for the specific astyle options we use.
+Code formatting is checked as part of GitHub Actions. We use the Allman style
+in [astyle](http://astyle.sourceforge.net/). You can run
+`./scripts/check-code-format.sh` to automatically format your code to our
+required format.
 
 A good vim recipe for code formatting is:
 
