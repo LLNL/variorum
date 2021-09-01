@@ -458,12 +458,9 @@ int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    unsigned nsockets;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-
-    variorum_get_topology(&nsockets, NULL, NULL);
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
