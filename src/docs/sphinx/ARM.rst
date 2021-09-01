@@ -44,6 +44,8 @@ sysfs interface. To improve readability of the verbose output Variorum converts
 power into milliwatts before reporting. All registers are updated every 100
 microseconds.
 
+Memory power telemetry is not available on this platform.
+
 Thermal telemetry
 =================
 
@@ -99,3 +101,9 @@ only applied when the governor in ``policy*/scaling_governor`` is set to
 
 -  `Arm Juno r2 technical reference
    <https://developer.arm.com/documentation/100114/0200/>`_
+- `hwmon sysfs interface
+  <https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface>`_
+- `hwmon documentation
+  <http://blog.foool.net/wp-content/uploads/linuxdocs/hwmon.pdf>`_
+- `Energy Monitoring on Juno
+  <https://community.arm.com/developer/tools-software/oss-platforms/w/docs/482/energy-monitoring-on-juno>`_
