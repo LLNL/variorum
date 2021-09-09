@@ -1015,13 +1015,21 @@ void json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "host", json_string(hostname));
     json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "power_node", json_string("N"));
-
-    // Need to figure out a way to specify capping limits.
-    json_object_set_new(get_domain_obj, "power_cpu", json_string("C"));
-    json_object_set_new(get_domain_obj, "power_mem", json_string("C"));
-    // If we have an NVIDIA + Intel build, the following should be updated.
-    json_object_set_new(get_domain_obj, "power_gpu", json_string("N"));
+    json_object_set_new(get_domain_obj, "measurement",
+                        json_string("[power_cpu, power_mem]"));
+    json_object_set_new(get_domain_obj, "control",
+                        json_string("[power_cpu, power_mem]"));
+    json_object_set_new(get_domain_obj, "unsupported",
+                        json_string("[]"));
+    json_object_set_new(get_domain_obj, "measurement_units",
+                        json_string("[Watts, Watts]"));
+    json_object_set_new(get_domain_obj, "control_units",
+                        json_string("[Watts, Watts]"));
+    json_object_set_new(get_domain_obj, "control_range",
+                        json_string("[(65,135), (15,30)]")); 
+  
+    // Need to figure out a way to specify capping limits by reading MSRs.
+    // If we have an NVIDIA + Intel build, the GPU info should be updated.
 
     return 0;
 }
