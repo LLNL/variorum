@@ -1026,8 +1026,8 @@ void json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "control_units",
                         json_string("[Watts, Watts]"));
     json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[(65,135), (15,30)]")); 
-  
+                        json_string("[(65,135), (15,30)]"));
+
     // Need to figure out a way to specify capping limits by reading MSRs.
     // If we have an NVIDIA + Intel build, the GPU info should be updated.
 

@@ -479,7 +479,7 @@ int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "control_units",
                         json_string("[Watts, Percentage]"));
     json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[(500,3050), (0-100)]")); 
+                        json_string("[(500,3050), (0-100)]"));
 
     return 0;
 }
