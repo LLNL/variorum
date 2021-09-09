@@ -468,12 +468,18 @@ int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "host", json_string(hostname));
     json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "power_node",
-                        json_string("C (Min 500 W, Max 3050 W)"));
-    json_object_set_new(get_domain_obj, "power_cpu", json_string("M"));
-    json_object_set_new(get_domain_obj, "power_mem", json_string("M"));
-    json_object_set_new(get_domain_obj, "power_gpu",
-                        json_string("C (Shifting Ratio 0-100%"));
+    json_object_set_new(get_domain_obj, "measurement",
+                        json_string("[power_node, power_cpu, power_mem, power_gpu]"));
+    json_object_set_new(get_domain_obj, "control",
+                        json_string("[power_node, power_gpu]"));
+    json_object_set_new(get_domain_obj, "unsupported",
+                        json_string("[]"));
+    json_object_set_new(get_domain_obj, "measurement_units",
+                        json_string("[Watts, Watts, Watts, Watts]"));
+    json_object_set_new(get_domain_obj, "control_units",
+                        json_string("[Watts, Percentage]"));
+    json_object_set_new(get_domain_obj, "control_range",
+                        json_string("[(500,3050), (0-100)]")); 
 
     return 0;
 }
