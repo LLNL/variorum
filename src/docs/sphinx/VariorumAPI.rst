@@ -29,8 +29,8 @@ CPU, memory, GPU (when available), and total node power. The total node power
 is estimated as a summation of available domains if it is not directly reported
 by the underlying architecture (such as Intel).
 
-The ``variorum_get_node_power_json(json_t *)`` includes 
-the JSON object with the following keys:
+The ``variorum_get_node_power_json(json_t *)`` includes the JSON object with
+the following keys:
 
 * hostname (string value)
 * timestamp (integer value)
@@ -65,8 +65,8 @@ The API for querying power domains allows users to query Variorum to obtain
 information about domains that can be measured and controlled on a certain
 architecture. It also includes information on the units of measurement
 and control, as well as information on the minimum and maximum values for
-setting the controls (control_range). If a certain domain is unsupported, 
-it is marked as such. 
+setting the controls (control_range). If a certain domain is unsupported, it is
+marked as such.
 
 The query API, ``variorum_get_node_power_domain_info_json(json_t *)``, accepts
 a JSON object by reference and  includes the following vendor-neutral keys:
@@ -75,10 +75,10 @@ a JSON object by reference and  includes the following vendor-neutral keys:
 * timestamp (integer value)
 * measurement (comma-separated string value)
 * control (comma-separated string value)
-* unsupported (comma-separated string value)   
+* unsupported (comma-separated string value)
 * measurement_units (comma-separated string value)
-* control_units (comma-separated string value)  
-* control_range (comma-separated string value)  
+* control_units (comma-separated string value)
+* control_range (comma-separated string value)
 
 ***************************
  Best Effort Power Capping

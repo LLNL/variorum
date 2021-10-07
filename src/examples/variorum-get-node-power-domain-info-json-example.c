@@ -1,4 +1,4 @@
-// Copyright 2019 Lawrence Livermore National Security, LLC and other
+// Copyright 2021 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -14,8 +14,8 @@ int main(void)
     json_t *my_domain_obj = NULL;
     char *s = NULL;
 
-    my_domain_obj =
-        json_object(); // Create JSON object and pass to variorum API as reference.
+    // Create JSON object and pass to variorum API as reference.
+    my_domain_obj = json_object();
     ret = variorum_get_node_power_domain_info_json(my_domain_obj);
     if (ret != 0)
     {
