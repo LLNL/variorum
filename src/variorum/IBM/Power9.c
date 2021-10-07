@@ -451,3 +451,35 @@ int p9_get_node_power_json(json_t *get_power_obj)
     close(fd);
     return 0;
 }
+
+int p9_get_node_power_domain_info_json(json_t *get_domain_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_domain_obj, "host", json_string(hostname));
+    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
+
+    json_object_set_new(get_domain_obj, "measurement",
+                        json_string("[power_node, power_cpu, power_mem, power_gpu]"));
+    json_object_set_new(get_domain_obj, "control",
+                        json_string("[power_node, power_gpu]"));
+    json_object_set_new(get_domain_obj, "unsupported",
+                        json_string("[]"));
+    json_object_set_new(get_domain_obj, "measurement_units",
+                        json_string("[Watts, Watts, Watts, Watts]"));
+    json_object_set_new(get_domain_obj, "control_units",
+                        json_string("[Watts, Percentage]"));
+    json_object_set_new(get_domain_obj, "control_range",
+                        json_string("[{min: 500, max: 3050}, {min: 0, max: 100}]"));
+
+    return 0;
+}

@@ -422,6 +422,17 @@ int fm_06_4f_get_node_power_json(json_t *get_power_obj)
     return 0;
 }
 
+int fm_06_4f_get_node_power_domain_info_json(json_t *get_domain_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_get_power_domain_info(get_domain_obj);
+
+    return 0;
+}
+
 int fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
 {
 #ifdef VARIORUM_LOG

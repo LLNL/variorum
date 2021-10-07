@@ -107,6 +107,8 @@ int fm_06_4f_monitoring(FILE *output);
 
 int fm_06_4f_get_node_power_json(json_t *get_power_obj);
 
+int fm_06_4f_get_node_power_domain_info_json(json_t *get_domain_obj);
+
 int fm_06_4f_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_4f_get_frequencies(void);

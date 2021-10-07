@@ -18,21 +18,26 @@ The top-level API for Variorum consists of the following calls:
 
 The current JSON API depends on the JANSSON-C library and has a vendor-neutral
 format. The API has been tested on Intel Broadwell and IBM Witherspoon
-architectures. The API to obtain node power has the following format. It takes
+architectures, and will be supported on other platforms shortly.
+
+
+Obtaining Power Consumption:
+
+The API to obtain node power has the following format. It takes
 a ``json_t`` object by reference as input, and populates this JSON object with
 CPU, memory, GPU (when available), and total node power. The total node power
 is estimated as a summation of available domains if it is not directly reported
 by the underlying architecture (such as Intel).
 
-Currently, only ``variorum_get_node_power_json(json_t *)`` is supported, and
-the JSON object has the following keys:
+The ``variorum_get_node_power_json(json_t *)`` includes the JSON object with
+the following keys:
 
 * hostname (string value)
 * timestamp (integer value)
 * power_node (real value)
-* power_cpu_socket_* (real value)
-* power_mem_socket_* (real value)
-* power_gpu_socket_* (real value)
+* power_cpu_watts_socket* (real value)
+* power_mem_watts_socket* (real value)
+* power_gpu_watts_socket* (real value)
 
 The "*" here refers to Socket ID. While more than one socket is supported, our
 test systems had only 2 sockets. Note that on IBM Witherspoon platform, only
@@ -52,6 +57,28 @@ integration in the JSON object will allow for this information to report
 individual GPU power as well as total GPU power per socket with a
 cross-architectural build, similar to Variorum's ``variorum_get_node_power()``
 API.
+
+
+Querying Power Domains:
+
+The API for querying power domains allows users to query Variorum to obtain
+information about domains that can be measured and controlled on a certain
+architecture. It also includes information on the units of measurement
+and control, as well as information on the minimum and maximum values for
+setting the controls (control_range). If a certain domain is unsupported, it is
+marked as such.
+
+The query API, ``variorum_get_node_power_domain_info_json(json_t *)``, accepts
+a JSON object by reference and  includes the following vendor-neutral keys:
+
+* hostname (string value)
+* timestamp (integer value)
+* measurement (comma-separated string value)
+* control (comma-separated string value)
+* unsupported (comma-separated string value)
+* measurement_units (comma-separated string value)
+* control_units (comma-separated string value)
+* control_range (comma-separated string value)
 
 ***************************
  Best Effort Power Capping

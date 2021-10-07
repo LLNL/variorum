@@ -24,4 +24,6 @@ int p9_monitoring(FILE *output);
 
 int p9_get_node_power_json(json_t *get_power_obj);
 
+int p9_get_node_power_domain_info_json(json_t *get_domain_obj);
+
 #endif

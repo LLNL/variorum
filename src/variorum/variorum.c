@@ -1065,6 +1065,43 @@ int variorum_get_node_power_json(json_t *get_power_obj)
     return err;
 }
 
+int variorum_get_node_power_domain_info_json(json_t *get_domain_obj)
+{
+    int err = 0;
+#ifdef VARIORUM_LOG
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_enter();
+#endif
+    if (err)
+    {
+        return -1;
+    }
+    if (g_platform.variorum_get_node_power_domain_info_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return 0;
+    }
+    err = g_platform.variorum_get_node_power_domain_info_json(get_domain_obj);
+    if (err)
+    {
+        return -1;
+    }
+#ifdef VARIORUM_LOG
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 int variorum_print_available_frequencies(void)
 {
     int err = 0;

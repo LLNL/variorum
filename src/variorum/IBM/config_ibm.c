@@ -36,6 +36,8 @@ int set_ibm_func_ptrs(void)
             p9_cap_and_verify_node_power_limit;
         g_platform.variorum_monitoring = p9_monitoring;
         g_platform.variorum_get_node_power_json = p9_get_node_power_json;
+        g_platform.variorum_get_node_power_domain_info_json =
+            p9_get_node_power_domain_info_json;
     }
     else
     {
