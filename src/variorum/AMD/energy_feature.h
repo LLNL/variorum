@@ -25,4 +25,4 @@ struct rapl_data
 };
 
 int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
-                     off_t msr_core_energy_status);
+                      off_t msr_core_energy_status);

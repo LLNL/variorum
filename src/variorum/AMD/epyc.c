@@ -38,7 +38,7 @@ int epyc_get_power(int long_ver)
         else
         {
             fprintf(stdout, "%6d | %12.03f    |\n",
-                    i, (double)current_power/1000);
+                    i, (double)current_power / 1000);
         }
     }
     return 0;
@@ -53,7 +53,8 @@ int epyc_get_power_limits(int long_ver)
     int i, ret;
     uint32_t power, pcap_current, pcap_max;
 
-    fprintf(stdout, "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
+    fprintf(stdout,
+            "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
     for (i = 0; i < g_platform.num_sockets; i++)
     {
         power = 0;
@@ -81,8 +82,8 @@ int epyc_get_power_limits(int long_ver)
             return ret;
         }
         fprintf(stdout, "%6d | %14.03f  | %14.03f  | %14.03f     |\n",
-                i, (double)power/1000, (double)pcap_current/1000,
-                (double)pcap_max/1000);
+                i, (double)power / 1000, (double)pcap_current / 1000,
+                (double)pcap_max / 1000);
     }
 
     return 0;
@@ -112,7 +113,7 @@ int epyc_set_and_verify_node_power_limit(int pcap_new)
         {
             printf("Input power is more than max limit,"
                    " So sets to default max %.3f Watts\n\n",
-                   (double)max_power/1000);
+                   (double)max_power / 1000);
             pcap_new = max_power;
         }
         ret = esmi_socket_power_cap_set(i, (uint32_t)pcap_new);
@@ -140,8 +141,8 @@ int epyc_set_and_verify_node_power_limit(int pcap_new)
         }
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stdout, "Values are input:%2.03f, test=%2.03f\n",
-            (double)pcap_new/1000, (double)pcap_test/1000);
+        fprintf(stdout, "Values are input:%2.03f, test=%2.03f\n",
+                (double)pcap_new / 1000, (double)pcap_test / 1000);
 #endif
 
         if (pcap_new != pcap_test)
@@ -155,7 +156,7 @@ int epyc_set_and_verify_node_power_limit(int pcap_new)
     }
 
     fprintf(stdout, "Changed node power cap to %2.03f W.\n",
-            (double)pcap_new/1000);
+            (double)pcap_new / 1000);
     return 0;
 }
 
@@ -182,11 +183,11 @@ int epyc_set_socket_power_limit(int pcap_new)
         {
             printf("Input power is more than max limit,"
                    " So sets to default max %.3f Watts\n\n",
-                   (double)max_power/1000);
+                   (double)max_power / 1000);
             pcap_new = max_power;
         }
         ret = esmi_socket_power_cap_set(i, (uint32_t)pcap_new);
-        if(ret != 0)
+        if (ret != 0)
         {
             fprintf(stdout, "Failed to set socket[%d] _POWERCAP, Err[%d]:%s\n",
                     i, ret, esmi_get_err_msg(ret));
@@ -202,7 +203,7 @@ int epyc_set_socket_power_limit(int pcap_new)
         else
         {
             fprintf(stdout, "%6d | %14.03f    | successfully set\n",
-                    i, (double)pcap_new/1000);
+                    i, (double)pcap_new / 1000);
         }
     }
     return 0;
@@ -232,7 +233,7 @@ int epyc_print_energy(void)
         {
             energy = 0;
             ret = esmi_socket_energy_get(i, &energy);
-            if(ret != 0)
+            if (ret != 0)
             {
                 fprintf(stdout, "Failed to get socket[%d] _SOCKENERGY, Err[%d]:%s\n",
                         i, ret, esmi_get_err_msg(ret));
@@ -241,7 +242,7 @@ int epyc_print_energy(void)
             else
             {
                 fprintf(stdout, "%6d  | %17.06f | \n",
-                        i, (double)energy/1000000);
+                        i, (double)energy / 1000000);
             }
         }
         printf("\n_CORE_ENERGY :\n");
@@ -250,7 +251,7 @@ int epyc_print_energy(void)
         {
             energy = 0;
             ret = esmi_core_energy_get(i, &energy);
-            if(ret != 0)
+            if (ret != 0)
             {
                 fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
                         i, ret, esmi_get_err_msg(ret));
@@ -259,7 +260,7 @@ int epyc_print_energy(void)
             else
             {
                 fprintf(stdout, " %6d | %17.06f | \n",
-                        i, (double)energy/1000000);
+                        i, (double)energy / 1000000);
             }
         }
         return 0;
@@ -267,7 +268,7 @@ int epyc_print_energy(void)
 energy_batch:
     fprintf(stdout, "Msg: Checking msr-safe module...\n");
     ret = print_energy_data(stdout, msrs.msr_rapl_power_unit,
-                     msrs.msr_core_energy_stat);
+                            msrs.msr_core_energy_stat);
     return ret;
 }
 
@@ -285,7 +286,7 @@ int epyc_print_boostlimit(void)
     {
         boostlimit = 0;
         ret = esmi_core_boostlimit_get(i, &boostlimit);
-        if(ret != 0)
+        if (ret != 0)
         {
             fprintf(stdout, "Failed to get core[%u] _BOOSTLIMIT, Err[%d]:%s\n",
                     i, ret, esmi_get_err_msg(ret));
@@ -371,10 +372,10 @@ int epyc_set_socket_boostlimit(int socket, unsigned int boostlimit)
                 socket, ret, esmi_get_err_msg(ret));
         if (ret == ESMI_PERMISSION)
         {
-           variorum_error_handler("Incorrect permissions",
-                                  VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                                  __FILE__, __FUNCTION__, __LINE__);
-           ret = -1;
+            variorum_error_handler("Incorrect permissions",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            ret = -1;
         }
     }
     return ret;

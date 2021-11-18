@@ -90,7 +90,7 @@ static int get_rapl_unit(off_t msr_rapl_unit, double *energy_val)
     read_batch(RAPL_UNIT);
     ru[1].msr_rapl_power_unit = *val[1];
     ru[1].joules = (double)(1 << (MASK_VAL(ru[1].msr_rapl_power_unit, 12, 8)));
-    *energy_val = (1/ru[1].joules);
+    *energy_val = (1 / ru[1].joules);
 
     free(ru);
     ru = NULL;
@@ -100,7 +100,7 @@ static int get_rapl_unit(off_t msr_rapl_unit, double *energy_val)
 }
 
 int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
-                     off_t msr_core_energy_status)
+                      off_t msr_core_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
@@ -128,7 +128,8 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
     get_rapl_unit(msr_rapl_unit, &val);
 
     fprintf(stdout, " Core   | Energy (J)   |\n");
-    for (i = 0; i < ncores; i++) {
+    for (i = 0; i < ncores; i++)
+    {
         fprintf(stdout, "%6d  | %10f  |\n", i, (*rapl->core_bits[i]) * val);
     }
     return 0;

@@ -134,7 +134,7 @@ int variorum_detect_arch(void)
 #endif
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_AMD)
     printf("AMD Family: 0x%lx, Model: 0x%lx\n",
-            (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
+           (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
 
     if (g_platform.intel_arch   == NULL &&

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         socket = atoi(argv[1]);
         boostlimit = atoi(argv[2]);
         printf("Setting boostlimit for socket[%d] to %uMHz\n",
-                                    socket, boostlimit);
+               socket, boostlimit);
     }
 
     ret = variorum_set_socket_boostlimit(socket, boostlimit);

@@ -31,7 +31,7 @@ uint64_t *detect_amd_arch(void)
      * Family is the [16:8] bit and Model is [7:0] bit in return value
      */
     *fh_model = (((((rax >> 8) & 0xf) + ((rax >> 20) & 0xff)) << 8) |
-                (((rax >> 16) & 0xf) * 0x10 + ((rax >> 4) & 0xf))) & 0xFFFF;
+                 (((rax >> 16) & 0xf) * 0x10 + ((rax >> 4) & 0xf))) & 0xFFFF;
     return fh_model;
 }
 
@@ -45,13 +45,13 @@ int set_amd_func_ptrs(void)
     /* Verify for the family and model */
     if (family == 0x19)
     {
-        switch(model)
+        switch (model)
         {
-        case 0x0 ... 0xF:
-        case 0x30 ... 0x3F:
-            break;
-        default:
-            return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
+            case 0x0 ... 0xF:
+            case 0x30 ... 0x3F:
+                break;
+            default:
+                return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
         }
     }
     else
@@ -61,21 +61,23 @@ int set_amd_func_ptrs(void)
     ret = esmi_init();
     switch (ret)
     {
-    case 0:
-        g_platform.variorum_print_power = epyc_get_power;
-        g_platform.variorum_print_power_limits = epyc_get_power_limits;
-        g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
-        g_platform.variorum_cap_and_verify_node_power_limit = epyc_set_and_verify_node_power_limit;
-        g_platform.variorum_print_energy = epyc_print_energy;
-        g_platform.variorum_print_boostlimit = epyc_print_boostlimit;
-        g_platform.variorum_set_and_verify_core_boostlimit = epyc_set_and_verify_core_boostlimit;
-        g_platform.variorum_set_socket_boostlimit = epyc_set_socket_boostlimit;
-        break;
-    default:
-        fprintf(stdout, "ESMI not initialized, drivers not found. "
-                "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
-        g_platform.variorum_print_energy = epyc_print_energy;
-        ret = 0;
+        case 0:
+            g_platform.variorum_print_power = epyc_get_power;
+            g_platform.variorum_print_power_limits = epyc_get_power_limits;
+            g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
+            g_platform.variorum_cap_and_verify_node_power_limit =
+                epyc_set_and_verify_node_power_limit;
+            g_platform.variorum_print_energy = epyc_print_energy;
+            g_platform.variorum_print_boostlimit = epyc_print_boostlimit;
+            g_platform.variorum_set_and_verify_core_boostlimit =
+                epyc_set_and_verify_core_boostlimit;
+            g_platform.variorum_set_socket_boostlimit = epyc_set_socket_boostlimit;
+            break;
+        default:
+            fprintf(stdout, "ESMI not initialized, drivers not found. "
+                    "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
+            g_platform.variorum_print_energy = epyc_print_energy;
+            ret = 0;
     }
     return ret;
 }
