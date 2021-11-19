@@ -1119,7 +1119,11 @@ int variorum_print_energy(void)
     {
         return -1;
     }
+#ifdef VARIORUM_LOG
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
     if (err)
     {
         return -1;
@@ -1147,7 +1151,11 @@ int variorum_print_boostlimit(void)
     {
         return -1;
     }
+#ifdef VARIORUM_LOG
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
     if (err)
     {
         return -1;
@@ -1175,7 +1183,11 @@ int variorum_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
     {
         return -1;
     }
+#ifdef VARIORUM_LOG
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
     if (err)
     {
         return -1;
@@ -1203,7 +1215,11 @@ int variorum_set_socket_boostlimit(int socket, unsigned int boostlimit)
     {
         return -1;
     }
+#ifdef VARIORUM_LOG
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
     if (err)
     {
         return -1;
