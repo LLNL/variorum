@@ -13,7 +13,7 @@ set(BASIC_EXAMPLES
     variorum-cap-each-core-frequency-limit-example
     variorum-cap-gpu-power-ratio-example
     variorum-cap-socket-frequency-limit-example
-    variorum-cap-socket-power-limits-example
+    variorum-cap-socket-power-limit-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
     variorum-get-node-power-json-example
@@ -28,14 +28,14 @@ set(BASIC_EXAMPLES
     variorum-print-gpu-utilization-example
     variorum-print-hyperthreading-example
     variorum-print-power-example
-    variorum-print-power-limits-example
+    variorum-print-power-limit-example
     variorum-print-thermals-example
     variorum-print-topology-example
     variorum-print-turbo-example
     variorum-print-verbose-frequency-example
     variorum-print-verbose-counters-example
     variorum-print-verbose-gpu-utilization-example
-    variorum-print-verbose-power-limits-example
+    variorum-print-verbose-power-limit-example
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
 )
