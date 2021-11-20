@@ -8,7 +8,6 @@ target_link_libraries(variorum ${variorum_deps})
 add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
-    variorum-cap-and-verify-node-power-limit-example
     variorum-cap-best-effort-node-power-limit-example
     variorum-cap-each-core-frequency-limit-example
     variorum-cap-gpu-power-ratio-example

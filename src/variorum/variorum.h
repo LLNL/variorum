@@ -35,14 +35,6 @@ int variorum_monitoring(FILE *output);
 /// @return Error code.
 int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
-/// @brief Cap the power limit of the node and verify it was set correctly
-/// (10ms delay).
-///
-/// @param [in] node_power_limit Desired power limit for the node.
-///
-/// @return Error code.
-int variorum_cap_and_verify_node_power_limit(int node_power_limit);
-
 /// @brief Cap the power limit of the node.
 ///
 /// @param [in] node_power_limit Desired power limit for the node.

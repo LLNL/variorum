@@ -214,43 +214,6 @@ int p9_cap_and_verify_node_power_limit(int pcap_new)
     return 0;
 }
 
-int p9_cap_node_power_limit(int pcap_new)
-{
-#ifdef VARIORUM_LOG
-    printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
-#endif
-
-    char hostname[1024];
-    FILE *fp = NULL;
-
-    gethostname(hostname, 1024);
-
-    /* Strange problem and portability note from T. Patki, 11/27/18, Alehouse:
-     * Here, we are doing a write and not verifying whether the power cap was set.
-     * Introduced as per Barry's suggestion, so users can decide if they want a 10ms delay
-     * that we need for verification.
-     * */
-
-    fp = fopen("/sys/firmware/opal/powercap/system-powercap/powercap-current",
-               "w+");
-    if (fp == NULL)
-    {
-        variorum_error_handler("Incorrect permissions on OPAL files",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-
-    fprintf(fp, "%d", pcap_new);
-    fclose(fp);
-
-    fprintf(stdout, "Changed node power cap to %d W.\n", pcap_new);
-    fprintf(stdout, "\nNOTE: \n");
-    fprintf(stdout,
-            "  It may take 100-500ms for power cap to propagate out of band, so please\n"
-            "  verify again with print_power_limits before setting the cap again.\n");
-    return 0;
-}
-
 int p9_cap_gpu_power_ratio(int gpu_power_ratio)
 {
 #ifdef VARIORUM_LOG
