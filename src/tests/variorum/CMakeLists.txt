@@ -15,7 +15,7 @@ set(BASIC_TESTS
     t_variorum_query_gpu_utilization
     t_variorum_query_hyperthreading
     t_variorum_query_power
-    t_variorum_query_power_limits
+    t_variorum_query_power_limit
     t_variorum_query_thermals
     t_variorum_query_turbo
     t_variorum_toggle_turbo

@@ -136,7 +136,7 @@ int variorum_monitoring(FILE *output)
     return err;
 }
 
-int variorum_print_power_limits(void)
+int variorum_print_power_limit(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -148,7 +148,7 @@ int variorum_print_power_limits(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_power_limits == NULL)
+    if (g_platform.variorum_print_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -156,7 +156,7 @@ int variorum_print_power_limits(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_power_limits(0);
+    err = g_platform.variorum_print_power_limit(0);
     if (err)
     {
         return -1;
@@ -173,7 +173,7 @@ int variorum_print_power_limits(void)
     return err;
 }
 
-int variorum_print_verbose_power_limits(void)
+int variorum_print_verbose_power_limit(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -185,7 +185,7 @@ int variorum_print_verbose_power_limits(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_power_limits == NULL)
+    if (g_platform.variorum_print_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -193,7 +193,7 @@ int variorum_print_verbose_power_limits(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_power_limits(1);
+    err = g_platform.variorum_print_power_limit(1);
     if (err)
     {
         return -1;

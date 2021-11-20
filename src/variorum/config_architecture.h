@@ -98,7 +98,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_print_power_limits)(int long_ver);
+    int (*variorum_print_power_limit)(int long_ver);
 
     /// @brief Function pointer to set a power limit on the node.
     ///

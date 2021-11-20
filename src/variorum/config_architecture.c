@@ -279,7 +279,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
 void variorum_init_func_ptrs()
 {
-    g_platform.variorum_print_power_limits = NULL;
+    g_platform.variorum_print_power_limit = NULL;
     g_platform.variorum_cap_socket_frequency_limit = NULL;
     g_platform.variorum_cap_best_effort_node_power_limit = NULL;
     g_platform.variorum_cap_and_verify_node_power_limit = NULL;

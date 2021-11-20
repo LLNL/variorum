@@ -68,7 +68,7 @@ int set_intel_func_ptrs(void)
     // Sandy Bridge 06_2A
     if (*g_platform.intel_arch == FM_06_2A)
     {
-        g_platform.variorum_print_power_limits = fm_06_2a_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_2a_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_2a_cap_power_limits;
         g_platform.variorum_print_features = fm_06_2a_get_features;
@@ -88,7 +88,7 @@ int set_intel_func_ptrs(void)
     }
     else if (*g_platform.intel_arch == FM_06_2D)
     {
-        g_platform.variorum_print_power_limits = fm_06_2d_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_2d_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit = fm_06_2d_cap_power_limits;
         g_platform.variorum_print_features = fm_06_2d_get_features;
         g_platform.variorum_print_thermals = fm_06_2d_get_thermals;
@@ -108,7 +108,7 @@ int set_intel_func_ptrs(void)
     // Ivy Bridge 06_3E
     else if (*g_platform.intel_arch == FM_06_3E)
     {
-        g_platform.variorum_print_power_limits = fm_06_3e_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_3e_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_3e_cap_power_limits;
         g_platform.variorum_print_features = fm_06_3e_get_features;
@@ -129,7 +129,7 @@ int set_intel_func_ptrs(void)
     // Haswell 06_3F
     else if (*g_platform.intel_arch == FM_06_3F)
     {
-        g_platform.variorum_print_power_limits = fm_06_3f_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_3f_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_3f_cap_power_limits;
         g_platform.variorum_print_features = fm_06_3f_get_features;
@@ -150,7 +150,7 @@ int set_intel_func_ptrs(void)
     // Broadwell 06_4F
     else if (*g_platform.intel_arch == FM_06_4F)
     {
-        g_platform.variorum_print_power_limits = fm_06_4f_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_4f_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_4f_cap_power_limits;
         g_platform.variorum_print_features = fm_06_4f_get_features;
@@ -177,7 +177,7 @@ int set_intel_func_ptrs(void)
     // Skylake 06_55
     else if (*g_platform.intel_arch == FM_06_55)
     {
-        g_platform.variorum_print_power_limits = fm_06_55_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_55_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_55_cap_power_limits;
         g_platform.variorum_print_features = fm_06_55_get_features;
@@ -197,7 +197,7 @@ int set_intel_func_ptrs(void)
     // Kaby Lake 06_9E
     else if (*g_platform.intel_arch == FM_06_9E)
     {
-        g_platform.variorum_print_power_limits = fm_06_9e_get_power_limits;
+        g_platform.variorum_print_power_limit = fm_06_9e_get_power_limits;
         g_platform.variorum_cap_each_socket_power_limit =
             fm_06_9e_cap_power_limits;
         g_platform.variorum_print_features = fm_06_9e_get_features;

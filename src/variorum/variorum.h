@@ -88,12 +88,12 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 /// @brief Print power limits for all known domains in long format.
 ///
 /// @return Error code.
-int variorum_print_verbose_power_limits(void);
+int variorum_print_verbose_power_limit(void);
 
 /// @brief Print power limits for all known domains in CSV format.
 ///
 /// @return Error code.
-int variorum_print_power_limits(void);
+int variorum_print_power_limit(void);
 
 /// @brief Print thermal data in long format.
 ///
