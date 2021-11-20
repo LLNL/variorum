@@ -1133,7 +1133,7 @@ int variorum_print_energy(void)
 
 
 // Patki Note. Boostlimit is essentially setting CPU socket or core frequency,
-// so we will use our existing APIs for this.  
+// so we will use our existing APIs for this.
 /*
 int variorum_print_boostlimit(void)
 {
