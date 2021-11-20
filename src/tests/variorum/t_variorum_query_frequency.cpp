@@ -9,14 +9,14 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_queries, test_verbose_print_clock_speed)
+TEST(variorum_queries, test_verbose_print_frequency)
 {
-    EXPECT_EQ(0, variorum_print_verbose_clock_speed());
+    EXPECT_EQ(0, variorum_print_verbose_frequency());
 }
 
-TEST(variorum_queries, test_print_clock_speed)
+TEST(variorum_queries, test_print_frequency)
 {
-    EXPECT_EQ(0, variorum_print_clock_speed());
+    EXPECT_EQ(0, variorum_print_frequency());
 }
 
 int main(int argc, char **argv)
