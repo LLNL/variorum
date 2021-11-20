@@ -26,7 +26,7 @@ uint64_t *detect_amd_arch(void)
         : "0"(rax), "2"(rcx));
 
     /*
-     * Functionality will depand on both Family and Model
+     * Functionality will depend on both Family and Model
      * Hence return value for this function contains both Family and Model
      * Family is the [16:8] bit and Model is [7:0] bit in return value
      */
@@ -68,10 +68,10 @@ int set_amd_func_ptrs(void)
             g_platform.variorum_cap_and_verify_node_power_limit =
                 epyc_set_and_verify_node_power_limit;
             g_platform.variorum_print_energy = epyc_print_energy;
-            g_platform.variorum_print_boostlimit = epyc_print_boostlimit;
-            g_platform.variorum_set_and_verify_core_boostlimit =
+            g_platform.variorum_print_clocks = epyc_print_boostlimit;
+            g_platform.variorum_cap_each_core_frequency =
                 epyc_set_and_verify_core_boostlimit;
-            g_platform.variorum_set_socket_boostlimit = epyc_set_socket_boostlimit;
+            g_platform.variorum_cap_socket_frequency = epyc_set_socket_boostlimit;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "

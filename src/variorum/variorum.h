@@ -168,6 +168,8 @@ int variorum_print_available_frequencies(void);
 /// @return Error code.
 int variorum_print_energy(void);
 
+//Patki Note: Boostlimit sets CPU Freq, we will use existing API.
+/*
 /// @brief Print boostlimit(in MHz) of a all cores.
 ///
 /// @return Error code.
@@ -182,7 +184,7 @@ int variorum_set_and_verify_core_boostlimit(int core, unsigned int boostlimit);
 ///
 /// @return Error code.
 int variorum_set_socket_boostlimit(int socket, unsigned int boostlimit);
-
+*/
 /***************************/
 /* Enable/Disable Features */
 /***************************/
