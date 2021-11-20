@@ -11,13 +11,13 @@ int main(void)
 {
     int ret;
 
-    ret = variorum_print_verbose_clock_speed();
+    ret = variorum_print_verbose_frequency();
     if (ret != 0)
     {
-        printf("Print verbose clock speed failed!\n");
+        printf("Print verbose frequency failed!\n");
     }
 #ifdef SECOND_RUN
-    ret = variorum_print_verbose_clock_speed();
+    ret = variorum_print_verbose_frequency();
 #endif
     return ret;
 }
