@@ -31,6 +31,8 @@
 #include <config_arm.h>
 #endif
 
+struct platform g_platform;
+
 #ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 #else
