@@ -50,16 +50,16 @@ int main(int argc, char **argv)
 
     printf("Capping CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
 
-    ret = variorum_cap_socket_frequency(cpu_id, cpu_freq_mhz);
+    ret = variorum_cap_socket_frequency_limit(cpu_id, cpu_freq_mhz);
     if (ret != 0)
     {
-        printf("Cap socket clock speed failed!\n");
+        printf("Cap socket frequency limit failed!\n");
     }
     printf("\n");
-    ret = variorum_print_clock_speed();
+    ret = variorum_print_frequency();
     if (ret != 0)
     {
-        printf("Print clock speed failed!\n");
+        printf("Print frequency failed!\n");
     }
     return ret;
 }

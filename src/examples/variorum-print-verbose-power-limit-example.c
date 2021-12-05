@@ -11,10 +11,10 @@ int main(void)
 {
     int ret;
 
-    ret = variorum_print_clock_speed();
+    ret = variorum_print_verbose_power_limit();
     if (ret != 0)
     {
-        printf("Print clock speed failed!\n");
+        printf("Print verbose power limit failed!\n");
     }
     return ret;
 }

@@ -11,10 +11,10 @@ int main(void)
 {
     int ret;
 
-    ret = variorum_print_verbose_power_limits();
+    ret = variorum_print_power_limit();
     if (ret != 0)
     {
-        printf("Print verbose power limits failed!\n");
+        printf("Print power limit failed!\n");
     }
     return ret;
 }

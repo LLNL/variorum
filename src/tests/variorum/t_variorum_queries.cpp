@@ -9,9 +9,9 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_queries, test_verbose_print_power_limits)
+TEST(variorum_queries, test_verbose_print_power_limit)
 {
-    EXPECT_EQ(0, variorum_print_verbose_power_limits());
+    EXPECT_EQ(0, variorum_print_verbose_power_limit());
 }
 
 TEST(variorum_queries, test_verbose_print_thermals)
@@ -29,14 +29,14 @@ TEST(variorum_queries, test_verbose_print_power)
     EXPECT_EQ(0, variorum_print_verbose_power());
 }
 
-TEST(variorum_queries, test_verbose_print_clock_speed)
+TEST(variorum_queries, test_verbose_print_frequency)
 {
-    EXPECT_EQ(0, variorum_print_verbose_clock_speed());
+    EXPECT_EQ(0, variorum_print_verbose_frequency());
 }
 
 TEST(variorum_queries, test_print_power_limit)
 {
-    EXPECT_EQ(0, variorum_print_power_limits());
+    EXPECT_EQ(0, variorum_print_power_limit());
 }
 
 TEST(variorum_queries, test_print_thermals)
@@ -54,9 +54,9 @@ TEST(variorum_queries, test_print_power)
     EXPECT_EQ(0, variorum_print_power());
 }
 
-TEST(variorum_queries, test_print_clock_speed)
+TEST(variorum_queries, test_print_frequency)
 {
-    EXPECT_EQ(0, variorum_print_clock_speed());
+    EXPECT_EQ(0, variorum_print_frequency());
 }
 
 TEST(variorum_queries, test_print_hyperthreading)

@@ -52,10 +52,10 @@ int main(int argc, char **argv)
         printf("Cap each core frequency limit failed!\n");
     }
     printf("\n");
-    ret = variorum_print_clock_speed();
+    ret = variorum_print_frequency();
     if (ret != 0)
     {
-        printf("Print clock speed failed!\n");
+        printf("Print frequency failed!\n");
     }
     return ret;
 }

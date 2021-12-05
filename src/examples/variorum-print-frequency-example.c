@@ -11,10 +11,10 @@ int main(void)
 {
     int ret;
 
-    ret = variorum_print_power_limits();
+    ret = variorum_print_frequency();
     if (ret != 0)
     {
-        printf("Print power limits failed!\n");
+        printf("Print frequency failed!\n");
     }
     return ret;
 }

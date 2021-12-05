@@ -9,14 +9,14 @@ extern "C" {
 #include <variorum.h>
 }
 
-TEST(variorum_queries, test_verbose_print_power_limits)
+TEST(variorum_queries, test_verbose_print_power_limit)
 {
-    EXPECT_EQ(0, variorum_print_verbose_power_limits());
+    EXPECT_EQ(0, variorum_print_verbose_power_limit());
 }
 
 TEST(variorum_queries, test_print_power_limit)
 {
-    EXPECT_EQ(0, variorum_print_power_limits());
+    EXPECT_EQ(0, variorum_print_power_limit());
 }
 
 int main(int argc, char **argv)
