@@ -282,7 +282,7 @@ void variorum_init_func_ptrs()
     g_platform.variorum_print_power_limit = NULL;
     g_platform.variorum_cap_socket_frequency_limit = NULL;
     g_platform.variorum_cap_best_effort_node_power_limit = NULL;
-    g_platform.variorum_cap_and_verify_node_power_limit = NULL;
+    g_platform.variorum_cap_gpu_power_ratio = NULL;
     g_platform.variorum_cap_each_socket_power_limit = NULL;
     g_platform.variorum_cap_each_core_frequency_limit = NULL;
     g_platform.variorum_print_available_frequencies = NULL;

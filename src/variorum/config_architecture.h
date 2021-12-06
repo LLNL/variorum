@@ -107,14 +107,6 @@ struct platform
     /// @return Error code.
     int (*variorum_cap_best_effort_node_power_limit)(int node_power_limit);
 
-    /// @brief Function pointer to set a power limit to each node and then
-    /// verify that the cap was set correctly.
-    ///
-    /// @param [in] node_power_limit Desired node power limit in Watts.
-    ///
-    /// @return Error code.
-    int (*variorum_cap_and_verify_node_power_limit)(int node_power_limit);
-
     /// @brief Function pointer to set socket frequency
     ///
     /// @param [in] chipid Socket ID.
