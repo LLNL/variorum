@@ -208,7 +208,7 @@ int p9_cap_and_verify_node_power_limit(int pcap_new)
                 "IBM systems may encounter a delay when setting power limits on the node.");
         fprintf(stdout, "We could not verify if the power cap was set correctly.\n");
         fprintf(stdout, "The verification check after 100ms failed.\n");
-        fprintf(stdout, "Please verify again with print_power_limit.\n");
+        fprintf(stdout, "Please verify again with variorum_print_power_limit().\n");
         return -1;
     }
 
