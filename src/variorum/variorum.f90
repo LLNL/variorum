@@ -79,19 +79,19 @@ module variorum
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_print_verbose_power_limits() &
+            function variorum_print_verbose_power_limit() &
             bind(C)
         import
         implicit none
-    end function variorum_print_verbose_power_limits
+    end function variorum_print_verbose_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_print_power_limits() &
+            function variorum_print_power_limit() &
             bind(C)
         import
         implicit none
-    end function variorum_print_power_limits
+    end function variorum_print_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
@@ -143,19 +143,19 @@ module variorum
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_print_verbose_clock_speed() &
+            function variorum_print_verbose_frequency() &
             bind(C)
         import
         implicit none
-    end function variorum_print_verbose_clock_speed
+    end function variorum_print_verbose_frequency
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_print_clock_speed() &
+            function variorum_print_frequency() &
             bind(C)
         import
         implicit none
-    end function variorum_print_clock_speed
+    end function variorum_print_frequency
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &

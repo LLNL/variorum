@@ -259,7 +259,7 @@ int p9_cap_gpu_power_ratio(int gpu_power_ratio)
     fprintf(stdout,
             "  A 100ms delay was added to allow for file operations to propagate out of band.\n"
             "  This delay may not be sufficient, so please verify again with\n"
-            "  print_power_limits before setting the ratio again. We have seen delays of up to\n"
+            "  variorum_print_power_limit() before setting the ratio again. We have seen delays of up to\n"
             "  2 seconds with out of band enforcement for GPU ratio.\n");
 
     return 0;
