@@ -63,15 +63,15 @@ int set_amd_func_ptrs(void)
     {
         case 0:
             g_platform.variorum_print_power = epyc_get_power;
-            g_platform.variorum_print_power_limits = epyc_get_power_limits;
+            g_platform.variorum_print_power_limit = epyc_get_power_limits;
             g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
-            g_platform.variorum_cap_and_verify_node_power_limit =
+            g_platform.variorum_cap_best_effort_node_power_limit =
                 epyc_set_and_verify_node_power_limit;
             g_platform.variorum_print_energy = epyc_print_energy;
-            g_platform.variorum_print_clocks = epyc_print_boostlimit;
-            g_platform.variorum_cap_each_core_frequency =
+            g_platform.variorum_print_frequency = epyc_print_boostlimit;
+            g_platform.variorum_cap_each_core_frequency_limit =
                 epyc_set_and_verify_core_boostlimit;
-            g_platform.variorum_cap_socket_frequency = epyc_set_socket_boostlimit;
+            g_platform.variorum_cap_socket_frequency_limit = epyc_set_socket_boostlimit;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "
