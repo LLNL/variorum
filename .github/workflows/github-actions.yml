@@ -126,6 +126,17 @@ jobs:
           cmake --version
           gcc --version
 
+      - name: Build and install rankstr dependency
+        run: |
+          git clone https://github.com/ECP-VeloC/rankstr.git
+          cd rankstr
+          mkdir build && cd build
+          cmake ..
+          # build
+          VERBOSE=1 make -j
+          # install
+          sudo make -j install
+
       - name: Compile check
         run: |
           # create out-of-source build and install dir
@@ -356,6 +367,10 @@ jobs:
           spack install jansson
           jansson_dir=`ls -d ${PWD}/spack/opt/spack/*/*/jansson-*`
           echo "JANSSON_DIR=${jansson_dir}" >> ${GITHUB_ENV}
+          # Install rankstr
+          spack install rankstr
+          rankstr_dir=`ls -d ${PWD}/spack/opt/spack/*/*/rankstr-*`
+          echo "RANKSTR_DIR=${rankstr_dir}" >> ${GITHUB_ENV}
 
       - name: Compile check
         run: |
