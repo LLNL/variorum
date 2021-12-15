@@ -261,17 +261,6 @@ jobs:
           make VERBOSE=1
           ./ep.W.x
 
-      - name: Test install with mpi example
-        run: |
-          cd ${GITHUB_WORKSPACE} && cd install
-          cd ./examples/using-with-mpi/c
-          echo -e "PWD:" ${PWD}
-          mkdir _test_build
-          cd _test_build
-          cmake ../
-          make VERBOSE=1
-          ./variorum-print-power-mpi-example
-
   check-code-format:
     runs-on: ubuntu-latest
 
