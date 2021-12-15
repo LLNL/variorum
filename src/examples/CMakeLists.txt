@@ -54,8 +54,3 @@ include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
 install(DIRECTORY using-with-make using-with-cmake
         DESTINATION examples)
-
-if(MPI_FOUND)
-    install(DIRECTORY using-with-mpi
-            DESTINATION examples)
-endif()

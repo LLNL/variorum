@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <mpi.h>
+#include <rankstr_mpi.h>
+#include <unistd.h>
 
 #include <variorum.h>
 
@@ -22,30 +25,53 @@ static inline double do_work(int input)
 }
 #endif
 
-int main(void)
+int main(int argc, char **argv)
 {
     int ret;
+    int numprocs, rank, len;
+    char host[1024];
 #ifdef SECOND_RUN
     int i;
     int size = 1E3;
     double x = 0.0;
 #endif
 
-    ret = variorum_print_verbose_power();
-    if (ret != 0)
+    MPI_Init(NULL, NULL);
+    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    gethostname(host, 1023);
+
+    MPI_Comm newcomm;
+    int new_rank, new_size;
+
+    rankstr_mpi_comm_split(MPI_COMM_WORLD, host, rank, 1, 2, &newcomm);
+    MPI_Comm_size(newcomm, &new_size);
+    MPI_Comm_rank(newcomm, &new_rank);
+
+    // higher-level software must check for thread and process safety
+    // we assume rank 0 on each node is responsible for monitor and control
+    if (new_rank == 0)
     {
-        printf("Print verbose power failed!\n");
-    }
+        ret = variorum_print_verbose_power();
+        if (ret != 0)
+        {
+            printf("Print verbose power failed!\n");
+        }
 #ifdef SECOND_RUN
-    for (i = 0; i < size; i++)
-    {
-        x += do_work(i);
-    }
-    ret = variorum_print_verbose_power();
-    if (ret != 0)
-    {
-        printf("Print verbose power failed!\n");
-    }
+        for (i = 0; i < size; i++)
+        {
+            x += do_work(i);
+        }
+        ret = variorum_print_verbose_power();
+        if (ret != 0)
+        {
+            printf("Print verbose power failed!\n");
+        }
 #endif
+    }
+
+    MPI_Bcast(&ret, 1, MPI_INT, new_rank, MPI_COMM_WORLD);
+    MPI_Comm_free(&newcomm);
+    MPI_Finalize();
     return ret;
 }
