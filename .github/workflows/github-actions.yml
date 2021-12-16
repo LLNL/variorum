@@ -403,6 +403,7 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DUSE_MSR_SAFE_BEFORE_1_5_0=${{env.USE_MSR_SAFE_BEFORE_1_5_0}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${{env.HWLOC_DIR}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DJANSSON_DIR=${{env.JANSSON_DIR}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DRANKSTR_DIR=${{env.RANKSTR_DIR}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
           echo ${CMAKE_OPTS}
           cmake ${CMAKE_OPTS} ../src
