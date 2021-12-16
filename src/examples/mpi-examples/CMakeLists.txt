@@ -7,8 +7,8 @@ target_link_libraries(variorum ${variorum_deps})
 
 set(MPI_EXAMPLES
     variorum-cap-socket-power-limit-mpi-example
-    variorum-print-power-mpi-example
     variorum-print-power-limit-mpi-example
+    variorum-print-power-mpi-example
     variorum-print-verbose-power-mpi-example
     variorum-print-verbose-power-limit-mpi-example
 )
