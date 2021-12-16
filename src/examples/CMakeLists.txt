@@ -47,7 +47,11 @@ foreach(EXAMPLE ${BASIC_EXAMPLES})
 endforeach()
 
 if(MPI_FOUND)
-    add_subdirectory(mpi-openmp-examples)
+    add_subdirectory(mpi-examples)
+endif()
+
+if(OPENMP_FOUND)
+    add_subdirectory(openmp-examples)
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/variorum)

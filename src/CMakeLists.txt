@@ -19,6 +19,7 @@ option(BUILD_TESTS               "Build tests"                            ON)
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     ON)
+option(ENABLE_OPENMP             "Build OpenMP examples"                  OFF)
 
 option(VARIORUM_WITH_AMD         "Support AMD architectures"              OFF)
 option(VARIORUM_WITH_ARM         "Support ARM architectures"              OFF)
@@ -44,6 +45,10 @@ endif()
 ### Invoke CMake MPI setup
 if(ENABLE_MPI)
     find_package(MPI REQUIRED)
+endif()
+
+if(ENABLE_OPENMP)
+    find_package(OpenMP REQUIRED)
 endif()
 
 include(CMake/VariorumBuildType.cmake)
