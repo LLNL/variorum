@@ -33,32 +33,32 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-#pragma omp parallel private(tid)
-{
-    tid = omp_get_thread_num();
-
-    // higher-level software must check for thread and process safety
-    // we assume thread 0 is responsible for monitor and control
-    if (tid == 0)
+    #pragma omp parallel private(tid)
     {
-        ret = variorum_print_verbose_power();
-        if (ret != 0)
+        tid = omp_get_thread_num();
+
+        // higher-level software must check for thread and process safety
+        // we assume thread 0 is responsible for monitor and control
+        if (tid == 0)
         {
-            printf("Print verbose power failed!\n");
-        }
+            ret = variorum_print_verbose_power();
+            if (ret != 0)
+            {
+                printf("Print verbose power failed!\n");
+            }
 #ifdef SECOND_RUN
-        for (i = 0; i < size; i++)
-        {
-            x += do_work(i);
-        }
-        ret = variorum_print_verbose_power();
-        if (ret != 0)
-        {
-            printf("Print verbose power failed!\n");
-        }
+            for (i = 0; i < size; i++)
+            {
+                x += do_work(i);
+            }
+            ret = variorum_print_verbose_power();
+            if (ret != 0)
+            {
+                printf("Print verbose power failed!\n");
+            }
 #endif
+        }
     }
-}
 
     return ret;
 }

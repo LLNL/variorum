@@ -13,21 +13,21 @@ int main(int argc, char **argv)
     int ret;
     int tid;
 
-#pragma omp parallel private(tid)
-{
-    tid = omp_get_thread_num();
-
-    // higher-level software must check for thread and process safety
-    // we assume thread 0 is responsible for monitor and control
-    if (tid == 0)
+    #pragma omp parallel private(tid)
     {
-        ret = variorum_print_power();
-        if (ret != 0)
+        tid = omp_get_thread_num();
+
+        // higher-level software must check for thread and process safety
+        // we assume thread 0 is responsible for monitor and control
+        if (tid == 0)
         {
-            printf("Print power failed!\n");
+            ret = variorum_print_power();
+            if (ret != 0)
+            {
+                printf("Print power failed!\n");
+            }
         }
     }
-}
 
     return ret;
 }
