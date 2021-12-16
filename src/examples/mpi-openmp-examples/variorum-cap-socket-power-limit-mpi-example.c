@@ -63,10 +63,10 @@ int main(int argc, char **argv)
             return ret;
         }
         printf("\n");
-        ret = variorum_print_verbose_power_limits();
+        ret = variorum_print_verbose_power_limit();
         if (ret != 0)
         {
-            printf("Print power limits failed!\n");
+            printf("Print power limit failed!\n");
         }
     }
 

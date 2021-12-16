@@ -1,4 +1,4 @@
-// Copyright 2021 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2021 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -32,10 +32,10 @@ int main(int argc, char **argv)
     // we assume rank 0 on each node is responsible for monitor and control
     if (new_rank == 0)
     {
-        ret = variorum_print_power_limits();
+        ret = variorum_print_verbose_power_limit();
         if (ret != 0)
         {
-            printf("Print power limits failed!\n");
+            printf("Print verbose power limit failed!\n");
         }
     }
 
