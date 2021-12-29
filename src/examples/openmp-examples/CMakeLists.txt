@@ -6,6 +6,7 @@
 target_link_libraries(variorum ${variorum_deps})
 
 set(OPENMP_EXAMPLES
+    variorum-cap-socket-power-limit-openmp-example
     variorum-print-power-limit-openmp-example
     variorum-print-power-openmp-example
     variorum-print-verbose-power-limit-openmp-example
