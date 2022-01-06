@@ -70,3 +70,14 @@ encoding, decoding and manipulating JSON data.
 
 Variorum leverages JANSSON to provide a JSON-based API that can retrieve power
 data for external tools/software.
+
+rankstr (Optional)
+==================
+
+`rankstr <https://github.com/ECP-VeloC/rankstr>`_ is an open-source C library
+providing functions that identify unique strings across an MPI communicator.
+
+Variorum leverages rankstr to split a communicator into subcommunicators by
+hostname. The allows for a single control or monitor process in Variorum to
+for example, enforce a power or frequency limit on a node or to print the
+hardware counters once on a node.
