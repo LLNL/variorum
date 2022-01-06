@@ -18,7 +18,10 @@ For the shortest path, see :doc:`QuickStart`.
 Variorum uses CMake for its build system. Building Variorum creates the
 variorum library.
 
-The build dependencies for a minimal build require the following:
+The CMake variables (ENABLE_MPI={ON,OFF} and ENABLE_OPENMP={ON,OFF}) control
+the building of parallel examples.
+
+The build dependencies for a minimal build with no parallel components require the following:
 
    -  C
    -  hwloc
@@ -33,6 +36,7 @@ Variorum
 
    -  hwloc
    -  jansson
+   -  rankstr (optional)
 
 hwloc (Required)
 ----------------
@@ -40,6 +44,11 @@ hwloc (Required)
 No dependencies.
 
 jansson (Required)
+------------------
+
+No dependencies.
+
+rankstr (Optional)
 ------------------
 
 No dependencies.
@@ -73,6 +82,12 @@ Variorum's build system supports the following CMake options:
 -  **ENABLE_FORTRAN** - Enable fortran compiler for building example
    integration with fortran application, fortran compiler must exist *(default
    = ON)*.
+
+-  **ENABLE_MPI** - Enable MPI compiler for building MPI examples, MPI compiler
+   must exist *(default = ON)*.
+
+-  **ENABLE_OPENMP** - Enable OpenMP extensions for building OpenMP examples,
+   *(default = ON)*.
 
 -  **ENABLE_WARNINGS** - Build with compiler warning flags -Wall -Wextra
    -Werror, used primarily by developers *(default = OFF)*.

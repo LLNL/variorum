@@ -29,6 +29,9 @@ set(VARIORUM_WITH_NVIDIA OFF CACHE BOOL "")
 set(VARIORUM_LOG OFF CACHE BOOL "")
 set(VARIORUM_DEBUG OFF CACHE BOOL "")
 
+set(ENABLE_MPI ON CACHE BOOL "")
+set(ENABLE_OPENMP ON CACHE BOOL "")
+
 # build documentation (depends on sphinx, doxygen, and breathe)
 set(BUILD_DOCS ON CACHE BOOL "")
 
