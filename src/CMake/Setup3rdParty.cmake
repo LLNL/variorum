@@ -9,6 +9,10 @@ if(VARIORUM_WITH_AMD)
 include(CMake/thirdparty/Setupesmi.cmake)
 endif()
 
+if(ENABLE_MPI)
+    include(CMake/thirdparty/SetupRankstr.cmake)
+endif()
+
 if(BUILD_DOCS)
     find_package(Doxygen)
     include(CMake/thirdparty/FindSphinx.cmake)

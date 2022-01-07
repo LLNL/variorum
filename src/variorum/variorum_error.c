@@ -83,8 +83,8 @@ char *get_variorum_error_message(enum variorum_error_e err)
     return brief_msg;
 }
 
-void variorum_error_handler(const char *desc, int err, const char *host,
-                            const char *file, const char *func, int line)
+void variorum_error_handler(const char *desc, enum variorum_error_e err,
+                            const char *host, const char *file, const char *func, int line)
 {
     char *str = get_variorum_error_message(err);
     fprintf(stderr, "%s:%s:%s():%d: %s: %s\n", host, file, func, line, str, desc);
