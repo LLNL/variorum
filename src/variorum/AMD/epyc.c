@@ -89,7 +89,7 @@ int epyc_get_power_limits(int long_ver)
     return 0;
 }
 
-int epyc_set_and_verify_node_power_limit(int pcap_new)
+int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
@@ -102,8 +102,10 @@ int epyc_set_and_verify_node_power_limit(int pcap_new)
     /*
      * Convert the pcap value to mWatt as library takes
      * value in mWatt.
+     * Also, divide the input by 2, as this sets socket power
+     * with best effort. No platform node power cap is available.
      */
-    pcap_new = pcap_new * 1000;
+    pcap_new = (pcap_new / 2) * 1000;
 
     for (i = 0; i < g_platform.num_sockets; i++)
     {
@@ -216,7 +218,7 @@ static struct EPYC_19h_offsets msrs =
     .msr_pkg_energy_stat         = 0xC001029B
 };
 
-int epyc_print_energy(void)
+int epyc_print_energy()
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -272,7 +274,7 @@ energy_batch:
     return ret;
 }
 
-int epyc_print_boostlimit(void)
+int epyc_print_boostlimit()
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n\n", __FUNCTION__);
@@ -300,6 +302,42 @@ int epyc_print_boostlimit(void)
     return 0;
 }
 
+int epyc_set_each_core_boostlimit(int boostlimit)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
+#endif
+
+    int i, ret;
+    uint32_t core_boost_lim = 0;
+
+    for (i = 0; i < g_platform.total_cores; i++)
+    {
+        ret = esmi_core_boostlimit_set(i, boostlimit);
+        if (ret != 0)
+        {
+            fprintf(stdout, "Failed to set core[%u] _BOOSTLIMIT, Err[%d]:%s\n",
+                    i, ret, esmi_get_err_msg(ret));
+            if (ret == ESMI_PERMISSION)
+            {
+                variorum_error_handler("Incorrect permissions",
+                                       VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                       __FILE__, __FUNCTION__, __LINE__);
+                return -1;
+            }
+        }
+    }
+
+#ifdef VARIORUM_DEBUG
+    fprintf(stdout, "Values are input:%2u MHz, test=%2u MHz\n",
+            boostlimit, core_boost_lim);
+#endif
+
+    return 0;
+}
+
+
+/*
 int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 {
 #ifdef VARIORUM_LOG
@@ -354,8 +392,10 @@ int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 
     return 0;
 }
+*/
 
-int epyc_set_socket_boostlimit(int socket, unsigned int boostlimit)
+
+int epyc_set_socket_boostlimit(int socket, int boostlimit)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
