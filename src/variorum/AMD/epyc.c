@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <config_architecture.h>
 #include <epyc.h>
@@ -21,13 +22,33 @@ int epyc_get_power(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
+    static int initial = 0;
+    static struct timeval start;
+    struct timeval now;
+    char hostname[1024];
+
     int i, ret;
     uint32_t current_power;
 
-    fprintf(stdout, "Socket | Power(Watts)    |\n");
+    gethostname(hostname, 1024);
+
+    if (!initial)
+    {   
+        initial = 1;
+        gettimeofday(&start, NULL);
+        if (long_ver == 0)
+        {   
+            fprintf(stdout,
+                    "_AMDPOWER Host Socket PWRCPU_W Timestamp_sec\n");
+        }   
+    }   
+
+
+// DELETE    fprintf(stdout, "Socket | Power(Watts)    |\n");
     for (i = 0; i < g_platform.num_sockets; i++)
     {
         current_power = 0;
+    	gettimeofday(&now, NULL);
         ret = esmi_socket_power_get(i, &current_power);
         if (ret != 0)
         {
@@ -37,8 +58,20 @@ int epyc_get_power(int long_ver)
         }
         else
         {
-            fprintf(stdout, "%6d | %12.03f    |\n",
-                    i, (double)current_power / 1000);
+	     if (long_ver == 0) {
+            	fprintf(stdout, "_AMDPOWER %s %d %12.03f %lf\n",
+                hostname, i, (double)current_power / 1000,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+	     	/*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
+                	    i, (double)current_power / 1000); */
+	     } 
+	     else 
+	     {
+		    fprintf(stdout,
+                "_AMDPOWER Host: %s, Socket: %d, PWRCPU: %12.03f W, Timestamp: %lf sec\n",
+                hostname, i, (double)current_power / 1000,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+	     } 
         }
     }
     return 0;
