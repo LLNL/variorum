@@ -22,33 +22,33 @@ int epyc_get_power(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
+    int i, ret;
+    uint32_t current_power;
+
     static int initial = 0;
     static struct timeval start;
     struct timeval now;
     char hostname[1024];
 
-    int i, ret;
-    uint32_t current_power;
-
     gethostname(hostname, 1024);
 
     if (!initial)
-    {   
+    {
         initial = 1;
         gettimeofday(&start, NULL);
         if (long_ver == 0)
-        {   
+        {
             fprintf(stdout,
-                    "_AMDPOWER Host Socket PWRCPU_W Timestamp_sec\n");
-        }   
-    }   
+                    "_AMDPOWER Host Socket Power_W Timestamp_sec\n");
+        }
+    }
 
-
-// DELETE    fprintf(stdout, "Socket | Power(Watts)    |\n");
+    // DELETE    fprintf(stdout, "Socket | Power(Watts)    |\n");
     for (i = 0; i < g_platform.num_sockets; i++)
     {
+        gettimeofday(&now, NULL);
+
         current_power = 0;
-    	gettimeofday(&now, NULL);
         ret = esmi_socket_power_get(i, &current_power);
         if (ret != 0)
         {
@@ -58,20 +58,21 @@ int epyc_get_power(int long_ver)
         }
         else
         {
-	     if (long_ver == 0) {
-            	fprintf(stdout, "_AMDPOWER %s %d %12.03f %lf\n",
-                hostname, i, (double)current_power / 1000,
-                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
-	     	/*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
-                	    i, (double)current_power / 1000); */
-	     } 
-	     else 
-	     {
-		    fprintf(stdout,
-                "_AMDPOWER Host: %s, Socket: %d, PWRCPU: %12.03f W, Timestamp: %lf sec\n",
-                hostname, i, (double)current_power / 1000,
-                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
-	     } 
+            if (long_ver == 0)
+            {
+                fprintf(stdout, "_AMDPOWER %s %d %f %lf\n",
+                        hostname, i, (double)current_power / 1000,
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
+                            i, (double)current_power / 1000); */
+            }
+            else
+            {
+                fprintf(stdout,
+                        "_AMDPOWER Host: %s, Socket: %d, Power: %f W, Timestamp: %lf sec\n",
+                        hostname, i, (double)current_power / 1000,
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            }
         }
     }
     return 0;
@@ -86,10 +87,30 @@ int epyc_get_power_limits(int long_ver)
     int i, ret;
     uint32_t power, pcap_current, pcap_max;
 
-    fprintf(stdout,
-            "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
+    static int initial = 0;
+    static struct timeval start;
+    struct timeval now;
+    char hostname[1024];
+
+    gethostname(hostname, 1024);
+
+    if (!initial)
+    {
+        initial = 1;
+        gettimeofday(&start, NULL);
+        if (long_ver == 0)
+        {
+            fprintf(stdout,
+                    "_AMDPOWER Host Socket Power_W PowerCap_W MaxPowerCap_W Timestamp_sec\n");
+        }
+    }
+
+    // DELETE fprintf(stdout,
+    // "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
     for (i = 0; i < g_platform.num_sockets; i++)
     {
+        gettimeofday(&now, NULL);
+
         power = 0;
         pcap_current = 0;
         pcap_max = 0;
@@ -114,9 +135,26 @@ int epyc_get_power_limits(int long_ver)
                     i, ret, esmi_get_err_msg(ret));
             return ret;
         }
-        fprintf(stdout, "%6d | %14.03f  | %14.03f  | %14.03f     |\n",
-                i, (double)power / 1000, (double)pcap_current / 1000,
-                (double)pcap_max / 1000);
+        if (long_ver == 0)
+        {
+            fprintf(stdout, "_AMDPOWER %s %d %f %f %f %lf\n",
+                    hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                    (double)pcap_max / 1000,
+                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
+                        i, (double)current_power / 1000); */
+        }
+        else
+        {
+            fprintf(stdout,
+                    "_AMDPOWER Host: %s, Socket: %d, Power: %f W, PowerCap: %f W, MaxPowerCap: %f W, Timestamp: %lf sec\n",
+                    hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                    (double)pcap_max / 1000,
+                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        }
+        /* DELETE fprintf(stdout, "%6d | %14.03f  | %14.03f  | %14.03f     |\n",
+                 i, (double)power / 1000, (double)pcap_current / 1000,
+                 (double)pcap_max / 1000); */
     }
 
     return 0;
