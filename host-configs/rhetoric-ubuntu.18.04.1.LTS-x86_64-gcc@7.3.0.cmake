@@ -12,6 +12,9 @@ set(CMAKE_CXX_COMPILER "g++" CACHE PATH "")
 # fortran compiler
 set(CMAKE_Fortran_COMPILER  "gfortran" CACHE PATH "")
 
+set(ENABLE_MPI OFF CACHE BOOL "")
+set(ENABLE_OPENMP OFF CACHE BOOL "")
+
 set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS ON CACHE BOOL "")
 

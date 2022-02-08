@@ -6,16 +6,16 @@
 set(BASIC_TESTS
     t_variorum_cap_best_effort_node_power_limit
     t_variorum_cap_gpu_power_ratio
-    t_variorum_cap_socket_frequency
+    t_variorum_cap_socket_frequency_limit
     t_variorum_cap_socket_power_limit
     t_variorum_monitoring
     t_variorum_poll_data
-    t_variorum_query_clock_speed
+    t_variorum_query_frequency
     t_variorum_query_counters
     t_variorum_query_gpu_utilization
     t_variorum_query_hyperthreading
     t_variorum_query_power
-    t_variorum_query_power_limits
+    t_variorum_query_power_limit
     t_variorum_query_thermals
     t_variorum_query_turbo
     t_variorum_toggle_turbo

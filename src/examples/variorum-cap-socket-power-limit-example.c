@@ -13,7 +13,7 @@
 int main(int argc, char **argv)
 {
     int ret;
-    int node_pow_lim_watts;
+    int pkg_pow_lim_watts;
 
     const char *usage = "%s [--help | -h] -l power_lim_watts\n";
 
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
         switch (opt)
         {
             case 'l':
-                node_pow_lim_watts = atoi(optarg);
+                pkg_pow_lim_watts = atoi(optarg);
                 break;
             default:
                 fprintf(stderr, usage, argv[0]);
@@ -44,21 +44,19 @@ int main(int argc, char **argv)
         }
     }
 
-    printf("Capping node to %dW.\n", node_pow_lim_watts);
+    printf("Capping each socket to %dW.\n", pkg_pow_lim_watts);
 
-    ret = variorum_cap_and_verify_node_power_limit(node_pow_lim_watts);
+    ret = variorum_cap_each_socket_power_limit(pkg_pow_lim_watts);
     if (ret != 0)
     {
-        printf("Cap and verify node power limit failed!\n");
+        printf("Cap each socket power limit failed!\n");
         return ret;
     }
     printf("\n");
-
     ret = variorum_print_verbose_power_limit();
     if (ret != 0)
     {
-        printf("Print power limits failed!\n");
-        return ret;
+        printf("Print power limit failed!\n");
     }
     return ret;
 }

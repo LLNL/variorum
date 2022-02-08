@@ -98,7 +98,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_print_power_limits)(int long_ver);
+    int (*variorum_print_power_limit)(int long_ver);
 
     /// @brief Function pointer to set a power limit on the node.
     ///
@@ -107,21 +107,13 @@ struct platform
     /// @return Error code.
     int (*variorum_cap_best_effort_node_power_limit)(int node_power_limit);
 
-    /// @brief Function pointer to set a power limit to each node and then
-    /// verify that the cap was set correctly.
-    ///
-    /// @param [in] node_power_limit Desired node power limit in Watts.
-    ///
-    /// @return Error code.
-    int (*variorum_cap_and_verify_node_power_limit)(int node_power_limit);
-
     /// @brief Function pointer to set socket frequency
     ///
     /// @param [in] chipid Socket ID.
     /// @param [in] socket_frequency Desired socket frequency in Hertz.
     ///
     /// @return Error code.
-    int (*variorum_cap_socket_frequency)(int chipid, int socket_frequency);
+    int (*variorum_cap_socket_frequency_limit)(int chipid, int socket_frequency);
 
     /// @brief Set the GPU power shifting ratio (uniform across sockets).
     ///
@@ -141,7 +133,7 @@ struct platform
     /// @return Error code.
     int (*variorum_cap_each_socket_power_limit)(int socket_power_limit);
 
-    int (*variorum_cap_each_core_frequency)(int core_freq_mhz);
+    int (*variorum_cap_each_core_frequency_limit)(int core_freq_mhz);
 
     /// @brief Function pointer to print the feature set.
     ///
@@ -170,7 +162,7 @@ struct platform
     ///        output.
     ///
     /// @return Error code.
-    int (*variorum_print_clocks)(int long_ver);
+    int (*variorum_print_frequency)(int long_ver);
 
     /// @brief Function pointer to print out power consumption data.
     ///

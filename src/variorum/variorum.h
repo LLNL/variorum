@@ -35,14 +35,6 @@ int variorum_monitoring(FILE *output);
 /// @return Error code.
 int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
-/// @brief Cap the power limit of the node and verify it was set correctly
-/// (10ms delay).
-///
-/// @param [in] node_power_limit Desired power limit for the node.
-///
-/// @return Error code.
-int variorum_cap_and_verify_node_power_limit(int node_power_limit);
-
 /// @brief Cap the power limit of the node.
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
@@ -80,7 +72,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 /// @param [in] socket_freq_mhz Desired socket frequency in MHz.
 ///
 /// @return Error code.
-int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz);
+int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 
 /*******************/
 /* Print Functions */
@@ -88,12 +80,12 @@ int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz);
 /// @brief Print power limits for all known domains in long format.
 ///
 /// @return Error code.
-int variorum_print_verbose_power_limits(void);
+int variorum_print_verbose_power_limit(void);
 
 /// @brief Print power limits for all known domains in CSV format.
 ///
 /// @return Error code.
-int variorum_print_power_limits(void);
+int variorum_print_power_limit(void);
 
 /// @brief Print thermal data in long format.
 ///
@@ -129,13 +121,13 @@ int variorum_print_power(void);
 /// long format.
 ///
 /// @return Error code.
-int variorum_print_verbose_clock_speed(void);
+int variorum_print_verbose_frequency(void);
 
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// CSV format.
 ///
 /// @return Error code.
-int variorum_print_clock_speed(void);
+int variorum_print_frequency(void);
 
 /// @brief Print if hyperthreading is enabled or disabled.
 ///

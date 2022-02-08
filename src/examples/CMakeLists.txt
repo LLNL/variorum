@@ -8,12 +8,11 @@ target_link_libraries(variorum ${variorum_deps})
 add_definitions(-DSECOND_RUN)
 
 set(BASIC_EXAMPLES
-    variorum-cap-and-verify-node-power-limit-example
     variorum-cap-best-effort-node-power-limit-example
     variorum-cap-each-core-frequency-limit-example
     variorum-cap-gpu-power-ratio-example
-    variorum-cap-socket-clock-speed-example
-    variorum-cap-socket-power-limits-example
+    variorum-cap-socket-frequency-limit-example
+    variorum-cap-socket-power-limit-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
     variorum-get-node-power-json-example
@@ -22,20 +21,20 @@ set(BASIC_EXAMPLES
     variorum-poll-power-to-file-example
     variorum-poll-power-to-stdout-example
     variorum-print-available-frequencies-example
-    variorum-print-clock-speed-example
+    variorum-print-frequency-example
     variorum-print-counters-example
     variorum-print-features-example
     variorum-print-gpu-utilization-example
     variorum-print-hyperthreading-example
     variorum-print-power-example
-    variorum-print-power-limits-example
+    variorum-print-power-limit-example
     variorum-print-thermals-example
     variorum-print-topology-example
     variorum-print-turbo-example
-    variorum-print-verbose-clock-speed-example
+    variorum-print-verbose-frequency-example
     variorum-print-verbose-counters-example
     variorum-print-verbose-gpu-utilization-example
-    variorum-print-verbose-power-limits-example
+    variorum-print-verbose-power-limit-example
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
 )
@@ -46,6 +45,14 @@ foreach(EXAMPLE ${BASIC_EXAMPLES})
     add_executable(${EXAMPLE} ${EXAMPLE}.c)
     target_link_libraries(${EXAMPLE} variorum ${variorum_deps})
 endforeach()
+
+if(MPI_FOUND)
+    add_subdirectory(mpi-examples)
+endif()
+
+if(OPENMP_FOUND)
+    add_subdirectory(openmp-examples)
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
 

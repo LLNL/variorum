@@ -29,8 +29,8 @@ int set_nvidia_func_ptrs(void)
         /* Initialize monitoring interfaces */
         g_platform.variorum_print_power           = volta_get_power;
         g_platform.variorum_print_thermals        = volta_get_thermals;
-        g_platform.variorum_print_clocks          = volta_get_clocks;
-        g_platform.variorum_print_power_limits    = volta_get_power_limits;
+        g_platform.variorum_print_frequency       = volta_get_clocks;
+        g_platform.variorum_print_power_limit     = volta_get_power_limits;
         g_platform.variorum_print_gpu_utilization = volta_get_gpu_utilization;
     }
     else

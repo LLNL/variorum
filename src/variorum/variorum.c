@@ -136,7 +136,7 @@ int variorum_monitoring(FILE *output)
     return err;
 }
 
-int variorum_print_power_limits(void)
+int variorum_print_power_limit(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -148,7 +148,7 @@ int variorum_print_power_limits(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_power_limits == NULL)
+    if (g_platform.variorum_print_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -156,7 +156,7 @@ int variorum_print_power_limits(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_power_limits(0);
+    err = g_platform.variorum_print_power_limit(0);
     if (err)
     {
         return -1;
@@ -173,7 +173,7 @@ int variorum_print_power_limits(void)
     return err;
 }
 
-int variorum_print_verbose_power_limits(void)
+int variorum_print_verbose_power_limit(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -185,7 +185,7 @@ int variorum_print_verbose_power_limits(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_power_limits == NULL)
+    if (g_platform.variorum_print_power_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -193,7 +193,7 @@ int variorum_print_verbose_power_limits(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_power_limits(1);
+    err = g_platform.variorum_print_power_limit(1);
     if (err)
     {
         return -1;
@@ -287,45 +287,6 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit)
     return err;
 }
 
-
-int variorum_cap_and_verify_node_power_limit(int node_power_limit)
-{
-    int err = 0;
-#ifdef VARIORUM_LOG
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
-    if (err)
-    {
-        return -1;
-    }
-    if (g_platform.variorum_cap_and_verify_node_power_limit == NULL)
-    {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return 0;
-    }
-    err = g_platform.variorum_cap_and_verify_node_power_limit(node_power_limit);
-    if (err)
-    {
-        return -1;
-    }
-#ifdef VARIORUM_LOG
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_exit();
-#endif
-    if (err)
-    {
-        return -1;
-    }
-    return err;
-}
-
-
 int variorum_cap_gpu_power_ratio(int gpu_power_ratio)
 {
     int err = 0;
@@ -412,7 +373,7 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
     {
         return -1;
     }
-    if (g_platform.variorum_cap_each_core_frequency == NULL)
+    if (g_platform.variorum_cap_each_core_frequency_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -420,7 +381,7 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_cap_each_core_frequency(core_freq_mhz);
+    err = g_platform.variorum_cap_each_core_frequency_limit(core_freq_mhz);
     if (err)
     {
         return -1;
@@ -437,7 +398,7 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
     return err;
 }
 
-int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz)
+int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -449,7 +410,7 @@ int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz)
     {
         return -1;
     }
-    if (g_platform.variorum_cap_socket_frequency == NULL)
+    if (g_platform.variorum_cap_socket_frequency_limit == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -457,7 +418,7 @@ int variorum_cap_socket_frequency(int socketid, int socket_freq_mhz)
                                __FUNCTION__, __LINE__);
         return -1;
     }
-    err = g_platform.variorum_cap_socket_frequency(socketid, socket_freq_mhz);
+    err = g_platform.variorum_cap_socket_frequency_limit(socketid, socket_freq_mhz);
     if (err)
     {
         return -1;
@@ -659,7 +620,7 @@ int variorum_print_verbose_counters(void)
     return err;
 }
 
-int variorum_print_clock_speed(void)
+int variorum_print_frequency(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -671,7 +632,7 @@ int variorum_print_clock_speed(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_clocks == NULL)
+    if (g_platform.variorum_print_frequency == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -679,7 +640,7 @@ int variorum_print_clock_speed(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_clocks(0);
+    err = g_platform.variorum_print_frequency(0);
     if (err)
     {
         return -1;
@@ -696,7 +657,7 @@ int variorum_print_clock_speed(void)
     return err;
 }
 
-int variorum_print_verbose_clock_speed(void)
+int variorum_print_verbose_frequency(void)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -708,7 +669,7 @@ int variorum_print_verbose_clock_speed(void)
     {
         return -1;
     }
-    if (g_platform.variorum_print_clocks == NULL)
+    if (g_platform.variorum_print_frequency == NULL)
     {
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -716,7 +677,7 @@ int variorum_print_verbose_clock_speed(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_clocks(1);
+    err = g_platform.variorum_print_frequency(1);
     if (err)
     {
         return -1;
