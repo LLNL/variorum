@@ -241,7 +241,7 @@ struct platform
 //    void (*set_performance_counters)();
 #endif
 
-struct platform g_platform;
+extern struct platform g_platform;
 
 #ifdef VARIORUM_LOG
 int variorum_enter(const char *filename,
