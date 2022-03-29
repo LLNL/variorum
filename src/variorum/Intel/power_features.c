@@ -970,7 +970,9 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         strcat(mem_str, sockID);
         strcat(gpu_str, sockID);
 
+        // TODO: Check here
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
+        printf("%s %d %f\n", cpu_str, i,  rapl->pkg_watts[i]);
 
         json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
         json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
