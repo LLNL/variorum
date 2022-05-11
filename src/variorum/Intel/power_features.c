@@ -961,9 +961,9 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     {
         /* Defined here so as to reset the string for each socket
          * and append correctly */
-        char cpu_str[24] = "power_cpu_watts_socket_";
-        char mem_str[24] = "power_mem_watts_socket_";
-        char gpu_str[24] = "power_gpu_watts_socket_";
+        char cpu_str[36] = "power_cpu_watts_socket_";
+        char mem_str[36] = "power_mem_watts_socket_";
+        char gpu_str[36] = "power_gpu_watts_socket_";
 
         snprintf(sockID, sockID_len, "%d", i);
         strcat(cpu_str, sockID);

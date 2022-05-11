@@ -7,6 +7,7 @@
 #define IVYBRIDGE_3E_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Ivy Bridge Family/Model 3EH.
 struct ivybridge_3e_offsets
@@ -101,6 +102,10 @@ int fm_06_3e_get_turbo_status(void);
 int fm_06_3e_poll_power(FILE *output);
 
 int fm_06_3e_monitoring(FILE *output);
+
+int fm_06_3e_get_node_power_json(json_t *get_power_obj);
+
+int fm_06_3e_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_3e_get_frequencies(void);
 

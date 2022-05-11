@@ -399,6 +399,50 @@ int fm_06_3e_monitoring(FILE *output)
     return 0;
 }
 
+int fm_06_3e_get_node_power_json(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
+                        msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                        msrs.msr_dram_energy_status);
+
+    return 0;
+}
+
+int fm_06_3e_cap_best_effort_node_power_limit(int node_limit)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    /* We make an assumption here to uniformly distribute the specified
+     * power to both sockets as socket-level power caps. We are not accounting
+     * for memory power or uncore power at the moment. We will develop a model
+     * for this in the future.
+     * When an odd number value is provided, we want this to result in
+     * the floor of the value being taken. So while we will be off by 1W total,
+     * we will guarantee that we stay under the specified cap. */
+
+    unsigned nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
+
+    // Adding this for portability and rounding down.
+    // Ideally this should be okay as it is integer division and we have
+    // two sockets only.
+
+    int remainder = node_limit % nsockets;
+    node_limit = (remainder == 0) ? node_limit : (node_limit - remainder);
+
+    int pkg_limit = node_limit / nsockets;
+
+    fm_06_3e_cap_power_limits(pkg_limit);
+
+    return 0;
+}
+
 int fm_06_3e_get_frequencies(void)
 {
 #ifdef VARIORUM_LOG

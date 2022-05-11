@@ -309,9 +309,9 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     uint64_t pwrgpu = 0;
     char sockID[4];
 
-    char cpu_str[28] = "power_cpu_watts_socket_";
-    char mem_str[28] = "power_mem_watts_socket_";
-    char gpu_str[28] = "power_gpu_watts_socket_";
+    char cpu_str[36] = "power_cpu_watts_socket_";
+    char mem_str[36] = "power_mem_watts_socket_";
+    char gpu_str[36] = "power_gpu_watts_socket_";
 
     sprintf(sockID, "%d", chipid);
     strcat(cpu_str, sockID);

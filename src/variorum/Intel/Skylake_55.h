@@ -7,6 +7,7 @@
 #define SKYLAKE_55_H_INCLUDE
 
 #include <sys/types.h>
+#include <jansson.h>
 
 /// @brief List of unique addresses for Skylake Family/Model 55H.
 struct skylake_55_offsets
@@ -97,6 +98,10 @@ int fm_06_55_get_power(int long_ver);
 int fm_06_55_poll_power(FILE *output);
 
 int fm_06_55_monitoring(FILE *output);
+
+int fm_06_55_get_node_power_json(json_t *get_power_obj);
+
+int fm_06_55_cap_best_effort_node_power_limit(int node_power_limit);
 
 int fm_06_55_cap_frequency(int core_freq_mhz);
 
