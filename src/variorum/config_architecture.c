@@ -31,9 +31,13 @@
 #include <config_arm.h>
 #endif
 
+
 #ifdef VARIORUM_WITH_AMD
 #include <config_amd.h>
 #endif
+
+struct platform g_platform;
+
 
 #ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
