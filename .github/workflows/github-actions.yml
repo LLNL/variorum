@@ -347,7 +347,7 @@ jobs:
         with:
           repository: spack/spack
           path: spack
-          ref: releases/v0.14
+          ref: releases/v0.17
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clone spack mirrors
