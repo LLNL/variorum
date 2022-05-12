@@ -16,3 +16,4 @@ These are the currently supported platforms in Variorum.
    IBM
    Intel
    Nvidia
+   AMD
