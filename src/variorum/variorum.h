@@ -163,6 +163,11 @@ int variorum_print_gpu_utilization(void);
 /// @return Error code.
 int variorum_print_available_frequencies(void);
 
+/// @brief Print if core and socket energy is available.
+///
+/// @return Error code.
+int variorum_print_energy(void);
+
 /***************************/
 /* Enable/Disable Features */
 /***************************/

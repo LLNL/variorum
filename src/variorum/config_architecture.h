@@ -207,6 +207,11 @@ struct platform
     /// @return Error code.
     int (*variorum_print_available_frequencies)(void);
 
+    /// @brief Function pointer to print energy for all cores and sockets.
+    ///
+    /// @return Error code.
+    int (*variorum_print_energy)(void);
+
     /******************************/
     /* Platform-Specific Topology */
     /******************************/

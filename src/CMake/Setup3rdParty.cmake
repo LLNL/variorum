@@ -5,6 +5,9 @@
 
 include(CMake/thirdparty/SetupHwloc.cmake)
 include(CMake/thirdparty/SetupJansson.cmake)
+if(VARIORUM_WITH_AMD)
+include(CMake/thirdparty/Setupesmi.cmake)
+endif()
 
 if(ENABLE_MPI)
     include(CMake/thirdparty/SetupRankstr.cmake)

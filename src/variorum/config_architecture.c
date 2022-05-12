@@ -31,7 +31,13 @@
 #include <config_arm.h>
 #endif
 
+
+#ifdef VARIORUM_WITH_AMD
+#include <config_amd.h>
+#endif
+
 struct platform g_platform;
+
 
 #ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
@@ -89,9 +95,6 @@ int variorum_exit()
 #ifdef VARIORUM_WITH_INTEL
     free(g_platform.intel_arch);
 #endif
-#ifdef VARIORUM_WITH_AMD
-    free(g_platform.amd_arch);
-#endif
 #ifdef VARIORUM_WITH_IBM
     free(g_platform.ibm_arch);
 #endif
@@ -100,6 +103,10 @@ int variorum_exit()
 #endif
 #ifdef VARIORUM_WITH_ARM
     free(g_platform.arm_arch);
+#endif
+#ifdef VARIORUM_WITH_AMD
+    esmi_exit();
+    free(g_platform.amd_arch);
 #endif
 
     return err;
@@ -110,9 +117,6 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_INTEL
     g_platform.intel_arch = detect_intel_arch();
 #endif
-#ifdef VARIORUM_WITH_AMD
-    //g_platform.amd_arch = detect_amd_arch();
-#endif
 #ifdef VARIORUM_WITH_IBM
     g_platform.ibm_arch = detect_ibm_arch();
 #endif
@@ -122,6 +126,9 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_ARM
     g_platform.arm_arch = detect_arm_arch();
 #endif
+#ifdef VARIORUM_WITH_AMD
+    g_platform.amd_arch = detect_amd_arch();
+#endif
 
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
@@ -129,12 +136,16 @@ int variorum_detect_arch(void)
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_IBM)
     printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
 #endif
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_AMD)
+    printf("AMD Family: 0x%lx, Model: 0x%lx\n",
+           (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
+#endif
 
     if (g_platform.intel_arch   == NULL &&
-        g_platform.amd_arch     == NULL &&
         g_platform.ibm_arch     == NULL &&
         g_platform.nvidia_arch  == NULL &&
-        g_platform.arm_arch     == NULL)
+        g_platform.arm_arch     == NULL &&
+        g_platform.amd_arch     == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
@@ -302,6 +313,7 @@ void variorum_init_func_ptrs()
     g_platform.variorum_monitoring = NULL;
     g_platform.variorum_get_node_power_json = NULL;
     g_platform.variorum_get_node_power_domain_info_json = NULL;
+    g_platform.variorum_print_energy = NULL;
 }
 
 int variorum_set_func_ptrs()
@@ -325,7 +337,11 @@ int variorum_set_func_ptrs()
 #ifdef VARIORUM_WITH_ARM
     err = set_arm_func_ptrs();
 #endif
+#ifdef VARIORUM_WITH_AMD
+    err = set_amd_func_ptrs();
+#endif
     return err;
+
 }
 
 ////setfixedcounters = fixed_ctr0,
