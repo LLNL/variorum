@@ -75,13 +75,13 @@ the SMU FW. All registers are updated every 1 millisecond.
  Power telemetry
 =================
 
-esmi_socket_power_get()
+`esmi_socket_power_get()`
 - Instantaneous power is reported in milliwatts
 
-esmi_socket_power_cap_get() and esmi_socket_power_cap_set()
+`esmi_socket_power_cap_get()` and `esmi_socket_power_cap_set()`
 - Get and Set power limit of the socket in milliwatts
 
-esmi_socket_power_cap_max_get()
+`esmi_socket_power_cap_max_get()`
 - Maximum Power limit of the socket in milliwatts
 
  Boostlimit telemetry
@@ -89,19 +89,19 @@ esmi_socket_power_cap_max_get()
 
 Boostlimit is a maximum frequency a CPU can run at.
 
-esmi_core_boostlimit_get() and esmi_core_boostlimit_set()
+`esmi_core_boostlimit_get()` and `esmi_core_boostlimit_set()`
 - Get and set the current boostlimit for a given core
 
-esmi_socket_boostlimit_set()
+`esmi_socket_boostlimit_set()`
 - Set boostlimit for all the cores in the socket
 
  Energy telemetry
 ==================
 
-esmi_socket_energy_get()
+`esmi_socket_energy_get()`
 - Get software accumulated 64-bit energy counter for a given socket
 
-esmi_core_energy_get()
+`esmi_core_energy_get()`
 - Get software accumulated 64-bit energy counter for a given core
 
 ************
