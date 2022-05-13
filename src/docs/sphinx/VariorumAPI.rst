@@ -21,7 +21,8 @@ format. The API has been tested on Intel Broadwell and IBM Witherspoon
 architectures, and will be supported on other platforms shortly.
 
 
-Obtaining Power Consumption:
+Obtaining Power Consumption
+===========================
 
 The API to obtain node power has the following format. It takes
 a ``json_t`` object by reference as input, and populates this JSON object with
@@ -59,7 +60,8 @@ cross-architectural build, similar to Variorum's ``variorum_get_node_power()``
 API.
 
 
-Querying Power Domains:
+Querying Power Domains
+======================
 
 The API for querying power domains allows users to query Variorum to obtain
 information about domains that can be measured and controlled on a certain
