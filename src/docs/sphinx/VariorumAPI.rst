@@ -14,7 +14,7 @@ rich API. Please refer to the top-level API, as well as the specific descritptio
 Top-level API
 *************
 
-The top-level API for Variorum consists of the following calls, as shown in the `variorum.h` header file.:
+The top-level API for Variorum is shown in the `variorum.h` header file:
 
 .. literalinclude:: ../../variorum/variorum.h
    :language: c
