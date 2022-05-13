@@ -55,9 +55,9 @@ Power9 for IBM Power processors.
    microarchitectures).
 
 
-*************************************************************
+*******
 Example 
-*************************************************************
+*******
 
 As an example, to support additional Intel microarchitectures:
 1. Under `Intel/` directory, create a `.h` and `.c` header and source file for
