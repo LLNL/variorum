@@ -25,7 +25,7 @@ listed below:
 The E-SMI library provides the C API for user space application
 of the AMD Energy Driver and the AMD HSMP modules.
 
-The AMD Energy Driver is an out of kernel module that allows for 
+The AMD Energy Driver is an out of kernel module that allows for
 core and socket energy counter access through MSRs and RAPL via ``hwmon`` sys entries.
 These registers are updated every 1 millisecond and cleared on reset of the system.
 Some registers of interest include:
