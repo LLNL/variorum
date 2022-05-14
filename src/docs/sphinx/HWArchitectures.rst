@@ -12,8 +12,8 @@ These are the currently supported platforms in Variorum.
 .. toctree::
    :maxdepth: 2
 
+   AMD
    ARM
    IBM
    Intel
    Nvidia
-   AMD

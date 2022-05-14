@@ -4,21 +4,24 @@
    # SPDX-License-Identifier: MIT
 
 ###########################
- Using Tools with Variorum
+ Integrating with Variorum
 ###########################
 
 The JSON API enables Variorum to interface with higher-level system software.
-Current integration efforts include a Kokkos connector for power monitoring and
-a Flux power management module.
+Current integration efforts include a Kokkos connector for power monitoring , a Caliper service for method-level power data, and
+a Flux power management module for scheduling.
 
 Links to each of these frameworks can be found below. Note that these
 integrations with Variorum are in early development stages and are expected to
 be updated to support more features and tests. Upcoming integration also
-includes developing a Variorum service for Caliper.
+includes developing a Variorum interface for Intel's GEOPM.
 
    -  Kokkos connector:
       https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector
-   -  Flux Power Manager Module: https://github.com/rountree/flux-power-mgr
+   -  Caliper service:
+      https://github.com/LLNL/Caliper/tree/master/src/services/variorum     
+   -  Flux Power Manager Module: 
+      https://github.com/rountree/flux-power-mgr
 
 In order for tools to interact with Variorum, a simple JANSSON based parser is
 sufficient. The format of the JSON object has been documented, and includes

@@ -52,7 +52,7 @@ These are the most common mistakes we have seen when using these registers.
       -  Naming conventions will vary across and within documents, even to the
          naming of particular MSRs. While these are trivial to the eye (CTL
          versus CONTROL, PKG versus PACKAGE) it does make grepping documents
-         more challenging that it should be. We have tried to follow a
+         more challenging than it should be. We have tried to follow a
          consistent scheme for MSRs, PCI addresses and CPUID queries. Where
          there is a conflict in MSR names, we have chosen what seems most
          sensible.
