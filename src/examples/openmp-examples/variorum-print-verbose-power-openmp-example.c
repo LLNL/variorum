@@ -23,7 +23,7 @@ static inline double do_work(int input)
 }
 #endif
 
-int main(int argc, char **argv)
+int main()
 {
     int ret;
     int tid;
