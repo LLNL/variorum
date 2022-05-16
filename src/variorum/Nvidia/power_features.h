@@ -30,4 +30,14 @@ void dump_clocks_data(int chipid, int verbose, FILE *output);
 
 void dump_gpu_utilization(int chipid, int verbose, FILE *output);
 
+void get_power_data(int chipid, int verbose, FILE *output);
+
+void get_thermal_data(int chipid, int verbose, FILE *output);
+
+void get_clocks_data(int chipid, int verbose, FILE *output);
+
+void get_power_limits(int chipid, int verbose, FILE *output);
+
+void get_gpu_utilization(int chipid, int verbose, FILE *output);
+
 #endif

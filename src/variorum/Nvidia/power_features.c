@@ -196,14 +196,14 @@ void get_gpu_utilization(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d, SM_Utilization: %d%, Memory_Utilization: %d%\n",
+                    "_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d, SM_Utilization: %d%%, Memory_Utilization: %d%%\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_UTILIZATION Host Socket DeviceID SMUtil_% MemUtil_%\n");
+                fprintf(output, "_GPU_UTILIZATION Host Socket DeviceID SMUtil_%% MemUtil_%%\n");
                 init_output = 1;
             }
             fprintf(output, "_GPU_UTILIZATION %s %d %d %d %d\n",

@@ -416,7 +416,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        return -1;
+        return 0;
     }
     err = g_platform.variorum_cap_socket_frequency_limit(socketid, socket_freq_mhz);
     if (err)

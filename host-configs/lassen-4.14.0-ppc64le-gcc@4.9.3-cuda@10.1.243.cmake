@@ -27,3 +27,5 @@ set(CMAKE_SHARED_LINKER_FLAGS "-L/usr/tce/packages/cuda/cuda-10.1.243/nvidia/tar
 
 # path to global hwloc install
 set(HWLOC_DIR "/usr/global/tools/hwloc/blueos_3_ppc64le_ib/hwloc-1.11.10-cuda/" CACHE PATH "")
+
+set(NVML_DIR "/usr/tce/packages/cuda/cuda-10.1.243" CACHE PATH "")
