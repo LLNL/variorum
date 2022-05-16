@@ -1,3 +1,7 @@
+variables:
+  CUSTOM_CI_BUILDS_DIR: "/usr/workspace/variorum/gitlab-runner"
+  BUILD_ROOT: ${CI_PROJECT_DIR}
+
 stages:
   - format
   - build
@@ -18,12 +22,22 @@ build-quartz-format:
    - err=$?
    - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
 
+# no access to msr-safe on quartz
 build-quartz:
  tags:
    - batch
    - quartz
  stage: build
  script:
+   # Build and install rankstr dependency
+   - git clone https://github.com/ECP-VeloC/rankstr.git
+   - cd rankstr
+   - mkdir build install && cd build
+   - cmake -DCMAKE_INSTALL_PREFIX=../install ..
+   - VERBOSE=1 make -j
+   - make install
+   - RANKSTR_INSTALL=${PWD}/../install
+   - cd ../../
    - export HOSTNAME=`hostname`
    - echo -e "Hostname:" ${HOSTNAME}
    - groups
@@ -32,33 +46,33 @@ build-quartz:
    - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
    - make VERBOSE=1
    - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
-   - cd ..
-   - echo -e "PWD:" ${PWD}
-   - which cmake
-   - cmake --version
-   - cd install-gitlab-quartz/examples/using-with-cmake/c
-   - echo -e "PWD:" ${PWD}
-   - mkdir _test_build
-   - cd _test_build
-   - cmake ../
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../../using-with-make/c
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/cpp
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/fortran
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./ep.W.x
+   #- env CTEST_OUTPUT_ON_FAILURE=1 make test
+   #- cd ..
+   #- echo -e "PWD:" ${PWD}
+   #- which cmake
+   #- cmake --version
+   #- cd install-gitlab-quartz/examples/using-with-cmake/c
+   #- echo -e "PWD:" ${PWD}
+   #- mkdir _test_build
+   #- cd _test_build
+   #- cmake ../
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../../using-with-make/c
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../using-with-make/cpp
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../using-with-make/fortran
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./ep.W.x
 
 build-lassen-cpu:
  tags:
@@ -74,7 +88,7 @@ build-lassen-cpu:
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DENABLE_WARNINGS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -116,7 +130,7 @@ build-lassen-gpu:
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu -DENABLE_WARNINGS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -144,12 +158,22 @@ build-lassen-gpu:
    - make VERBOSE=1
    - ./ep.W.x
 
+# no access to msr-safe on catalyst
 build-catalyst:
  tags:
    - batch
    - catalyst
  stage: build
  script:
+   # Build and install rankstr dependency
+   - git clone https://github.com/ECP-VeloC/rankstr.git
+   - cd rankstr
+   - mkdir build install && cd build
+   - cmake -DCMAKE_INSTALL_PREFIX=../install ..
+   - VERBOSE=1 make -j
+   - make install
+   - RANKSTR_INSTALL=${PWD}/../install
+   - cd ../../
    - export HOSTNAME=`hostname`
    - echo -e "Hostname:" ${HOSTNAME}
    - groups
@@ -158,30 +182,30 @@ build-catalyst:
    - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@4.9.3.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
    - make VERBOSE=1
    - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
-   - cd ..
-   - echo -e "PWD:" ${PWD}
-   - which cmake
-   - cmake --version
-   - cd install-gitlab-catalyst/examples/using-with-cmake/c
-   - echo -e "PWD:" ${PWD}
-   - mkdir _test_build
-   - cd _test_build
-   - cmake ../
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../../using-with-make/c
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/cpp
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/fortran
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./ep.W.x
+   #- env CTEST_OUTPUT_ON_FAILURE=1 make test
+   #- cd ..
+   #- echo -e "PWD:" ${PWD}
+   #- which cmake
+   #- cmake --version
+   #- cd install-gitlab-catalyst/examples/using-with-cmake/c
+   #- echo -e "PWD:" ${PWD}
+   #- mkdir _test_build
+   #- cd _test_build
+   #- cmake ../
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../../using-with-make/c
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../using-with-make/cpp
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./variorum-print-power-example
+   #- cd ../../using-with-make/fortran
+   #- echo -e "PWD:" ${PWD}
+   #- make VERBOSE=1
+   #- ./ep.W.x
