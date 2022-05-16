@@ -25,10 +25,10 @@ static inline double do_work(int input)
 }
 #endif
 
-int main(int argc, char **argv)
+int main()
 {
-    int ret;
-    int numprocs, rank, len;
+    int ret = 0;
+    int numprocs = 0, rank = 0;
     char host[1024];
 #ifdef SECOND_RUN
     int i;

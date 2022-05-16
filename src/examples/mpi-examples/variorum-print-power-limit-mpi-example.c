@@ -10,10 +10,10 @@
 
 #include <variorum.h>
 
-int main(int argc, char **argv)
+int main()
 {
-    int ret;
-    int numprocs, rank, len;
+    int ret = 0;
+    int numprocs = 0, rank = 0;
     char host[1024];
 
     MPI_Init(NULL, NULL);

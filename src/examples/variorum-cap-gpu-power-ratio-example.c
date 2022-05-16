@@ -12,8 +12,8 @@
 
 int main(int argc, char **argv)
 {
-    int ret;
-    int gpu_power_ratio_pct;
+    int ret = 0;
+    int gpu_power_ratio_pct = 0;
 
     const char *usage = "%s [--help | -h] -r gpu_power_ratio_pct\n";
 

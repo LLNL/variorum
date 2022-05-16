@@ -12,9 +12,9 @@
 
 int main(int argc, char **argv)
 {
-    int ret;
-    int cpu_id;
-    int cpu_freq_mhz;
+    int ret = 0;
+    int cpu_id = 0;
+    int cpu_freq_mhz = 0;
 
     const char *usage = "%s [--help | -h] -i socket_id -f cpu_freq_mhz\n";
 
