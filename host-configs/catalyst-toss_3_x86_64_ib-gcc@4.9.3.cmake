@@ -14,7 +14,7 @@ set(CMAKE_Fortran_COMPILER  "/usr/tce/packages/gcc/gcc-4.9.3/bin/gfortran" CACHE
 
 set(USE_MSR_SAFE_BEFORE_1_5_0 ON CACHE BOOL "")
 
-set(ENABLE_MPI ON CACHE BOOL "")
+set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP ON CACHE BOOL "")
 
 set(BUILD_DOCS ON CACHE BOOL "")

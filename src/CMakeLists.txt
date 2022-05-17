@@ -18,7 +18,7 @@ option(BUILD_TESTS               "Build tests"                            ON)
 
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
-option(ENABLE_MPI                "Build MPI examples"                     ON)
+option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
 
 option(VARIORUM_WITH_AMD         "Support AMD architectures"              OFF)
