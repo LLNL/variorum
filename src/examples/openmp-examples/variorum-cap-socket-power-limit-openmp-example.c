@@ -13,9 +13,9 @@
 
 int main(int argc, char **argv)
 {
-    int ret;
-    int pkg_pow_lim_watts;
-    int tid;
+    int ret = 0;
+    int pkg_pow_lim_watts = 0;
+    int tid = 0;
 
     const char *usage = "%s [--help | -h] -l power_lim_watts\n";
 
