@@ -71,7 +71,7 @@ The example below gets the power limits of the platform. The ``print_verbose``
 API prints the output in verbose format that is more human-readable (with units,
 titles, etc.).
 
-.. literalinclude:: ../../examples/variorum-print-verbose-power-limits-example.c
+.. literalinclude:: ../../examples/variorum-print-verbose-power-limit-example.c
     :language: c
 
 On an Intel platform, the output of this example should be similar to the

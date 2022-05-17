@@ -44,20 +44,15 @@ structures that were used to represent this data in the IBM port of Variorum.
 OCC sensor data will use BAR2 (OCC Common is per physical drawer). Starting
 address is at offset 0x00580000 from BAR2 base address. Maximum size is 1.5MB.
 
-+-------------------------------------+----------+-----+-------------------------+
-| Start (Offset from BAR2 base        | End      | Size | Description             |
-| address)                            |          |     |                         |
-+=====================================+==========+=====+=========================+
-| 0x00580000                          | 0x005A57FF | 150kB | OCC 0 Sensor Data Block |
-+-------------------------------------+----------+-----+-------------------------+
-| 0x005A5800                          | 0x005CAFFF | 150kB | OCC 1 Sensor Data Block |
-+-------------------------------------+----------+-----+-------------------------+
-| :                                   | :        | :   | :                       |
-+-------------------------------------+----------+-----+-------------------------+
-| 0x00686800                          | 0x006ABFFF | 150kB | OCC 7 Sensor Data Block |
-+-------------------------------------+----------+-----+-------------------------+
-| 0x006AC000                          | 0x006FFFFF | 336kB | Reserved                |
-+-------------------------------------+----------+-----+-------------------------+
+======================================== ============ ====== =========================
+  Start (Offset from BAR2 base address)   End          Size   Description
+======================================== ============ ====== =========================
+  0x00580000                              0x005A57FF   150kB   OCC 0 Sensor Data Block
+  0x005A5800                              0x005CAFFF   150kB   OCC 1 Sensor Data Block
+  :                                       :            :       :
+  0x00686800                              0x006ABFFF   150kB   OCC 7 Sensor Data Block
+  0x006AC000                              0x006FFFFF   336kB   Reserved
+======================================== ============ ====== =========================
 
 ****************************************
  OCC N Sensor Data Block Layout (150kB)
@@ -67,26 +62,17 @@ The sensor data block layout is the same for each OCC N. It contains
 sensor-header-block, sensor-names buffer, sensor-readings-ping buffer and
 sensor-readings-pong buffer.
 
-+-------------------------------------------+----------+-----+---------------------------+
-| Start (Offset from OCC N Sensor Data      | End      | Size | Description               |
-| Block)                                    |          |     |                           |
-+===========================================+==========+=====+===========================+
-| 0x00000000                                | 0x000003FF | 1kB | Sensor Data Header Block  |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x00000400                                | 0x0000CBFF | 50kB | Sensor Names              |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x0000CC00                                | 0x0000DBFF | 4kB | Reserved                  |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x0000DC00                                | 0x00017BFF | 40kB | Sensor Readings ping      |
-|                                           |          |     | buffer                    |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x00017C00                                | 0x00018BFF | 4kB | Reserved                  |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x00018C00                                | 0x00022BFF | 40kB | Sensor Readings pong      |
-|                                           |          |     | buffer                    |
-+-------------------------------------------+----------+-----+---------------------------+
-| 0x00022C00                                | 0x000257FF | 11kB | Reserved                  |
-+-------------------------------------------+----------+-----+---------------------------+
+============================================== ============ ====== ============================
+  Start (Offset from OCC N Sensor Data Block)   End          Size   Description
+============================================== ============ ====== ============================
+  0x00000000                                    0x000003FF   1kB    Sensor Data Header Block
+  0x00000400                                    0x0000CBFF   50kB   Sensor Names
+  0x0000CC00                                    0x0000DBFF   4kB    Reserved
+  0x0000DC00                                    0x00017BFF   40kB   Sensor Readings ping buffer
+  0x00017C00                                    0x00018BFF   4kB    Reserved
+  0x00018C00                                    0x00022BFF   40kB   Sensor Readings pong buffer
+  0x00022C00                                    0x000257FF   11kB   Reserved
+============================================== ============ ====== ============================
 
 There are eight OCC Sensor Data Blocks. Each of these has the same data block
 layout. Within each sensor data block, we have:
