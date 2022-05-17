@@ -109,6 +109,7 @@ jobs:
             ENABLE_OPENMP: ON
             VARIORUM_DEBUG: ON
             VARIORUM_LOG: ON
+            ENABLE_WARNINGS: ON
 
           - config: shared_debug_log_docs
             BUILD_SHARED_LIBS: ON
@@ -246,6 +247,7 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{matrix.ENABLE_OPENMP}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{matrix.VARIORUM_DEBUG}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${{matrix.VARIORUM_LOG}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_WARNINGS=${{matrix.ENABLE_WARNINGS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
           echo ${CMAKE_OPTS}
           cmake ${CMAKE_OPTS} ../src
