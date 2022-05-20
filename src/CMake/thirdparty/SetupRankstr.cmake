@@ -10,8 +10,16 @@ if(RANKSTR_DIR)
     set(RANKSTR_FOUND TRUE CACHE INTERNAL "")
     set(VARIORUM_RANKSTR_DIR ${RANKSTR_DIR} CACHE INTERNAL "")
     set(RANKSTR_DIR ${RANKSTR_DIR} CACHE PATH "" FORCE)
-    set(RANKSTR_INCLUDE_DIRS ${RANKSTR_DIR}/include CACHE PATH "" FORCE)
-    set(RANKSTR_LIBRARY ${RANKSTR_DIR}/lib64/librankstr.so CACHE PATH "" FORCE)
+    find_path(RANKSTR_INCLUDE_DIRS
+        NAMES rankstr_mpi.h
+        HINTS ${RANKSTR_DIR}/include
+    )
+
+    find_library(RANKSTR_LIBRARY
+        NAMES librankstr.so
+        HINTS ${RANKSTR_DIR}/lib
+    )
+
     include_directories(${RANKSTR_INCLUDE_DIRS})
 
     message(STATUS "FOUND rankstr")
