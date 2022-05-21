@@ -66,7 +66,7 @@ struct rapl_limit
 
 /// @brief Structure containing power range info for RAPL usage for various
 /// RAPL power domains.
-struct rapl_power_info
+struct rapl_pkg_power_info
 {
     /**************************/
     /* RAPL Power Domain: PKG */
@@ -183,8 +183,8 @@ int get_dram_rapl_limit(const unsigned socket,
 void print_rapl_power_unit(FILE *writedest,
                            off_t msr);
 
-int get_rapl_power_info(const unsigned socket,
-                        struct rapl_power_info *info,
+int get_rapl_pkg_power_info(const unsigned socket,
+                        struct rapl_pkg_power_info *info,
                         off_t msr);
 
 void print_package_power_info(FILE *writedest,

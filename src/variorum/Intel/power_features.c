@@ -443,7 +443,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 
 void print_package_power_info(FILE *writedest, off_t msr, int socket)
 {
-    struct rapl_power_info info;
+    struct rapl_pkg_power_info info;
     char hostname[1024];
     static int init_print_package_power_info = 0;
 
@@ -456,7 +456,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
                 "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
     }
 
-    if (!get_rapl_power_info(socket, &info, msr))
+    if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
         fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
@@ -466,12 +466,12 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
 {
-    struct rapl_power_info info;
+    struct rapl_pkg_power_info info;
     char hostname[1024];
 
     gethostname(hostname, 1024);
 
-    if (!get_rapl_power_info(socket, &info, msr))
+    if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
         fprintf(writedest,
                 "_PACKAGE_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
@@ -656,7 +656,7 @@ int cap_package_power_limit(const unsigned socket, int package_power_limit,
     return ret;
 }
 
-int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
+int get_rapl_pkg_power_info(const unsigned socket, struct rapl_pkg_power_info *info,
                         off_t msr)
 {
     uint64_t val = 0;
@@ -664,7 +664,7 @@ int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
     sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_power_info)\n", getenv("HOSTNAME"),
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_pkg_power_info)\n", getenv("HOSTNAME"),
             __FILE__, __LINE__);
 #endif
 
@@ -1019,7 +1019,7 @@ void json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "control",
                         json_string("[power_cpu, power_mem]"));
     json_object_set_new(get_domain_obj, "unsupported",
-                        json_string("[]"));
+                        json_string("[power_node]"));
     json_object_set_new(get_domain_obj, "measurement_units",
                         json_string("[Watts, Watts]"));
     json_object_set_new(get_domain_obj, "control_units",
