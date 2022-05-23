@@ -742,16 +742,16 @@ int get_rapl_dram_power_info(const unsigned socket,
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_dram_power_info));
     val = MASK_VAL(info->msr_dram_power_info, 54, 48);
-    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr);
+    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr);
 
     val = MASK_VAL(info->msr_dram_power_info, 46, 32);
-    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr);
 
     val = MASK_VAL(info->msr_dram_power_info, 30, 16);
-    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr);
 
     val = MASK_VAL(info->msr_dram_power_info, 14, 0);
-    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr);
 
     return 0;
 }
