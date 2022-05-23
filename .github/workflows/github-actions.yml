@@ -13,90 +13,90 @@ jobs:
 
     strategy:
       matrix:
-        gcc-version: [gcc-11, gcc-10, gcc-9, gcc-8, gcc-7]
+        cc-version: [11, 10, 9, 8, 7]
         config: [boilerplate, shared_debug_log_docs, shared_debug_docs, shared_debug_log, shared_debug, static_debug_log_docs, static_debug_docs, static_debug_log, static_debug, shared_release_log_docs]
 
         exclude:
           - config: shared_debug_log_docs
-            gcc-version: gcc-11
+            cc-version: 11
           - config: shared_debug_log_docs
-            gcc-version: gcc-10
+            cc-version: 10
           - config: shared_debug_log_docs
-            gcc-version: gcc-8
+            cc-version: 8
           - config: shared_debug_log_docs
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: shared_debug_docs
-            gcc-version: gcc-11
+            cc-version: 11
           - config: shared_debug_docs
-            gcc-version: gcc-10
+            cc-version: 10
           - config: shared_debug_docs
-            gcc-version: gcc-8
+            cc-version: 8
           - config: shared_debug_docs
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: shared_debug_log
-            gcc-version: gcc-11
+            cc-version: 11
           - config: shared_debug_log
-            gcc-version: gcc-10
+            cc-version: 10
           - config: shared_debug_log
-            gcc-version: gcc-8
+            cc-version: 8
           - config: shared_debug_log
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: shared_debug
-            gcc-version: gcc-11
+            cc-version: 11
           - config: shared_debug
-            gcc-version: gcc-10
+            cc-version: 10
           - config: shared_debug
-            gcc-version: gcc-8
+            cc-version: 8
           - config: shared_debug
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: static_debug_log_docs
-            gcc-version: gcc-11
+            cc-version: 11
           - config: static_debug_log_docs
-            gcc-version: gcc-10
+            cc-version: 10
           - config: static_debug_log_docs
-            gcc-version: gcc-8
+            cc-version: 8
           - config: static_debug_log_docs
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: static_debug_docs
-            gcc-version: gcc-11
+            cc-version: 11
           - config: static_debug_docs
-            gcc-version: gcc-10
+            cc-version: 10
           - config: static_debug_docs
-            gcc-version: gcc-8
+            cc-version: 8
           - config: static_debug_docs
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: static_debug_log
-            gcc-version: gcc-11
+            cc-version: 11
           - config: static_debug_log
-            gcc-version: gcc-10
+            cc-version: 10
           - config: static_debug_log
-            gcc-version: gcc-8
+            cc-version: 8
           - config: static_debug_log
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: static_debug
-            gcc-version: gcc-11
+            cc-version: 11
           - config: static_debug
-            gcc-version: gcc-10
+            cc-version: 10
           - config: static_debug
-            gcc-version: gcc-8
+            cc-version: 8
           - config: static_debug
-            gcc-version: gcc-7
+            cc-version: 7
 
           - config: shared_release_log_docs
-            gcc-version: gcc-11
+            cc-version: 11
           - config: shared_release_log_docs
-            gcc-version: gcc-10
+            cc-version: 10
           - config: shared_release_log_docs
-            gcc-version: gcc-8
+            cc-version: 8
           - config: shared_release_log_docs
-            gcc-version: gcc-7
+            cc-version: 7
 
         include:
           - config: boilerplate
@@ -217,9 +217,9 @@ jobs:
       - name: Install deps on ubuntu
         run: |
           sudo apt-get update
-          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen mpich ${{ matrix.gcc-version }}
+          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen mpich gcc-${{ matrix.cc-version }}
           cmake --version
-          gcc --version
+          gcc-${{ matrix.cc-version }} --version
 
       - name: Build and install rankstr dependency
         run: |
@@ -239,6 +239,7 @@ jobs:
           cd build
           # setup cmake options
           export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{matrix.BUILD_SHARED_LIBS}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_C_COMPILER=gcc-${{matrix.cc-version}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{matrix.BUILD_DOCS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{matrix.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{matrix.CMAKE_BUILD_TYPE}}"
