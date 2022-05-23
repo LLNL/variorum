@@ -484,13 +484,13 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
 {
     struct rapl_dram_power_info info;
     char hostname[1024];
-    static int init_print_package_power_info = 0;
+    static int init_print_dram_power_info = 0;
 
     gethostname(hostname, 1024);
 
-    if (!init_print_package_power_info)
+    if (!init_print_dram_power_info)
     {
-        init_print_package_power_info = 1;
+        init_print_dram_power_info = 1;
         fprintf(writedest,
                 "_DRAM_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
     }
@@ -498,8 +498,8 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
     if (!get_rapl_dram_power_info(socket, &info, msr))
     {
         fprintf(writedest, "_DRAM_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
-                msr, hostname, socket, info.msr_dram_power_info, info.pkg_max_power,
-                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+                msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
+                info.dram_min_power, info.dram_max_window, info.dram_therm_power);
     }
 }
 
@@ -514,8 +514,8 @@ void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
     {
         fprintf(writedest,
                 "_DRAM_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
-                msr, hostname, socket, info.msr_dram_power_info, info.pkg_max_power,
-                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+                msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
+                info.dram_min_power, info.dram_max_window, info.dram_therm_power);
     }
 }
 
