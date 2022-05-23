@@ -480,6 +480,46 @@ void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
     }
 }
 
+void print_dram_power_info(FILE *writedest, off_t msr, int socket)
+{
+    struct rapl_dram_power_info info;
+    char hostname[1024];
+    static int init_print_package_power_info = 0;
+
+    gethostname(hostname, 1024);
+
+    if (!init_print_package_power_info)
+    {
+        init_print_package_power_info = 1;
+        fprintf(writedest,
+                "_DRAM_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
+    }
+
+    if (!get_rapl_dram_power_info(socket, &info, msr))
+    {
+        fprintf(writedest, "_DRAM_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+                msr, hostname, socket, info.msr_dram_power_info, info.pkg_max_power,
+                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+    }
+}
+
+void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
+{
+    struct rapl_dram_power_info info;
+    char hostname[1024];
+
+    gethostname(hostname, 1024);
+
+    if (!get_rapl_dram_power_info(socket, &info, msr))
+    {
+        fprintf(writedest,
+                "_DRAM_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
+                msr, hostname, socket, info.msr_dram_power_info, info.pkg_max_power,
+                info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+    }
+}
+
+
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                                off_t msr_rapl_unit, int socket)
 {
@@ -679,6 +719,34 @@ int get_rapl_pkg_power_info(const unsigned socket, struct rapl_pkg_power_info *i
     translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr);
 
     val = MASK_VAL(info->msr_pkg_power_info, 14, 0);
+    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr);
+
+    return 0;
+}
+
+int get_rapl_dram_power_info(const unsigned socket, struct rapl_dram_power_info *info,
+                        off_t msr)
+{
+    uint64_t val = 0;
+
+    sockets_assert(&socket);
+
+#ifdef VARIORUM_DEBUG
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_dram_power_info)\n", getenv("HOSTNAME"),
+            __FILE__, __LINE__);
+#endif
+
+    read_msr_by_coord(socket, 0, 0, msr, &(info->msr_dram_power_info));
+    val = MASK_VAL(info->msr_dram_power_info, 54, 48);
+    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 46, 32);
+    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 30, 16);
+    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 14, 0);
     translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr);
 
     return 0;

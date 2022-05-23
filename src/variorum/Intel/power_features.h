@@ -65,7 +65,7 @@ struct rapl_limit
 };
 
 /// @brief Structure containing power range info for RAPL usage for various
-/// RAPL power domains.
+/// RAPL DRAM power domains.
 struct rapl_pkg_power_info
 {
     /**************************/
@@ -84,6 +84,28 @@ struct rapl_pkg_power_info
     double pkg_max_window;
     /// @brief Thermal specification power (in Watts) of the package domain.
     double pkg_therm_power;
+};
+
+/// @brief Structure containing power range info for RAPL usage for various
+/// RAPL DRAM power domains.
+struct rapl_dram_power_info
+{
+    /**************************/
+    /* RAPL Power Domain: DRAM */
+    /**************************/
+    /// @brief Raw 64-bit value stored in MSR_DRAM_POWER_INFO.
+    uint64_t msr_dram_power_info;
+    /// @brief Max power (in Watts) derived from electrical specifications of
+    /// the dram domain.
+    double dram_max_power;
+    /// @brief Min power (in Watts) derived from electrical specifications of
+    /// the dram domain.
+    double dram_min_power;
+    /// @brief Max time (in seconds) that can be set in either time window field
+    /// of the dram domain.
+    double dram_max_window;
+    /// @brief Thermal specification power (in Watts) of the dram domain.
+    double dram_therm_power;
 };
 
 /// @brief Structure containing data from energy, time, and power measurements
@@ -187,7 +209,15 @@ int get_rapl_pkg_power_info(const unsigned socket,
                         struct rapl_pkg_power_info *info,
                         off_t msr);
 
+int get_rapl_dram_power_info(const unsigned socket,
+                        struct rapl_dram_power_info *info,
+                        off_t msr);
+
 void print_package_power_info(FILE *writedest,
+                              off_t msr,
+                              int socket);
+
+void print_dram_power_info(FILE *writedest,
                               off_t msr,
                               int socket);
 
@@ -200,6 +230,10 @@ void print_verbose_package_power_limit(FILE *writedest,
                                        int socket);
 
 void print_verbose_package_power_info(FILE *writedest,
+                                      off_t msr,
+                                      int socket);
+
+void print_verbose_dram_power_info(FILE *writedest,
                                       off_t msr,
                                       int socket);
 
