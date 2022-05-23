@@ -206,20 +206,20 @@ void print_rapl_power_unit(FILE *writedest,
                            off_t msr);
 
 int get_rapl_pkg_power_info(const unsigned socket,
-                        struct rapl_pkg_power_info *info,
-                        off_t msr);
+                            struct rapl_pkg_power_info *info,
+                            off_t msr);
 
 int get_rapl_dram_power_info(const unsigned socket,
-                        struct rapl_dram_power_info *info,
-                        off_t msr);
+                             struct rapl_dram_power_info *info,
+                             off_t msr);
 
 void print_package_power_info(FILE *writedest,
                               off_t msr,
                               int socket);
 
 void print_dram_power_info(FILE *writedest,
-                              off_t msr,
-                              int socket);
+                           off_t msr,
+                           int socket);
 
 void print_verbose_rapl_power_unit(FILE *writedest,
                                    off_t msr);
@@ -234,8 +234,8 @@ void print_verbose_package_power_info(FILE *writedest,
                                       int socket);
 
 void print_verbose_dram_power_info(FILE *writedest,
-                                      off_t msr,
-                                      int socket);
+                                   off_t msr,
+                                   int socket);
 
 int cap_package_power_limit(const unsigned socket,
                             int package_power_limit,

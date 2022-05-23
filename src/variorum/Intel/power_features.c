@@ -696,15 +696,17 @@ int cap_package_power_limit(const unsigned socket, int package_power_limit,
     return ret;
 }
 
-int get_rapl_pkg_power_info(const unsigned socket, struct rapl_pkg_power_info *info,
-                        off_t msr)
+int get_rapl_pkg_power_info(const unsigned socket,
+                            struct rapl_pkg_power_info *info,
+                            off_t msr)
 {
     uint64_t val = 0;
 
     sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_pkg_power_info)\n", getenv("HOSTNAME"),
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_pkg_power_info)\n",
+            getenv("HOSTNAME"),
             __FILE__, __LINE__);
 #endif
 
@@ -724,15 +726,17 @@ int get_rapl_pkg_power_info(const unsigned socket, struct rapl_pkg_power_info *i
     return 0;
 }
 
-int get_rapl_dram_power_info(const unsigned socket, struct rapl_dram_power_info *info,
-                        off_t msr)
+int get_rapl_dram_power_info(const unsigned socket,
+                             struct rapl_dram_power_info *info,
+                             off_t msr)
 {
     uint64_t val = 0;
 
     sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_dram_power_info)\n", getenv("HOSTNAME"),
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_dram_power_info)\n",
+            getenv("HOSTNAME"),
             __FILE__, __LINE__);
 #endif
 
