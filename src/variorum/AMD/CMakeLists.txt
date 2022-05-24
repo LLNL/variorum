@@ -5,13 +5,11 @@
 
 set(variorum_amd_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/epyc.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/msr_core.h
   ${CMAKE_CURRENT_SOURCE_DIR}/energy_feature.h
   CACHE INTERNAL "")
 
 set(variorum_amd_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/epyc.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/msr_core.c
   ${CMAKE_CURRENT_SOURCE_DIR}/energy_feature.c
   CACHE INTERNAL "")
 
