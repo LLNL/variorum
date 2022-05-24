@@ -109,9 +109,9 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
     int i, batchfd;
     double val;
 
-    if ((batchfd = open(MSR_BATCH_DIR, O_RDWR)) < 0)
+    if ((batchfd = open(MSR_BATCH_PATH, O_RDWR)) < 0)
     {
-        perror(MSR_BATCH_DIR);
+        perror(MSR_BATCH_PATH);
         return batchfd;
     }
 
