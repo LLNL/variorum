@@ -419,8 +419,8 @@ int fm_06_3f_get_node_power_domain_info_json(json_t *get_domain_obj)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    json_get_power_domain_info (get_domain_obj, msrs.msr_pkg_power_info,
-                                msrs.msr_dram_power_info);
+    json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
+                               msrs.msr_dram_power_info);
 
     return 0;
 }
