@@ -37,10 +37,12 @@ set(variorum_includes
 )
 
 if(VARIORUM_WITH_INTEL)
-    list(APPEND variorum_headers Intel/config_intel.h ${variorum_intel_headers})
-    list(APPEND variorum_sources Intel/config_intel.c)
+    list(APPEND variorum_headers Intel/config_intel.h ${variorum_intel_headers} ${variorum_msr_headers})
+    list(APPEND variorum_sources Intel/config_intel.c ${variorum_msr_sources})
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_intel>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/Intel)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/msr)
+    add_subdirectory(msr)
     add_subdirectory(Intel)
 endif()
 
@@ -69,10 +71,11 @@ if(VARIORUM_WITH_ARM)
 endif()
 
 if(VARIORUM_WITH_AMD)
-    list(APPEND variorum_headers AMD/config_amd.h ${variorum_amd_headers})
-    list(APPEND variorum_sources AMD/config_amd.c)
+    list(APPEND variorum_headers AMD/config_amd.h ${variorum_amd_headers} ${variorum_msr_headers})
+    list(APPEND variorum_sources AMD/config_amd.c ${variorum_msr_sources})
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_amd>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/AMD)
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/msr)
     add_subdirectory(AMD)
 endif()
 

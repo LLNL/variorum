@@ -16,7 +16,6 @@ set(variorum_intel_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/Broadwell_4F.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Skylake_55.h
   ${CMAKE_CURRENT_SOURCE_DIR}/KabyLake_9E.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/msr_core.h
   ${CMAKE_CURRENT_SOURCE_DIR}/variorum_cpuid.h
   CACHE INTERNAL "")
 
@@ -33,7 +32,6 @@ set(variorum_intel_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/Broadwell_4F.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Skylake_55.c
   ${CMAKE_CURRENT_SOURCE_DIR}/KabyLake_9E.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/msr_core.c
   ${CMAKE_CURRENT_SOURCE_DIR}/variorum_cpuid.c
   CACHE INTERNAL "")
 
