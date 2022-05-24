@@ -45,6 +45,7 @@ static struct haswell_3f_offsets msrs =
     .msr_dram_power_limit         = 0x618,
     .msr_dram_energy_status       = 0x619,
     .msr_dram_perf_status         = 0x61B,
+    .msr_dram_power_info          = 0x61C,
     .msr_turbo_activation_ratio   = 0x64C,
     .ia32_mperf                   = 0xE7,
     .ia32_aperf                   = 0xE8,
@@ -113,6 +114,18 @@ int fm_06_3f_get_power_limits(int long_ver)
         else if (long_ver == 1)
         {
             print_verbose_package_power_info(stdout, msrs.msr_pkg_power_info, socket);
+        }
+    }
+
+    for (socket = 0; socket < nsockets; socket++)
+    {
+        if (long_ver == 0)
+        {
+            print_dram_power_info(stdout, msrs.msr_dram_power_info, socket);
+        }
+        else if (long_ver == 1)
+        {
+            print_verbose_dram_power_info(stdout, msrs.msr_dram_power_info, socket);
         }
     }
 
@@ -205,6 +218,8 @@ int fm_06_3f_get_features(void)
             msrs.msr_dram_energy_status);
     fprintf(stdout, "msr_dram_perf_status         = 0x%lx\n",
             msrs.msr_dram_perf_status);
+    fprintf(stdout, "msr_dram_power_info           = 0x%lx\n",
+            msrs.msr_dram_power_info);
     fprintf(stdout, "msr_turbo_activation_ratio   = 0x%lx\n",
             msrs.msr_turbo_activation_ratio);
     fprintf(stdout, "ia32_mperf                   = 0x%lx\n", msrs.ia32_mperf);

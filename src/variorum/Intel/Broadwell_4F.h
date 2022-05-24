@@ -56,6 +56,8 @@ struct broadwell_4f_offsets
     off_t msr_pkg_perf_status;
     /// @brief Address for PKG_POWER_INFO.
     off_t msr_pkg_power_info;
+    /// @brief Address for DRAM_POWER_INFO.
+    off_t msr_dram_power_info;
     /// @brief Address for DRAM_POWER_LIMIT.
     off_t msr_dram_power_limit;
     /// @brief Address for DRAM_ENERGY_STATUS.
