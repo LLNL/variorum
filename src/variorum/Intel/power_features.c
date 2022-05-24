@@ -1074,11 +1074,15 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 }
 
 
-void json_get_power_domain_info(json_t *get_domain_obj)
+void json_get_power_domain_info(json_t *get_domain_obj,
+                         off_t msr_pkg_power_info, off_t msr_dram_power_info)
 {
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
+
+    double pkg_max, pkg_min, dram_max, dram_min;
+
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
