@@ -16,6 +16,7 @@
 #include <Haswell_3F.h>
 #include <KabyLake_9E.h>
 #include <Skylake_55.h>
+#include <IceLake_6A.h>
 
 uint64_t *detect_intel_arch(void)
 {
@@ -236,6 +237,13 @@ int set_intel_func_ptrs(void)
             fm_06_9e_cap_best_effort_node_power_limit;
         g_platform.variorum_print_available_frequencies =
             fm_06_9e_get_frequencies;
+    }
+    // Ice Lake 06_6A
+    else if (*g_platform.intel_arch == FM_06_6A)
+    {
+        g_platform.variorum_print_power_limit = fm_06_6a_get_power_limits;
+        g_platform.variorum_print_features = fm_06_6a_get_features;
+        g_platform.variorum_print_power = fm_06_6a_get_power;
     }
     else
     {
