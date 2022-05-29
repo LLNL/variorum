@@ -160,9 +160,9 @@ static int do_batch_op(int batchnum, int type)
 
     if (batchfd == 0)
     {
-        if ((batchfd = open(MSR_BATCH_DIR, O_RDWR)) < 0)
+        if ((batchfd = open(MSR_BATCH_PATH, O_RDWR)) < 0)
         {
-            perror(MSR_BATCH_DIR);
+            perror(MSR_BATCH_PATH);
             batchfd = -1;
         }
     }
@@ -411,11 +411,7 @@ int init_msr(void)
     unsigned nsockets, ncores, nthreads;
 
     variorum_get_topology(&nsockets, &ncores, &nthreads);
-#ifdef USE_MSR_SAFE_BEFORE_1_5_0
-    snprintf(filename, FILENAME_SIZE, "/dev/cpu/msr_whitelist");
-#else
-    snprintf(filename, FILENAME_SIZE, "/dev/cpu/msr_allowlist");
-#endif
+    snprintf(filename, FILENAME_SIZE, MSR_ALLOWLIST_PATH);
     stat_module(filename, &kerneltype, 0);
     /* Open the file descriptor for each device's msr interface. */
     for (dev_idx = 0; dev_idx < (int)nthreads; dev_idx++)
@@ -423,11 +419,11 @@ int init_msr(void)
         /* Use the msr_safe module, or default to the msr module. */
         if (kerneltype)
         {
-            snprintf(filename, FILENAME_SIZE, "/dev/cpu/%d/msr", dev_idx);
+            snprintf(filename, FILENAME_SIZE, MSR_STOCK_PATH_FMT, dev_idx);
         }
         else
         {
-            snprintf(filename, FILENAME_SIZE, "/dev/cpu/%d/msr_safe", dev_idx);
+            snprintf(filename, FILENAME_SIZE, MSR_SAFE_PATH_FMT, dev_idx);
         }
         if (stat_module(filename, &kerneltype, &dev_idx) < 0)
         {
