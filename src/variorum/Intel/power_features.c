@@ -1080,9 +1080,27 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-
+    struct pkg_power_info pkg_info;
+    struct dram_power_info dram_info;
+    char range_str[36] = "[{min: ";
     double pkg_max, pkg_min, dram_max, dram_min;
 
+    get_rapl_pkg_power_info(socket, &pkg_info, msr_pkg_power_info);
+    get_rapl_pkg_power_info(socket, &dram_info, msr_dram_power_info);
+
+    pkg_min = pkg_info.pkg_min_power;
+    pkg_max = pkg_info.pkg_max_power;
+    dram_min = dram_info.dram_min_power;
+    dram_max = dram_info.dram_max_power;
+    
+    strcat(range_str, pkg_min);
+    strcat(range_str, ", max: ");
+    strcat(range_str, pkg_max);
+    strcat(range_str, "},{min: ");
+    strcat(range_str, dram_min);
+    strcat(range_str, ", max: ");
+    strcat(range_str, dram_max);
+    strcat(range_str, "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -1101,7 +1119,7 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     json_object_set_new(get_domain_obj, "control_units",
                         json_string("[Watts, Watts]"));
     json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[{min: 65, max: 135}, {min: 15, max: 30}]"));
+                        json_string(range_str));
 
     // Need to figure out a way to specify capping limits by reading MSRs.
     // If we have an NVIDIA + Intel build, the GPU info should be updated.
