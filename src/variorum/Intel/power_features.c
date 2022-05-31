@@ -1080,13 +1080,14 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    struct pkg_power_info pkg_info;
-    struct dram_power_info dram_info;
+    struct rapl_pkg_power_info pkg_info;
+    struct rapl_dram_power_info dram_info;
     char range_str[36] = "[{min: ";
     double pkg_max, pkg_min, dram_max, dram_min;
 
-    get_rapl_pkg_power_info(socket, &pkg_info, msr_pkg_power_info);
-    get_rapl_pkg_power_info(socket, &dram_info, msr_dram_power_info);
+    // First argument here is socket ID, both sockets have same info.
+    get_rapl_pkg_power_info(0, &pkg_info, msr_pkg_power_info);
+    get_rapl_pkg_power_info(0, &dram_info, msr_dram_power_info);
 
     pkg_min = pkg_info.pkg_min_power;
     pkg_max = pkg_info.pkg_max_power;
@@ -1100,7 +1101,7 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     sprintf(range_str, "%f", dram_min);
     sprintf(range_str, "%s", ", max: ");
     sprintf(range_str, "%f", dram_max);
-    sprintf(range_str, "%s" "}]");
+    sprintf(range_str, "%s", "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
