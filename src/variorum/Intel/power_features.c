@@ -1092,15 +1092,15 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     pkg_max = pkg_info.pkg_max_power;
     dram_min = dram_info.dram_min_power;
     dram_max = dram_info.dram_max_power;
-    
-    strcat(range_str, pkg_min);
-    strcat(range_str, ", max: ");
-    strcat(range_str, pkg_max);
-    strcat(range_str, "},{min: ");
-    strcat(range_str, dram_min);
-    strcat(range_str, ", max: ");
-    strcat(range_str, dram_max);
-    strcat(range_str, "}]");
+   
+    sprintf(range_str, "%f", pkg_min); 
+    sprintf(range_str, "%s", ", max: "); 
+    sprintf(range_str, "%f", pkg_max); 
+    sprintf(range_str, "%s", "},{min: ");
+    sprintf(range_str, "%f", dram_min);
+    sprintf(range_str, "%s", ", max: ");
+    sprintf(range_str, "%f", dram_max);
+    sprintf(range_str, "%s" "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
