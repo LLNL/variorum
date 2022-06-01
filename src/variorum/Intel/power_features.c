@@ -1082,26 +1082,17 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     uint64_t ts;
     struct rapl_pkg_power_info pkg_info;
     struct rapl_dram_power_info dram_info;
-    char range_str[36] = "[{min: ";
-    double pkg_max, pkg_min, dram_max, dram_min;
+    char range_str[100];
 
     // First argument here is socket ID, both sockets have same info.
-    get_rapl_pkg_power_info(0, &pkg_info, msr_pkg_power_info);
-    get_rapl_dram_power_info(0, &dram_info, msr_dram_power_info);
+    get_rapl_pkg_power_info(1, &pkg_info, msr_pkg_power_info);
+    get_rapl_dram_power_info(1, &dram_info, msr_dram_power_info);
 
-    pkg_min = pkg_info.pkg_min_power;
-    pkg_max = pkg_info.pkg_max_power;
-    dram_min = dram_info.dram_min_power;
-    dram_max = dram_info.dram_max_power;
-
-    sprintf(range_str, "%f", pkg_min);
-    sprintf(range_str, "%s", ", max: ");
-    sprintf(range_str, "%f", pkg_max);
-    sprintf(range_str, "%s", "},{min: ");
-    sprintf(range_str, "%f", dram_min);
-    sprintf(range_str, "%s", ", max: ");
-    sprintf(range_str, "%f", dram_max);
-    sprintf(range_str, "%s", "}]");
+    snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s", 
+		    "[{min: ", pkg_info.pkg_min_power, 
+		    ", max: ", pkg_info.pkg_max_power, 
+		    "}, {min: ", dram_info.dram_min_power,
+		    ", max: ", dram_info.dram_max_power, "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
