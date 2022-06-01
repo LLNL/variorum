@@ -11,7 +11,15 @@
 #include <sys/types.h>
 
 #define X86_IOC_MSR_BATCH _IOWR('c', 0xA2, struct msr_batch_array)
-#define MSR_BATCH_DIR "/dev/cpu/msr_batch"
+#define MSR_STOCK_PATH_FMT "/dev/cpu/%d/msr"
+#define MSR_SAFE_PATH_FMT "/dev/cpu/%d/msr_safe"
+#define MSR_BATCH_PATH "/dev/cpu/msr_batch"
+#ifdef USE_MSR_SAFE_BEFORE_1_5_0
+#define MSR_ALLOWLIST_PATH "/dev/cpu/msr_whitelist"
+#else
+#define MSR_ALLOWLIST_PATH "/dev/cpu/msr_allowlist"
+#endif
+
 #define FILENAME_SIZE 1024
 
 #ifndef NAME_MAX
