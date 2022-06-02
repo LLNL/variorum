@@ -260,7 +260,9 @@ void json_get_power_data(json_t *get_power_obj,
 
 void json_get_power_domain_info(json_t *get_domain_obj,
                                 off_t msr_pkg_power_info,
-                                off_t msr_dram_power_info);
+                                off_t msr_dram_power_info,
+                                off_t msr_rapl_unit,
+                                off_t msr_power_limit);
 
 /// @brief Store the RAPL data on the heap.
 ///

@@ -405,7 +405,7 @@ int fm_06_2d_get_node_power_domain_info_json(json_t *get_domain_obj)
 #endif
 
     json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
-                               msrs.msr_dram_power_info);
+                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit, msrs.msr_pkg_power_limit);
 
     return 0;
 }

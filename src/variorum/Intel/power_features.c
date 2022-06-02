@@ -1075,7 +1075,8 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 
 
 void json_get_power_domain_info(json_t *get_domain_obj,
-                                off_t msr_pkg_power_info, off_t msr_dram_power_info)
+                                off_t msr_pkg_power_info, off_t
+msr_dram_power_info, off_t msr_rapl_unit, off_t msr_power_limit)
 {
     char hostname[1024];
     struct timeval tv;
@@ -1084,13 +1085,19 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     struct rapl_dram_power_info dram_info;
     char range_str[100];
 
-    // First argument here is socket ID, both sockets have same info.
-    get_rapl_pkg_power_info(1, &pkg_info, msr_pkg_power_info);
-    get_rapl_dram_power_info(1, &dram_info, msr_dram_power_info);
+    get_package_rapl_limit(0, NULL, NULL, 0, msr_rapl_unit);
+    struct rapl_limit l1, l2;
 
-    snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s", 
-		    "[{min: ", pkg_info.pkg_min_power, 
-		    ", max: ", pkg_info.pkg_max_power, 
+    // Have to query RAPL limits first, in order to query power info
+    get_package_rapl_limit(0, &l1, &l2, msr_power_limit, msr_rapl_unit);
+
+    // First argument here is socket ID, both sockets have same info.
+    get_rapl_pkg_power_info(0, &pkg_info, msr_pkg_power_info);
+    get_rapl_dram_power_info(0, &dram_info, msr_dram_power_info);
+
+    snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s",
+		    "[{min: ", pkg_info.pkg_min_power,
+		    ", max: ", pkg_info.pkg_max_power,
 		    "}, {min: ", dram_info.dram_min_power,
 		    ", max: ", dram_info.dram_max_power, "}]");
 
