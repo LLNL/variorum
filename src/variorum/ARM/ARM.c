@@ -94,3 +94,13 @@ int arm_get_power_json(json_t *get_power_obj)
     ret = json_get_power_data(get_power_obj);
     return ret;
 }
+
+int arm_get_power_domain_info_json(json_t *get_power_domain_obj)
+{
+    int ret;
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+    ret = json_get_power_domain_info(get_power_domain_obj);
+    return ret;
+}

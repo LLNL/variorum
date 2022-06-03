@@ -452,3 +452,7 @@ int json_get_power_data(json_t *get_power_obj)
     return 0;
 }
 
+
+int json_get_power_domain_info(json_t *get_power_domain_obj)
+{
+}

@@ -1076,7 +1076,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 
 void json_get_power_domain_info(json_t *get_domain_obj,
                                 off_t msr_pkg_power_info, off_t
-msr_dram_power_info, off_t msr_rapl_unit, off_t msr_power_limit)
+                                msr_dram_power_info, off_t msr_rapl_unit, off_t msr_power_limit)
 {
     char hostname[1024];
     struct timeval tv;
@@ -1096,10 +1096,10 @@ msr_dram_power_info, off_t msr_rapl_unit, off_t msr_power_limit)
     get_rapl_dram_power_info(0, &dram_info, msr_dram_power_info);
 
     snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s",
-		    "[{min: ", pkg_info.pkg_min_power,
-		    ", max: ", pkg_info.pkg_max_power,
-		    "}, {min: ", dram_info.dram_min_power,
-		    ", max: ", dram_info.dram_max_power, "}]");
+             "[{min: ", pkg_info.pkg_min_power,
+             ", max: ", pkg_info.pkg_max_power,
+             "}, {min: ", dram_info.dram_min_power,
+             ", max: ", dram_info.dram_max_power, "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
