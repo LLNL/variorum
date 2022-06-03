@@ -455,34 +455,34 @@ int json_get_power_data(json_t *get_power_obj)
 
 int json_get_power_domain_info(json_t *get_domain_obj)
 {
-#ifdef VARIORUM_LOG                                                                
-    printf("Running %s\n", __FUNCTION__);                                          
-#endif                                                                             
-                                                                                   
-    char hostname[1024];                                                           
-    struct timeval tv;                                                             
-    uint64_t ts;                                                                   
-                                                                                   
-    gethostname(hostname, 1024);                                                   
-    gettimeofday(&tv, NULL);                                                       
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
 
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;                               
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
 
-    json_object_set_new(get_domain_obj, "host", json_string(hostname));            
-    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));            
-                                                                                   
-    json_object_set_new(get_domain_obj, "measurement",                             
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+    json_object_set_new(get_domain_obj, "host", json_string(hostname));
+    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
+
+    json_object_set_new(get_domain_obj, "measurement",
                         json_string("[power_cpu, power_gpu]"));
-    json_object_set_new(get_domain_obj, "control",                                 
-                        json_string("[]"));                   
-    json_object_set_new(get_domain_obj, "unsupported",                             
-                        json_string("[power_node, power_mem]"));                                        
-    json_object_set_new(get_domain_obj, "measurement_units",                       
-                        json_string("[Watts, Watts]"));              
-    json_object_set_new(get_domain_obj, "control_units",                           
-                        json_string("[]"));                       
-    json_object_set_new(get_domain_obj, "control_range",                           
+    json_object_set_new(get_domain_obj, "control",
                         json_string("[]"));
-                                                                                   
-    return 0;                                                                      
+    json_object_set_new(get_domain_obj, "unsupported",
+                        json_string("[power_node, power_mem]"));
+    json_object_set_new(get_domain_obj, "measurement_units",
+                        json_string("[Watts, Watts]"));
+    json_object_set_new(get_domain_obj, "control_units",
+                        json_string("[]"));
+    json_object_set_new(get_domain_obj, "control_range",
+                        json_string("[]"));
+
+    return 0;
 }
