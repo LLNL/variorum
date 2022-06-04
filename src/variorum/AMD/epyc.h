@@ -6,6 +6,8 @@
 #ifndef EPYC_H_INCLUDE
 #define EPYC_H_INCLUDE
 
+#include <jansson.h>
+
 int epyc_get_power(int long_ver);
 
 int epyc_get_power_limits(int long_ver);
