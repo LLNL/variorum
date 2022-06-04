@@ -58,7 +58,8 @@ enum intel_arch_e
     FM_06_5E = 94,  // Skylake
     FM_06_8E = 142, // Kaby Lake
     FM_06_9E = 158, // Kaby Lake
-    FM_06_57 = 87   // Knights Landing
+    FM_06_57 = 87,  // Knights Landing
+    FM_06_6A = 106, // IceLake
 };
 
 /// @brief List of IBM family and models.
