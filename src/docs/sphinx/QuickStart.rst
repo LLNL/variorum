@@ -31,35 +31,9 @@ For more details about building and installing Variorum, see
 Variorum from CMake initial-cache files (i.e., host config files) for specific
 hosts, and Variorum's other CMake options and spack package.
 
-*******************************
- Accessing Low-Level Registers
-*******************************
+Please ensure that the dependencies for each platform are met before building 
+Variorum. The include the kernel module `msr-safe` for Intel systems, `msr`, 
+`amd_energy_driver` and HSMP driver for AMD sytems, OPAL firmware and sensors 
+for IBM, and NVML for NVIDIA. Details of each of these can be found in the 
+respective vendor pages, see :doc:`HWArchitectures`.
 
-To use Variorum on Intel platforms, the `msr-safe
-<https://github.com/llnl/msr-safe>`_ kernel driver must be loaded to enable
-user-level read and write of allowed MSRs.
-
-Alternately, you can use Variorum as root with the stock MSR kernel driver
-loaded.
-
-.. code:: bash
-
-   modprobe msr
-
-The kernel driver provides an interface to read and write MSRs on an x86
-processor.
-
-The msr-safe driver provides the following device files:
-
-.. code:: bash
-
-   ls /dev/cpu/<CPU>/msr_safe
-
-The stock MSR driver provides the following device files:
-
-.. code:: bash
-
-   ls /dev/cpu/<CPU>/msr
-
-For more details about accessing low-level counters and control knobs on other
-architectures supported by Variorum, see :doc:`HWArchitectures`.

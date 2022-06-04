@@ -17,6 +17,37 @@ Alongside the register diagrams we note what we have learned (if anything) by
 using the registers and discussing them with our colleagues at Intel and
 elsewhere.
 
+*******************************
+ Accessing Low-Level Registers
+*******************************
+
+To use Variorum on Intel platforms, the `msr-safe
+<https://github.com/llnl/msr-safe>`_ kernel driver must be loaded to enable
+user-level read and write of allowed MSRs.
+
+Alternately, you can use Variorum as root with the stock MSR kernel driver
+loaded.
+
+.. code:: bash
+
+   modprobe msr
+
+The kernel driver provides an interface to read and write MSRs on an x86
+processor.
+
+The msr-safe driver provides the following device files:
+
+.. code:: bash
+
+   ls /dev/cpu/<CPU>/msr_safe
+
+The stock MSR driver provides the following device files:
+
+.. code:: bash
+
+   ls /dev/cpu/<CPU>/msr
+
+
 ****************
  Best Practices
 ****************
