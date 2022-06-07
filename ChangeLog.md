@@ -1,3 +1,33 @@
+# Wed Jun 22 2022 Stephanie Brink <brink2@llnl.gov> v0.5.0
+Version 0.5.0 is a major release.
+
+### New features
+* Support for new architectures: AMD CPUs, Intel Ice Lake
+* Add examples for integration Variorum into OpenMP and MPI programs, adds
+  dependency on rankstr library for MPI examples (optional)
+
+### API changes
+* Rename clock_speed to frequency and power_limits to power_limit throughout
+  Variorum API
+* Report info about power domains through JSON, such as what can be measured,
+  what can be measured and capped (along with limits), and what cannot be
+  measured or capped (unsupported).
+* Deprecate set_and_verify API and removes associated example
+* Extend JSON API and Best Effort Node Power Cap to ARM, AMD, and Intel
+  platforms, IBM already supported
+
+### Other notable changes
+* Use getopt to parse arguments in examples
+* CI migrated from Travis to GitLab
+* Add presentations from ECP 2021 tutorial seriess
+* Extend GitLab build matrix to build across different GCC versions
+* Refactor msr_core.[ch] into its own directory as it is used by both Intel and
+  AMD ports
+* Improved docs: add AMD and ARM docs, rankstr dependency, re-organize
+  hierarchy, update system digram, add pages for categories of APIs, add info
+  on Argo, PowerStack, EEHPC WG, PowerAPI, and Variorum integrations
+* License header check as new unit test
+
 # Fri Apr 2 2021 Stephanie Brink <brink2@llnl.gov> v0.4.1
 * Add docs for NVIDIA port
 * Add units to tabular and JSON output formats
