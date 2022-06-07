@@ -172,7 +172,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
         // hwloc should give us expected results on any reasonable arch.
         // If something goes wrong, there's no sense in trying to keep
-        // marching forward.  Thus the asserts.
+        // marching forward.
         rc = hwloc_topology_init(&topology);
         if (rc != 0)
         {
