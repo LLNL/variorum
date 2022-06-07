@@ -23,6 +23,40 @@ References:
 -  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
 
 
+************
+Requirements
+************
+ Read access to `/sys/firmware/opal/exports/occ_inband_sensors` is required, 
+along with read/write access to 
+`/sys/firmware/opal/powercap/system_powercap/powercap_current`
+and `/sys/firmware/opal/psr/`. This can be enabled by using group permissions.
+For example, to allow only users belonging to certain group to set the
+power cap or power shifting ratio, `udev` can be used as follows.
+
+.. code:: bash      
+
+    # cat /etc/udev/rules.d/99-coral.rules                                              
+
+    KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", 
+    RUN+="/bin/chown root:coral 
+        /sys/firmware/opal/powercap/system-powercap/powercap-current 
+        /sys/firmware/opal/psr/cpu_to_gpu_0 
+        /sys/firmware/opal/psr/cpu_to_gpu_8"
+ 
+The above file needs to be copied to all nodes. The administrator has to create 
+a group named `coral` and add the users to this group. The `udev` rule can then 
+be set as follows:
+
+.. code:: bash      
+    # udevadm trigger /sys/block/sda
+
+    # ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
+    /sys/firmware/opal/psr/cpu_to_gpu_0 /sys/firmware/opal/psr/cpu_to_gpu_8
+    
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/powercap/system-powercap/powercap-current
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_0
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_8
+
 *******************************
  Inband Sensors for Monitoring
 *******************************

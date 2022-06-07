@@ -7,10 +7,6 @@
  Quick Start Guide
 ###################
 
-*********************
- Installing Variorum
-*********************
-
 The simplest way to install Variorum is using the default CMake settings (note,
 the default build targets an Intel architecture).
 

@@ -7,25 +7,18 @@
  Building Variorum
 ###################
 
-This page provides details on how to build Variorum from source.
-
-For the shortest path, see :doc:`QuickStart`.
-
-**********
- Overview
-**********
-
 Variorum uses CMake for its build system. Building Variorum creates the
-variorum library.
+variorum library and the`powmon` monitoring tool.
 
 The CMake variables (ENABLE_MPI={ON,OFF} and ENABLE_OPENMP={ON,OFF}) control
-the building of parallel examples.
+the building of parallel examples. 
 
-The build dependencies for a minimal build with no parallel components require the following:
+The build dependencies for a `minimal` build with no parallel components require the following:
 
    -  C
    -  hwloc
    -  jansson
+   -  access to vendor-specific drivers or kernel modules (see specific requirements in :doc:`HWArchitectures`). 
 
 ********************
  Build Dependencies
