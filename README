@@ -6,7 +6,7 @@
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
 interfaces for several features in hardware architectures.
 
-version 0.4.1
+version 0.5.0
 
 
 Last Update
@@ -84,7 +84,7 @@ or `/proc/cpuinfo` (note that it will not be in hexadecimal).
 
 Supported AMD Microrchitectures:
 
-    Family 19h, Models 0~Fh and 30h ~ 3Fh (EPYC Milan) 
+    Family 19h, Models 0~Fh and 30h ~ 3Fh (EPYC Milan)
 
 Supported ARM Microrchitectures:
 
@@ -128,8 +128,9 @@ For sample code, see the `examples/` directory.
 This software has certain system requirements depending on what hardware you
 are running on.
 
-AMD: Running this software on AMD platforms depends on the AMD Energy Driver, 
-AMD HSMP driver, and AMD E-SMI library being available with the correct permissions. 
+AMD: Running this software on AMD platforms depends on the AMD Energy Driver,
+AMD HSMP driver, and AMD E-SMI library being available with the correct
+permissions.
 
 ARM: Running this software on ARM platforms depends on the Linux Hardware
 Monitoring (hwmon) subsystem for access to the monitoring and control
