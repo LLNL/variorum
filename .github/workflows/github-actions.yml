@@ -405,6 +405,12 @@ jobs:
           flake8
           black --diff --check .
 
+      - name: Check license headers
+        if: ${{ matrix.python-version == 3.7 }}
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          python scripts/license.py verify
+
   build-with-spack-mirrors:
     runs-on: ubuntu-latest
 
