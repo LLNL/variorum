@@ -26,8 +26,8 @@ References:
 ************
 Requirements
 ************
- Read access to `/sys/firmware/opal/exports/occ_inband_sensors` is required, 
-along with read/write access to 
+Read access to `/sys/firmware/opal/exports/occ_inband_sensors` is required, 
+along with read-write access to 
 `/sys/firmware/opal/powercap/system_powercap/powercap_current`
 and `/sys/firmware/opal/psr/`. This can be enabled by using group permissions.
 For example, to allow only users belonging to certain group to set the
@@ -37,8 +37,7 @@ power cap or power shifting ratio, `udev` can be used as follows.
 
     # cat /etc/udev/rules.d/99-coral.rules                                              
 
-    KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", 
-    RUN+="/bin/chown root:coral 
+    KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", RUN+="/bin/chown root:coral 
         /sys/firmware/opal/powercap/system-powercap/powercap-current 
         /sys/firmware/opal/psr/cpu_to_gpu_0 
         /sys/firmware/opal/psr/cpu_to_gpu_8"
@@ -48,6 +47,7 @@ a group named `coral` and add the users to this group. The `udev` rule can then
 be set as follows:
 
 .. code:: bash      
+
     # udevadm trigger /sys/block/sda
 
     # ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
