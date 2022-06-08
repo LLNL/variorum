@@ -13,16 +13,6 @@ describe below. Permissions on these files can be modified through cgroups.
 OPAL/Skiboot is part of IBM provided firmware that is expected to be present on
 the system.
 
-References:
-
--  `OCC
-   <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
--  `OPAL
-   <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
--  `Skiboot <https://github.com/open-power/skiboot>`_
--  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
-
-
 ************
 Requirements
 ************
@@ -35,7 +25,7 @@ power cap or power shifting ratio, `udev` can be used as follows.
 
 .. code:: bash      
 
-    # cat /etc/udev/rules.d/99-coral.rules                                              
+    $ cat /etc/udev/rules.d/99-coral.rules                                              
 
     KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", RUN+="/bin/chown root:coral 
         /sys/firmware/opal/powercap/system-powercap/powercap-current 
@@ -48,9 +38,9 @@ be set as follows:
 
 .. code:: bash      
 
-    # udevadm trigger /sys/block/sda
+    $ udevadm trigger /sys/block/sda
 
-    # ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
+    $ ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
     /sys/firmware/opal/psr/cpu_to_gpu_0 /sys/firmware/opal/psr/cpu_to_gpu_8
     
     -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/powercap/system-powercap/powercap-current
@@ -182,3 +172,16 @@ The figure below shows the details of GPU power shifting ratio.
 .. image:: images/IBM_GPUPowerShiftingRatio.png
    :height: 300px
    :align: center
+
+***********
+References:
+***********
+
+-  `OCC
+   <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
+-  `OPAL
+   <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
+-  `Skiboot <https://github.com/open-power/skiboot>`_
+-  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
+
+

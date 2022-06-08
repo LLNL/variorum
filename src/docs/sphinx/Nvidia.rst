@@ -13,26 +13,9 @@ stack as well as open-source software components described below. The
 high-level API provided by Variorum is read-only (i.e., monitoring-only),
 primarily because of the access limitations on our target platform.
 
-*********************
- Build Configuration
-*********************
-
-We provide an example CMake host config file, which defines the CMake build
-variables set on our test platform (Lassen supercomputer at LLNL):
-`lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`.
-
-For your build system, you will need to modify two CMake variables:
-
-   -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
-      '-L' flag)
-   -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc
-
-You should also enable Variorum to build for NVIDIA's architecture:
-``VARIORUM_WITH_NVIDIA=ON``
-
-**************
- Dependencies
-**************
+*************
+Requirements
+*************
 
 The NVIDIA port of Variorum depends on:
 
@@ -56,6 +39,23 @@ command line tool.
 We have tested our NVIDIA port with CUDA 9.2 and CUDA-enabled build of hwloc
 1.11.10. The NVIDIA port has been tested on the Tesla GPU architecture (NVIDIA
 Volta SM200).
+
+********************
+Build Configuration
+********************
+
+We provide an example CMake host config file, which defines the CMake build
+variables set on our test platform (Lassen supercomputer at LLNL):
+`lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`.
+
+For your build system, you will need to modify two CMake variables:
+
+   -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
+      '-L' flag)
+   -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc
+
+You should also enable Variorum to build for NVIDIA's architecture:
+``VARIORUM_WITH_NVIDIA=ON``
 
 ********************
  Device Enumeration

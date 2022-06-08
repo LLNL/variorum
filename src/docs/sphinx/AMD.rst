@@ -7,6 +7,14 @@
  AMD Overview
 ##############
 
+AMD platforms support in-band monitoring and control through sensors and 
+machine-specific registers. AMD provides and open-source stack of its drivers
+as well as its in-band library that Variorum leverages.
+
+************
+Requirements
+************
+
 The current AMD port of Variorum supports the AMD processors
 from the AMD EPYC Milan family 19h, models 0~Fh and 30h~3Fh.
 This functionality has been tested on SLES15 and Ubuntu 18.04.

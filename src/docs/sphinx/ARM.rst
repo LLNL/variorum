@@ -13,6 +13,10 @@ Cortex-A53 (LITTLE) clusters (also called processors), respectively. It also
 has an Arm Mali GP-GPU. We have tested the ARM functionality of Variorum on
 Linaro supported Linux.
 
+************
+Requirements
+************
+
 This version of the ARM port of Variorum depends on the Linux Hardware
 Monitoring (hwmon) subsystem for access to the telemetry and control interfaces
 on the tested ARM platform. The standardized data interfaces provided by the
