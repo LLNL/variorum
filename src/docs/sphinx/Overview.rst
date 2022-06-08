@@ -15,9 +15,9 @@ different generations within a particular device. More specifically, Variorum's
 flexible design supports a set of features that may exist on one generation of
 hardware, but not on another.
 
-**************
- Requirements
-**************
+******************
+ Design Principles
+******************
 
 To guide the development of Variorum, we focused on a set of important
 requirements extracted from our learnings with the development of ``libmsr``.

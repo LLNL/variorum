@@ -69,30 +69,30 @@ http://github.com/llnl/variorum/issues
    :caption: Basics
 
    QuickStart
+   BuildingVariorum
    Releases
-   Publications
    Licenses
 
 .. toctree::
    :maxdepth: 2
    :caption: Reference
 
-   BuildingVariorum
    Variorum
    VariorumAPI
-   VariorumTools
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contributing
-
-   VariorumDevel
+   Publications
 
 .. toctree::
    :maxdepth: 2
    :caption: Vendor Notes
 
    HWArchitectures
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contributing
+
+   VariorumDevel
+   VariorumTools
 
 ********************
  Indices and tables
