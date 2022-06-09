@@ -74,8 +74,8 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
    Examples
    Powmon
    Utilities
-   PowerStack
    Publications
+   PowerStack
 
 .. toctree::
    :maxdepth: 2
