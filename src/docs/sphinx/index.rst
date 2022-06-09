@@ -7,18 +7,13 @@
  Variorum
 ##########
 
-An extensible vendor-neutral library for exposing power and performance
-monitoring and control capabilities of low-level hardware knobs.
-
-**************
- Introduction
-**************
-
-Variorum is an extensible library for exposing monitor and control capabilities
-of low-level hardware knobs. Variorum provides vendor-neutral APIs such that
+Variorum is an extensible, vendor-netural library for exposing power and performance
+monitoring and control capabilities of low-level hardware knobs across diverse
+architectures in a user-friendly manner. Variorum provides vendor-neutral APIs such that
 the user can query or control hardware knobs without needing to know the
-underlying vendor's implementation. These APIs enable HPC application
-developers to gain a better understanding of performance through various
+underlying vendor's implementation (for example, machine-specific registers
+or sensor interfaces). These APIs enable HPC application developers to gain a better 
+understanding of power, energy, and performance through various
 metrics for the devices contained within the node. Additionally, the APIs may
 enable system software to control hardware knobs to optimize for a particular
 goal.
@@ -29,6 +24,9 @@ Variorum focuses on ease of use and reduced integration burden in applications:
    program.
 -  It includes an example performance analysis sampler that runs alongside the
    application.
+-  It includes a JSON API to allow integration with higher-level system software,
+    such as job schedulers, distributed monitoring frameworks, or applcation-level 
+    runtime systems.
 
 ****************************
  Variorum Project Resources
