@@ -33,3 +33,8 @@ Variorum. The include the kernel module `msr-safe` for Intel systems, `msr`,
 for IBM, and NVML for NVIDIA. Details of each of these can be found in the 
 respective vendor pages, see :doc:`HWArchitectures`.
 
+For beginners, the ECP Variorum Lecture Series is beneficial. Slides and recordings
+can be found here: https://www.exascaleproject.org/event/variorum-class-series/
+
+
+

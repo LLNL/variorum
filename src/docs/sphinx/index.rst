@@ -67,15 +67,13 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
 
 .. toctree::
    :maxdepth: 2
-   :caption: Reference
+   :caption: Usage
 
    Overview
    VariorumAPI
    Examples
    Powmon
    Utilities
-   PowerStack
-   Publications
 
 .. toctree::
    :maxdepth: 2
@@ -89,6 +87,14 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
 
    VariorumDevel
    VariorumTools
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+
+   Argo
+   PowerStack
+   Publications
 
 .. toctree::
    :maxdepth: 2
