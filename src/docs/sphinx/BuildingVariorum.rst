@@ -17,14 +17,14 @@ the building of parallel examples.
  Build Dependencies
 ********************
 
-The build dependencies for a `minimal` build with no parallel components require the following:
+The build dependencies for a ``minimal build`` with no parallel components require the following:
 
    -  C
    -  hwloc
    -  jansson
    -  access to vendor-specific drivers or kernel modules (see specific requirements in :doc:`HWArchitectures`). 
 
-For a `parallel` build with MPI, Variorum depends on: 
+For a ``parallel build`` with MPI/OpenMP, Variorum depends on: 
 
    -  rankstr (only required for MPI/OpenMP builds)
 
