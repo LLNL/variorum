@@ -14,6 +14,7 @@ would not be possible. We thank them for the regular discussions, bug fixes,
 feature enhancements, testbed access and other support. 
 
     - Peter Bailey (Google)
+    - Natalie Bates (EEHPCWG)
     - Shilpasri Bhat (IBM)
     - Sascha Bischoff (ARM)
     - Grayson Blanks (Apple)
@@ -31,8 +32,9 @@ feature enhancements, testbed access and other support.
     - Eric Green (LLNL)
     - Jessica Hannebert (Colorado College)
     - Sachin Idgunji (NVIDIA)
-    - Kamil Iskra (Argonne National Laboratory) 
-    - Siddhartha Jana (EEHPC/Intel)
+    - Kamil Iskra (Argonne National Laboratory)
+    - Tanzima Islam (Texas Tech University) 
+    - Siddhartha Jana (EEHPCWG/Intel)
     - Masaaki Kondo (University of Tokyo)
     - Eun K Lee (IBM)
     - David Lowenthal (Univeristy of Arizona)
