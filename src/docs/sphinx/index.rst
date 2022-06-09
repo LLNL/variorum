@@ -79,6 +79,7 @@ http://github.com/llnl/variorum/issues
 
    Variorum
    VariorumAPI
+   Powmon
    Publications
 
 .. toctree::
