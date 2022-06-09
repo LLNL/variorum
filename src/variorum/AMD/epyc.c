@@ -497,58 +497,58 @@ int epyc_get_node_power_json(json_t *get_power_obj)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-       unsigned nsockets;
-       char hostname[1024];
-       struct timeval tv;
-       uint64_t ts;
-       /* AMD authors declared this as uint32_t and typecast it to double, 
-        * not sure why. Just following their lead from the get_power function*/ 
-       uint32_t current_power;
+    unsigned nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    /* AMD authors declared this as uint32_t and typecast it to double,
+     * not sure why. Just following their lead from the get_power function*/
+    uint32_t current_power;
 
-        gethostname(hostname, 1024);
-        gettimeofday(&tv, NULL);
-        ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-        json_object_set_new(get_power_obj, "host", json_string(hostname));
-        json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
-        for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform.num_sockets; i++)
+    {
+        char cpu_str[36] = "power_cpu_watts_socket_";
+        char mem_str[36] = "power_mem_watts_socket_";
+        char gpu_str[36] = "power_gpu_watts_socket_";
+
+        snprintf(sockID, sockID_len, "%d", i);
+        strcat(cpu_str, sockID);
+        strcat(mem_str, sockID);
+        strcat(gpu_str, sockID);
+
+        current_power = 0;
+        ret = esmi_socket_power_get(i, &current_power);
+        if (ret != 0)
         {
-            char cpu_str[36] = "power_cpu_watts_socket_";
-            char mem_str[36] = "power_mem_watts_socket_";
-            char gpu_str[36] = "power_gpu_watts_socket_";
-
-            snprintf(sockID, sockID_len, "%d", i);
-            strcat(cpu_str, sockID);
-            strcat(mem_str, sockID);
-            strcat(gpu_str, sockID);
-
-            current_power = 0;
-            ret = esmi_socket_power_get(i, &current_power);
-            if (ret != 0)
-            {
-                fprintf(stdout, "Failed to get socket[%d] _POWER, "
-                     "Err[%d]:%s\n", i, ret, esmi_get_err_msg(ret));
-                return ret;
-            }
-            else
-            { 
-                json_object_set_new(get_power_obj, cpu_str, 
-                                        json_real((double)current_power/1000);
-            }
-
-            // GPU power set to -1.0 for vendor neutrality and first cut, as we
-            // don't have a way to measure this yet.
-            json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
-
-            // Memory power set to -1.0 as this platform does not expose
-            // memory power yet.
-            json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
-
-            node_power += (double)current_power/1000;
+            fprintf(stdout, "Failed to get socket[%d] _POWER, "
+                    "Err[%d]:%s\n", i, ret, esmi_get_err_msg(ret));
+            return ret;
+        }
+        else
+        {
+            json_object_set_new(get_power_obj, cpu_str,
+                                json_real((double)current_power / 1000);
         }
 
-        // Set the node power key with pwrnode value.
-        json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
+        // GPU power set to -1.0 for vendor neutrality and first cut, as we
+        // don't have a way to measure this yet.
+        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
+
+        // Memory power set to -1.0 as this platform does not expose
+        // memory power yet.
+        json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
+
+        node_power += (double)current_power / 1000;
+    }
+
+    // Set the node power key with pwrnode value.
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
     return 0;
 }
 
