@@ -32,30 +32,23 @@ such as job schedulers, distributed monitoring frameworks, or applcation-level r
 ****************************
 
 **Online Documentation**
-
 https://variorum.readthedocs.io/
 
 **Github Source Repo**
-
 http://github.com/llnl/variorum
 
 **Issue Tracker**
-
 http://github.com/llnl/variorum/issues
 
-**************
- Contributors
-**************
+****************
+ Lead Developers
+****************
 
--  Peter Bailey
 -  Stephanie Brink (LLNL)
--  Daniel Ellsworth
 -  Aniruddha Marathe (LLNL)
--  Lauren Morita
 -  Tapasya Patki (LLNL)
 -  Barry Rountree (LLNL)
 -  Kathleen Shoga (LLNL)
--  Scott Walker
 
 ************************
  Variorum Documentation
