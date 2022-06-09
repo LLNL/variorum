@@ -15,7 +15,7 @@ Fixes # (issue)
 # How Has This Been Tested?
 
 Please describe the tests that you ran to verify your changes. Please provide hardware architecture specs and instructions so we can 
-eproduce.
+reproduce.
 
 - [ ] Test A: Hardware architecture, machine name, example/test run
 - [ ] Test B: Hardware architecture, machine name, example/test run
