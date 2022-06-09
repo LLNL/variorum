@@ -72,14 +72,9 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
    Overview
    VariorumAPI
    Examples
+   HWArchitectures
    Powmon
    Utilities
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Vendor Notes
-
-   HWArchitectures
 
 .. toctree::
    :maxdepth: 2
