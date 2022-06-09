@@ -3,9 +3,9 @@
    #
    # SPDX-License-Identifier: MIT
 
-##########################################
- Variorum Supported Platform Documentation
-##########################################
+#################################
+ Supported Platform Documentation
+#################################
 
 These are the currently supported platforms in Variorum.
 
