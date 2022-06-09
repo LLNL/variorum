@@ -77,7 +77,9 @@ http://github.com/llnl/variorum/issues
    :maxdepth: 2
    :caption: Reference
 
-   Variorum
+   Overview
+   Examples
+   Utilities
    VariorumAPI
    Powmon
    Publications
