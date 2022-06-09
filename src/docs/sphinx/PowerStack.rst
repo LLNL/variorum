@@ -11,7 +11,6 @@ TBD.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Related Community Efforts
 
     PowerAPI
     EEHPC
