@@ -29,6 +29,5 @@ reproduce.
 - [ ] My changes generate no new warnings
 - [ ] New and existing unit tests pass with my changes
 
-If you want to ask a question about the tool (how to use it, what it can currently do, etc.), 
         
 Thank you for taking the time to contribute to Variorum!
