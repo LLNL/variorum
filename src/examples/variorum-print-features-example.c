@@ -7,8 +7,6 @@
 #include <getopt.h>
 #include <variorum.h>
 #include <variorum_config.h>
-#define QuoteIdent(ident) #ident
-#define QuoteMacro(macro) QuoteIdent(macro)
 
 int main(int argc, char **argv)
 {

@@ -536,4 +536,8 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// @brief Test for memory leaks.
 int variorum_tester(void);
 
+/// @brief To get a quoted variorum version, use QuoteMacro(VARIORUM_VERSION).
+#define QuoteIdent(ident) #ident
+#define QuoteMacro(macro) QuoteIdent(macro)
+
 #endif
