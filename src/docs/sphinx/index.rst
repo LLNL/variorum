@@ -93,6 +93,7 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
    :caption: Reference
 
    Argo
+   PowerAPI
    PowerStack
    Publications
 
