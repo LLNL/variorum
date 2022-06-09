@@ -24,8 +24,7 @@ Variorum focuses on ease of use and reduced integration burden in applications:
    program.
 -  It includes an example performance analysis sampler that runs alongside the
    application.
--  It includes a JSON API to allow integration with higher-level system software,
-such as job schedulers, distributed monitoring frameworks, or applcation-level runtime systems.
+-  It includes a JSON API to allow integration with higher-level system software, such as job schedulers, distributed monitoring frameworks, or applcation-level runtime systems.
 
 ****************************
  Variorum Project Resources
