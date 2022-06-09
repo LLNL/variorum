@@ -492,6 +492,12 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
     return ret;
 }
 
+/* NOTE, June 8, 2022. The build and run of the two JSON APIs below has not been
+ * tested because we don't have access to a node with the right drivers and
+ * micro-architecture. Please use with caution and report any bugs or fixes to
+ * the variorum development team.
+ * We expect to test and update these two functions when access is made available.
+ * */
 int epyc_get_node_power_json(json_t *get_power_obj)
 {
 #ifdef VARIORUM_LOG
