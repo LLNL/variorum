@@ -59,8 +59,6 @@ http://github.com/llnl/variorum/issues
 
    QuickStart
    BuildingVariorum
-   Releases
-   Licenses
 
 .. toctree::
    :maxdepth: 2
@@ -71,6 +69,7 @@ http://github.com/llnl/variorum/issues
    Examples
    Powmon
    Utilities
+   PowerStack
    Publications
 
 .. toctree::
@@ -85,6 +84,13 @@ http://github.com/llnl/variorum/issues
 
    VariorumDevel
    VariorumTools
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Other
+
+   Releases
+   Licenses
 
 ********************
  Indices and tables
