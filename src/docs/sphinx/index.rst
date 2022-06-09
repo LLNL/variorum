@@ -76,10 +76,10 @@ http://github.com/llnl/variorum/issues
    :caption: Reference
 
    Overview
-   Examples
-   Utilities
    VariorumAPI
+   Examples
    Powmon
+   Utilities
    Publications
 
 .. toctree::
