@@ -16,16 +16,15 @@ or sensor interfaces). These APIs enable HPC application developers to gain a be
 understanding of power, energy, and performance through various
 metrics for the devices contained within the node. Additionally, the APIs may
 enable system software to control hardware knobs to optimize for a particular
-goal. 
-
-Variorum focuses on ease of use and reduced integration burden in applications,
+goal. Variorum focuses on ease of use and reduced integration burden in applications,
 which it accomplishes through the following:
 
 -  It includes examples which demonstrate how to use Variorum in a stand-alone
    program.
 -  It includes an example performance analysis sampler that runs alongside the
    application.
--  It includes a JSON API to allow integration with higher-level system software, such as job schedulers, distributed monitoring frameworks, or applcation-level runtime systems.
+-  It includes a JSON API to allow integration with higher-level system software, 
+such as job schedulers, distributed monitoring frameworks, or applcation-level runtime systems.
 
 ****************************
  Variorum Project Resources
