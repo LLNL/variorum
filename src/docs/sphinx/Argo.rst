@@ -34,7 +34,7 @@ exascale era, both in terms of not exceeding the overall available power budget
 and in terms of utilizing the available power to make the most application progress. 
 Argo employs hierarchical power management that includes both system-level (global) 
 and node-local mechanisms and policies. This includes developing and enabling power
-manegement in HPC schedulers (such as SLURM and Flux), large-scale system monitoring
+management in HPC schedulers (such as SLURM and Flux), large-scale system monitoring
 frameworks (LDMS), application profilers (such as Caliper), runtime system frameworks
 (such as Kokkos, GEOPM), and similar system- and application-level frameworks. 
 

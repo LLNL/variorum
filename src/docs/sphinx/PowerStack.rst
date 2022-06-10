@@ -12,8 +12,10 @@ and industry in order to design a holistic and extensible power management frame
 which we refer to as the PowerStack. The PowerStack explores hierarchical interfaces 
 for power management at three specific levels: batch job schedulers, job-level runtime systems, 
 and node-level managers. The HPC PowerStack community meets regularly, details of
-which can be found at: https://hpcpowerstack.github.io. :doc:`Argo` is one of the 
-contrubitors to the HPC PowerStack Initiative. HPC PowerStack also closely 
+which can be found at: https://hpcpowerstack.github.io. 
+
+The :doc:`Argo` is one of the 
+key contributors to the HPC PowerStack Initiative. HPC PowerStack also closely 
 collaborates with the following community efforts:
 
 .. toctree::
@@ -39,5 +41,5 @@ that represents the vendor-agnostic node-level interface, which can integrate wi
 high-levels in the PowerStack as and when needed, which we describe in :doc:`VariorumTools`. 
 
 .. image:: images/PowerStack.png
-   :scale: 50 %
+   :scale: 70 %
 

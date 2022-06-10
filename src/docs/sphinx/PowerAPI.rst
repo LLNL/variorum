@@ -13,6 +13,6 @@ Energy-Efficient High Performance Computing Working Group (EEHPCWG) and also wit
 the Exascale Computing Project (ECP). A community specification as well as a reference
 implementation of the Power API can be found on their website, https://pwrapi.github.io. 
 
-Upcoming goal for the Variorum team includes supporting relevant plattform- and 
+Upcoming goal for the Variorum team includes supporting relevant platform- and 
 node-level APIs from the Power API community specification.
 

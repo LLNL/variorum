@@ -7,7 +7,7 @@
  Monitoring Binaries with Variorum
 ##################################
 
-While the Variorum API allows for detailed critical path analayis of the power 
+While the Variorum API allows for detailed critical path analysis of the power 
 profile of user applications as well as for integration with system software 
 such as Kokkos, Caliper, and Flux through code annotations, there are scenarios 
 where such annotations are not possible. In order to support such scenarios, we
@@ -49,9 +49,9 @@ and then sample the power usage while executing a sleep for 10 seconds:
 
     $ power_wrapper_static -w 100 -a "sleep 10"
 
-Similaarly, the example below will set an initial package-level power limit of 
+Similarly, the example below will set an initial package-level power limit of 
 100W on each socket, sample the power usage, and then dynamically adjust the 
-power cap stepwise every 500ms while executing a sleep for 10 seconds: 
+power cap step-wise every 500ms while executing a sleep for 10 seconds: 
 
 .. code:: bash                                                                  
 
