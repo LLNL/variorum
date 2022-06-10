@@ -20,4 +20,6 @@ int arm_cap_socket_frequency(int cpuid, int freq);
 
 int arm_get_power_json(json_t *get_power_obj);
 
+int arm_get_power_domain_info_json(json_t *get_power_domain_obj);
+
 #endif

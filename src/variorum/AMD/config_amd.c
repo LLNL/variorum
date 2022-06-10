@@ -72,6 +72,9 @@ int set_amd_func_ptrs(void)
             g_platform.variorum_cap_each_core_frequency_limit =
                 epyc_set_each_core_boostlimit;
             g_platform.variorum_cap_socket_frequency_limit = epyc_set_socket_boostlimit;
+            g_platform.variorum_get_node_power_json = epyc_get_node_power_json;
+            g_platform.variorum_get_node_power_domain_info_json =
+                epyc_get_node_power_domain_info_json;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "

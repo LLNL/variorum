@@ -443,7 +443,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 
 void print_package_power_info(FILE *writedest, off_t msr, int socket)
 {
-    struct rapl_power_info info;
+    struct rapl_pkg_power_info info;
     char hostname[1024];
     static int init_print_package_power_info = 0;
 
@@ -456,7 +456,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
                 "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
     }
 
-    if (!get_rapl_power_info(socket, &info, msr))
+    if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
         fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
@@ -466,12 +466,12 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
 {
-    struct rapl_power_info info;
+    struct rapl_pkg_power_info info;
     char hostname[1024];
 
     gethostname(hostname, 1024);
 
-    if (!get_rapl_power_info(socket, &info, msr))
+    if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
         fprintf(writedest,
                 "_PACKAGE_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
@@ -479,6 +479,46 @@ void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
                 info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
     }
 }
+
+void print_dram_power_info(FILE *writedest, off_t msr, int socket)
+{
+    struct rapl_dram_power_info info;
+    char hostname[1024];
+    static int init_print_dram_power_info = 0;
+
+    gethostname(hostname, 1024);
+
+    if (!init_print_dram_power_info)
+    {
+        init_print_dram_power_info = 1;
+        fprintf(writedest,
+                "_DRAM_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
+    }
+
+    if (!get_rapl_dram_power_info(socket, &info, msr))
+    {
+        fprintf(writedest, "_DRAM_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
+                msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
+                info.dram_min_power, info.dram_max_window, info.dram_therm_power);
+    }
+}
+
+void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
+{
+    struct rapl_dram_power_info info;
+    char hostname[1024];
+
+    gethostname(hostname, 1024);
+
+    if (!get_rapl_dram_power_info(socket, &info, msr))
+    {
+        fprintf(writedest,
+                "_DRAM_POWER_INFO Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, MaxPower: %lf W, MinPower: %lf W, MaxTimeWindow: %lf sec, ThermPower: %lf W\n",
+                msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
+                info.dram_min_power, info.dram_max_window, info.dram_therm_power);
+    }
+}
+
 
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                                off_t msr_rapl_unit, int socket)
@@ -656,15 +696,17 @@ int cap_package_power_limit(const unsigned socket, int package_power_limit,
     return ret;
 }
 
-int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
-                        off_t msr)
+int get_rapl_pkg_power_info(const unsigned socket,
+                            struct rapl_pkg_power_info *info,
+                            off_t msr)
 {
     uint64_t val = 0;
 
     sockets_assert(&socket);
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_power_info)\n", getenv("HOSTNAME"),
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_pkg_power_info)\n",
+            getenv("HOSTNAME"),
             __FILE__, __LINE__);
 #endif
 
@@ -680,6 +722,36 @@ int get_rapl_power_info(const unsigned socket, struct rapl_power_info *info,
 
     val = MASK_VAL(info->msr_pkg_power_info, 14, 0);
     translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr);
+
+    return 0;
+}
+
+int get_rapl_dram_power_info(const unsigned socket,
+                             struct rapl_dram_power_info *info,
+                             off_t msr)
+{
+    uint64_t val = 0;
+
+    sockets_assert(&socket);
+
+#ifdef VARIORUM_DEBUG
+    fprintf(stderr, "%s %s::%d DEBUG: (get_rapl_dram_power_info)\n",
+            getenv("HOSTNAME"),
+            __FILE__, __LINE__);
+#endif
+
+    read_msr_by_coord(socket, 0, 0, msr, &(info->msr_dram_power_info));
+    val = MASK_VAL(info->msr_dram_power_info, 54, 48);
+    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 46, 32);
+    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 30, 16);
+    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr);
+
+    val = MASK_VAL(info->msr_dram_power_info, 14, 0);
+    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr);
 
     return 0;
 }
@@ -1002,11 +1074,32 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 }
 
 
-void json_get_power_domain_info(json_t *get_domain_obj)
+void json_get_power_domain_info(json_t *get_domain_obj,
+                                off_t msr_pkg_power_info, off_t
+                                msr_dram_power_info, off_t msr_rapl_unit, off_t msr_power_limit)
 {
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
+    struct rapl_pkg_power_info pkg_info;
+    struct rapl_dram_power_info dram_info;
+    char range_str[100];
+
+    get_package_rapl_limit(0, NULL, NULL, 0, msr_rapl_unit);
+    struct rapl_limit l1, l2;
+
+    // Have to query RAPL limits first, in order to query power info
+    get_package_rapl_limit(0, &l1, &l2, msr_power_limit, msr_rapl_unit);
+
+    // First argument here is socket ID, both sockets have same info.
+    get_rapl_pkg_power_info(0, &pkg_info, msr_pkg_power_info);
+    get_rapl_dram_power_info(0, &dram_info, msr_dram_power_info);
+
+    snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s",
+             "[{min: ", pkg_info.pkg_min_power,
+             ", max: ", pkg_info.pkg_max_power,
+             "}, {min: ", dram_info.dram_min_power,
+             ", max: ", dram_info.dram_max_power, "}]");
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -1019,13 +1112,13 @@ void json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "control",
                         json_string("[power_cpu, power_mem]"));
     json_object_set_new(get_domain_obj, "unsupported",
-                        json_string("[]"));
+                        json_string("[power_node]"));
     json_object_set_new(get_domain_obj, "measurement_units",
                         json_string("[Watts, Watts]"));
     json_object_set_new(get_domain_obj, "control_units",
                         json_string("[Watts, Watts]"));
     json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[{min: 65, max: 135}, {min: 15, max: 30}]"));
+                        json_string(range_str));
 
     // Need to figure out a way to specify capping limits by reading MSRs.
     // If we have an NVIDIA + Intel build, the GPU info should be updated.

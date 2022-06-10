@@ -66,7 +66,7 @@ struct rapl_limit
 
 /// @brief Structure containing power range info for RAPL usage for various
 /// RAPL power domains.
-struct rapl_power_info
+struct rapl_pkg_power_info
 {
     /**************************/
     /* RAPL Power Domain: PKG */
@@ -84,6 +84,28 @@ struct rapl_power_info
     double pkg_max_window;
     /// @brief Thermal specification power (in Watts) of the package domain.
     double pkg_therm_power;
+};
+
+/// @brief Structure containing power range info for RAPL usage for various
+/// RAPL DRAM power domains.
+struct rapl_dram_power_info
+{
+    /**************************/
+    /* RAPL Power Domain: DRAM */
+    /**************************/
+    /// @brief Raw 64-bit value stored in MSR_DRAM_POWER_INFO.
+    uint64_t msr_dram_power_info;
+    /// @brief Max power (in Watts) derived from electrical specifications of
+    /// the dram domain.
+    double dram_max_power;
+    /// @brief Min power (in Watts) derived from electrical specifications of
+    /// the dram domain.
+    double dram_min_power;
+    /// @brief Max time (in seconds) that can be set in either time window field
+    /// of the dram domain.
+    double dram_max_window;
+    /// @brief Thermal specification power (in Watts) of the dram domain.
+    double dram_therm_power;
 };
 
 /// @brief Structure containing data from energy, time, and power measurements
@@ -183,13 +205,21 @@ int get_dram_rapl_limit(const unsigned socket,
 void print_rapl_power_unit(FILE *writedest,
                            off_t msr);
 
-int get_rapl_power_info(const unsigned socket,
-                        struct rapl_power_info *info,
-                        off_t msr);
+int get_rapl_pkg_power_info(const unsigned socket,
+                            struct rapl_pkg_power_info *info,
+                            off_t msr);
+
+int get_rapl_dram_power_info(const unsigned socket,
+                             struct rapl_dram_power_info *info,
+                             off_t msr);
 
 void print_package_power_info(FILE *writedest,
                               off_t msr,
                               int socket);
+
+void print_dram_power_info(FILE *writedest,
+                           off_t msr,
+                           int socket);
 
 void print_verbose_rapl_power_unit(FILE *writedest,
                                    off_t msr);
@@ -202,6 +232,10 @@ void print_verbose_package_power_limit(FILE *writedest,
 void print_verbose_package_power_info(FILE *writedest,
                                       off_t msr,
                                       int socket);
+
+void print_verbose_dram_power_info(FILE *writedest,
+                                   off_t msr,
+                                   int socket);
 
 int cap_package_power_limit(const unsigned socket,
                             int package_power_limit,
@@ -224,7 +258,11 @@ void json_get_power_data(json_t *get_power_obj,
                          off_t msr_pkg_energy_status,
                          off_t msr_dram_energy_status);
 
-void json_get_power_domain_info(json_t *get_domain_obj);
+void json_get_power_domain_info(json_t *get_domain_obj,
+                                off_t msr_pkg_power_info,
+                                off_t msr_dram_power_info,
+                                off_t msr_rapl_unit,
+                                off_t msr_power_limit);
 
 /// @brief Store the RAPL data on the heap.
 ///

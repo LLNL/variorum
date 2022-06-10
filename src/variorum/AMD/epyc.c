@@ -491,3 +491,114 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
     }
     return ret;
 }
+
+/* NOTE, June 8, 2022. The build and run of the two JSON APIs below has not been
+ * tested because we don't have access to a node with the right drivers and
+ * micro-architecture. Please use with caution and report any bugs or fixes to
+ * the variorum development team.
+ * We expect to test and update these two functions when access is made available.
+ * */
+int epyc_get_node_power_json(json_t *get_power_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+    unsigned nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    /* AMD authors declared this as uint32_t and typecast it to double,
+     * not sure why. Just following their lead from the get_power function*/
+    uint32_t current_power;
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < g_platform.num_sockets; i++)
+    {
+        char cpu_str[36] = "power_cpu_watts_socket_";
+        char mem_str[36] = "power_mem_watts_socket_";
+        char gpu_str[36] = "power_gpu_watts_socket_";
+
+        snprintf(sockID, sockID_len, "%d", i);
+        strcat(cpu_str, sockID);
+        strcat(mem_str, sockID);
+        strcat(gpu_str, sockID);
+
+        current_power = 0;
+        ret = esmi_socket_power_get(i, &current_power);
+        if (ret != 0)
+        {
+            fprintf(stdout, "Failed to get socket[%d] _POWER, "
+                    "Err[%d]:%s\n", i, ret, esmi_get_err_msg(ret));
+            return ret;
+        }
+        else
+        {
+            json_object_set_new(get_power_obj, cpu_str,
+                                json_real((double)current_power / 1000);
+        }
+
+        // GPU power set to -1.0 for vendor neutrality and first cut, as we
+        // don't have a way to measure this yet.
+        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
+
+        // Memory power set to -1.0 as this platform does not expose
+        // memory power yet.
+        json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
+
+        node_power += (double)current_power / 1000;
+    }
+
+    // Set the node power key with pwrnode value.
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
+    return 0;
+}
+
+int epyc_get_node_power_domain_info_json(json_t *get_domain_obj)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    int ret = 0;
+    uint32_t max_power = 0;
+    char range_str[100];
+
+    //Get max power from E-SMI from socket 0, same for both sockets.
+    //E-SMI doesn't expose minimum yet, something we need AMD to help with.
+    //Assuming minimum is 50 W.
+    ret = esmi_socket_power_cap_max_get(0, &max_power);
+
+    snprintf(range_str, sizeof range_str, "%s%d",
+             "[{min: ", 50,
+             ", max: ", max_power, "}]");
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+    json_object_set_new(get_domain_obj, "host", json_string(hostname));
+    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
+
+    json_object_set_new(get_domain_obj, "measurement",
+                        json_string("[power_cpu]"));
+    json_object_set_new(get_domain_obj, "control",
+                        json_string("[power_cpu]"));
+    json_object_set_new(get_domain_obj, "unsupported",
+                        json_string("[power_node, power_mem]"));
+    json_object_set_new(get_domain_obj, "measurement_units",
+                        json_string("[Watts]"));
+    json_object_set_new(get_domain_obj, "control_units",
+                        json_string("[Watts]"));
+    json_object_set_new(get_domain_obj, "control_range",
+                        json_string(range_str));
+
+    return 0;
+}

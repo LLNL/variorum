@@ -56,6 +56,8 @@ struct skylake_55_offsets
     off_t msr_pkg_perf_status;
     /// @brief Address for PKG_POWER_INFO.
     off_t msr_pkg_power_info;
+    /// @brief Address for DRAM_POWER_INFO.
+    off_t msr_dram_power_info;
     /// @brief Address for DRAM_POWER_LIMIT.
     off_t msr_dram_power_limit;
     /// @brief Address for DRAM_ENERGY_STATUS.
@@ -102,6 +104,8 @@ int fm_06_55_monitoring(FILE *output);
 int fm_06_55_get_node_power_json(json_t *get_power_obj);
 
 int fm_06_55_cap_best_effort_node_power_limit(int node_power_limit);
+
+int fm_06_55_get_node_power_domain_info_json(json_t *get_domain_obj);
 
 int fm_06_55_cap_frequency(int core_freq_mhz);
 
