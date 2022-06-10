@@ -173,9 +173,9 @@ The figure below shows the details of GPU power shifting ratio.
    :height: 300px
    :align: center
 
-***********
-References:
-***********
+**********
+References
+**********
 
 -  `OCC
    <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
