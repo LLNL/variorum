@@ -35,6 +35,8 @@ Next, push it to your remote fork and create a pull request (PR):
 GitHub provides a tutorial on how to file a PR. When you send the request, make
 `dev` the destination branch.
 
+A PR template for variorum can be found in `.github/pull_request.md`. 
+
 GitHub Actions will run on all PRs, and will (1) build and compile the source
 code, and (2) enforce style format.
 
