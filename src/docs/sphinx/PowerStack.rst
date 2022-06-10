@@ -33,8 +33,7 @@ high-levels in the PowerStack as and when needed, which we describe in :doc:`Var
 .. image:: images/PowerStack.png
    :scale: 50 %
 
-HPC PowerStack closely collaborates with the following community efforts:
-
+HPC PowerStack also closely collaborates with the following community efforts:
 
 .. toctree::
    :maxdepth: 2
