@@ -11,19 +11,19 @@ Variorum is a node-level library that can be integrated easily with higher-level
 system software such as schedulers and runtime systems, to create a portable
 HPC PowerStack(see :doc:`PowerStack`). As part of our efforts to support a hierarchical,
 dynamic and open-source portable power management stack, we have integrated Variorum
-with various open-source system software. The :ref:`JSON API<https://variorum.readthedocs.io/en/latest/VariorumAPI.html#json-api>` 
+with various open-source system software. The `JSON API <https://variorum.readthedocs.io/en/latest/VariorumAPI.html#json-api>`_ 
 enables Variorum to interface with higher-level system software in an portable and easy manner.
 
 ************************************
 Current and Planned ECP Integrations
 ************************************
 
-Current integration efforts include a :ref:`Kokkos<https://kokkos.org>` connector 
-for power monitoring, a :ref:`Caliper<https://software.llnl.gov/Caliper/>` service 
-for method-level power data, and a :ref:`Flux<http://flux-framework.org>` power management 
+Current integration efforts include a `Kokkos <https://kokkos.org>`_ connector 
+for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service 
+for method-level power data, and a `Flux <http://flux-framework.org>`_ power management 
 module for scheduling. Upcoming integration also includes developing a Variorum 
-interface for :ref:`Intel's GEOPM<https://geopm.github.io>` and 
-`Sandia's OVIS Lightweight Distributed Metric Service (LDMS)<https://github.com/ovis-hpc/ovis-wiki/wiki>`.
+interface for `Intel's GEOPM <https://geopm.github.io>`_ and 
+`Sandia's OVIS Lightweight Distributed Metric Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_.
 
 Links to Variorum's integrations with each of these frameworks can be found below. 
 Note that these integrations are in early development stages and are expected to
