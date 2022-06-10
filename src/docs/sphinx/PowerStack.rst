@@ -3,14 +3,13 @@
    #
    # SPDX-License-Identifier: MIT
 
-##########################
+#################################
  HPC PowerStack Initiative
-##########################
+#################################
 
-TBD.
 
 .. toctree::
    :maxdepth: 2
 
-    PowerAPI
-    EEHPC
+   PowerAPI
+   EEHPC

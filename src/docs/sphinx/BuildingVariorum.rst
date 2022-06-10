@@ -12,7 +12,7 @@ variorum library and the`powmon` monitoring tool.
 
 The CMake variables (ENABLE_MPI={ON,OFF} and ENABLE_OPENMP={ON,OFF}) control
 the building of parallel examples. Please note that the default is
-`ENABLE_MPI=ON`, which may result in configuration errors if MPI is not found. 
+``ENABLE_MPI=ON``, which may result in configuration errors if MPI is not found. 
 
 ********************
  Build Dependencies

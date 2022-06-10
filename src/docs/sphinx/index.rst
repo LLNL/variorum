@@ -16,7 +16,10 @@ or sensor interfaces). These APIs enable HPC application developers to gain a be
 understanding of power, energy, and performance through various
 metrics for the devices contained within the node. Additionally, the APIs may
 enable system software to control hardware knobs to optimize for a particular
-goal. Variorum focuses on ease of use and reduced integration burden in applications:
+goal. 
+
+Variorum focuses on ease of use and reduced integration burden in applications,
+which it accomplishes through the following:
 
 -  It includes examples which demonstrate how to use Variorum in a stand-alone
    program.
