@@ -3,9 +3,9 @@
    #
    # SPDX-License-Identifier: MIT
 
-##################
- ECP Argo Project
-################# 
+################
+ECP Argo Project
+################
 
 Argo is a collaborative project between Argonne National Laboratory and 
 Lawrence Livermore National Laboratory. It is funded by the U.S. Department of 
