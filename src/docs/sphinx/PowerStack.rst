@@ -35,6 +35,7 @@ high-levels in the PowerStack as and when needed, which we describe in :doc:`Var
    :align: center
 
 HPC PowerStack closely collaborates with the following community efforts:
+
 .. toctree::
    :maxdepth: 2
 
