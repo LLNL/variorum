@@ -31,8 +31,7 @@ that represents the vendor-agnostic node-level interface, which can integrate wi
 high-levels in the PowerStack as and when needed, which we describe in :doc:`VariorumTools`. 
 
 .. image:: images/PowerStack.png
-   :height: 400px
-   :align: center
+   :scale: 70 %
 
 HPC PowerStack closely collaborates with the following community efforts:
 
