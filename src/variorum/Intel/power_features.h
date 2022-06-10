@@ -65,7 +65,7 @@ struct rapl_limit
 };
 
 /// @brief Structure containing power range info for RAPL usage for various
-/// RAPL DRAM power domains.
+/// RAPL power domains.
 struct rapl_pkg_power_info
 {
     /**************************/
