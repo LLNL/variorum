@@ -43,21 +43,12 @@ module variorum
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
-            function variorum_cap_and_verify_node_power_limit(node_power_limit) &
+            function variorum_cap_best_effort_node_power_limit(node_power_limit) &
             bind(C)
         import
         implicit none
         integer(kind=c_int), value, intent(in) ::node_power_limit
-    end function variorum_cap_and_verify_node_power_limit
-
-    !-------------------------------------------------------------------------
-    integer(kind=c_int) &
-            function variorum_cap_node_power_limit(node_power_limit) &
-            bind(C)
-        import
-        implicit none
-        integer(kind=c_int), value, intent(in) ::node_power_limit
-    end function variorum_cap_node_power_limit
+    end function variorum_cap_best_effort_node_power_limit
 
     !-------------------------------------------------------------------------
     integer(kind=c_int) &
