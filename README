@@ -193,7 +193,7 @@ Barry Rountree, <rountree@llnl.gov>
 Please feel free to contact the developers with any questions or feedback.
 
 We collect names of those who have contributed to Variorum over
-the years. See the current list in [AUTHORS](./AUTHORS).
+the years. See the current list in [Contributors](https://variorum.readthedocs.io/en/2022_update_docs/Contributors.html).
 
 ## License
 Variorum is released under the MIT license. For more details, see the
@@ -204,4 +204,8 @@ SPDX-License-Identifier: MIT
 `LLNL-CODE-789253`
 
 ## Acknowledgments
-This research was supported by the Exascale Computing Project (17-SC-20-SC), a joint project of the U.S. Department of Energy's Office of Science and National Nuclear Security Administration, responsible for delivering a capable exascale ecosystem, including software, applications, and hardware technology, to support the nation's exascale computing imperative.
+This research was supported by the Exascale Computing Project (17-SC-20-SC),
+a joint project of the U.S. Department of Energy's Office of Science and 
+National Nuclear Security Administration, responsible for delivering a capable 
+exascale ecosystem, including software, applications, and hardware technology, 
+to support the nation's exascale computing imperative.
