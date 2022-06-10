@@ -8,11 +8,11 @@
 ###################
 
 Variorum uses CMake for its build system. Building Variorum creates the
-variorum library and the`powmon` monitoring tool.
+variorum library and the `powmon` monitoring tool.
 
 The CMake variables (``ENABLE_MPI={ON,OFF}`` and ``ENABLE_OPENMP={ON,OFF}``) control
-the building of parallel examples. Please note that the default is
-``ENABLE_MPI=ON``, which may result in configuration errors if MPI is not found. 
+the building of parallel examples. If ``ENABLE_MPI=ON``, an MPI compiler is
+required.
 
 ********************
  Build Dependencies
@@ -58,7 +58,7 @@ Variorum's build system supports the following CMake options:
    = ON)*.
 
 -  **ENABLE_MPI** - Enable MPI compiler for building MPI examples, MPI compiler
-   must exist *(default = ON)*.
+   must exist *(default = OFF)*.
 
 -  **ENABLE_OPENMP** - Enable OpenMP extensions for building OpenMP examples,
    *(default = ON)*.
@@ -103,7 +103,7 @@ Variorum's build system supports the following CMake options:
    *(default = ON)*.
 
 -  **USE_MSR_SAFE_BEFORE_1_5_0** - Use msr-safe prior to v1.5.0, dependency of
-   Intel architectures for accessing counters from userspace *(default = ON)*.
+   Intel architectures for accessing counters from userspace *(default = OFF)*.
 
 *******************
  Host Config Files
@@ -168,14 +168,14 @@ that customize the options and dependencies used to build Variorum:
    +----------------+----------------------------------------+----------------------------------------------+
 
 Variants are enabled using ``+`` and disabled using ``~``. For example, to
-build Conduit with the minimum set of options (and dependencies) run:
+build Variorum with the minimum set of options (and dependencies) run:
 
 .. code:: bash
 
-   spack install variorum~docs
+   spack install variorum
 
 To build Variorum's tests run:
 
 .. code:: bash
 
-   spack install variorum~docs --run-tests
+   spack install variorum --run-tests

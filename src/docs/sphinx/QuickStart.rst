@@ -14,13 +14,13 @@ the default build targets an Intel architecture).
 
    git clone https://github.com/LLNL/variorum.git
    cd variorum
-   mkdir build
+   mkdir build install
    cd build
-   cmake -DCMAKE_INSTALL_PREFIX=build ../src
+   cmake -DCMAKE_INSTALL_PREFIX=../install ../src
    make
    make install
 
-After this completes, ``build/`` will contain a Variorum install.
+After this completes, ``install/`` will contain a Variorum install.
 
 For more details about building and installing Variorum, see
 :doc:`BuildingVariorum`. This page provides detailed info about building
