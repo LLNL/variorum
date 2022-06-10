@@ -9,7 +9,7 @@
 
 Variorum is a node-level library that can be integrated easily with higher-level
 system software such as schedulers and runtime systems, to create a portable
-`HPC PowerStack <https://variorum.readthedocs.io/en/PowerStack.html>`_. As part of our efforts to support a hierarchical,
+`HPC PowerStack <https://variorum.readthedocs.io/en/latest/PowerStack.html>`_. As part of our efforts to support a hierarchical,
 dynamic and open-source portable power management stack, we have integrated Variorum
 with various open-source system software. The `JSON API <https://variorum.readthedocs.io/en/latest/VariorumAPI.html#json-api>`_ 
 enables Variorum to interface with higher-level system software in an portable and easy manner.
