@@ -7,15 +7,21 @@
  Integrating with Variorum
 ###########################
 
+Variorum is a node-level library that can be integrated easily with higher-level
+system software such as schedulers and runtime systems, to create a portable
+HPC PowerStack(see :doc:`PowerStack`). As part of our efforts to support a hierarchical,
+dynamic and open-source portable power management stack, we have integrated Variorum
+with various open-source system software. 
+
 The JSON API enables Variorum to interface with higher-level system software.
 Current integration efforts include a Kokkos connector for power monitoring, 
 a Caliper service for method-level power data, and
-a Flux power management module for scheduling.
+a Flux power management module for scheduling. Upcoming integration also
+includes developing a Variorum interface for Intel's GEOPM and Sandia's LDMS.
 
 Links to each of these frameworks can be found below. Note that these
 integrations with Variorum are in early development stages and are expected to
-be updated to support more features and tests. Upcoming integration also
-includes developing a Variorum interface for Intel's GEOPM and Sandia's LDMS.
+be updated to support more features and tests.
 
    -  Kokkos connector:
       https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector
