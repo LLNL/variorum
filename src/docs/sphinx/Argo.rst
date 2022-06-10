@@ -22,12 +22,14 @@ freely mixed and matched to best meet the user's needs. The project has four foc
     - Resource management
     - Hardware co-design
 
-Variorum is a key player for the power management and hardware co-design
+Variorum is a key player for the `power management` and `hardware co-design`
 focus areas for Argo. Details about the broader Argo project, along with relevant
 source code, publications, and accomplishments can be found on the
-Argo website (https://web.cels.anl.gov/projects/argo/). 
+Argo website (https://web.cels.anl.gov/projects/argo/). The Argo project is also
+a key contributor to the :doc:`PowerStack`, which is a community effort for
+power management. 
 
-Dynamic power management is expected to be critical in the 
+`Dynamic power management` is expected to be critical in the 
 exascale era, both in terms of not exceeding the overall available power budget 
 and in terms of utilizing the available power to make the most application progress. 
 Argo employs hierarchical power management that includes both system-level (global) 
@@ -35,9 +37,8 @@ and node-local mechanisms and policies. This includes developing and enabling po
 manegement in HPC schedulers (such as SLURM and Flux), large-scale system monitoring
 frameworks (LDMS), application profilers (such as Caliper), runtime system frameworks
 (such as Kokkos, GEOPM), and similar system- and application-level frameworks. 
-The Argo project is also part of the HPC PowerStack community effort. 
 
-Hardware co-design involves working closely
+`Hardware co-design` involves working closely
 with our vendors to continuously explore emerging new hardware trends and devices,
 and look for how best to exploit the new capabilities in both traditional HPC 
 workloads and emerging scientific workflows, ones such as machine learning. 

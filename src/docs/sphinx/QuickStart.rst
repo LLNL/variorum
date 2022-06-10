@@ -16,7 +16,7 @@ the default build targets an Intel architecture).
    cd variorum
    mkdir build
    cd build
-   cmake -DCMAKE_PREFIX_INSTALL=build ../src
+   cmake -DCMAKE_INSTALL_PREFIX=build ../src
    make
    make install
 
