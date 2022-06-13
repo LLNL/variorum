@@ -8,7 +8,7 @@
 ###################
 
 Variorum uses CMake for its build system. Building Variorum creates the
-variorum library and the `powmon` monitoring tool.
+variorum library and the ``powmon`` monitoring tool.
 
 The CMake variables (``ENABLE_MPI={ON,OFF}`` and ``ENABLE_OPENMP={ON,OFF}``) control
 the building of parallel examples. If ``ENABLE_MPI=ON``, an MPI compiler is
@@ -22,9 +22,9 @@ The build dependencies for a ``minimal build`` with no parallel components requi
    -  C
    -  hwloc
    -  jansson
-   -  Access to vendor-specific drivers or modules (see :doc:`HWArchitectures`). 
+   -  Access to vendor-specific drivers or modules (see :doc:`HWArchitectures`).
 
-For a ``parallel build`` with MPI/OpenMP, Variorum depends on: 
+For a ``parallel build`` with MPI/OpenMP, Variorum depends on:
    -  rankstr (only required for MPI/OpenMP builds)
 
 *****************

@@ -7,7 +7,7 @@
  Example Programs
 ##################
 
-Variorum provides some examples in the `examples/` directory.
+Variorum provides some examples in the ``examples/`` directory.
 
 .. note::
 
@@ -20,7 +20,7 @@ Variorum provides some examples in the `examples/` directory.
 
 The example below gets the power limits of the platform. The ``print`` API
 prints the output in tabular format that can be filtered and parsed by a data
-analysis framework, such as `R` or `Python`.
+analysis framework, such as ``R`` or ``Python``.
 
 On an Intel platform, the output of this example should be similar to the
 following:
