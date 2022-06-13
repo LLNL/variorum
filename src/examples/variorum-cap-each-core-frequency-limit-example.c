@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <variorum_config.h>
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -15,26 +16,20 @@ int main(int argc, char **argv)
     int ret = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "%s [--help | -h] -f cpu_freq_mhz\n";
-
-    if (argc == 1 || (argc > 1 && (
-                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
-                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
-    {
-        printf(usage, argv[0]);
-        return 0;
-    }
-    if (argc <= 2)
-    {
-        printf(usage, argv[0]);
-        return 1;
-    }
-
+    const char *usage = "%s [-hv] -f cpu_freq_mhz\n";
     int opt;
-    while ((opt = getopt(argc, argv, "f:")) != -1)
+    while ((opt = getopt(argc, argv, "vhf")) != -1)
     {
         switch (opt)
         {
+            case 'v':
+                printf(QuoteMacro(VARIORUM_VERSION)"\n");
+                return 0;
+                break;
+            case 'h':
+                printf(usage, argv[0]);
+                return 0;
+                break;
             case 'f':
                 cpu_freq_mhz = atoi(optarg);
                 break;
