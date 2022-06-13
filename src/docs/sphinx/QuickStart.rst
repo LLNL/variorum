@@ -8,10 +8,12 @@
 ###################
 
 The simplest way to install Variorum is using the default CMake settings (note,
-the default build targets an Intel architecture).
+the default build targets an Intel architecture). Building Variorum requires the
+``hwloc`` and ``jansson`` libraries.
 
 .. code:: bash
 
+   sudo apt-get install libhwloc15 libhwloc-dev libjansson4 libjansson-dev
    git clone https://github.com/LLNL/variorum.git
    cd variorum
    mkdir build install
@@ -23,7 +25,7 @@ the default build targets an Intel architecture).
 After this completes, ``install/`` will contain a Variorum install.
 
 For more details about building and installing Variorum, see
-:doc:`BuildingVariorum`. This page provides detailed info about building
+:doc:`BuildingVariorum`, which provides detailed information about building
 Variorum from CMake initial-cache files (i.e., host config files) for specific
 hosts, and Variorum's other CMake options and spack package.
 
