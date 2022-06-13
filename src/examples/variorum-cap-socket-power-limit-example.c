@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <variorum_config.h>
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -15,27 +16,21 @@ int main(int argc, char **argv)
     int ret = 0;
     int pkg_pow_lim_watts = 0;
 
-    const char *usage = "%s [--help | -h] -l power_lim_watts\n";
-
-    if (argc == 1 || (argc > 1 && (
-                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
-                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
-    {
-        printf(usage, argv[0]);
-        return 0;
-    }
-    if (argc <= 2)
-    {
-        printf(usage, argv[0]);
-        return 1;
-    }
-
+    const char *usage = "%s [-h] -l power_lim_watts\n";
     int opt;
-    while ((opt = getopt(argc, argv, "l:")) != -1)
+    while ((opt = getopt(argc, argv, "lvh")) != -1)
     {
         switch (opt)
         {
-            case 'l':
+            case 'v':
+                printf(QuoteMacro(VARIORUM_VERSION)"\n");
+                return 0;
+                break;
+            case 'h':
+                printf(usage, argv[0]);
+                return 0;
+                break;
+	    case 'l':
                 pkg_pow_lim_watts = atoi(optarg);
                 break;
             default:
