@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <variorum_config.h>
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -16,26 +16,20 @@ int main(int argc, char **argv)
     // 500W is based on minimum power on IBM Witherspoon
     int node_pow_lim_watts = 500;
 
-    const char *usage = "%s [--help | -h] -l power_lim_watts\n";
-
-    if (argc == 1 || (argc > 1 && (
-                          strncmp(argv[1], "--help", strlen("--help")) == 0 ||
-                          strncmp(argv[1], "-h", strlen("-h")) == 0)))
-    {
-        printf(usage, argv[0]);
-        return 0;
-    }
-    if (argc <= 2)
-    {
-        printf(usage, argv[0]);
-        return 1;
-    }
-
+    const char *usage = "%s [-hv] -l power_lim_watts\n";
     int opt;
-    while ((opt = getopt(argc, argv, "l:")) != -1)
+    while ((opt = getopt(argc, argv, "lhv")) != -1)
     {
         switch (opt)
         {
+            case 'v':
+                printf(QuoteMacro(VARIORUM_VERSION)"\n");
+                return 0;
+                break;
+            case 'h':
+                printf(usage, argv[0]);
+                return 0;
+                break;
             case 'l':
                 node_pow_lim_watts = atoi(optarg);
                 break;
