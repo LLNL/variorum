@@ -23,7 +23,7 @@ The NVIDIA port of Variorum depends on:
    interfaces. NVML provides standardized interfaces to the NVIDIA GPU devices
    enumerated by the proprietary NVIDIA device driver as ``/dev/nvidia[0-9]*``.
 
--  The latest version of the CUDA development toolkit, which delivers the
+-  CUDA development toolkit, 10.1.243+ which delivers the
    headers for NVML.
 
 -  CUDA-enabled build of the Portable Hardware Locality (hwloc) library to
