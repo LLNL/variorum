@@ -22,7 +22,7 @@ Current integration efforts include a `Kokkos <https://kokkos.org>`_ connector
 for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service 
 for method-level power data, and a `Flux <http://flux-framework.org>`_ power management 
 module for scheduling. Upcoming integration also includes developing a Variorum 
-interface for `Intel's GEOPM <https://geopm.github.io>`_ and 
+interface for `PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM <https://geopm.github.io>`_ and 
 `Sandia's OVIS Lightweight Distributed Metric Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_.
 
 Links to Variorum's integrations with each of these frameworks can be found below. 

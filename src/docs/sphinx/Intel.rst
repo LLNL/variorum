@@ -26,7 +26,7 @@ enabled for non-root users. This can be enabled with the `msr-safe
 <https://github.com/llnl/msr-safe>`_ kernel driver which must be loaded 
 to enable user-level read and write of allowed MSRs.
 
-Alternately, you can use Variorum as root with the stock MSR kernel driver
+Alternately, Variorum can be used as root with the stock MSR kernel driver
 loaded.
 
 .. code:: bash
@@ -68,8 +68,7 @@ These are the most common mistakes we have seen when using these registers.
          clock frequency. Measuring both execution time and clock frequency
          (and perhaps IPC as well) is an excellent filter for those stories.
 
--  Do not use Linux performance governors.
-      -  They do very little and what little they do they do badly.
+-  Do not use Linux performance governors as they have limited support.
 
 -  Not all encodable values are effective.
       -  The canonical case here is RAPL time windows. There is a minimum value
@@ -92,9 +91,6 @@ These are the most common mistakes we have seen when using these registers.
 -  Determining which MSRs are available on which processors is problematic.
       -  Motherboard manufacturers can mask out available MSRs, and Intel's
          documentation can contain errors.
-
--  We welcome patches.
-      -  rountree@llnl.gov
 
 *************************************
  Enhanced Intel Speedstep Technology
@@ -413,3 +409,11 @@ These are the most common mistakes we have seen when using these registers.
 
 .. image:: images/Intel/PowerCtl.png
    :align: center
+
+
+**********
+References
+**********
+
+-  `Intel Software Developer Manuals
+   <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html>`_

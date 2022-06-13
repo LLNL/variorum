@@ -16,12 +16,12 @@ the system.
 ************
 Requirements
 ************
-Read access to `/sys/firmware/opal/exports/occ_inband_sensors` is required, 
+Read access to ``/sys/firmware/opal/exports/occ_inband_sensors`` is required, 
 along with read-write access to 
-`/sys/firmware/opal/powercap/system_powercap/powercap_current`
-and `/sys/firmware/opal/psr/`. This can be enabled by using group permissions.
+``/sys/firmware/opal/powercap/system_powercap/powercap_current``
+and ``/sys/firmware/opal/psr/``. This can be enabled by using group permissions.
 For example, to allow only users belonging to certain group to set the
-power cap or power shifting ratio, `udev` can be used as follows.
+power cap or power shifting ratio, ``udev`` can be used as follows.
 
 .. code:: bash      
 
@@ -33,8 +33,8 @@ power cap or power shifting ratio, `udev` can be used as follows.
         /sys/firmware/opal/psr/cpu_to_gpu_8"
  
 The above file needs to be copied to all nodes. The administrator has to create 
-a group named `coral` and add the users to this group. The `udev` rule can then 
-be set as follows:
+a group (for example, named ``coral`` below) and add the users to this group. 
+The ``udev`` rule can then be set as follows:
 
 .. code:: bash      
 
@@ -56,7 +56,7 @@ power, temperature, CPU frequency, CPU utilization, memory bandwidth, etc. The
 sensor data is stored in OCC's SRAM and is available to the user inband through
 the sensors file listed below:
 
--  Key file for inband sensors: `/sys/firmware/opal/exports/occ_inband_sensors`
+-  Key file for inband sensors: ``/sys/firmware/opal/exports/occ_inband_sensors``
 
 OCC Sensor Data formatting is described below, and we then describe the code
 structures that were used to represent this data in the IBM port of Variorum.
@@ -151,17 +151,18 @@ Power caps and GPU power shifting ratio can be set by using OPAL/Skiboot. This
 is an inband interface through the BMC located on the node.
 
 Node power caps are set by writing to the following file in Watts:
-`/sys/firmware/opal/powercap/system-powercap/powercap-current`
+``/sys/firmware/opal/powercap/system-powercap/powercap-current``
 
 Socket level power capping and memory power capping is not available.
 
 GPU power shifting ratio can be set by setting the following files in
-percentage (i.e., between 0 and 100). `/sys/firmware/opal/psr/cpu_to_gpu_0` and
-`/sys/firmware/opal/psr/cpu_to_gpu_8`
+percentage (i.e., between 0 and 100). ``/sys/firmware/opal/psr/cpu_to_gpu_0`` and
+``/sys/firmware/opal/psr/cpu_to_gpu_8``
 
 Write access to these files is needed to set node power caps and GPU ratio.
 
-The figure below depicts the ranges for IBM power caps on Power9 system.
+The figure below depicts the ranges for IBM power caps on Power9 system 
+(reproduced with permission from our IBM collaborators).
 
 .. image:: images/IBM_PowerCap.png
    :height: 400px
