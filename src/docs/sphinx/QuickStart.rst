@@ -14,10 +14,13 @@ the default build targets an Intel architecture). Building Variorum requires the
 .. code:: bash
 
    sudo apt-get install libhwloc15 libhwloc-dev libjansson4 libjansson-dev
+
    git clone https://github.com/LLNL/variorum.git
+
    cd variorum
    mkdir build install
    cd build
+
    cmake -DCMAKE_INSTALL_PREFIX=../install ../src
    make
    make install
