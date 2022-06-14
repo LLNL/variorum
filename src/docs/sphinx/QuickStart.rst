@@ -33,8 +33,8 @@ Variorum from CMake initial-cache files (i.e., host config files) for specific
 hosts, and Variorum's other CMake options and spack package.
 
 Please ensure that the dependencies for each platform are met before building 
-Variorum. The include the kernel module `msr-safe` for Intel systems, `msr`, 
-`amd_energy_driver` and HSMP driver for AMD sytems, OPAL firmware and sensors 
+Variorum. The include the kernel module ``msr-safe`` for Intel systems, ``msr``, 
+``amd_energy_driver`` and HSMP driver for AMD sytems, OPAL firmware and sensors 
 for IBM, and NVML for NVIDIA. Details of each of these can be found in the 
 respective vendor pages, see :doc:`HWArchitectures`.
 
