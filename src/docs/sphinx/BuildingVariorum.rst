@@ -97,6 +97,7 @@ Variorum can be built and installed as follows after cloning from GitHub:
 
 .. code:: bash
 
+   sudo apt-get install libhwloc15 libhwloc-dev libjansson4 libjansson-dev
    git clone https://github.com/llnl/variorum
 
    cd variorum
