@@ -7,11 +7,10 @@
  Variorum
 ##########
 
-Variorum is an extensible, vendor-netural library for exposing power and performance
-monitoring and control capabilities of low-level hardware knobs across diverse
-architectures in a user-friendly manner. Variorum provides vendor-neutral APIs such that
-the user can query or control hardware knobs without needing to know the
-underlying vendor's implementation (for example, model-specific registers
+Variorum is an extensible, vendor-netural library for exposing power and performance capabilities of 
+low-level hardware knobs across diverse architectures in a user-friendly manner. 
+Variorum provides vendor-neutral APIs such that the user can query or control hardware knobs 
+without needing to know the underlying vendor's implementation (for example, model-specific registers
 or sensor interfaces). These APIs enable application developers to gain a better 
 understanding of power, energy, and performance through various
 metrics. Additionally, the APIs may
