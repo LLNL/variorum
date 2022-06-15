@@ -61,15 +61,11 @@ Variants are enabled using ``+`` and disabled using ``~``.
  Building with CMake
 ********************
 
-Clone the Variorum repo from GitHub:
+Variorum can be built and installed as follows after cloning from GitHub:
 
 .. code:: bash
 
    git clone https://github.com/llnl/variorum
-
-To build and install Variorum:
-
-.. code:: bash
 
    cd variorum
    mkdir build install
@@ -117,8 +113,7 @@ Variorum's build system supports the following CMake options:
 -  ``VARIORUM_LOG (default = ON)`` - Enable Variorum logging statements, useful for tracking
    what code path is being taken.
 
--  ``VARIORUM_WITH_AMD (default = OFF)`` - (not yet implemented) Enable Variorum build for AMD
-   architecture.
+-  ``VARIORUM_WITH_AMD (default = OFF)`` - Enable Variorum build for AMD architecture.
 
 -  ``VARIORUM_WITH_NVIDIA (default = OFF)`` - Enable Variorum build for Nvidia architecture.
 
