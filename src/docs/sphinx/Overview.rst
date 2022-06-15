@@ -46,39 +46,3 @@ Here are Variorum's requirements:
    :height: 400px
    :align: center
 
-**************
- Dependencies
-**************
-
-This section describes Variorum's key dependencies.
-
-hwloc (Required)
-================
-
-`hwloc <https://www.open-mpi.org/projects/hwloc/>`_ is an open-source project
-providing a portable abstraction of the hierarchical topology of modern
-architectures.
-
-Variorum leverages hwloc for detecting hardware topology. When reading/writing
-a register on a particular hardware thread, hwloc can map that to the correct
-physical socket.
-
-jansson (Required)
-==================
-
-`jansson <https://digip.org/jansson/>`_ is an open-source C library for
-encoding, decoding and manipulating JSON data.
-
-Variorum leverages JANSSON to provide a JSON-based API that can retrieve power
-data for external tools/software.
-
-rankstr (Optional)
-==================
-
-`rankstr <https://github.com/ECP-VeloC/rankstr>`_ is an open-source C library
-providing functions that identify unique strings across an MPI communicator.
-
-Variorum leverages rankstr to split a communicator into subcommunicators by
-hostname. The allows for a single control or monitor process in Variorum to
-for example, enforce a power or frequency limit on a node or to print the
-hardware counters once on a node.

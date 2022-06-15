@@ -7,8 +7,8 @@
  Building Variorum
 ###################
 
-Variorum uses CMake for its build system. Building Variorum creates the
-variorum library and the ``powmon`` monitoring tool.
+Variorum can be built with ``spack`` or with CMake from source. Building Variorum creates the
+``libvariorum`` library, the ``powmon`` monitoring tool, and variorum examples.
 
 ********************
  Build Dependencies
@@ -27,6 +27,38 @@ The CMake variables (``ENABLE_MPI={ON,OFF}`` and ``ENABLE_OPENMP={ON,OFF}``) con
 the building of parallel examples. If ``ENABLE_MPI=ON``, an MPI compiler is
 required.
 
+
+hwloc (Required)
+================
+
+`hwloc <https://www.open-mpi.org/projects/hwloc/>`_ is an open-source project
+providing a portable abstraction of the hierarchical topology of modern
+architectures.
+
+Variorum leverages hwloc for detecting hardware topology. When reading/writing
+a register on a particular hardware thread, hwloc can map that to the correct
+physical socket.
+
+jansson (Required)
+==================
+
+`jansson <https://digip.org/jansson/>`_ is an open-source C library for
+encoding, decoding and manipulating JSON data.
+
+Variorum leverages JANSSON to provide a JSON-based API that can retrieve power
+data for external tools/software.
+
+rankstr (Optional)
+==================
+
+`rankstr <https://github.com/ECP-VeloC/rankstr>`_ is an open-source C library
+providing functions that identify unique strings across an MPI communicator.
+
+Variorum leverages rankstr to split a communicator into subcommunicators by
+hostname. The allows for a single control or monitor process in Variorum to
+for example, enforce a power or frequency limit on a node or to print the
+hardware counters once on a node.
+
 *********************
  Building with Spack
 *********************
@@ -43,19 +75,19 @@ The Variorum spack package provides several `variants
 that customize the options and dependencies used to build Variorum (see table below).
 Variants are enabled using ``+`` and disabled using ``~``. 
 
-   +----------------+----------------------------------------+----------------------------------------------+
-   | Variant        | Description                            | Default                                      |
-   +================+========================================+==============================================+
-   | **shared**     | Build Variorum as shared library       | ON (+shared)                                 |
-   +----------------+----------------------------------------+----------------------------------------------+
-   | **docs**       | Build Variorum's Documentation         | OFF (~docs)                                  |
-   +----------------+----------------------------------------+----------------------------------------------+
-   | **log**        | Enable Variorum's logging              | OFF (~log)                                   |
-   |                | infrastructure                         |                                              |
-   +----------------+----------------------------------------+----------------------------------------------+
-   | **build_type** | Specify build type                     | RelWithDebugInfo (Release with Debug Info)   |
-   |                |                                        | (build_type=RelWithDebugInfo)                |
-   +----------------+----------------------------------------+----------------------------------------------+
+   +----------------+----------------------------------------+------------------------------+
+   | Variant        | Description                            | Default                      |
+   +================+========================================+==============================+
+   | **shared**     | Build Variorum as shared library       | ON (+shared)                 |
+   +----------------+----------------------------------------+------------------------------+
+   | **docs**       | Build Variorum's Documentation         | OFF (~docs)                  |
+   +----------------+----------------------------------------+------------------------------+
+   | **log**        | Enable Variorum's logging              | OFF (~log)                   |
+   |                | infrastructure                         |                              |
+   +----------------+----------------------------------------+------------------------------+
+   | **build_type** | Specify build type                     | Release with Debug Info      |
+   |                |                                        | (build_type=RelWithDebugInfo)|
+   +----------------+----------------------------------------+------------------------------+
 
 ********************
  Building with CMake
@@ -74,6 +106,29 @@ Variorum can be built and installed as follows after cloning from GitHub:
    cmake -DCMAKE_INSTALL_PREFIX=../install ../src
    make -j8
    make install
+
+******************
+ Host Config Files
+******************
+
+To handle build options, third party library paths, etc., we rely on CMake's
+initial-cache file mechanism. We call these initial-cache files ``host-config`` files, 
+as we typically create a file for each platform or specific hosts if necessary.
+These can be passed to CMake via the ``-C`` command line option as shown below:
+
+.. code:: bash
+
+   cmake {other options} -C ../host-configs/{config_file}.cmake ../src
+
+An example is provided in `host-configs/boilerplate.cmake` to create 
+your own configuration file. Example configuration files named by machine hostname, 
+the ``SYS_TYPE`` environment variable, and platform name (via ``uname``) are also 
+provided in the ``host-configs`` directory. These files use standard CMake commands. 
+CMake ``set`` commands need to specify the root cache path as follows:
+
+.. code:: cmake
+
+   set(CMAKE_VARIABLE_NAME {VALUE} CACHE PATH "")
 
 ********************
  CMake Build Options
@@ -125,28 +180,4 @@ Variorum's build system supports the following CMake options:
 
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0, dependency of
    Intel architectures for accessing counters from userspace.
-
-******************
- Host Config Files
-******************
-
-To handle build options, third party library paths, etc., we rely on CMake's
-initial-cache file mechanism. We call these initial-cache files ``host-config`` files, 
-as we typically create a file for each platform or specific hosts if necessary.
-These can be passed to CMake via the ``-C`` command line option as shown below:
-
-.. code:: bash
-
-   cmake {other options} -C ../host-configs/{config_file}.cmake ../src
-
-A boilerplate example is provided in `host-configs/boilerplate.cmake` to create 
-your own configuration file. Example configuration files named by machine hostname, 
-the ``SYS_TYPE`` environment variable, and platform name (via ``uname``) are also 
-provided in the ``host-configs`` directory. These files use standard CMake commands. 
-CMake ``set`` commands need to specify the root cache path as follows:
-
-.. code:: cmake
-
-   set(CMAKE_VARIABLE_NAME {VALUE} CACHE PATH "")
-
 
