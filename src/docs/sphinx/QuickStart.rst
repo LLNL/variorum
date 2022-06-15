@@ -27,6 +27,11 @@ the default build targets an Intel architecture). Building Variorum requires the
 
 After this completes, ``install/`` will contain a Variorum install.
 
+Note that ``HWLOC_DIR`` and ``JANSSON_DIR`` may need to be set correctly if 
+installing from scratch. Variorum also supports ``host-config`` files, which make
+the build process easier by setting all necessary paths in one place. Details on
+creating and using host configuration files can be found `here <https://variorum.readthedocs.io/en/2022_update_docs/BuildingVariorum.html#host-config-files>`_. 
+
 For more details about building and installing Variorum, see
 :doc:`BuildingVariorum`, which provides detailed information about building
 Variorum from CMake initial-cache files (i.e., host config files) for specific

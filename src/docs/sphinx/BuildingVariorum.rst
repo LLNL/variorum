@@ -151,7 +151,8 @@ necessary) run:
 
 The Variorum spack package provides several `variants
 <http://spack.readthedocs.io/en/latest/basic_usage.html#specs-dependencies>`_
-that customize the options and dependencies used to build Variorum:
+that customize the options and dependencies used to build Variorum (see table below).
+Variants are enabled using ``+`` and disabled using ``~``. 
 
    +----------------+----------------------------------------+----------------------------------------------+
    | Variant        | Description                            | Default                                      |
@@ -166,10 +167,3 @@ that customize the options and dependencies used to build Variorum:
    | **build_type** | Specify build type                     | RelWithDebugInfo                             |
    |                |                                        | (build_type=RelWithDebugInfo)                |
    +----------------+----------------------------------------+----------------------------------------------+
-
-Variants are enabled using ``+`` and disabled using ``~``. For example, to
-build Variorum with the minimum set of options (and dependencies) run:
-
-.. code:: bash
-
-   spack install variorum

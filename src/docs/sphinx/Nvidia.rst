@@ -27,7 +27,8 @@ The NVIDIA port of Variorum depends on:
    headers for NVML.
 
 -  CUDA-enabled build of the Portable Hardware Locality (hwloc) library to
-   enumerate the GPU devices and their mappings to the host CPUs.
+   enumerate the GPU devices and their mappings to the host CPUs. This requires
+   hwloc to be built with the ``HWLOC_HAVE_CUDA`` flag.
 
 To successfully use the Variorum port of NVIDIA, verify that the
 ``LD_LIBRARY_PATH`` environment variable has paths for both the CUDA library

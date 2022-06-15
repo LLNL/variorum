@@ -26,6 +26,12 @@ enabled for non-root users. This can be enabled with the `msr-safe
 <https://github.com/llnl/msr-safe>`_ kernel driver which must be loaded 
 to enable user-level read and write of allowed MSRs.
 
+The msr-safe driver provides the following device files:
+
+.. code:: bash
+
+   /dev/cpu/<CPU>/msr_safe
+
 Alternately, Variorum can be used as root with the stock MSR kernel driver
 loaded.
 
@@ -36,18 +42,11 @@ loaded.
 The kernel driver provides an interface to read and write MSRs on an x86
 processor.
 
-The msr-safe driver provides the following device files:
-
-.. code:: bash
-
-   ls /dev/cpu/<CPU>/msr_safe
-
 The stock MSR driver provides the following device files:
 
 .. code:: bash
 
    ls /dev/cpu/<CPU>/msr
-
 
 ****************
  Best Practices

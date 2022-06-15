@@ -34,7 +34,7 @@ be updated to support more features and tests.
    -  Variorum Caliper service:
       https://github.com/LLNL/Caliper/tree/master/src/services/variorum     
    -  Flux System Power Manager Module with Variorum: 
-      https://github.com/rountree/flux-power-mgr
+      https://github.com/flux-framework/flux-power-mgr
 
 **********************************
 Contributing Variorum Integrations
@@ -78,7 +78,7 @@ be retrieved in a similar manner by other JSON libraries and supporting tools.
        // Extract the value of interest from the JSON object by using the
        // appropriate get function. Documentation of these can be found in the
        // JANSSON library documentation.
-       power_node = json_real_value(json_object_get(power_obj, "power_node"));
+       power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
        printf("Node power is: %lf\n", power_node);
 
        // Decrement references to JSON object, required for JANSSON library.

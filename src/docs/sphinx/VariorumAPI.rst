@@ -25,7 +25,7 @@ The top-level API for Variorum is shown in the `variorum.h` header file:
 
 The current JSON API depends on the JANSSON-C library and has a vendor-neutral
 format. The API has been tested on Intel, IBM and ARM
-architectures.
+architectures, and can be used to easily integrate with Variorum (see :doc:`VariorumTools`).
 
 Obtaining Power Consumption
 ===========================
