@@ -160,7 +160,7 @@ that customize the options and dependencies used to build Variorum:
    +----------------+----------------------------------------+----------------------------------------------+
    | **docs**       | Build Variorum's Documentation         | OFF (~docs)                                  |
    +----------------+----------------------------------------+----------------------------------------------+
-   | **log**        | Enable Variorum's logging              | OFF (~docs)                                  |
+   | **log**        | Enable Variorum's logging              | OFF (~log)                                  |
    |                | infrastructure                         |                                              |
    +----------------+----------------------------------------+----------------------------------------------+
    | **build_type** | Specify build type                     | RelWithDebugInfo                             |
@@ -173,9 +173,3 @@ build Variorum with the minimum set of options (and dependencies) run:
 .. code:: bash
 
    spack install variorum
-
-To build Variorum's tests run:
-
-.. code:: bash
-
-   spack install variorum --run-tests
