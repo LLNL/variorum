@@ -14,9 +14,9 @@ dynamic and open-source portable power management stack, we have integrated Vari
 with various open-source system software. The `JSON API <https://variorum.readthedocs.io/en/latest/VariorumAPI.html#json-api>`_ 
 enables Variorum to interface with higher-level system software in an portable and easy manner.
 
-************************************
-Current and Planned ECP Integrations
-************************************
+****************
+ECP Integrations
+****************
 
 Current integration efforts include a `Kokkos <https://kokkos.org>`_ connector 
 for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service 
@@ -29,19 +29,21 @@ Links to Variorum's integrations with each of these frameworks can be found belo
 Note that these integrations are in early development stages and are expected to
 be updated to support more features and tests.
 
-   -  Variorum Kokkos connector:
-      https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector
-   -  Variorum Caliper service:
+   -  `Variorum Kokkos connector <https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector>`_
+   -  `Variorum Caliper service <https://github.com/LLNL/Caliper/tree/master/src/services/variorum>`_
       https://github.com/LLNL/Caliper/tree/master/src/services/variorum     
-   -  Flux System Power Manager Module with Variorum: 
-      https://github.com/flux-framework/flux-power-mgr
+   -  `Flux System Power Manager Module with Variorum <https://github.com/flux-framework/flux-power-mgr>`_
 
-**********************************
-Contributing Variorum Integrations
-**********************************
+***********************************
+Contributing Integrations with JSON
+***********************************
 
 In order for tools to interact with Variorum, a simple JANSSON based parser is
-sufficient. The format of the JSON object has been documented, and includes
+sufficient. Our existing integration implementations, which are linked 
+`here <https://variorum.readthedocs.io/en/latest/VariorumTools.html#ecp-integrations>`_, 
+are a good starting point. 
+
+The format of the JSON object has been documented in :doc:`VariorumAPI` and includes
 total node power, as well as CPU, Memory, and GPU power (current assumption is
 that of two sockets per node). It also includes the hostname and the timestamp.
 
