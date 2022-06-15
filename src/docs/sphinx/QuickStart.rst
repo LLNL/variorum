@@ -9,7 +9,7 @@
 
 The simplest way to install Variorum is using the default CMake settings. Building 
 Variorum requires the ``hwloc`` and ``jansson`` libraries. The default build targets
-the Intel platform and assumes `msr-safe` kernel module access. 
+the Intel platform and assumes ``msr-safe`` kernel module access. 
 
 .. code:: bash
 
