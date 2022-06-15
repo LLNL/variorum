@@ -50,10 +50,10 @@ Variants are enabled using ``+`` and disabled using ``~``.
    +----------------+----------------------------------------+----------------------------------------------+
    | **docs**       | Build Variorum's Documentation         | OFF (~docs)                                  |
    +----------------+----------------------------------------+----------------------------------------------+
-   | **log**        | Enable Variorum's logging              | OFF (~log)                                  |
+   | **log**        | Enable Variorum's logging              | OFF (~log)                                   |
    |                | infrastructure                         |                                              |
    +----------------+----------------------------------------+----------------------------------------------+
-   | **build_type** | Specify build type                     | RelWithDebugInfo                             |
+   | **build_type** | Specify build type                     | RelWithDebugInfo (Release with Debug Info)   |
    |                |                                        | (build_type=RelWithDebugInfo)                |
    +----------------+----------------------------------------+----------------------------------------------+
 
