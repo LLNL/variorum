@@ -9,7 +9,7 @@
 
 Variorum is an extensible, vendor-netural library for exposing power and performance capabilities of 
 low-level hardware knobs across diverse architectures in a user-friendly manner. It is part of the 
-:doc:`Argo`, and is a key component for node-level managament in the :doc:`PowerStack`. 
+:doc:`Argo`, and is a key component for node-level power managament in the :doc:`PowerStack`. 
 
 Variorum provides vendor-neutral APIs such that the user can query or control hardware knobs 
 without needing to know the underlying vendor's implementation (for example, model-specific registers
