@@ -137,8 +137,25 @@ CMake ``set`` commands need to specify the root cache path as follows:
 
 Variorum's build system supports the following CMake options:
 
--  ``ENABLE_FORTRAN (default=ON)`` - Enable fortran compiler for building example
-   integration with fortran application, fortran compiler must exist.
+-  ``HWLOC_DIR`` - Path to an HWLOC install.
+
+-  ``JANSSON_DIR`` - Path to a JANSSON install.
+
+-  ``SPHINX_EXECUTABLE`` - Path to sphinx-build binary (required for
+   documentation).
+   
+-  ``VARIORUM_WITH_AMD (default = OFF)`` - Enable Variorum build for AMD architecture.
+
+-  ``VARIORUM_WITH_NVIDIA (default = OFF)`` - Enable Variorum build for Nvidia architecture.
+
+-  ``VARIORUM_WITH_IBM (default = OFF)`` - Enable Variorum build for IBM architecture.
+
+-  ``VARIORUM_WITH_ARM (default = OFF)`` - Enable Variorum build for ARM architecture.
+
+-  ``VARIORUM_WITH_INTEL (default = ON)`` - Enable Variorum build for Intel architecture.
+   
+-  ``ENABLE_FORTRAN (default=ON)`` - Enable Fortran compiler for building example
+   integration with Fortran application, Fortran compiler must exist.
 
 -  ``ENABLE_MPI (default=OFF)`` - Enable MPI compiler for building MPI examples, MPI compiler
    must exist.
@@ -147,13 +164,6 @@ Variorum's build system supports the following CMake options:
 
 -  ``ENABLE_WARNINGS (default=OFF)`` - Build with compiler warning flags -Wall -Wextra
    -Werror, used primarily by developers.
-
--  ``HWLOC_DIR`` - Path to an HWLOC install.
-
--  ``JANSSON_DIR`` - Path to a JANSSON install.
-
--  ``SPHINX_EXECUTABLE`` - Path to sphinx-build binary (required for
-   documentation).
 
 -  ``BUILD_DOCS (default=ON)`` - Controls if the Variorum documentation is built (when
    sphinx and doxygen are found).
@@ -168,16 +178,6 @@ Variorum's build system supports the following CMake options:
 
 -  ``VARIORUM_LOG (default = ON)`` - Enable Variorum logging statements, useful for tracking
    what code path is being taken.
-
--  ``VARIORUM_WITH_AMD (default = OFF)`` - Enable Variorum build for AMD architecture.
-
--  ``VARIORUM_WITH_NVIDIA (default = OFF)`` - Enable Variorum build for Nvidia architecture.
-
--  ``VARIORUM_WITH_IBM (default = OFF)`` - Enable Variorum build for IBM architecture.
-
--  ``VARIORUM_WITH_ARM (default = OFF)`` - Enable Variorum build for ARM architecture.
-
--  ``VARIORUM_WITH_INTEL (default = ON)`` - Enable Variorum build for Intel architecture.
 
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0, dependency of
    Intel architectures for accessing counters from userspace.
