@@ -31,7 +31,6 @@ be updated to support more features and tests.
 
    -  `Variorum Kokkos connector <https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector>`_
    -  `Variorum Caliper service <https://github.com/LLNL/Caliper/tree/master/src/services/variorum>`_
-      https://github.com/LLNL/Caliper/tree/master/src/services/variorum     
    -  `Flux System Power Manager Module with Variorum <https://github.com/flux-framework/flux-power-mgr>`_
 
 ***********************************
