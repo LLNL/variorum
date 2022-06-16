@@ -43,6 +43,6 @@ Here are Variorum's requirements:
 ****************
 
 .. image:: images/VariorumSystemDesign.png
-   :height: 350px
+   :height: 400px
    :align: center
 
