@@ -59,36 +59,6 @@ hostname. The allows for a single control or monitor process in Variorum to
 for example, enforce a power or frequency limit on a node or to print the
 hardware counters once on a node.
 
-*********************
- Building with Spack
-*********************
-
-To install Variorum with all options (and also build all of its dependencies as
-necessary) run:
-
-.. code:: bash
-
-   spack install variorum
-
-The Variorum spack package provides several `variants
-<http://spack.readthedocs.io/en/latest/basic_usage.html#specs-dependencies>`_
-that customize the options and dependencies used to build Variorum (see table below).
-Variants are enabled using ``+`` and disabled using ``~``. 
-
-   +----------------+----------------------------------------+------------------------------+
-   | Variant        | Description                            | Default                      |
-   +================+========================================+==============================+
-   | **shared**     | Build Variorum as shared library       | ON (+shared)                 |
-   +----------------+----------------------------------------+------------------------------+
-   | **docs**       | Build Variorum's Documentation         | OFF (~docs)                  |
-   +----------------+----------------------------------------+------------------------------+
-   | **log**        | Enable Variorum's logging              | OFF (~log)                   |
-   |                | infrastructure                         |                              |
-   +----------------+----------------------------------------+------------------------------+
-   | **build_type** | Specify build type                     | Release with Debug Info      |
-   |                |                                        | (build_type=RelWithDebugInfo)|
-   +----------------+----------------------------------------+------------------------------+
-
 ********************
  Building with CMake
 ********************
@@ -181,4 +151,34 @@ Variorum's build system supports the following CMake options:
 
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0, dependency of
    Intel architectures for accessing counters from userspace.
+
+*********************
+ Building with Spack
+*********************
+
+To install Variorum with all options (and also build all of its dependencies as
+necessary) run:
+
+.. code:: bash
+
+   spack install variorum
+
+The Variorum spack package provides several `variants
+<http://spack.readthedocs.io/en/latest/basic_usage.html#specs-dependencies>`_
+that customize the options and dependencies used to build Variorum (see table below).
+Variants are enabled using ``+`` and disabled using ``~``. 
+
+   +----------------+----------------------------------------+------------------------------+
+   | Variant        | Description                            | Default                      |
+   +================+========================================+==============================+
+   | **shared**     | Build Variorum as shared library       | ON (+shared)                 |
+   +----------------+----------------------------------------+------------------------------+
+   | **docs**       | Build Variorum's Documentation         | OFF (~docs)                  |
+   +----------------+----------------------------------------+------------------------------+
+   | **log**        | Enable Variorum's logging              | OFF (~log)                   |
+   |                | infrastructure                         |                              |
+   +----------------+----------------------------------------+------------------------------+
+   | **build_type** | Specify build type                     | Release with Debug Info      |
+   |                |                                        | (build_type=RelWithDebugInfo)|
+   +----------------+----------------------------------------+------------------------------+
 
