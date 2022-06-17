@@ -98,6 +98,12 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
 
 .. toctree::
    :maxdepth: 2
+   :caption: API Docs
+
+   api/function_index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Other
 
    Contributors

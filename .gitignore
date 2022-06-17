@@ -7,5 +7,4 @@ Makefile
 cmake_install.cmake
 libvariorum.a
 libvariorum.so
-src/docs/dox/Doxyfile
 src/variorum/variorum_config.h

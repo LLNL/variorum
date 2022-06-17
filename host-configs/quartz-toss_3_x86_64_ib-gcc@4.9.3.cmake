@@ -28,4 +28,4 @@ set(VARIORUM_WITH_NVIDIA OFF CACHE BOOL "")
 
 set(RANKSTR_DIR "/g/g19/brink2/git_root_pub/rankstr/install" CACHE PATH "")
 #SPHINX documentation building
-#set("SPHINX_EXECUTABLE" "/collab/usr/gapps/python/build/spack-toss3.2/opt/spack/linux-rhel7-x86_64/gcc-4.9.3/py-sphinx-1.6.3-pd3yayuuejdpggkyqvhxbljwh4fhpo43/bin/sphinx-build" CACHE PATH "")
+set("SPHINX_EXECUTABLE" "/collab/usr/gapps/python/build/spack-toss3.2/opt/spack/linux-rhel7-x86_64/gcc-4.9.3/py-sphinx-1.6.3-pd3yayuuejdpggkyqvhxbljwh4fhpo43/bin/sphinx-build" CACHE PATH "")
