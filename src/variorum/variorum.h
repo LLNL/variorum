@@ -14,6 +14,11 @@
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @param [in] output Location for output.
 ///
@@ -26,6 +31,11 @@ int variorum_poll_power(FILE *output);
 /// @supparch
 /// - IBM P9
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @param [in] output Location for output.
 ///
@@ -43,6 +53,11 @@ int variorum_monitoring(FILE *output);
 /// - IBM P9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_cap_each_socket_power_limit(int socket_power_limit);
@@ -53,6 +68,11 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 /// - IBM P9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
@@ -76,6 +96,7 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - Intel Skylake
 ///
 /// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
 ///
@@ -116,6 +137,12 @@ int variorum_print_verbose_power_limit(void);
 /// - AMD EPYC Milan
 /// - NVIDIA Volta
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
 ///
 /// @return Error code.
 int variorum_print_power_limit(void);
@@ -131,6 +158,11 @@ int variorum_print_verbose_thermals(void);
 /// - ARM Juno v2
 /// - NVIDIA Volta
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_print_thermals(void);
@@ -144,6 +176,11 @@ int variorum_print_verbose_counters(void);
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_print_counters(void);
@@ -161,6 +198,12 @@ int variorum_print_verbose_power(void);
 /// - AMD EPYC Milan
 /// - NVIDIA Volta
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
 ///
 /// @return Error code.
 int variorum_print_power(void);
@@ -179,6 +222,11 @@ int variorum_print_verbose_frequency(void);
 /// - AMD EPYC Milan
 /// - NVIDIA Volta
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_print_frequency(void);
@@ -195,6 +243,12 @@ void variorum_print_topology(void);
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
 ///
 /// @return Error code.
 int variorum_print_features(void);
@@ -204,6 +258,9 @@ int variorum_print_features(void);
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
 ///
 /// @return Error code.
 int variorum_print_turbo(void);
@@ -226,6 +283,11 @@ int variorum_print_gpu_utilization(void);
 /// @supparch
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_print_available_frequencies(void);
@@ -245,6 +307,9 @@ int variorum_print_energy(void);
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
 ///
 /// @return Error code.
 int variorum_enable_turbo(void);
@@ -253,6 +318,9 @@ int variorum_enable_turbo(void);
 ///
 /// @supparch
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
 ///
 /// @return Error code.
 int variorum_disable_turbo(void);
@@ -267,6 +335,11 @@ int variorum_disable_turbo(void);
 /// - ARM Juno v2
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_get_node_power_json(json_t *get_power_obj);
@@ -278,6 +351,11 @@ int variorum_get_node_power_json(json_t *get_power_obj);
 /// - ARM Juno v2
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
 ///
 /// @return Error code.
 int variorum_get_node_power_domain_info_json(json_t *get_domain_obj);
