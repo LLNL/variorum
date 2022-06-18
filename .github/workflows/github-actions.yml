@@ -217,7 +217,7 @@ jobs:
       - name: Install deps on ubuntu
         run: |
           sudo apt-get update
-          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen mpich gcc-${{ matrix.cc-version }}
+          sudo apt-get install cmake libhwloc-dev libjansson-dev gfortran python3-sphinx doxygen mpich gcc-${{ matrix.cc-version }} python3-breathe
           cmake --version
           gcc-${{ matrix.cc-version }} --version
 
@@ -425,7 +425,7 @@ jobs:
       - name: Install deps on ubuntu
         run: |
           sudo apt-get update
-          sudo apt-get install cmake gfortran python3-sphinx doxygen mpich
+          sudo apt-get install cmake gfortran python3-sphinx doxygen mpich python3-breathe
           cmake --version
           gcc --version
 
