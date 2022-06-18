@@ -12,7 +12,7 @@
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @param [in] output Location for output.
@@ -23,7 +23,7 @@ int variorum_poll_power(FILE *output);
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains, fixed counters, TSC, APERF, and MPERF.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - Intel Sandy Bridge
 ///
@@ -39,7 +39,7 @@ int variorum_monitoring(FILE *output);
 ///
 /// @param [in] socket_power_limit Desired power limit for each socket.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
@@ -49,7 +49,7 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
 /// @brief Cap the power limit of the node.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
@@ -64,7 +64,7 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 /// @param [in] gpu_power_ratio Desired power ratio (percentage).
 /// for the processor and GPU.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9 (same ratio on both sockets)
 ///
 /// @note Only valid on IBM P9 systems for now. Same ratio on both sockets.
@@ -74,7 +74,7 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 
 /// @brief Cap the CPU frequency for all cores within a socket.
 ///
-/// Supported architectures:
+/// @supparch
 /// - AMD EPYC Milan
 ///
 /// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
@@ -91,7 +91,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 
 /// @brief Cap the frequency of the target processor.
 ///
-/// Supported architectures:
+/// @supparch
 /// - ARM Juno v2
 /// - AMD EPYC Milan
 ///
@@ -111,7 +111,7 @@ int variorum_print_verbose_power_limit(void);
 
 /// @brief Print power limits for all known domains in CSV format.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - AMD EPYC Milan
 /// - NVIDIA Volta
@@ -127,7 +127,7 @@ int variorum_print_verbose_thermals(void);
 
 /// @brief Print thermal data in CSV format.
 ///
-/// Supported architectures:
+/// @supparch
 /// - ARM Juno v2
 /// - NVIDIA Volta
 /// - Intel Sandy Bridge
@@ -142,7 +142,7 @@ int variorum_print_verbose_counters(void);
 
 /// @brief Print performance counter data in CSV format.
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @return Error code.
@@ -155,7 +155,7 @@ int variorum_print_verbose_power(void);
 
 /// @brief Print energy and power usage data in CSV format.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - ARM Juno v2
 /// - AMD EPYC Milan
@@ -174,7 +174,7 @@ int variorum_print_verbose_frequency(void);
 /// @brief Print current operating frequency (APERF/MPERF and PERF_STATUS) in
 /// CSV format.
 ///
-/// Supported architectures:
+/// @supparch
 /// - ARM Juno v2
 /// - AMD EPYC Milan
 /// - NVIDIA Volta
@@ -193,7 +193,7 @@ void variorum_print_topology(void);
 
 /// @brief Print list of features available on a particular architecture.
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @return Error code.
@@ -202,7 +202,7 @@ int variorum_print_features(void);
 /// @brief Print if turbo is enabled or disabled. If enabled, then print
 /// discrete frequencies in turbo range (i.e., max turbo ratio).
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @return Error code.
@@ -215,7 +215,7 @@ int variorum_print_verbose_gpu_utilization(void);
 
 /// @brief Print CSV-formatted GPU streaming multi-processor and memory utilization.
 ///
-/// Supported architectures:
+/// @supparch
 /// - NVIDIA Volta
 ///
 /// @return Error code.
@@ -223,7 +223,7 @@ int variorum_print_gpu_utilization(void);
 
 /// @brief Print list of available frequencies from p-states, turbo, AVX, etc. ranges.
 ///
-/// Supported architectures:
+/// @supparch
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
 ///
@@ -232,7 +232,7 @@ int variorum_print_available_frequencies(void);
 
 /// @brief Print if core and socket energy is available.
 ///
-/// Supported architectures:
+/// @supparch
 /// - AMD EPYC Milan
 ///
 /// @return Error code.
@@ -243,7 +243,7 @@ int variorum_print_energy(void);
 /***************************/
 /// @brief Enable turbo feature.
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @return Error code.
@@ -251,7 +251,7 @@ int variorum_enable_turbo(void);
 
 /// @brief Disable turbo feature.
 ///
-/// Supported architectures:
+/// @supparch
 /// - Intel Sandy Bridge
 ///
 /// @return Error code.
@@ -262,7 +262,7 @@ int variorum_disable_turbo(void);
 /****************/
 /// @brief Populate json_t object parameter with total node power.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - ARM Juno v2
 /// - AMD EPYC Milan
@@ -273,7 +273,7 @@ int variorum_get_node_power_json(json_t *get_power_obj);
 
 /// @brief Populate json_t object parameter with measurable power domains.
 ///
-/// Supported architectures:
+/// @supparch
 /// - IBM P9
 /// - ARM Juno v2
 /// - AMD EPYC Milan
