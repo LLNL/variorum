@@ -7,6 +7,12 @@
  Variorum Functions
 ####################
 
-.. doxygenfunction:: variorum_poll_power
+Variorum provides the following high-level functions for toggling a control
+knob.
 
-.. doxygenfunction:: variorum_monitoring
+Defined in ``variorum/variorum.hpp``
+
+.. doxygenfunction:: variorum_enable_turbo
+
+.. doxygenfunction:: variorum_disable_turbo
+
