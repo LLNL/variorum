@@ -7,20 +7,20 @@
  Building Variorum
 ###################
 
-Variorum can be built with ``spack`` or with CMake from source. Building Variorum creates the
+Variorum can be built from source with CMake or with ``spack``. Building Variorum creates the
 ``libvariorum`` library, the ``powmon`` monitoring tool, and variorum examples.
 
 ********************
  Build Dependencies
 ********************
 
-The build dependencies for a ``minimal build`` with no parallel components require the following:
+The build dependencies for a **minimal build** with no parallel components require the following:
    -  C
    -  hwloc
    -  jansson
    -  Access to vendor-specific drivers or modules (see :doc:`HWArchitectures`).
 
-For a ``parallel build`` with MPI/OpenMP, Variorum depends on:
+For a **parallel build** with MPI/OpenMP, Variorum depends on:
    -  rankstr (only required for MPI/OpenMP builds)
 
 The CMake variables (``ENABLE_MPI={ON,OFF}`` and ``ENABLE_OPENMP={ON,OFF}``) control
@@ -67,7 +67,9 @@ Variorum can be built and installed as follows after cloning from GitHub:
 
 .. code:: bash
 
+   # install hwloc and jansson dependencies
    sudo apt-get install libhwloc15 libhwloc-dev libjansson4 libjansson-dev
+
    git clone https://github.com/llnl/variorum
 
    cd variorum
@@ -83,7 +85,7 @@ Variorum can be built and installed as follows after cloning from GitHub:
 ******************
 
 To handle build options, third party library paths, etc., we rely on CMake's
-initial-cache file mechanism. We call these initial-cache files ``host-config`` files, 
+initial-cache file mechanism. We call these initial-cache files ``host-config`` files,
 as we typically create a file for each platform or specific hosts if necessary.
 These can be passed to CMake via the ``-C`` command line option as shown below:
 
@@ -91,11 +93,12 @@ These can be passed to CMake via the ``-C`` command line option as shown below:
 
    cmake {other options} -C ../host-configs/{config_file}.cmake ../src
 
-An example is provided in `host-configs/boilerplate.cmake` to create 
-your own configuration file. Example configuration files named by machine hostname, 
-the ``SYS_TYPE`` environment variable, and platform name (via ``uname``) are also 
-provided in the ``host-configs`` directory. These files use standard CMake commands. 
-CMake ``set`` commands need to specify the root cache path as follows:
+An example is provided in ``host-configs/boilerplate.cmake`` to create your own
+configuration file. Example configuration files named by machine hostname, the
+``SYS_TYPE`` environment variable, and platform name (via ``uname``) are also
+provided in the ``host-configs`` directory. These files use standard CMake
+commands. CMake ``set`` commands need to specify the root cache path as
+follows:
 
 .. code:: cmake
 
@@ -113,17 +116,17 @@ Variorum's build system supports the following CMake options:
 
 -  ``SPHINX_EXECUTABLE`` - Path to sphinx-build binary (required for
    documentation).
-   
--  ``VARIORUM_WITH_AMD (default = OFF)`` - Enable Variorum build for AMD architecture.
 
--  ``VARIORUM_WITH_NVIDIA (default = OFF)`` - Enable Variorum build for Nvidia architecture.
+-  ``VARIORUM_WITH_AMD (default=OFF)`` - Enable Variorum build for AMD architecture.
 
--  ``VARIORUM_WITH_IBM (default = OFF)`` - Enable Variorum build for IBM architecture.
+-  ``VARIORUM_WITH_NVIDIA (default=OFF)`` - Enable Variorum build for Nvidia architecture.
 
--  ``VARIORUM_WITH_ARM (default = OFF)`` - Enable Variorum build for ARM architecture.
+-  ``VARIORUM_WITH_IBM (default=OFF)`` - Enable Variorum build for IBM architecture.
 
--  ``VARIORUM_WITH_INTEL (default = ON)`` - Enable Variorum build for Intel architecture.
-   
+-  ``VARIORUM_WITH_ARM (default=OFF)`` - Enable Variorum build for ARM architecture.
+
+-  ``VARIORUM_WITH_INTEL (default=ON)`` - Enable Variorum build for Intel architecture.
+
 -  ``ENABLE_FORTRAN (default=ON)`` - Enable Fortran compiler for building example
    integration with Fortran application, Fortran compiler must exist.
 
@@ -141,12 +144,12 @@ Variorum's build system supports the following CMake options:
 -  ``BUILD_SHARED_LIBS (default=ON)`` - Controls if shared (ON) or static (OFF) libraries
    are built.
 
--  ``BUILD_TESTS (default = ON)`` - Controls if unit tests are built.
+-  ``BUILD_TESTS (default=ON)`` - Controls if unit tests are built.
 
--  ``VARIORUM_DEBUG (default = OFF)`` - Enable Variorum debug statements, useful if values are
+-  ``VARIORUM_DEBUG (default=OFF)`` - Enable Variorum debug statements, useful if values are
    not translating correctly.
 
--  ``VARIORUM_LOG (default = ON)`` - Enable Variorum logging statements, useful for tracking
+-  ``VARIORUM_LOG (default=ON)`` - Enable Variorum logging statements, useful for tracking
    what code path is being taken.
 
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0, dependency of
@@ -166,7 +169,7 @@ necessary) run:
 The Variorum spack package provides several `variants
 <http://spack.readthedocs.io/en/latest/basic_usage.html#specs-dependencies>`_
 that customize the options and dependencies used to build Variorum (see table below).
-Variants are enabled using ``+`` and disabled using ``~``. 
+Variants are enabled using ``+`` and disabled using ``~``.
 
    +----------------+----------------------------------------+------------------------------+
    | Variant        | Description                            | Default                      |
