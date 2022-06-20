@@ -3,9 +3,9 @@
    #
    # SPDX-License-Identifier: MIT
 
-####################
- Variorum Functions
-####################
+###################################
+ Variorum Enable/Disable Functions
+###################################
 
 Variorum provides the following high-level functions for toggling a control
 knob.
