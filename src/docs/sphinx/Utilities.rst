@@ -49,7 +49,7 @@ From the top-level Variorum directory:
    -- Check if cpu_to_gpu8 file is accessible by user: /sys/firmware/opal/psr/cpu_to_gpu_8 -- yes
    -- Valid OPAL access
 
-Invoke the script with python on the target IBM system. The `-v` flag enables
+Invoke the script with python on the target IBM system. The ``-v`` flag enables
 verbose output, which can be helpful if your programs are running to
 permissions issues. The output of this script is helpful to send to the mailing
 list for debugging system issues.
@@ -107,7 +107,7 @@ From the top-level Variorum directory:
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/msr_batch -- yes
    -- Valid kernel loaded: msr-safe
 
-Invoke the script with python on the target Intel system. The `-v` flag enables
+Invoke the script with python on the target Intel system. The ``-v`` flag enables
 verbose output, which can be helpful if your programs are running to
 permissions issues. The output of this script is helpful to send to the mailing
 list for debugging system issues.
