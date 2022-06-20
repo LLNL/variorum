@@ -87,7 +87,15 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 /// @supparch
 /// - IBM P9 (same ratio on both sockets)
 ///
-/// @note Only valid on IBM P9 systems for now. Same ratio on both sockets.
+/// @unsupported
+/// - AMD EPYC Milan
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
 ///
 /// @return Error code.
 int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
@@ -274,6 +282,15 @@ int variorum_print_verbose_gpu_utilization(void);
 ///
 /// @supparch
 /// - NVIDIA Volta
+///
+/// @unsupported
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
 ///
 /// @return Error code.
 int variorum_print_gpu_utilization(void);
