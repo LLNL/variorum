@@ -10,7 +10,7 @@
 Variorum provides the following high-level functions for toggling a control
 knob.
 
-Defined in ``variorum/variorum.hpp``
+Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_enable_turbo
 

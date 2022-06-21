@@ -10,7 +10,7 @@
 Variorum provides the following high-level functions that return a JSON object
 for easier integration with external software.
 
-Defined in ``variorum/variorum.hpp``
+Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_get_node_power_json
 

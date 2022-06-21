@@ -10,7 +10,7 @@
 Variorum provides the following high-level functions for printing
 the value of various features.
 
-Defined in ``variorum/variorum.hpp``
+Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_poll_power
 

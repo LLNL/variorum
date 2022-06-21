@@ -10,7 +10,7 @@
 Variorum provides the following high-level functions for applying an
 upper-bound on a particular control knob.
 
-Defined in ``variorum/variorum.hpp``
+Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_cap_each_socket_power_limit
 
