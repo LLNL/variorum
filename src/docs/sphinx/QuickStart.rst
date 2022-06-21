@@ -43,4 +43,12 @@ For more details about building and installing Variorum, see
 Variorum for specific hosts, Variorum's other CMake options and installing with
 ``spack``.
 
+Function-level descriptions of Variorum's APIs as well as the architectures
+that have implementations in Variorum are provided in the following sections:
+
+* :doc:`api/cap_functions`
+* :doc:`api/json_support_functions`
+* :doc:`api/enable_disable_functions`
+* :doc:`api/print_functions`
+
 For beginners, the `ECP Variorum Lecture Series <https://www.exascaleproject.org/event/variorum-class-series/>`_ is beneficial.
