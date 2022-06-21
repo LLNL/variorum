@@ -30,7 +30,7 @@ int variorum_poll_power(FILE *output);
 /// domains, fixed counters, TSC, APERF, and MPERF.
 ///
 /// @supparch
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -50,7 +50,7 @@ int variorum_monitoring(FILE *output);
 /// @brief Cap the power limits for all sockets within the node.
 ///
 /// @supparch
-/// - IBM P9
+/// - IBM Power9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -68,7 +68,7 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 /// @brief Cap the power limit of the node.
 ///
 /// @supparch
-/// - IBM P9
+/// - IBM Power9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -86,7 +86,7 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 /// @brief Cap the power shifting ratio for the GPU (uniform on both sockets).
 ///
 /// @supparch
-/// - IBM P9 (same ratio on both sockets)
+/// - IBM Power9 (same ratio on both sockets)
 ///
 /// @unsupported
 /// - AMD EPYC Milan
@@ -146,7 +146,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -164,7 +164,7 @@ int variorum_print_verbose_power_limit(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -243,7 +243,7 @@ int variorum_print_counters(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno v2
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -262,7 +262,7 @@ int variorum_print_verbose_power(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno v2
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -449,7 +449,7 @@ int variorum_disable_turbo(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno v2
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -468,7 +468,7 @@ int variorum_get_node_power_json(json_t *get_power_obj);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno v2
-/// - IBM P9
+/// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
