@@ -102,10 +102,10 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
 .. toctree::
    :maxdepth: 2
    :caption: API Docs
-
-   api/json_support_functions
+   
    api/print_functions
    api/cap_functions
+   api/json_support_functions
    api/enable_disable_functions
 
 .. toctree::
