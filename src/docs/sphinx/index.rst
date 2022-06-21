@@ -7,23 +7,26 @@
  Variorum
 ##########
 
-Variorum is an extensible, vendor-netural library for exposing power and performance capabilities of 
-low-level hardware knobs across diverse architectures in a user-friendly manner. It is part of the 
-:doc:`Argo`, and is a key component for node-level power managament in the :doc:`PowerStack`. 
-Variorum provides vendor-neutral APIs such that the user can query or control hardware knobs 
-without needing to know the underlying vendor's implementation (for example, model-specific registers
-or sensor interfaces). These APIs enable application developers to gain a better 
-understanding of power, energy, and performance through various
-metrics. Additionally, the APIs may
-enable system software to control hardware knobs to optimize for a particular
-goal. Variorum focuses on ease of use and reduced integration burden in applications,
-which it accomplishes by providing:
+Variorum is an extensible, vendor-neutral library for exposing power and
+performance capabilities of low-level hardware knobs across diverse
+architectures in a user-friendly manner. It is part of the :doc:`Argo`, and is
+a key component for node-level power management in the :doc:`PowerStack`.
+Variorum provides vendor-neutral APIs such that the user can query or control
+hardware knobs without needing to know the underlying vendor's implementation
+(for example, model-specific registers or sensor interfaces). These APIs enable
+application developers to gain a better understanding of power, energy, and
+performance through various metrics. Additionally, the APIs may enable system
+software to control hardware knobs to optimize for a particular goal. Variorum
+focuses on ease of use and reduced integration burden in applications, which it
+accomplishes by providing:
 
 -  Examples which demonstrate how to use Variorum in a stand-alone
    program.
 -  A performance analysis sampler that runs alongside the
    application.
--  A JSON API to allow integration with higher-level system software, such as job schedulers, distributed monitoring frameworks, or applcation-level runtime systems.
+-  A JSON API to allow integration with higher-level system software, such as
+   job schedulers, distributed monitoring frameworks, or application-level
+   runtime systems.
 
 ****************************
  Variorum Project Resources
