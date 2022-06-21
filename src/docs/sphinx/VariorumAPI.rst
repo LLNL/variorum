@@ -17,14 +17,14 @@ vendor-neutral manner.
 Top-level API
 *************
 
-The top-level API for Variorum is shown in the ``variorum.h`` header file.
+The top-level API for Variorum is in the ``variorum.h`` header file.
 Function-level descriptions as well as the architectures that have
 implementations in Variorum are described in the following sections:
 
+* :doc:`api/print_functions`
 * :doc:`api/cap_functions`
 * :doc:`api/json_support_functions`
 * :doc:`api/enable_disable_functions`
-* :doc:`api/print_functions`
 
 **********
  JSON API
