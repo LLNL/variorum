@@ -8,7 +8,13 @@
 ##########################
 
 Variorum provides the following high-level functions for printing
-the value of various features.
+the value of various features. For each feature, there is a ``print`` and
+``print_verbose`` API, which will print the metrics in different output
+formats. The ``print`` API prints the output in tabular format that can be
+filtered and parsed by a data analysis framework, such as ``R`` or ``Python``.
+The ``print_verbose`` API prints the output in verbose format that is more
+human-readable (with units, titles, etc.). See :doc:`Examples` for sample
+output formats supported by Variorum.
 
 Defined in ``variorum/variorum.h``.
 
