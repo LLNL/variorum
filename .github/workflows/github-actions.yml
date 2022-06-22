@@ -379,6 +379,11 @@ jobs:
       # Checkout variorum repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
 
+      - name: Check license headers
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          python scripts/license.py verify
+
       - name: Style check c/cpp/h files
         run: |
           sudo apt-get update
@@ -394,22 +399,14 @@ jobs:
           python -m pip install --upgrade pip flake8
 
       - name: Update Black
-        if: ${{ matrix.python-version == 3.7 }}
         run: |
           pip install --upgrade black
 
       - name: Style check python files
-        if: ${{ matrix.python-version == 3.7 }}
         run: |
           cd ${GITHUB_WORKSPACE}
           flake8
           black --diff --check .
-
-      - name: Check license headers
-        if: ${{ matrix.python-version == 3.7 }}
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          python scripts/license.py verify
 
   build-with-spack-mirrors:
     runs-on: ubuntu-latest
