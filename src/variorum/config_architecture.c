@@ -43,17 +43,14 @@
 struct platform g_platform;
 
 
-#ifdef VARIORUM_LOG
 int variorum_enter(const char *filename, const char *func_name, int line_num)
-#else
-int variorum_enter()
-#endif
 {
     int err = 0;
-#ifdef VARIORUM_LOG
-    printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
-#endif
+    char *val = getenv("VARIORUM_LOG");
 
+    if(val != NULL && strlen(val) > 0){
+    	printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
+    }
     variorum_init_func_ptrs();
 
     //Triggers initialization on first call.  Errors assert.

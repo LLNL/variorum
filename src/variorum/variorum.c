@@ -41,11 +41,8 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 int variorum_tester(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -65,11 +62,8 @@ int variorum_tester(void)
 int variorum_poll_power(FILE *output)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -102,11 +96,8 @@ int variorum_poll_power(FILE *output)
 int variorum_monitoring(FILE *output)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -139,11 +130,8 @@ int variorum_monitoring(FILE *output)
 int variorum_print_power_limit(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -176,11 +164,8 @@ int variorum_print_power_limit(void)
 int variorum_print_verbose_power_limit(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -253,11 +238,8 @@ void variorum_print_topology(void)
 int variorum_cap_best_effort_node_power_limit(int node_power_limit)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -290,11 +272,8 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit)
 int variorum_cap_gpu_power_ratio(int gpu_power_ratio)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -327,11 +306,8 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio)
 int variorum_cap_each_socket_power_limit(int socket_power_limit)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -364,11 +340,8 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit)
 int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -401,11 +374,8 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
 int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -438,11 +408,8 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
 int variorum_print_features(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -475,11 +442,8 @@ int variorum_print_features(void)
 int variorum_print_thermals(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -512,11 +476,8 @@ int variorum_print_thermals(void)
 int variorum_print_verbose_thermals(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -549,11 +510,8 @@ int variorum_print_verbose_thermals(void)
 int variorum_print_counters(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -586,11 +544,8 @@ int variorum_print_counters(void)
 int variorum_print_verbose_counters(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -623,11 +578,8 @@ int variorum_print_verbose_counters(void)
 int variorum_print_frequency(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -660,11 +612,8 @@ int variorum_print_frequency(void)
 int variorum_print_verbose_frequency(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -697,11 +646,8 @@ int variorum_print_verbose_frequency(void)
 int variorum_print_power(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -734,11 +680,8 @@ int variorum_print_power(void)
 int variorum_print_verbose_power(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -771,11 +714,8 @@ int variorum_print_verbose_power(void)
 int variorum_print_hyperthreading(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -806,11 +746,8 @@ int variorum_print_hyperthreading(void)
 int variorum_print_turbo(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -844,11 +781,8 @@ int variorum_print_turbo(void)
 int variorum_print_gpu_utilization(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -881,11 +815,8 @@ int variorum_print_gpu_utilization(void)
 int variorum_print_verbose_gpu_utilization(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -918,11 +849,8 @@ int variorum_print_verbose_gpu_utilization(void)
 int variorum_enable_turbo(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -955,11 +883,8 @@ int variorum_enable_turbo(void)
 int variorum_disable_turbo(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -992,11 +917,8 @@ int variorum_disable_turbo(void)
 int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -1034,11 +956,8 @@ int variorum_get_node_power_json(char **get_power_obj_str)
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -1073,11 +992,8 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 int variorum_print_available_frequencies(void)
 {
     int err = 0;
-#ifdef VARIORUM_LOG
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
+
     if (err)
     {
         return -1;
@@ -1110,6 +1026,7 @@ int variorum_print_energy(void)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+
     if (err)
     {
         return -1;
