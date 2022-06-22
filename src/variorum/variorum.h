@@ -50,7 +50,6 @@ int variorum_monitoring(FILE *output);
 /// @brief Cap the power limits for all sockets within the node.
 ///
 /// @supparch
-/// - IBM Power9
 /// - AMD EPYC Milan
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
