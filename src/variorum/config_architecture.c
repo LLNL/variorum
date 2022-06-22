@@ -74,16 +74,14 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     return err;
 }
 
-#ifdef VARIORUM_LOG
 int variorum_exit(const char *filename, const char *func_name, int line_num)
-#else
-int variorum_exit()
-#endif
 {
     int err = 0;
-#ifdef VARIORUM_LOG
-    printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+	printf("chaz was here\n");
+    if(val != NULL && strlen(val) > 0){
+    	printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
+    }
 
 #ifdef VARIORUM_WITH_INTEL
     err = finalize_msr();
