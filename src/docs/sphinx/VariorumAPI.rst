@@ -7,17 +7,24 @@
  Variorum API
 ##############
 
-Variorum supports vendor-neutral power and energy management through its
-rich API. Please refer to the top-level API, as well as the specific descritptions of the JSON API and the Best Effort Power Capping API. The JSON API allows system software interacting with Variorum to obtain data in a portable, vendor-neutral manner. 
+Variorum supports vendor-neutral power and energy management through its rich
+API. Please refer to the top-level API, as well as the specific descritptions
+of the JSON API and the Best Effort Power Capping API. The JSON API allows
+system software interacting with Variorum to obtain data in a portable,
+vendor-neutral manner.
 
 *************
 Top-level API
 *************
 
-The top-level API for Variorum is shown in the `variorum.h` header file:
+The top-level API for Variorum is in the ``variorum.h`` header file.
+Function-level descriptions as well as the architectures that have
+implementations in Variorum are described in the following sections:
 
-.. literalinclude:: ../../variorum/variorum.h
-   :language: c
+* :doc:`api/print_functions`
+* :doc:`api/cap_functions`
+* :doc:`api/json_support_functions`
+* :doc:`api/enable_disable_functions`
 
 **********
  JSON API
@@ -25,7 +32,7 @@ The top-level API for Variorum is shown in the `variorum.h` header file:
 
 The current JSON API depends on the JANSSON-C library and has a vendor-neutral
 format. The API has been tested on Intel, IBM and ARM
-architectures.
+architectures, and can be used to easily integrate with Variorum (see :doc:`VariorumTools`).
 
 Obtaining Power Consumption
 ===========================

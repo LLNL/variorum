@@ -8,11 +8,18 @@
 import sys
 import os
 
+import subprocess
+
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+    subprocess.call('cd @CMAKE_CURRENT_BINARY_DIR@/../dox; doxygen', shell=True)
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
-#sys.path.append("@CMAKE_CURRENT_BINARY_DIR@/../../thirdparty_builtin/breathe")
+sys.path.insert(0, os.path.abspath('.'))
+sys.path.append("@CMAKE_CURRENT_BINARY_DIR@/../../thirdparty_builtin/breathe")
 
 # -- General configuration ------------------------------------------------
 
@@ -27,8 +34,8 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.mathjax'#,
-#    'breathe'
+    'sphinx.ext.mathjax',
+    'breathe'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -118,7 +125,7 @@ html_theme = 'default'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "../../../../images/Variorum_3in_1in.png"
+html_logo = "../../../images/Variorum_3in_1in.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -258,7 +265,7 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
-#breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/docs/dox/xml" }
+breathe_projects = { "variorum": "@CMAKE_CURRENT_BINARY_DIR@/../dox/xml" }
 breathe_default_project = "variorum"
 
 try:

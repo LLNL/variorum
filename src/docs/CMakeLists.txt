@@ -9,4 +9,5 @@ endif()
 
 if(DOXYGEN_FOUND)
     add_subdirectory(dox)
+    add_subdirectory(breathe)
 endif()

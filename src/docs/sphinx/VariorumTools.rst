@@ -7,24 +7,42 @@
  Integrating with Variorum
 ###########################
 
-The JSON API enables Variorum to interface with higher-level system software.
-Current integration efforts include a Kokkos connector for power monitoring , a Caliper service for method-level power data, and
-a Flux power management module for scheduling.
+Variorum is a node-level library that can be integrated easily with higher-level
+system software such as schedulers and runtime systems, to create a portable
+`HPC PowerStack <https://variorum.readthedocs.io/en/latest/PowerStack.html>`_. As part of our efforts to support a hierarchical,
+dynamic and open-source portable power management stack, we have integrated Variorum
+with various open-source system software. The `JSON API <https://variorum.readthedocs.io/en/latest/VariorumAPI.html#json-api>`_ 
+enables Variorum to interface with higher-level system software in an portable and easy manner.
 
-Links to each of these frameworks can be found below. Note that these
-integrations with Variorum are in early development stages and are expected to
-be updated to support more features and tests. Upcoming integration also
-includes developing a Variorum interface for Intel's GEOPM.
+****************
+ECP Integrations
+****************
 
-   -  Kokkos connector:
-      https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector
-   -  Caliper service:
-      https://github.com/LLNL/Caliper/tree/master/src/services/variorum     
-   -  Flux Power Manager Module: 
-      https://github.com/rountree/flux-power-mgr
+Current integration efforts include a `Kokkos <https://kokkos.org>`_ connector 
+for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service 
+for method-level power data, and a `Flux <http://flux-framework.org>`_ power management 
+module for scheduling. Upcoming integration also includes developing a Variorum 
+interface for `PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM <https://geopm.github.io>`_ and 
+`Sandia's OVIS Lightweight Distributed Metric Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_.
+
+Links to Variorum's integrations with each of these frameworks can be found below. 
+Note that these integrations are in early development stages and are expected to
+be updated to support more features and tests.
+
+   -  `Variorum Kokkos connector <https://github.com/kokkos/kokkos-tools/tree/develop/profiling/variorum-connector>`_
+   -  `Variorum Caliper service <https://github.com/LLNL/Caliper/tree/master/src/services/variorum>`_
+   -  `Flux System Power Manager Module with Variorum <https://github.com/flux-framework/flux-power-mgr>`_
+
+***********************************
+Contributing Integrations with JSON
+***********************************
 
 In order for tools to interact with Variorum, a simple JANSSON based parser is
-sufficient. The format of the JSON object has been documented, and includes
+sufficient. Our existing integration implementations, which are linked 
+`here <https://variorum.readthedocs.io/en/latest/VariorumTools.html#ecp-integrations>`_, 
+are a good starting point. 
+
+The format of the JSON object has been documented in :doc:`VariorumAPI` and includes
 total node power, as well as CPU, Memory, and GPU power (current assumption is
 that of two sockets per node). It also includes the hostname and the timestamp.
 
@@ -61,7 +79,7 @@ be retrieved in a similar manner by other JSON libraries and supporting tools.
        // Extract the value of interest from the JSON object by using the
        // appropriate get function. Documentation of these can be found in the
        // JANSSON library documentation.
-       power_node = json_real_value(json_object_get(power_obj, "power_node"));
+       power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
        printf("Node power is: %lf\n", power_node);
 
        // Decrement references to JSON object, required for JANSSON library.

@@ -13,26 +13,9 @@ stack as well as open-source software components described below. The
 high-level API provided by Variorum is read-only (i.e., monitoring-only),
 primarily because of the access limitations on our target platform.
 
-*********************
- Build Configuration
-*********************
-
-We provide an example CMake host config file, which defines the CMake build
-variables set on our test platform (Lassen supercomputer at LLNL):
-`lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`.
-
-For your build system, you will need to modify two CMake variables:
-
-   -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
-      '-L' flag)
-   -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc
-
-You should also enable Variorum to build for NVIDIA's architecture:
-``VARIORUM_WITH_NVIDIA=ON``
-
-**************
- Dependencies
-**************
+*************
+Requirements
+*************
 
 The NVIDIA port of Variorum depends on:
 
@@ -40,13 +23,14 @@ The NVIDIA port of Variorum depends on:
    interfaces. NVML provides standardized interfaces to the NVIDIA GPU devices
    enumerated by the proprietary NVIDIA device driver as ``/dev/nvidia[0-9]*``.
 
--  The latest version of the CUDA development toolkit, which delivers the
+-  CUDA development toolkit, 10.1.243+ which delivers the
    headers for NVML.
 
 -  CUDA-enabled build of the Portable Hardware Locality (hwloc) library to
-   enumerate the GPU devices and their mappings to the host CPUs.
+   enumerate the GPU devices and their mappings to the host CPUs. This requires
+   hwloc to be built with the ``HWLOC_HAVE_CUDA`` flag.
 
-To successfully use the Variorum port of NVIDIA, please verify that the
+To successfully use the Variorum port of NVIDIA, verify that the
 ``LD_LIBRARY_PATH`` environment variable has paths for both the CUDA library
 and the CUDA-enabled hwloc library installed on the system. Also make sure that
 access to the NVIDIA devices (``/dev/nvidia*``) through the NVIDIA driver are
@@ -58,19 +42,35 @@ We have tested our NVIDIA port with CUDA 9.2 and CUDA-enabled build of hwloc
 Volta SM200).
 
 ********************
+Build Configuration
+********************
+
+We provide an example CMake host config file, which defines the CMake build
+variables set on our test platform (Lassen supercomputer at LLNL):
+`lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`.
+
+For your build system, you will need to enable Variorum to build with NVIDIA and 
+set two path variables as described below:
+
+   -  ``VARIORUM_WITH_NVIDIA=ON``
+   -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
+      '-L' flag)
+   -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc
+
+********************
  Device Enumeration
 ********************
 
 The NVIDIA port enumerates the system GPU devices and populates global GPU
-device handles at initialization in the `initNVML()` method using the
-`nvmlDeviceGetCount()` and `nvmlDeviceGetHandleByIndex()` NVML query APIs,
+device handles at initialization in the ``initNVML()`` method using the
+``nvmlDeviceGetCount()`` and ``nvmlDeviceGetHandleByIndex()`` NVML query APIs,
 respectively. It then queries the number of CPUs using Variorum's internal
 routine to query system topology which uses the CUDA-enabled hwloc. Based on
 this information, it calculates the number of GPU devices associated with each
 CPU assuming sequential device assignment on the system. This method also
-initializes the internal state of NVML using the `nvmlInit()` API.
+initializes the internal state of NVML using the ``nvmlInit()`` API.
 
-The device handles are stored in data structures of type `nvmlDevice_t` defined
+The device handles are stored in data structures of type ``nvmlDevice_t`` defined
 in NVML. A device handle provides the logical-to-physical mapping between the
 sequential device IDs and system device handles maintained by NVML internally
 at state initialization. All NVML query and command APIs require the device
@@ -96,11 +96,11 @@ Variorum provides two APIs for power telemetry from the GPU devices:
    -  Current power limit
 
 To report the average power usage of a GPU device, Variorum leverages the
-`nvmlDeviceGetPowerUsage()` API of NVML. The reported power is in Watts as an
+``nvmlDeviceGetPowerUsage()`` API of NVML. The reported power is in Watts as an
 integer.
 
 To report the power limit assigned to a GPU device, Variorum leverages the
-`nvmlDeviceGetPowerManagementLimit()` API of NVML. The reported power limit is
+``nvmlDeviceGetPowerManagementLimit()`` API of NVML. The reported power limit is
 in Watts as an integer.
 
 Thermal telemetry
@@ -108,14 +108,14 @@ Thermal telemetry
 
 Variorum provides an API to report instantaneous GPU device temperature in
 degree Celsius and integer precision. It leverages the
-`nvmlDeviceGetTemperature()` NVML API to report the GPU device temperature.
+``nvmlDeviceGetTemperature()`` NVML API to report the GPU device temperature.
 
 Clocks telemetry
 ================
 
 Variorum provides an API to report instantaneous Streaming Multi-processor (SM)
 clock speed in MHz and integer precision. It leverages the
-`nvmlDeviceGetClock()` NVML API to report the instantaneous SM clock speed.
+``nvmlDeviceGetClock()`` NVML API to report the instantaneous SM clock speed.
 
 Device utilization
 ==================
@@ -123,7 +123,7 @@ Device utilization
 Variorum provides an API to report the instantaneous device utilization as a
 percentage of time (samples) for which the GPU was in use (i.e., GPU occupancy
 rate) in a fixed time window. It leverages the
-`nvmlDeviceGetUtilizationRates()` API of NVML to report the device utilization
+``nvmlDeviceGetUtilizationRates()`` API of NVML to report the device utilization
 rate as a percentage in integer precision.
 
 ************

@@ -7,9 +7,17 @@
  AMD Overview
 ##############
 
-The current AMD port of Variorum supports the AMD processors
-from the AMD EPYC Milan family 19h, models 0~Fh and 30h~3Fh.
-This functionality has been tested on SLES15 and Ubuntu 18.04.
+AMD platforms support in-band monitoring and control through sensors and 
+machine-specific registers. AMD provides and open-source stack of its drivers
+as well as its in-band library that Variorum leverages.
+
+************
+Requirements
+************
+
+Beginning with Variorum 0.5.0, AMD processors
+from the AMD EPYC Milan family 19h, models 0-Fh and 30h-3Fh are supported.
+This functionality has been tested on Linux distributions SLES15 and Ubuntu 18.04.
 This version of depends on the AMD open-sourced software stack components
 listed below:
 
@@ -25,9 +33,9 @@ listed below:
 The E-SMI library provides the C API for user space application
 of the AMD Energy Driver and the AMD HSMP modules.
 
-The AMD Energy Driver is an out of kernel module that allows for
+The AMD Energy Driver is an out-of-tree kernel module that allows for
 core and socket energy counter access through MSRs and RAPL via ``hwmon`` sys entries.
-These registers are updated every 1 millisecond and cleared on reset of the system.
+These registers are updated every millisecond and cleared on reset of the system.
 Some registers of interest include:
 
 * Power, Energy and Time Units

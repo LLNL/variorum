@@ -13,15 +13,39 @@ describe below. Permissions on these files can be modified through cgroups.
 OPAL/Skiboot is part of IBM provided firmware that is expected to be present on
 the system.
 
-References:
+************
+Requirements
+************
+Read access to ``/sys/firmware/opal/exports/occ_inband_sensors`` is required, 
+along with read-write access to 
+``/sys/firmware/opal/powercap/system_powercap/powercap_current``
+and ``/sys/firmware/opal/psr/``. This can be enabled by using group permissions.
+For example, to allow only users belonging to certain group to set the
+power cap or power shifting ratio, ``udev`` can be used as follows.
 
--  `OCC
-   <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
--  `OPAL
-   <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
--  `Skiboot <https://github.com/open-power/skiboot>`_
--  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
+.. code:: bash      
 
+    $ cat /etc/udev/rules.d/99-coral.rules                                              
+
+    KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", RUN+="/bin/chown root:coral 
+        /sys/firmware/opal/powercap/system-powercap/powercap-current 
+        /sys/firmware/opal/psr/cpu_to_gpu_0 
+        /sys/firmware/opal/psr/cpu_to_gpu_8"
+ 
+The above file needs to be copied to all nodes. The administrator has to create 
+a group (for example, named ``coral`` below) and add the users to this group. 
+The ``udev`` rule can then be set as follows:
+
+.. code:: bash      
+
+    $ udevadm trigger /sys/block/sda
+
+    $ ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
+    /sys/firmware/opal/psr/cpu_to_gpu_0 /sys/firmware/opal/psr/cpu_to_gpu_8
+    
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/powercap/system-powercap/powercap-current
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_0
+    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_8
 
 *******************************
  Inband Sensors for Monitoring
@@ -32,7 +56,7 @@ power, temperature, CPU frequency, CPU utilization, memory bandwidth, etc. The
 sensor data is stored in OCC's SRAM and is available to the user inband through
 the sensors file listed below:
 
--  Key file for inband sensors: `/sys/firmware/opal/exports/occ_inband_sensors`
+-  Key file for inband sensors: ``/sys/firmware/opal/exports/occ_inband_sensors``
 
 OCC Sensor Data formatting is described below, and we then describe the code
 structures that were used to represent this data in the IBM port of Variorum.
@@ -127,17 +151,18 @@ Power caps and GPU power shifting ratio can be set by using OPAL/Skiboot. This
 is an inband interface through the BMC located on the node.
 
 Node power caps are set by writing to the following file in Watts:
-`/sys/firmware/opal/powercap/system-powercap/powercap-current`
+``/sys/firmware/opal/powercap/system-powercap/powercap-current``
 
 Socket level power capping and memory power capping is not available.
 
 GPU power shifting ratio can be set by setting the following files in
-percentage (i.e., between 0 and 100). `/sys/firmware/opal/psr/cpu_to_gpu_0` and
-`/sys/firmware/opal/psr/cpu_to_gpu_8`
+percentage (i.e., between 0 and 100). ``/sys/firmware/opal/psr/cpu_to_gpu_0`` and
+``/sys/firmware/opal/psr/cpu_to_gpu_8``
 
 Write access to these files is needed to set node power caps and GPU ratio.
 
-The figure below depicts the ranges for IBM power caps on Power9 system.
+The figure below depicts the ranges for IBM power caps on Power9 system 
+(reproduced with permission from our IBM collaborators).
 
 .. image:: images/IBM_PowerCap.png
    :height: 400px
@@ -148,3 +173,16 @@ The figure below shows the details of GPU power shifting ratio.
 .. image:: images/IBM_GPUPowerShiftingRatio.png
    :height: 300px
    :align: center
+
+**********
+References
+**********
+
+-  `OCC
+   <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
+-  `OPAL
+   <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
+-  `Skiboot <https://github.com/open-power/skiboot>`_
+-  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
+
+

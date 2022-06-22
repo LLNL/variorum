@@ -7,58 +7,60 @@
  Variorum
 ##########
 
-An extensible vendor-neutral library for exposing power and performance
-monitoring and control capabilities of low-level hardware knobs.
+Variorum is an extensible, vendor-neutral library for exposing power and
+performance capabilities of low-level hardware knobs across diverse
+architectures in a user-friendly manner. It is part of the :doc:`Argo`, and is
+a key component for node-level power management in the :doc:`PowerStack`.
+Variorum provides vendor-neutral APIs such that the user can query or control
+hardware knobs without needing to know the underlying vendor's implementation
+(for example, model-specific registers or sensor interfaces). These APIs enable
+application developers to gain a better understanding of power, energy, and
+performance through various metrics. Additionally, the APIs may enable system
+software to control hardware knobs to optimize for a particular goal. Variorum
+focuses on ease of use and reduced integration burden in applications, which it
+accomplishes by providing:
 
-**************
- Introduction
-**************
-
-Variorum is an extensible library for exposing monitor and control capabilities
-of low-level hardware knobs. Variorum provides vendor-neutral APIs such that
-the user can query or control hardware knobs without needing to know the
-underlying vendor's implementation. These APIs enable HPC application
-developers to gain a better understanding of performance through various
-metrics for the devices contained within the node. Additionally, the APIs may
-enable system software to control hardware knobs to optimize for a particular
-goal.
-
-Variorum focuses on ease of use and reduced integration burden in applications:
-
--  It includes examples which demonstrate how to use Variorum in a stand-alone
+-  Examples which demonstrate how to use Variorum in a stand-alone
    program.
--  It includes an example performance analysis sampler that runs alongside the
+-  A performance analysis sampler that runs alongside the
    application.
+-  A JSON API to allow integration with higher-level system software, such as
+   job schedulers, distributed monitoring frameworks, or application-level
+   runtime systems.
 
 ****************************
  Variorum Project Resources
 ****************************
 
 **Online Documentation**
-
 https://variorum.readthedocs.io/
 
 **Github Source Repo**
-
 http://github.com/llnl/variorum
 
 **Issue Tracker**
-
 http://github.com/llnl/variorum/issues
 
-**************
- Contributors
-**************
+****************
+ Lead Developers
+****************
 
--  Peter Bailey
 -  Stephanie Brink (LLNL)
--  Daniel Ellsworth
 -  Aniruddha Marathe (LLNL)
--  Lauren Morita
 -  Tapasya Patki (LLNL)
 -  Barry Rountree (LLNL)
 -  Kathleen Shoga (LLNL)
--  Scott Walker
+
+****************
+Code Of Conduct
+****************
+
+See :doc:`CodeOfConduct`.
+
+****************
+ Acknowledgments
+****************
+This research was supported by the Exascale Computing Project (17-SC-20-SC), a joint project of the U.S. Department of Energy's Office of Science and National Nuclear Security Administration, responsible for delivering a capable exascale ecosystem, including software, applications, and hardware technology, to support the nation's exascale computing imperative.
 
 ************************
  Variorum Documentation
@@ -69,30 +71,51 @@ http://github.com/llnl/variorum/issues
    :caption: Basics
 
    QuickStart
-   Releases
-   Publications
-   Licenses
+   BuildingVariorum
 
 .. toctree::
    :maxdepth: 2
-   :caption: Reference
+   :caption: Usage
 
-   BuildingVariorum
-   Variorum
+   Overview
    VariorumAPI
-   VariorumTools
+   Examples
+   HWArchitectures
+   Powmon
+   Utilities
 
 .. toctree::
    :maxdepth: 2
    :caption: Contributing
 
    VariorumDevel
+   VariorumTools
 
 .. toctree::
    :maxdepth: 2
-   :caption: Vendor Notes
+   :caption: Reference
 
-   HWArchitectures
+   Argo
+   PowerStack
+   Publications
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Docs
+   
+   api/print_functions
+   api/cap_functions
+   api/json_support_functions
+   api/enable_disable_functions
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Other
+
+   Contributors
+   CodeOfConduct
+   Releases
+   Licenses
 
 ********************
  Indices and tables

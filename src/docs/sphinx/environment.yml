@@ -1,0 +1,9 @@
+name: variorum-docs
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - breathe==4.16.0
+  - jinja2<3.1
