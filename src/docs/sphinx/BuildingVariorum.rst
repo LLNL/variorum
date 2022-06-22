@@ -15,12 +15,14 @@ Variorum can be built from source with CMake or with ``spack``. Building Varioru
 ********************
 
 The build dependencies for a **minimal build** with no parallel components require the following:
+
    -  C
    -  hwloc
    -  jansson
    -  Access to vendor-specific drivers or modules (see :doc:`HWArchitectures`).
 
 For a **parallel build** with MPI/OpenMP, Variorum depends on:
+
    -  rankstr (only required for MPI/OpenMP builds)
 
 The CMake variables (``ENABLE_MPI={ON,OFF}`` and ``ENABLE_OPENMP={ON,OFF}``) control
