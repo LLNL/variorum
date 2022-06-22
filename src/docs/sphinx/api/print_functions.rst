@@ -12,10 +12,6 @@ the value of various features.
 
 Defined in ``variorum/variorum.h``.
 
-.. doxygenfunction:: variorum_poll_power
-
-.. doxygenfunction:: variorum_monitoring
-
 .. doxygenfunction:: variorum_print_verbose_power_limit
 
 .. doxygenfunction:: variorum_print_power_limit
@@ -51,4 +47,8 @@ Defined in ``variorum/variorum.h``.
 .. doxygenfunction:: variorum_print_available_frequencies
 
 .. doxygenfunction:: variorum_print_energy
+
+.. doxygenfunction:: variorum_poll_power
+
+.. doxygenfunction:: variorum_monitoring
 
