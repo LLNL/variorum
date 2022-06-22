@@ -406,7 +406,8 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           flake8
-          black --diff --check .
+          # specify excluded dirs on command line
+          black --diff --check --exclude "/(src/thirdparty_builtin/googletest|build|src/docs)/" .
 
   build-with-spack-mirrors:
     runs-on: ubuntu-latest
