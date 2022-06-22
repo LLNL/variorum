@@ -10,7 +10,6 @@ import os
 import re
 from collections import defaultdict
 import sys
-import pathlib
 
 #: SPDX license id must appear in the first <license_lines> lines of a file
 license_lines = 7
@@ -121,7 +120,6 @@ def _check_license(lines, path):
     found = []
 
     for line in lines:
-        file_ext = pathlib.Path(path).suffix
         line = re.sub(r"^[\s#\%\.\!\/\/]*", "", line)
         line = line.rstrip()
         for i, line_regex in enumerate(license_line_regexes):
