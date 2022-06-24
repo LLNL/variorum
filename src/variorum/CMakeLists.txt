@@ -17,6 +17,7 @@ set(variorum_headers
   variorum.h
   variorum_timers.h
   variorum_error.h
+  variorum_topology.h
 )
 
 set(variorum_sources
@@ -24,6 +25,7 @@ set(variorum_sources
   variorum.c
   variorum_timers.c
   variorum_error.c
+  variorum_topology.c
 )
 
 set(variorum_deps ""
@@ -122,6 +124,7 @@ install(TARGETS variorum
 
 set(variorum_install_headers
     variorum.h
+    variorum_topology.h
 )
 
 install(FILES ${variorum_install_headers}
