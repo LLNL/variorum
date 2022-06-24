@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <string.h>
 
 #include <Intel_06_4F.h>
 #include <clocks_features.h>
@@ -78,10 +79,10 @@ int fm_06_4f_get_power_limits(int long_ver)
     unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
@@ -152,10 +153,10 @@ int fm_06_4f_cap_power_limits(int package_power_limit)
     unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     for (socket = 0; socket < nsockets; socket++)
     {
         cap_package_power_limit(socket, package_power_limit,
@@ -167,10 +168,10 @@ int fm_06_4f_cap_power_limits(int package_power_limit)
 
 int fm_06_4f_get_features(void)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     fprintf(stdout, "msr_platform_info            = 0x%lx\n",
             msrs.msr_platform_info);
     fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n",
@@ -276,10 +277,11 @@ int fm_06_4f_get_features(void)
 
 int fm_06_4f_get_thermals(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
 
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     if (long_ver == 0)
     {
         print_therm_temp_reading(stdout, msrs.ia32_therm_status,
@@ -295,10 +297,11 @@ int fm_06_4f_get_thermals(int long_ver)
 
 int fm_06_4f_get_counters(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
 
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     if (long_ver == 0)
     {
         print_all_counter_data(stdout, msrs.ia32_fixed_counters,
@@ -320,10 +323,10 @@ int fm_06_4f_get_counters(int long_ver)
 
 int fm_06_4f_get_clocks(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     if (long_ver == 0)
     {
         print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
@@ -341,10 +344,11 @@ int fm_06_4f_get_clocks(int long_ver)
 
 int fm_06_4f_get_power(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
 
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     if (long_ver == 0)
     {
         print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
@@ -362,9 +366,11 @@ int fm_06_4f_enable_turbo(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     set_turbo_on(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -374,9 +380,10 @@ int fm_06_4f_disable_turbo(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     set_turbo_off(msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -386,9 +393,11 @@ int fm_06_4f_get_turbo_status(void)
 {
     unsigned int turbo_mode_disable_bit = 38;
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     print_turbo_status(stdout, msrs.ia32_misc_enable, turbo_mode_disable_bit);
 
     return 0;
@@ -396,10 +405,11 @@ int fm_06_4f_get_turbo_status(void)
 
 int fm_06_4f_poll_power(FILE *output)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
 
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     get_all_power_data(output, msrs.msr_pkg_power_limit,
                        msrs.msr_dram_power_limit, msrs.msr_rapl_power_unit,
                        msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
@@ -408,10 +418,10 @@ int fm_06_4f_poll_power(FILE *output)
 
 int fm_06_4f_monitoring(FILE *output)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     get_all_power_data_fixed(output, msrs.msr_pkg_power_limit,
                              msrs.msr_dram_power_limit,
                              msrs.msr_rapl_power_unit,
@@ -426,12 +436,12 @@ int fm_06_4f_monitoring(FILE *output)
 
 int fm_06_4f_get_node_power_json(char **get_power_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
 
     json_t *get_power_obj = json_object();
-
     json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
@@ -444,15 +454,15 @@ int fm_06_4f_get_node_power_json(char **get_power_obj_str)
 
 int fm_06_4f_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
 
     json_t *get_domain_obj = json_object();
-
     json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
                                msrs.msr_dram_power_info,
-                               msrs.msr_rapl_power_unit, msrs.msr_pkg_power_limit);
+                               msrs.msr_rapl_power_unit, msrs.msr_pkg_power_limit;
 
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
     json_decref(get_domain_obj);
@@ -461,10 +471,11 @@ int fm_06_4f_get_node_power_domain_info_json(char **get_domain_obj_str)
 
 int fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
 
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     /* We make an assumption here to uniformly distribute the specified
      * power to both sockets as socket-level power caps. We are not accounting
      * for memory power or uncore power at the moment. We will develop a model
@@ -492,10 +503,10 @@ int fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
 
 int fm_06_4f_get_frequencies(void)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     get_available_frequencies(stdout, &msrs.msr_platform_info,
                               &msrs.msr_turbo_ratio_limit, &msrs.msr_turbo_ratio_limit1,
                               &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2);

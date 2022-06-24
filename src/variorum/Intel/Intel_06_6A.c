@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
-
 #include <Intel_06_6A.h>
+#include <string.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
@@ -31,10 +31,10 @@ int fm_06_6a_get_power_limits(int long_ver)
     unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
@@ -75,10 +75,10 @@ int fm_06_6a_get_power_limits(int long_ver)
 
 int fm_06_6a_get_features(void)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     fprintf(stdout, "msr_platform_info            = 0x%lx\n",
             msrs.msr_platform_info);
     fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n",
@@ -102,10 +102,10 @@ int fm_06_6a_get_features(void)
 
 int fm_06_6a_get_power(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
-
+    char *val = getenv("VARIORUM_LOG");
+    if(val != NULL && strlen(val) > 0){
+    	printf("Running %s\n", __FUNCTION__);
+    }
     if (long_ver == 0)
     {
         print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
