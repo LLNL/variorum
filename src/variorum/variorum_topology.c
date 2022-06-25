@@ -5,59 +5,75 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <hwloc.h>
+#include <variorum_topology.h>
 
+
+int variorum_init_topology(void)
+{
+    int rc = -1;
+
+    rc = hwloc_topology_init(&topology);
+
+    if (rc == 0)
+    {
+        rc = hwloc_topology_load(topology);
+    }
+
+    return rc;
+}
+
+void variorum_destroy_topology(void)
+{
+    hwloc_topology_destroy(topology);
+}
 
 int variorum_get_num_sockets(void)
 {
-    hwloc_topology_t topology;
-    int rc;
+    int num_sockets = -1; 
+    int rc = -1;
 
-    rc = hwloc_topology_init(&topology);
-    if (rc != 0)
+    rc = variorum_init_topology();
+
+    if (rc == 0)
     {
-        exit(-1);
+        num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
+        variorum_destroy_topology();
+        return num_sockets;
     }
-    rc = hwloc_topology_load(topology);
-    if (rc != 0)
-    {
-        exit(-1);
-    }
-    return hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
+
+    return rc;
 }
 
 int variorum_get_num_cores(void)
 {
-    hwloc_topology_t topology;
-    int rc;
+    int num_cores = -1; 
+    int rc = -1;
 
-    rc = hwloc_topology_init(&topology);
-    if (rc != 0)
+    rc = variorum_init_topology();
+
+    if (rc == 0)
     {
-        exit(-1);
+        num_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
+        variorum_destroy_topology();
+        return num_cores;
     }
-    rc = hwloc_topology_load(topology);
-    if (rc != 0)
-    {
-        exit(-1);
-    }
-    return hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
+
+    return rc;
 }
 
 int variorum_get_num_threads(void)
 {
-    hwloc_topology_t topology;
-    int rc;
+    int num_threads = -1; 
+    int rc = -1;
 
-    rc = hwloc_topology_init(&topology);
-    if (rc != 0)
+    rc = variorum_init_topology();
+
+    if (rc == 0)
     {
-        exit(-1);
+        num_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
+        variorum_destroy_topology();
+        return num_threads;
     }
-    rc = hwloc_topology_load(topology);
-    if (rc != 0)
-    {
-        exit(-1);
-    }
-    return hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
+
+    return rc;
 }
