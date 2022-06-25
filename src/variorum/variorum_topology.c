@@ -5,8 +5,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <variorum_topology.h>
+#include <hwloc.h>
 
+hwloc_topology_t topology;
 
 int variorum_init_topology(void)
 {
@@ -19,7 +20,7 @@ int variorum_init_topology(void)
         fprintf(stderr, "%s:%d "
                 "hwloc topology initialization error. "
                 "Exiting.", __FILE__, __LINE__);
-        exit (-1);
+        exit(-1);
     }
 
     rc = hwloc_topology_load(topology);
@@ -29,10 +30,10 @@ int variorum_init_topology(void)
         fprintf(stderr, "%s:%d "
                 "hwloc topology load error. "
                 "Exiting.", __FILE__, __LINE__);
-        exit (-1);
+        exit(-1);
     }
 
-    // Initialization is successful if we reach this point. 
+    // Initialization is successful if we reach this point.
     return 0;
 }
 
@@ -43,7 +44,7 @@ void variorum_destroy_topology(void)
 
 int variorum_get_num_sockets(void)
 {
-    int num_sockets = -1; 
+    int num_sockets = -1;
     int rc = -1;
 
     rc = variorum_init_topology();
@@ -60,7 +61,7 @@ int variorum_get_num_sockets(void)
 
 int variorum_get_num_cores(void)
 {
-    int num_cores = -1; 
+    int num_cores = -1;
     int rc = -1;
 
     rc = variorum_init_topology();
@@ -77,7 +78,7 @@ int variorum_get_num_cores(void)
 
 int variorum_get_num_threads(void)
 {
-    int num_threads = -1; 
+    int num_threads = -1;
     int rc = -1;
 
     rc = variorum_init_topology();

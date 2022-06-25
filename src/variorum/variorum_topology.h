@@ -7,11 +7,8 @@
 #define VARIORUM_TOPOLOGY_H_INCLUDE
 
 #include <stdio.h>
-#include <hwloc.h>
 
-hwloc_topology_t topology;
-
-int variorum_init_topology(void); 
+int variorum_init_topology(void);
 
 int variorum_get_num_sockets(void);
 
@@ -19,6 +16,6 @@ int variorum_get_num_cores(void);
 
 int variorum_get_num_threads(void);
 
-void variorum_destroy_topology(void); 
+void variorum_destroy_topology(void);
 
 #endif

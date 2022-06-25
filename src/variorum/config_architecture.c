@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//#include <hwloc.h>
 #include <variorum_topology.h>
 #include <assert.h>
 
@@ -172,7 +171,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
         init_variorum_get_topology = 1;
 
         rc = variorum_init_topology();
-        
+
         if (rc != 0)
         {
             fprintf(stderr, "%s:%d "
