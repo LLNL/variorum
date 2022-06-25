@@ -10,16 +10,30 @@
 
 int variorum_init_topology(void)
 {
-    int rc = -1;
+    int rc;
 
     rc = hwloc_topology_init(&topology);
 
-    if (rc == 0)
+    if (rc != 0)
     {
-        rc = hwloc_topology_load(topology);
+        fprintf(stderr, "%s:%d "
+                "hwloc topology initialization error. "
+                "Exiting.", __FILE__, __LINE__);
+        exit (-1);
     }
 
-    return rc;
+    rc = hwloc_topology_load(topology);
+
+    if (rc != 0)
+    {
+        fprintf(stderr, "%s:%d "
+                "hwloc topology load error. "
+                "Exiting.", __FILE__, __LINE__);
+        exit (-1);
+    }
+
+    // Initialization is successful if we reach this point. 
+    return 0;
 }
 
 void variorum_destroy_topology(void)
