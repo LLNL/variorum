@@ -7,6 +7,9 @@
 #define VARIORUM_TOPOLOGY_H_INCLUDE
 
 #include <stdio.h>
+#include <hwloc.h>
+
+static hwloc_topology_t topology;
 
 int variorum_init_topology(void);
 
