@@ -18,7 +18,6 @@ int variorum_init_topology(void)
 
     if (!init_variorum_init_topology)
     {
-        printf("INIT topology\n");
         init_variorum_init_topology = 1;
 
         rc = hwloc_topology_init(&topology);
@@ -39,19 +38,10 @@ int variorum_init_topology(void)
             exit(-1);
         }
     }
-    else
-    {
-        printf("Already init, returning...\n");
-    }
 
     // Initialization is successful if we reach this point.
     return 0;
 }
-
-//void variorum_destroy_topology(void)
-//{
-//    hwloc_topology_destroy(topology);
-//}
 
 int variorum_get_num_sockets(void)
 {
@@ -63,7 +53,6 @@ int variorum_get_num_sockets(void)
     if (rc == 0)
     {
         num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
-        //variorum_destroy_topology();
         return num_sockets;
     }
 
@@ -80,7 +69,6 @@ int variorum_get_num_cores(void)
     if (rc == 0)
     {
         num_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
-        //variorum_destroy_topology();
         return num_cores;
     }
 
@@ -97,7 +85,6 @@ int variorum_get_num_threads(void)
     if (rc == 0)
     {
         num_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
-        //variorum_destroy_topology();
         return num_threads;
     }
 

@@ -19,6 +19,4 @@ int variorum_get_num_cores(void);
 
 int variorum_get_num_threads(void);
 
-void variorum_destroy_topology(void);
-
 #endif
