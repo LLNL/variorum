@@ -32,8 +32,9 @@ int fm_06_6a_get_power_limits(int long_ver)
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     char *val = getenv("VARIORUM_LOG");
-    if(val != NULL && strlen(val) > 0){
-    	printf("Running %s\n", __FUNCTION__);
+    if (val != NULL && strlen(val) > 0)
+    {
+        printf("Running %s\n", __FUNCTION__);
     }
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -76,8 +77,9 @@ int fm_06_6a_get_power_limits(int long_ver)
 int fm_06_6a_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if(val != NULL && strlen(val) > 0){
-    	printf("Running %s\n", __FUNCTION__);
+    if (val != NULL && strlen(val) > 0)
+    {
+        printf("Running %s\n", __FUNCTION__);
     }
     fprintf(stdout, "msr_platform_info            = 0x%lx\n",
             msrs.msr_platform_info);
@@ -103,8 +105,9 @@ int fm_06_6a_get_features(void)
 int fm_06_6a_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if(val != NULL && strlen(val) > 0){
-    	printf("Running %s\n", __FUNCTION__);
+    if (val != NULL && strlen(val) > 0)
+    {
+        printf("Running %s\n", __FUNCTION__);
     }
     if (long_ver == 0)
     {

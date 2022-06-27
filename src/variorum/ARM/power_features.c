@@ -459,8 +459,9 @@ int json_get_power_data(json_t *get_power_obj)
 int json_get_power_domain_info(json_t *get_domain_obj)
 {
     char *val = getenv("VARIORUM_LOG");
-    if(val != NULL && strlen(val) > 0){
-    	printf("Running %s\n", __FUNCTION__);
+    if (val != NULL && strlen(val) > 0)
+    {
+        printf("Running %s\n", __FUNCTION__);
     }
     char hostname[1024];
     struct timeval tv;
