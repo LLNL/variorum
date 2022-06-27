@@ -30,7 +30,7 @@ int main(int argc, char **argv)
                 printf(usage, argv[0]);
                 return 0;
                 break;
-	    case 'l':
+            case 'l':
                 pkg_pow_lim_watts = atoi(optarg);
                 break;
             default:

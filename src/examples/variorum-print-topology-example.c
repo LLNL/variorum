@@ -26,10 +26,10 @@ int main(int argc, char **argv)
                 printf(usage, argv[0]);
                 return 0;
                 break;
-	    case 't':
-    		variorum_print_topology();
-		return 0;
-		break;
+            case 't':
+                variorum_print_topology();
+                return 0;
+                break;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;
