@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <hwloc.h>
 
-static hwloc_topology_t topology;
+extern hwloc_topology_t topology;
 
 int variorum_init_topology(void);
 
