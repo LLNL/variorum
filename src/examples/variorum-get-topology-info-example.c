@@ -7,7 +7,7 @@
 
 #include <variorum_topology.h>
 
-int main(int argc, char **argv)
+int main()
 {
     int num_sockets, num_cores, num_threads;
 
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     if (num_cores > 0)
     {
-        printf("Number of cores on this hardware: %d\n", num_cores);
+        printf("Number of cores/socket on this hardware: %d\n", num_cores);
     }
     else
     {
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
     if (num_threads > 0)
     {
-        printf("Number of threads on this hardware: %d\n", num_threads);
+        printf("Number of threads/socket on this hardware: %d\n", num_threads);
     }
     else
     {
