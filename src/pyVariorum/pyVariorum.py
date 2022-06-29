@@ -8,29 +8,22 @@ class variorum:
         except:
             print("\nVariorum shared library not found. Please check path to .so file")
 
-    # Variorum Print Functions    
-    def variorum_print_power(self):    
-        ret = self.variorum_c.variorum_print_power()
-        return ret
-    
-    def variorum_print_verbose_power(self):    
-        ret = self.variorum_c.variorum_print_verbose_power()
-        return ret
-    
-    def variorum_print_power_limit(self):    
-        ret = self.variorum_c.variorum_print_power_limit()
-        return ret
-    
-    def variorum_print_verbose_power_limit(self):    
-        ret = self.variorum_c.variorum_print_verbose_power_limit()
-        return ret
+        # Variorum Print Functions    
+        self.variorum_print_power = self.variorum_c.variorum_print_power
+        self.variorum_print_power.restype = c_int
 
-    # Variorum Cap Functions    
-    def variorum_cap_best_effort_node_power_limit(self, node_power_limit):
-        ret = self.variorum_c.variorum_cap_best_effort_node_power_limit(node_power_limit)
-        return ret
+        self.variorum_print_power_limit = self.variorum_c.variorum_print_power_limit
+        self.variorum_print_power_limit.restype = c_int
 
-    # Variorum JSON Functions    
-#    def variorum_get_node_power_json(self, get_power_obj):
-#        ret = self.variorum_c.variorum_get_node_power_json(byref(get_power_obj))
-#        return ret
+        self.variorum_print_verbose_power_limit = self.variorum_c.variorum_print_verbose_power_limit
+        self.variorum_print_verbose_power_limit.restype = c_int
+   
+        self.variorum_cap_best_effort_node_power_limit = self.variorum_c.variorum_cap_best_effort_node_power_limit
+        self.variorum_cap_best_effort_node_power_limit.argtypes = [c_int]
+        self.variorum_cap_best_effort_node_power_limit.restype = c_int
+
+        # Variorum JSON Functions    
+        self.variorum_get_node_power_json = self.variorum_c.variorum_get_node_power_json
+        self.variorum_get_node_power_json.argtypes = [POINTER(c_void_p)]
+        self.variorum_get_node_power_json.restype = c_int
+
