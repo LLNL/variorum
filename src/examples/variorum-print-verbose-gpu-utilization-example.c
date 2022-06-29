@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 {
     int ret;
 
-    const char *usage = "Usage: %s [-h] \n";
+    const char *usage = "Usage: %s [-hv] \n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {

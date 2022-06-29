@@ -4,20 +4,19 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
-#include <variorum_config.h>
 #include <getopt.h>
 #include <variorum.h>
 
 int main(int argc, char **argv)
 {
-    const char *usage = "Usage: %s [-h] \n";
+    const char *usage = "Usage: %s [-hv] \n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {
         switch (opt)
         {
             case 'v':
-                printf(QuoteMacro(VARIORUM_VERSION)"\n");
+		printf("%s\n", variorum_get_current_version());
                 return 0;
                 break;
             case 'h':
