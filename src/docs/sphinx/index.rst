@@ -86,6 +86,16 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
 
 .. toctree::
    :maxdepth: 2
+   :caption: API Docs
+   
+   api/print_functions
+   api/cap_functions
+   api/json_support_functions
+   api/enable_disable_functions
+   api/advanced_topology_functions
+
+.. toctree::
+   :maxdepth: 2
    :caption: Contributing
 
    VariorumDevel
@@ -98,15 +108,6 @@ This research was supported by the Exascale Computing Project (17-SC-20-SC), a j
    Argo
    PowerStack
    Publications
-
-.. toctree::
-   :maxdepth: 2
-   :caption: API Docs
-   
-   api/print_functions
-   api/cap_functions
-   api/json_support_functions
-   api/enable_disable_functions
 
 .. toctree::
    :maxdepth: 2

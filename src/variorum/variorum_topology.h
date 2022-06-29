@@ -11,12 +11,24 @@
 
 extern hwloc_topology_t topology;
 
+/// @brief Initialize hwloc topology object.
+///
+/// @return 0 if initialization is successful, otherwise -1
 int variorum_init_topology(void);
 
+/// @brief Get number of sockets on the hardware platform.
+///
+/// @return Number of sockets, otherwise -1
 int variorum_get_num_sockets(void);
 
+/// @brief Get number of cores on the hardware platform.
+///
+/// @return Number of cores, otherwise -1
 int variorum_get_num_cores(void);
 
+/// @brief Get number of threads on the hardware platform.
+///
+/// @return Number of threads, otherwise -1
 int variorum_get_num_threads(void);
 
 #endif
