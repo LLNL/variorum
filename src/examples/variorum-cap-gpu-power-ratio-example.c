@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     int ret = 0;
     int gpu_power_ratio_pct = 0;
 
-    const char *usage = "%s [-hvr] -r gpu_power_ratio_pct\n";
+    const char *usage = "Usage: %s [-hvr] -r gpu_power_ratio_pct\n";
     int opt;
     while ((opt = getopt(argc, argv, "rvh")) != -1)
     {

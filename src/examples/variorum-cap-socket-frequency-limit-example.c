@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     int cpu_id = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "%s [-hifv] -i socket_id -f cpu_freq_mhz\n";
+    const char *usage = "Usage: %s [-hifv] -i socket_id -f cpu_freq_mhz\n";
     int opt;
     while ((opt = getopt(argc, argv, "ifhv")) != -1)
     {

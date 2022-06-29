@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     int ret = 0;
     int pkg_pow_lim_watts = 0;
 
-    const char *usage = "%s [-lvh] -l power_lim_watts\n";
+    const char *usage = "Usage: %s [-lvh] -l power_lim_watts\n";
     int opt;
     while ((opt = getopt(argc, argv, "lvh")) != -1)
     {
