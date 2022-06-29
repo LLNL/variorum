@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <hwloc.h>
+#include <unistd.h>
+#include <variorum_topology.h>
 #include <assert.h>
 
 #include <config_architecture.h>
@@ -160,8 +161,8 @@ int variorum_detect_arch(void)
 void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
                            unsigned *nthreads)
 {
-    hwloc_topology_t topology;
     int rc;
+
     static int init_variorum_get_topology = 0;
 
     gethostname(g_platform.hostname, 1024);
@@ -170,21 +171,18 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
     {
         init_variorum_get_topology = 1;
 
-        // hwloc should give us expected results on any reasonable arch.
-        // If something goes wrong, there's no sense in trying to keep
-        // marching forward.
-        rc = hwloc_topology_init(&topology);
+        rc = variorum_init_topology();
+
         if (rc != 0)
         {
+            fprintf(stderr, "%s:%d "
+                    "hwloc topology initialization error. "
+                    "Exiting.", __FILE__, __LINE__);
             exit(-1);
-        }
-        rc = hwloc_topology_load(topology);
-        if (rc != 0)
-        {
-            exit(-1);
+
         }
 
-        g_platform.num_sockets = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_SOCKET);
+        g_platform.num_sockets = variorum_get_num_sockets();
         //-1 if Several levels exist with OBJ_SOCKET
         if (g_platform.num_sockets == -1)
         {
@@ -205,7 +203,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.total_cores = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_CORE);
+        g_platform.total_cores = variorum_get_num_cores();
         if (g_platform.total_cores == -1)
         {
             fprintf(stderr, "%s:%d "
@@ -224,7 +222,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        g_platform.total_threads = hwloc_get_nbobjs_by_type(topology, HWLOC_OBJ_PU);
+        g_platform.total_threads = variorum_get_num_threads();
         if (g_platform.total_threads == -1)
         {
             fprintf(stderr, "%s:%d "
@@ -271,7 +269,6 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
             exit(-1);
         }
 
-        hwloc_topology_destroy(topology);
     }
 
     if (nsockets != NULL)
