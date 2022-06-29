@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 # re-fromat all *.cpp, *.h, and *.c files in src/ directory
 #   exclude files in thirdparty_builtin/ (gtest source files)
 #   exclude files in fortran/ (EP source files)

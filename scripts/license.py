@@ -19,36 +19,41 @@ mit_spdx = "MIT"
 
 #: regular expressions for licensed files.
 licensed_files = [
-    r"^CMakeLists.txt$",
+    r"^src/CMakeLists.txt$",
     # variorum docs
-    r"^docs/.*CMakeLists.txt$",
-    r"^docs/sphinx/.*\.rst$",
-    r"^docs/sphinx/conf.py$",
-    r"^docs/sphinx/conf.py.in$",
+    r"^src/docs/.*CMakeLists.txt$",
+    r"^src/docs/sphinx/.*\.rst$",
+    r"^src/docs/sphinx/conf.py$",
+    r"^src/docs/sphinx/conf.py.in$",
     # variorum examples
-    r"^examples/.*CMakeLists.txt$",
-    r"^examples/variorum-.*\.c$",
-    r"^examples/mpi-examples/.*\.c$",
-    r"^examples/openmp-examples/.*\.c$",
-    r"^examples/using-with-cmake/c/.*\.c$",
-    r"^examples/using-with-cmake/c\+\+/.*\.c$",
-    r"^examples/using-with-make/c/.*\.c$",
+    r"^src/examples/.*CMakeLists.txt$",
+    r"^src/examples/variorum-.*\.c$",
+    r"^src/examples/mpi-examples/.*\.c$",
+    r"^src/examples/openmp-examples/.*\.c$",
+    r"^src/examples/using-with-cmake/c/.*\.c$",
+    r"^src/examples/using-with-cmake/c\+\+/.*\.c$",
+    r"^src/examples/using-with-make/c/.*\.c$",
     # variorum powmon
-    r"^powmon/.*CMakeLists.txt$",
-    r"^powmon/.*\.[ch]$",
+    r"^src/powmon/.*CMakeLists.txt$",
+    r"^src/powmon/.*\.[ch]$",
     # variorum tests
-    r"^tests/.*CMakeLists.txt$",
-    r"^tests/.*\.cpp$",
+    r"^src/tests/.*CMakeLists.txt$",
+    r"^src/tests/.*\.cpp$",
     # variorum utilities
-    r"^utilities/.*\.py$",
+    r"^src/utilities/.*\.py$",
     # variorum source
-    r"^variorum/.*CMakeLists.txt$",
-    r"^variorum/.*\.[ch]$",
-    r"^variorum/.*\.f90$",
+    r"^src/variorum/.*CMakeLists.txt$",
+    r"^src/variorum/.*\.[ch]$",
+    r"^src/variorum/.*\.f90$",
     # variorum thirdparty
-    r"^thirdparty_builtin/CMakeLists.txt$",
+    r"^src/thirdparty_builtin/CMakeLists.txt$",
     # variorum config
-    r"^config/.*CMakeLists.txt$",
+    r"^src/config/.*CMakeLists.txt$",
+    # variorum host-configs
+    r"^host-configs/.*\.cmake$",
+    # variorum scripts
+    r"^scripts/.*\.py$",
+    r"^scripts/.*\.sh$",
 ]
 
 
@@ -204,7 +209,7 @@ if __name__ == "__main__":
         sys.exit()
 
     licensed_files[:] = [re.compile(regex) for regex in licensed_files]
-    root = os.path.dirname(os.path.abspath(__file__)) + "/../src"
+    root = os.path.dirname(os.path.abspath(__file__)) + "/.."
 
     if cmd == "list-files":
         list_files(root)
