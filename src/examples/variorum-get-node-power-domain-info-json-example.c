@@ -6,24 +6,30 @@
 #include <stdio.h>
 
 #include <variorum.h>
-#include <jansson.h>
+#include <variorum_topology.h>
 
 int main(void)
 {
     int ret;
-    json_t *my_domain_obj = NULL;
     char *s = NULL;
 
-    // Create JSON object and pass to variorum API as reference.
-    my_domain_obj = json_object();
-    ret = variorum_get_node_power_domain_info_json(my_domain_obj);
+    /* Allocate string based on number of sockets on the platform */
+    /* String allocation below assumes the following: 
+     * Upper bound of 180 characters for hostname, timestamp and node power.
+     * Upper bound of 150 characters for per-socket information */
+    s = (char *) malloc(800 * sizeof(char));
+ 
+    ret = variorum_get_node_power_domain_info_json(&s);
     if (ret != 0)
     {
         printf("First run: JSON get node power domain information failed!\n");
     }
-    s = json_dumps(my_domain_obj, 0);
+    
+    /* Print the entire JSON object */ 
     puts(s);
 
-    json_decref(my_domain_obj);
+    /* Deallocate the string */
+    free(s); 
+
     return ret;
 }

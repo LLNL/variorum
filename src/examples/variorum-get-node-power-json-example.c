@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include <variorum.h>
-#include <jansson.h>
+#include <variorum_topology.h>
 
 #ifdef SECOND_RUN
 static inline double do_work(int input)
@@ -26,22 +26,36 @@ static inline double do_work(int input)
 int main(void)
 {
     int ret;
-    json_t *my_power_obj = NULL;
     char *s = NULL;
+    int num_sockets = 0;
 #ifdef SECOND_RUN
     int i;
     int size = 1E4;
     double x = 0.0;
 #endif
 
-    my_power_obj =
-        json_object(); // Create JSON object and pass to variorum API as reference.
-    ret = variorum_get_node_power_json(my_power_obj);
+    /* Determine number of sockets */
+    num_sockets = variorum_get_num_sockets();
+
+    if (num_sockets <=0)
+    {
+        printf("HWLOC returned an invalid number of sockets. Exiting.\n");
+        exit (-1);
+    }
+
+    /* Allocate string based on number of sockets on the platform */
+    /* String allocation below assumes the following: 
+     * Upper bound of 180 characters for hostname, timestamp and node power.
+     * Upper bound of 150 characters for per-socket information */
+    s = (char *) malloc((num_sockets * 150 + 150) * sizeof(char));
+
+    ret = variorum_get_node_power_json(&s);
     if (ret != 0)
     {
         printf("First run: JSON get node power failed!\n");
     }
-    s = json_dumps(my_power_obj, 0);
+
+    /* Print the entire JSON object */ 
     puts(s);
 
 #ifdef SECOND_RUN
@@ -49,15 +63,18 @@ int main(void)
     {
         x += do_work(i);
     }
-    ret = variorum_get_node_power_json(my_power_obj);
+    ret = variorum_get_node_power_json(&s);
     if (ret != 0)
     {
         printf("Second run: JSON get node power failed!\n");
     }
 #endif
 
-    s = json_dumps(my_power_obj, 0);
+    /* Print the entire JSON object */ 
     puts(s);
-    json_decref(my_power_obj);
+
+    /* Deallocate the string */
+    free(s); 
+
     return ret;
 }
