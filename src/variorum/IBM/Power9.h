@@ -20,8 +20,8 @@ int p9_cap_gpu_power_ratio(int gpu_power_ratio);
 
 int p9_monitoring(FILE *output);
 
-int p9_get_node_power_json(char** get_power_obj_str);
+int p9_get_node_power_json(char **get_power_obj_str);
 
-int p9_get_node_power_domain_info_json(char** get_domain_obj_str);
+int p9_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 #endif

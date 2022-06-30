@@ -37,14 +37,14 @@ int main(void)
     /* Determine number of sockets */
     num_sockets = variorum_get_num_sockets();
 
-    if (num_sockets <=0)
+    if (num_sockets <= 0)
     {
         printf("HWLOC returned an invalid number of sockets. Exiting.\n");
-        exit (-1);
+        exit(-1);
     }
 
     /* Allocate string based on number of sockets on the platform */
-    /* String allocation below assumes the following: 
+    /* String allocation below assumes the following:
      * Upper bound of 180 characters for hostname, timestamp and node power.
      * Upper bound of 150 characters for per-socket information */
     s = (char *) malloc((num_sockets * 150 + 150) * sizeof(char));
@@ -55,7 +55,7 @@ int main(void)
         printf("First run: JSON get node power failed!\n");
     }
 
-    /* Print the entire JSON object */ 
+    /* Print the entire JSON object */
     puts(s);
 
 #ifdef SECOND_RUN
@@ -70,11 +70,11 @@ int main(void)
     }
 #endif
 
-    /* Print the entire JSON object */ 
+    /* Print the entire JSON object */
     puts(s);
 
     /* Deallocate the string */
-    free(s); 
+    free(s);
 
     return ret;
 }

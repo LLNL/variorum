@@ -461,9 +461,9 @@ int variorum_disable_turbo(void);
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
-int variorum_get_node_power_json(char** get_power_obj_str);
+int variorum_get_node_power_json(char **get_power_obj_str);
 
-/// @brief Populate a string in JSON format with measurable and controllable 
+/// @brief Populate a string in JSON format with measurable and controllable
 /// power domains, along with the ranges.
 ///
 /// @supparch
@@ -482,7 +482,7 @@ int variorum_get_node_power_json(char** get_power_obj_str);
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
-int variorum_get_node_power_domain_info_json(char** get_domain_obj_str);
+int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /***********/
 /* Testing */

@@ -989,7 +989,7 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-int variorum_get_node_power_json(char** get_power_obj_str)
+int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -1011,7 +1011,7 @@ int variorum_get_node_power_json(char** get_power_obj_str)
     }
 
     err = g_platform.variorum_get_node_power_json(get_power_obj_str);
-    
+
     if (err)
     {
         return -1;
@@ -1028,7 +1028,7 @@ int variorum_get_node_power_json(char** get_power_obj_str)
     return err;
 }
 
-int variorum_get_node_power_domain_info_json(char** get_domain_obj_str)
+int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
