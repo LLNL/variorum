@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     int ret = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "Usage: %s [-hvf] -f cpu_freq_mhz\n";
+    const char *usage = "Usage: %s [-hvf] cpu_freq_mhz\n";
     int opt;
     while ((opt = getopt(argc, argv, "vhf")) != -1)
     {

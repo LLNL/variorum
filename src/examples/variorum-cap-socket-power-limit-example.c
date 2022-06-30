@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -15,9 +14,9 @@ int main(int argc, char **argv)
     int ret = 0;
     int pkg_pow_lim_watts = 0;
 
-    const char *usage = "Usage: %s [-lvh] -l power_lim_watts\n";
+    const char *usage = "Usage: %s [-hvl] power_lim_watts\n";
     int opt;
-    while ((opt = getopt(argc, argv, "lvh")) != -1)
+    while ((opt = getopt(argc, argv, "hvl")) != -1)
     {
         switch (opt)
         {

@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
-#include <variorum_config.h>
 #include <variorum.h>
+#include <getopt.h>
 
 #ifdef SECOND_RUN
 static inline double do_work(int input)
