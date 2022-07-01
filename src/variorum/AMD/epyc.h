@@ -26,8 +26,8 @@ int epyc_set_each_core_boostlimit(int boostlimit);
 
 int epyc_set_socket_boostlimit(int socket, int boostlimit);
 
-int epyc_get_node_power_json(json_t *get_power_obj);
+int epyc_get_node_power_json(char **get_power_obj_str);
 
-int epyc_get_node_power_domain_info_json(json_t *get_domain_obj);
+int epyc_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 #endif
