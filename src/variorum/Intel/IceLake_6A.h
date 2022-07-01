@@ -36,4 +36,8 @@ int fm_06_6a_get_power(int long_ver);
 
 int fm_06_6a_get_features(void);
 
+int fm_06_6a_get_node_power_json(char** get_power_obj_str);
+
+int fm_06_6a_get_node_power_domain_info_json(char** get_domain_obj_str);
+
 #endif
