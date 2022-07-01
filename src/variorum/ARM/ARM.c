@@ -102,7 +102,7 @@ int arm_get_power_json(char **get_power_obj_str)
     return ret;
 }
 
-int arm_get_power_domain_info_json(char **get_power_domain_obj_str)
+int arm_get_power_domain_info_json(char **get_domain_obj_str)
 {
     int ret;
 #ifdef VARIORUM_LOG
