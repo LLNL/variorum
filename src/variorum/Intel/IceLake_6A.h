@@ -28,6 +28,8 @@ struct icelake_6a_offsets
     off_t msr_dram_power_limit;
     /// @brief Address for DRAM_ENERGY_STATUS.
     off_t msr_dram_energy_status;
+    /// @brief Address for DRAM_POWER_INFO.
+    off_t msr_dram_power_info;
 };
 
 int fm_06_6a_get_power_limits(int long_ver);
