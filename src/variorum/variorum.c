@@ -1007,7 +1007,8 @@ int variorum_get_node_power_json(char **get_power_obj_str)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        return -1;
+        return 0;
+
     }
 
     err = g_platform.variorum_get_node_power_json(get_power_obj_str);
