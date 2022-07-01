@@ -6,20 +6,17 @@
 #include <stdio.h>
 
 #include <variorum.h>
-#include <variorum_topology.h>
 
 int main(void)
 {
     int ret;
     char *s = NULL;
 
-    /* Allocate string based on number of sockets on the platform */
-    /* String allocation below assumes the following:
-     * Upper bound of 180 characters for hostname, timestamp and node power.
-     * Upper bound of 150 characters for per-socket information */
+    /* Allocate string based on vendor-neutral JSON structure*/
     s = (char *) malloc(800 * sizeof(char));
 
     ret = variorum_get_node_power_domain_info_json(&s);
+
     if (ret != 0)
     {
         printf("First run: JSON get node power domain information failed!\n");

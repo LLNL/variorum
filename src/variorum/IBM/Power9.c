@@ -413,13 +413,11 @@ int p9_get_node_power_json(char **get_power_obj_str)
         }
 
         json_get_power_sensors(iter, get_power_obj, buf);
-
         free(buf);
     }
 
     // Export JSON object as a string for returning.
     *get_power_obj_str = json_dumps(get_power_obj, 0);
-
     json_decref(get_power_obj);
     close(fd);
     return 0;
@@ -455,10 +453,8 @@ int p9_get_node_power_domain_info_json(char **get_domain_obj_str)
     json_object_set_new(get_domain_obj, "control_range",
                         json_string("[{min: 500, max: 3050}, {min: 0, max: 100}]"));
 
-
     // Export JSON object as a string for returning.
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
-
     json_decref(get_domain_obj);
 
     return 0;
