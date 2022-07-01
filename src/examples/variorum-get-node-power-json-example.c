@@ -55,7 +55,7 @@ int main(void)
     {
         printf("First run: JSON get node power failed!\n");
         free(s);
-        exit (-1);
+        exit(-1);
     }
 
     /* Print the entire JSON object */
@@ -71,7 +71,7 @@ int main(void)
     {
         printf("Second run: JSON get node power failed!\n");
         free(s);
-        exit (-1);
+        exit(-1);
     }
 #endif
 
