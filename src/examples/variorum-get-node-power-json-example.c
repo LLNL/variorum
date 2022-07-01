@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <variorum.h>
 #include <variorum_topology.h>
