@@ -101,11 +101,11 @@ int fm_06_55_poll_power(FILE *output);
 
 int fm_06_55_monitoring(FILE *output);
 
-int fm_06_55_get_node_power_json(json_t *get_power_obj);
+int fm_06_55_get_node_power_json(char **get_power_obj_str);
 
 int fm_06_55_cap_best_effort_node_power_limit(int node_power_limit);
 
-int fm_06_55_get_node_power_domain_info_json(json_t *get_domain_obj);
+int fm_06_55_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 int fm_06_55_cap_frequency(int core_freq_mhz);
 
