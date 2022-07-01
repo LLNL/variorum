@@ -22,6 +22,7 @@ static struct icelake_6a_offsets msrs =
     .msr_pkg_power_info           = 0x614,
     .msr_dram_power_limit         = 0x618,
     .msr_dram_energy_status       = 0x619,
+    .msr_dram_power_info          = 0x61C,
 };
 
 int fm_06_6a_get_power_limits(int long_ver)
@@ -94,6 +95,8 @@ int fm_06_6a_get_features(void)
             msrs.msr_dram_power_limit);
     fprintf(stdout, "msr_dram_energy_status       = 0x%lx\n",
             msrs.msr_dram_energy_status);
+    fprintf(stdout, "msr_dram_power_info          = 0x%lx\n",
+            msrs.msr_dram_power_info);
     return 0;
 }
 
