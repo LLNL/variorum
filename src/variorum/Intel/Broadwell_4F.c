@@ -424,7 +424,7 @@ int fm_06_4f_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_4f_get_node_power_json(char** get_power_obj_str)
+int fm_06_4f_get_node_power_json(char **get_power_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -438,11 +438,11 @@ int fm_06_4f_get_node_power_json(char** get_power_obj_str)
 
     *get_power_obj_str = json_dumps(get_power_obj, 0);
     json_decref(get_power_obj);
-    
+
     return 0;
 }
 
-int fm_06_4f_get_node_power_domain_info_json(char** get_domain_obj_str)
+int fm_06_4f_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
