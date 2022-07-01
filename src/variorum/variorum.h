@@ -459,8 +459,9 @@ int variorum_disable_turbo(void);
 /// @param [out] output String (passed by reference) that contains the node-level
 /// power information.
 ///
-/// @return 0 if successful or if feature has not been implemented or is
-/// not supported, otherwise -1
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings. 
 int variorum_get_node_power_json(char **get_power_obj_str);
 
 /// @brief Populate a string in JSON format with measurable and controllable
@@ -480,8 +481,9 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// @param [out] output String (passed by reference) that contains the node-level
 /// domain information.
 ///
-/// @return 0 if successful or if feature has not been implemented or is
-/// not supported, otherwise -1
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings. 
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /***********/

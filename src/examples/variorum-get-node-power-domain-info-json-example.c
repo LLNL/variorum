@@ -20,7 +20,9 @@ int main(void)
 
     if (ret != 0)
     {
-        printf("First run: JSON get node power domain information failed!\n");
+        printf("JSON get node power domain information failed!\n");
+        free(s);
+        exit (-1);
     }
 
     /* Print the entire JSON object */
