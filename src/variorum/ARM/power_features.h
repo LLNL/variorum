@@ -10,8 +10,8 @@
 #include <stdio.h>
 #include <jansson.h>
 
-unsigned m_num_package;
-char m_hostname[1024];
+extern unsigned m_num_package;
+extern char m_hostname[1024];
 
 void init_arm(void);
 
