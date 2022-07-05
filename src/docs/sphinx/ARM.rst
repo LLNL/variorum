@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -9,13 +10,13 @@
 
 This implementation of the ARM port of Variorum supports the Arm Juno r2 SoC.
 The Arm Juno r2 platform is a big.LITTLE cluster with Cortex-A72 (big) and
-Cortex-A53 (LITTLE) clusters (also called processors), respectively. It also
-has an Arm Mali GP-GPU. We have tested the ARM functionality of Variorum on
-Linaro supported Linux.
+Cortex-A53 (LITTLE) clusters (also called processors), respectively. It also has
+an Arm Mali GP-GPU. We have tested the ARM functionality of Variorum on Linaro
+supported Linux.
 
-************
-Requirements
-************
+**************
+ Requirements
+**************
 
 This version of the ARM port of Variorum depends on the Linux Hardware
 Monitoring (hwmon) subsystem for access to the telemetry and control interfaces
@@ -26,11 +27,11 @@ hwmon framework enable a generic ARM implementation of Variorum.
  Monitoring and Control Through Sysfs Interface
 ************************************************
 
-The built-in monitoring interface on the Arm Juno r2 board is implemented by
-the on-board FPGA. Since this interface is not universally available on most
-Arm implementations, we leverage the standard Linux sysfs interface for
-monitoring and control. The following subsections provide the specific metrics
-that are monitored on Arm Juno r2:
+The built-in monitoring interface on the Arm Juno r2 board is implemented by the
+on-board FPGA. Since this interface is not universally available on most Arm
+implementations, we leverage the standard Linux sysfs interface for monitoring
+and control. The following subsections provide the specific metrics that are
+monitored on Arm Juno r2:
 
 Power telemetry
 ===============
@@ -76,8 +77,8 @@ cluster.
       ``/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq``
 
 Frequencies are reported by the sysfs interface in KHz. Variorum reports the
-clocks in MHz to keep it consistent with the clocks reported for other
-supported architectures.
+clocks in MHz to keep it consistent with the clocks reported for other supported
+architectures.
 
 Frequency control
 =================
@@ -95,9 +96,8 @@ frequency as input in MHz and performs this conversion internally.
 If you run into an error accessing the sysfs interface, this could be due to an
 the specified frequency value or the set governor. The sysfs interface only
 accepts valid values for frequencies as output by
-``policy*/scaling_available_frequencies``. Also, the specified frequency is
-only applied when the governor in ``policy*/scaling_governor`` is set to
-`userspace`.
+``policy*/scaling_available_frequencies``. Also, the specified frequency is only
+applied when the governor in ``policy*/scaling_governor`` is set to `userspace`.
 
 ************
  References
@@ -105,9 +105,9 @@ only applied when the governor in ``policy*/scaling_governor`` is set to
 
 -  `Arm Juno r2 technical reference
    <https://developer.arm.com/documentation/100114/0200/>`_
-- `hwmon sysfs interface
-  <https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface>`_
-- `hwmon documentation
-  <http://blog.foool.net/wp-content/uploads/linuxdocs/hwmon.pdf>`_
-- `Energy Monitoring on Juno
-  <https://community.arm.com/developer/tools-software/oss-platforms/w/docs/482/energy-monitoring-on-juno>`_
+-  `hwmon sysfs interface
+   <https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface>`_
+-  `hwmon documentation
+   <http://blog.foool.net/wp-content/uploads/linuxdocs/hwmon.pdf>`_
+-  `Energy Monitoring on Juno
+   <https://community.arm.com/developer/tools-software/oss-platforms/w/docs/482/energy-monitoring-on-juno>`_

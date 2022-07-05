@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -10,21 +11,20 @@
 Intel processors have the most sophisticated power and thermal control of any
 processor vendor we work with. While Intel's documentation remains the final
 arbiter, that format has not allowed the community of Intel users to discuss
-best practices and distribute documentation patches. For this release we
-provide below a listing of the MSRs found in Chapter 14 of volume 3B of Intel's
-SDM, plus a few related MSRs that exist elsewhere in public documentation.
-Alongside the register diagrams we note what we have learned (if anything) by
-using the registers and discussing them with our colleagues at Intel and
-elsewhere.
+best practices and distribute documentation patches. For this release we provide
+below a listing of the MSRs found in Chapter 14 of volume 3B of Intel's SDM,
+plus a few related MSRs that exist elsewhere in public documentation. Alongside
+the register diagrams we note what we have learned (if anything) by using the
+registers and discussing them with our colleagues at Intel and elsewhere.
 
-*************
+**************
  Requirements
-*************
+**************
 
 To use Variorum on Intel platforms, access to low-level registers needs to be
 enabled for non-root users. This can be enabled with the `msr-safe
-<https://github.com/llnl/msr-safe>`_ kernel driver which must be loaded 
-to enable user-level read and write of allowed MSRs.
+<https://github.com/llnl/msr-safe>`_ kernel driver which must be loaded to
+enable user-level read and write of allowed MSRs.
 
 The msr-safe driver provides the following device files:
 
@@ -55,17 +55,17 @@ The stock MSR driver provides the following device files:
 These are the most common mistakes we have seen when using these registers.
 
 -  IA32_PERF_CTL does not set clock frequency
-      -  In the distant past prior to multicore and turbo, setting
-         IA32_PERF_CTL might have had the effect of dialing in the requested
-         CPU clock frequency. In any processor since Nehalem, however, it sets
-         a frequency cap.
+      -  In the distant past prior to multicore and turbo, setting IA32_PERF_CTL
+         might have had the effect of dialing in the requested CPU clock
+         frequency. In any processor since Nehalem, however, it sets a frequency
+         cap.
 
 -  Always measure effective clock frequency using IA32_APERF and IA32_MPERF.
       -  Given the amount of performance variation within the operating system
          and within and across processors, it is easy to talk oneself into a
          story of how a particular knob relates to performance by changing the
-         clock frequency. Measuring both execution time and clock frequency
-         (and perhaps IPC as well) is an excellent filter for those stories.
+         clock frequency. Measuring both execution time and clock frequency (and
+         perhaps IPC as well) is an excellent filter for those stories.
 
 -  Do not use Linux performance governors as they have limited support.
 
@@ -344,9 +344,9 @@ These are the most common mistakes we have seen when using these registers.
    silently clipped. That value is also NDA.
 
 -  The OS and enable bits are now ignored. Both of them should always be set
-   high. Writing all-zeros to this register will not disable RAPL; the
-   processor will just try to meet a zero-watt power bound (or whatever zero is
-   clipped to).
+   high. Writing all-zeros to this register will not disable RAPL; the processor
+   will just try to meet a zero-watt power bound (or whatever zero is clipped
+   to).
 
 .. image:: images/Intel/PkgEnergyStatus.png
    :align: center
@@ -409,10 +409,9 @@ These are the most common mistakes we have seen when using these registers.
 .. image:: images/Intel/PowerCtl.png
    :align: center
 
-
-**********
-References
-**********
+************
+ References
+************
 
 -  `Intel Software Developer Manuals
    <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html>`_

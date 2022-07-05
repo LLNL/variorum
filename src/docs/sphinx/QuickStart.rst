@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -34,21 +35,22 @@ Details on using host configuration files can be found `here
 
 Please ensure that the dependencies for each platform are met before building
 Variorum. These include the kernel module ``msr-safe`` for Intel systems,
-``msr``, ``amd_energy_driver`` and HSMP driver for AMD sytems, OPAL firmware
-and sensors for IBM, and NVML for NVIDIA. Details of each of these can be found
-in the respective vendor pages, see :doc:`HWArchitectures`.
+``msr``, ``amd_energy_driver`` and HSMP driver for AMD sytems, OPAL firmware and
+sensors for IBM, and NVML for NVIDIA. Details of each of these can be found in
+the respective vendor pages, see :doc:`HWArchitectures`.
 
 For more details about building and installing Variorum, see
 :doc:`BuildingVariorum`, which provides detailed information about building
 Variorum for specific hosts, Variorum's other CMake options and installing with
 ``spack``.
 
-Function-level descriptions of Variorum's APIs as well as the architectures
-that have implementations in Variorum are provided in the following sections:
+Function-level descriptions of Variorum's APIs as well as the architectures that
+have implementations in Variorum are provided in the following sections:
 
-* :doc:`api/print_functions`
-* :doc:`api/cap_functions`
-* :doc:`api/json_support_functions`
-* :doc:`api/enable_disable_functions`
+-  :doc:`api/print_functions`
+-  :doc:`api/cap_functions`
+-  :doc:`api/json_support_functions`
+-  :doc:`api/enable_disable_functions`
 
-For beginners, the `ECP Variorum Lecture Series <https://www.exascaleproject.org/event/variorum-class-series/>`_ is beneficial.
+For beginners, the `ECP Variorum Lecture Series
+<https://www.exascaleproject.org/event/variorum-class-series/>`_ is beneficial.
