@@ -392,7 +392,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}
           ./scripts/.ci-check-code-format.sh
           err=$?
-          if [ $err -eq 0 ]; then exit 0; else echo -e "Formatting issue found.  Please run ./scripts/check-code-format.sh"; exit 1; fi
+          if [ $err -eq 0 ]; then exit 0; else echo -e "Formatting issue found in C/C++ files. Please run ./scripts/check-code-format.sh"; exit 1; fi
 
       - name: Install python dependencies
         run: |
