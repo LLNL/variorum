@@ -396,7 +396,7 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          python -m pip install --upgrade pip flake8
+          python -m pip install --upgrade pip flake8 rstfmt
 
       - name: Update Black
         run: |
@@ -408,6 +408,13 @@ jobs:
           flake8
           # specify excluded dirs on command line
           black --diff --check --exclude "/(src/thirdparty_builtin/googletest|build|src/docs)/" .
+
+      - name: Style check docs files
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          ./scripts/.ci-check-rst-format.sh
+          err=$?
+          if [ $err -eq 0 ]; then exit 0; else echo -e "Formatting issue found in RST files. Please run ./scripts/check-rst-format.sh."; exit 1; fi
 
   build-with-spack-mirrors:
     runs-on: ubuntu-latest
