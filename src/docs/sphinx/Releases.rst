@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -17,7 +18,7 @@ as releases occur.
 
 04/02/2021: New release adds documentation for Nvidia port, adds units to the
 tabular and JSON output formats, and finishes renaming dump and print internal
-functions to print and print_verbose, respectively.  `v0.4.1 tarball here
+functions to print and print_verbose, respectively. `v0.4.1 tarball here
 <https://github.com/LLNL/variorum/archive/v0.4.1.tar.gz>`_.
 
 ********
@@ -26,8 +27,7 @@ functions to print and print_verbose, respectively.  `v0.4.1 tarball here
 
 03/03/2021: Updated version includes support for ARM Juno architecture,
 introduction of the JSON API, and Intel support for two versions of msr-safe.
-`v0.4.0 tarball here
-<https://github.com/LLNL/variorum/archive/v0.4.0.tar.gz>`_.
+`v0.4.0 tarball here <https://github.com/LLNL/variorum/archive/v0.4.0.tar.gz>`_.
 
 ********
  v0.3.0

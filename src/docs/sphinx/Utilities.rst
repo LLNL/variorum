@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -50,9 +51,9 @@ From the top-level Variorum directory:
    -- Valid OPAL access
 
 Invoke the script with python on the target IBM system. The ``-v`` flag enables
-verbose output, which can be helpful if your programs are running to
-permissions issues. The output of this script is helpful to send to the mailing
-list for debugging system issues.
+verbose output, which can be helpful if your programs are running to permissions
+issues. The output of this script is helpful to send to the mailing list for
+debugging system issues.
 
 The last line of the output will (verbose or not) will indicate if the IBM OPAL
 files exist and have the appropriate permissions.
@@ -70,9 +71,9 @@ successfully.
 
 This utility will check if the stock msr kernel or the msr-safe kernel are
 loaded and configured correctly with the appropriate R/W permissions. It will
-first check if the msr kernel is loaded and has appropriate permissions. If
-this fails, then it will check if the msr-safe kernel is loaded and has
-appropriate permissions.
+first check if the msr kernel is loaded and has appropriate permissions. If this
+fails, then it will check if the msr-safe kernel is loaded and has appropriate
+permissions.
 
 How do I use it?
 ================
@@ -107,8 +108,8 @@ From the top-level Variorum directory:
    -- Check if msr_safe kernel files are accessible by user: /dev/cpu/msr_batch -- yes
    -- Valid kernel loaded: msr-safe
 
-Invoke the script with python on the target Intel system. The ``-v`` flag enables
-verbose output, which can be helpful if your programs are running to
+Invoke the script with python on the target Intel system. The ``-v`` flag
+enables verbose output, which can be helpful if your programs are running to
 permissions issues. The output of this script is helpful to send to the mailing
 list for debugging system issues.
 

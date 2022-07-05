@@ -1,4 +1,5 @@
-.. # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+..
+   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -7,45 +8,45 @@
  IBM Power9 Overview
 #####################
 
-IBM Power9 architecture supports in band monitoring with sensors and out of
-band power capping with OPAL. These depend on specific IBM files that we
-describe below. Permissions on these files can be modified through cgroups.
-OPAL/Skiboot is part of IBM provided firmware that is expected to be present on
-the system.
+IBM Power9 architecture supports in band monitoring with sensors and out of band
+power capping with OPAL. These depend on specific IBM files that we describe
+below. Permissions on these files can be modified through cgroups. OPAL/Skiboot
+is part of IBM provided firmware that is expected to be present on the system.
 
-************
-Requirements
-************
-Read access to ``/sys/firmware/opal/exports/occ_inband_sensors`` is required, 
-along with read-write access to 
-``/sys/firmware/opal/powercap/system_powercap/powercap_current``
-and ``/sys/firmware/opal/psr/``. This can be enabled by using group permissions.
-For example, to allow only users belonging to certain group to set the
-power cap or power shifting ratio, ``udev`` can be used as follows.
+**************
+ Requirements
+**************
 
-.. code:: bash      
+Read access to ``/sys/firmware/opal/exports/occ_inband_sensors`` is required,
+along with read-write access to
+``/sys/firmware/opal/powercap/system_powercap/powercap_current`` and
+``/sys/firmware/opal/psr/``. This can be enabled by using group permissions. For
+example, to allow only users belonging to certain group to set the power cap or
+power shifting ratio, ``udev`` can be used as follows.
 
-    $ cat /etc/udev/rules.d/99-coral.rules                                              
+.. code:: bash
 
-    KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", RUN+="/bin/chown root:coral 
-        /sys/firmware/opal/powercap/system-powercap/powercap-current 
-        /sys/firmware/opal/psr/cpu_to_gpu_0 
-        /sys/firmware/opal/psr/cpu_to_gpu_8"
- 
-The above file needs to be copied to all nodes. The administrator has to create 
-a group (for example, named ``coral`` below) and add the users to this group. 
+   $ cat /etc/udev/rules.d/99-coral.rules
+
+   KERNELS=="*", ACTION=="*", DEVPATH=="/devices/*", RUN+="/bin/chown root:coral
+       /sys/firmware/opal/powercap/system-powercap/powercap-current
+       /sys/firmware/opal/psr/cpu_to_gpu_0
+       /sys/firmware/opal/psr/cpu_to_gpu_8"
+
+The above file needs to be copied to all nodes. The administrator has to create
+a group (for example, named ``coral`` below) and add the users to this group.
 The ``udev`` rule can then be set as follows:
 
-.. code:: bash      
+.. code:: bash
 
-    $ udevadm trigger /sys/block/sda
+   $ udevadm trigger /sys/block/sda
 
-    $ ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
-    /sys/firmware/opal/psr/cpu_to_gpu_0 /sys/firmware/opal/psr/cpu_to_gpu_8
-    
-    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/powercap/system-powercap/powercap-current
-    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_0
-    -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_8
+   $ ls -l /sys/firmware/opal/powercap/system-powercap/powercap-current \
+   /sys/firmware/opal/psr/cpu_to_gpu_0 /sys/firmware/opal/psr/cpu_to_gpu_8
+
+   -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/powercap/system-powercap/powercap-current
+   -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_0
+   -rw-rw-r-- 1 root coral 65536 Jul  3 06:19 /sys/firmware/opal/psr/cpu_to_gpu_8
 
 *******************************
  Inband Sensors for Monitoring
@@ -56,7 +57,8 @@ power, temperature, CPU frequency, CPU utilization, memory bandwidth, etc. The
 sensor data is stored in OCC's SRAM and is available to the user inband through
 the sensors file listed below:
 
--  Key file for inband sensors: ``/sys/firmware/opal/exports/occ_inband_sensors``
+-  Key file for inband sensors:
+   ``/sys/firmware/opal/exports/occ_inband_sensors``
 
 OCC Sensor Data formatting is described below, and we then describe the code
 structures that were used to represent this data in the IBM port of Variorum.
@@ -68,15 +70,19 @@ structures that were used to represent this data in the IBM port of Variorum.
 OCC sensor data will use BAR2 (OCC Common is per physical drawer). Starting
 address is at offset 0x00580000 from BAR2 base address. Maximum size is 1.5MB.
 
-======================================== ============ ====== =========================
-  Start (Offset from BAR2 base address)   End          Size   Description
-======================================== ============ ====== =========================
-  0x00580000                              0x005A57FF   150kB   OCC 0 Sensor Data Block
-  0x005A5800                              0x005CAFFF   150kB   OCC 1 Sensor Data Block
-  :                                       :            :       :
-  0x00686800                              0x006ABFFF   150kB   OCC 7 Sensor Data Block
-  0x006AC000                              0x006FFFFF   336kB   Reserved
-======================================== ============ ====== =========================
++----------------------------------------+------------+------+-------------------------+
+| Start (Offset from BAR2 base address)  | End        | Size | Description             |
++========================================+============+======+=========================+
+| 0x00580000                             | 0x005A57FF | 150kB | OCC 0 Sensor Data Block |
++----------------------------------------+------------+------+-------------------------+
+| 0x005A5800                             | 0x005CAFFF | 150kB | OCC 1 Sensor Data Block |
++----------------------------------------+------------+------+-------------------------+
+| :                                      | :          | :    | :                       |
++----------------------------------------+------------+------+-------------------------+
+| 0x00686800                             | 0x006ABFFF | 150kB | OCC 7 Sensor Data Block |
++----------------------------------------+------------+------+-------------------------+
+| 0x006AC000                             | 0x006FFFFF | 336kB | Reserved                |
++----------------------------------------+------------+------+-------------------------+
 
 ****************************************
  OCC N Sensor Data Block Layout (150kB)
@@ -86,17 +92,25 @@ The sensor data block layout is the same for each OCC N. It contains
 sensor-header-block, sensor-names buffer, sensor-readings-ping buffer and
 sensor-readings-pong buffer.
 
-============================================== ============ ====== ============================
-  Start (Offset from OCC N Sensor Data Block)   End          Size   Description
-============================================== ============ ====== ============================
-  0x00000000                                    0x000003FF   1kB    Sensor Data Header Block
-  0x00000400                                    0x0000CBFF   50kB   Sensor Names
-  0x0000CC00                                    0x0000DBFF   4kB    Reserved
-  0x0000DC00                                    0x00017BFF   40kB   Sensor Readings ping buffer
-  0x00017C00                                    0x00018BFF   4kB    Reserved
-  0x00018C00                                    0x00022BFF   40kB   Sensor Readings pong buffer
-  0x00022C00                                    0x000257FF   11kB   Reserved
-============================================== ============ ====== ============================
++----------------------------------------------+------------+------+----------------------------+
+| Start (Offset from OCC N Sensor Data Block)  | End        | Size | Description                |
++==============================================+============+======+============================+
+| 0x00000000                                   | 0x000003FF | 1kB  | Sensor Data Header Block   |
++----------------------------------------------+------------+------+----------------------------+
+| 0x00000400                                   | 0x0000CBFF | 50kB | Sensor Names               |
++----------------------------------------------+------------+------+----------------------------+
+| 0x0000CC00                                   | 0x0000DBFF | 4kB  | Reserved                   |
++----------------------------------------------+------------+------+----------------------------+
+| 0x0000DC00                                   | 0x00017BFF | 40kB | Sensor Readings ping       |
+|                                              |            |      | buffer                     |
++----------------------------------------------+------------+------+----------------------------+
+| 0x00017C00                                   | 0x00018BFF | 4kB  | Reserved                   |
++----------------------------------------------+------------+------+----------------------------+
+| 0x00018C00                                   | 0x00022BFF | 40kB | Sensor Readings pong       |
+|                                              |            |      | buffer                     |
++----------------------------------------------+------------+------+----------------------------+
+| 0x00022C00                                   | 0x000257FF | 11kB | Reserved                   |
++----------------------------------------------+------------+------+----------------------------+
 
 There are eight OCC Sensor Data Blocks. Each of these has the same data block
 layout. Within each sensor data block, we have:
@@ -106,13 +120,12 @@ layout. Within each sensor data block, we have:
    format of the ping/pong buffer, this could be READING_FULL or
    READING_COUNTER).
 
--  **names block**: Written once at initialization, captured in
-   occ_sensors_name
+-  **names block**: Written once at initialization, captured in occ_sensors_name
 
 -  **readings ping buffer and readings pong buffer**: The ping/pong buffers are
    two 40kB buffers, one is being updated by the OCC and the other is available
-   for reading. Both have the same format version (defined in
-   sensor_struct_type and struct_attr).
+   for reading. Both have the same format version (defined in sensor_struct_type
+   and struct_attr).
 
 There are four enums:
 
@@ -124,8 +137,8 @@ There are four enums:
 
 There are four structs:
 
-#. **occ_sensor_data_header**: Gives us offsets to ping and pong buffers,
-   format version of the ping and pong buffers (reading_version), and offset to
+#. **occ_sensor_data_header**: Gives us offsets to ping and pong buffers, format
+   version of the ping and pong buffers (reading_version), and offset to
    location of the names buffer.
 
 #. **occ_sensor_name**: Format of the sensor. Gives us the type of sensor,
@@ -155,13 +168,13 @@ Node power caps are set by writing to the following file in Watts:
 
 Socket level power capping and memory power capping is not available.
 
-GPU power shifting ratio can be set by setting the following files in
-percentage (i.e., between 0 and 100). ``/sys/firmware/opal/psr/cpu_to_gpu_0`` and
+GPU power shifting ratio can be set by setting the following files in percentage
+(i.e., between 0 and 100). ``/sys/firmware/opal/psr/cpu_to_gpu_0`` and
 ``/sys/firmware/opal/psr/cpu_to_gpu_8``
 
 Write access to these files is needed to set node power caps and GPU ratio.
 
-The figure below depicts the ranges for IBM power caps on Power9 system 
+The figure below depicts the ranges for IBM power caps on Power9 system
 (reproduced with permission from our IBM collaborators).
 
 .. image:: images/IBM_PowerCap.png
@@ -174,9 +187,9 @@ The figure below shows the details of GPU power shifting ratio.
    :height: 300px
    :align: center
 
-**********
-References
-**********
+************
+ References
+************
 
 -  `OCC
    <https://github.com/open-power/docs/blob/master/occ/OCC_P9_FW_Interfaces.pdf>`_
@@ -184,5 +197,3 @@ References
    <https://openpowerfoundation.org/wp-content/uploads/2015/03/Smith-Stewart_OPFS2015.intro-to-OPAL.031715.pdf>`_
 -  `Skiboot <https://github.com/open-power/skiboot>`_
 -  `Inband Sensors <https://github.com/shilpasri/inband_sensors>`_
-
-
