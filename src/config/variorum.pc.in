@@ -1,0 +1,6 @@
+Name: ${PROJECT_NAME}
+Description: Vendor-neutral library for exposing power and performance features across diverse architectures
+Version: ${PROJECT_VERSION}
+prefix=${CMAKE_INSTALL_PREFIX}
+libdir=${PKG_CONFIG_LIBDIR}
+Libs: ${PKG_CONFIG_LIBS}

@@ -74,3 +74,14 @@ install(FILES
     variorum_setup_deps.cmake
     variorum_setup_targets.cmake
     DESTINATION ${VARIORUM_INSTALL_CMAKE_MODULE_DIR})
+
+# Create pkg-config .pc file
+set(PKG_CONFIG_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
+set(PKG_CONFIG_LIBS "-L\${libdir} -lvariorum")
+
+configure_file(
+variorum.pc.in
+${CMAKE_CURRENT_BINARY_DIR}/variorum.pc)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/variorum.pc
+        DESTINATION share)
