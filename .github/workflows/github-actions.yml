@@ -390,9 +390,9 @@ jobs:
           sudo apt-get install astyle
           astyle --version
           cd ${GITHUB_WORKSPACE}
-          ./scripts/astyle-format.sh
+          ./scripts/.ci-check-code-format.sh
           err=$?
-          if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
+          if [ $err -eq 0 ]; then exit 0; else echo -e "Formatting issue found in C/C++ files. Please run ./scripts/check-code-format.sh"; exit 1; fi
 
       - name: Install python dependencies
         run: |
