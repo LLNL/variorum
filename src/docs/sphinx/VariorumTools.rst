@@ -69,6 +69,7 @@ retrieved in a similar manner by other JSON libraries and supporting tools.
    {
        // Define a JSON object to retrieve data from Variorum in
        json_t *power_obj = json_object();
+       char *s = NULL;
 
        // Define a local variable for the value of interest. For example, the
        // client side tool may only be interested in node power, or it may be
@@ -79,18 +80,24 @@ retrieved in a similar manner by other JSON libraries and supporting tools.
        int ret;
 
        // Call the Variorum JSON API
-       ret = variorum_get_node_power_json(power_obj);
+       ret = variorum_get_node_power_json(&s);
        if (ret != 0)
        {
            printf("Variorum get node power API failed.\n");
+           free(s);
+           exit(-1);
        }
 
        // Extract the value of interest from the JSON object by using the
        // appropriate get function. Documentation of these can be found in the
        // JANSSON library documentation.
+       power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
        power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
        printf("Node power is: %lf\n", power_node);
 
        // Decrement references to JSON object, required for JANSSON library.
        json_decref(power_obj);
+
+        // Deallocate the string
+       free(s);
    }
