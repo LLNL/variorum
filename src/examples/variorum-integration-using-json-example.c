@@ -45,7 +45,7 @@ int main(void)
         for (j = 0; j < 3; j++)
         {
             char current_metric[40];
-            char current_socket[8];
+            char current_socket[16];
             strcpy(current_metric, metrics[j]);
             sprintf(current_socket, "%d", i);
             strcat(current_metric, current_socket);
