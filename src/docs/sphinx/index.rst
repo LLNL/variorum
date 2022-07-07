@@ -101,6 +101,7 @@ the nation's exascale computing imperative.
    :maxdepth: 2
    :caption: Contributing
 
+   ContribGuide
    VariorumDevel
    VariorumTools
 
