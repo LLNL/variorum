@@ -26,8 +26,8 @@ Variorum is in active development. The ``dev`` branch has the latest
 contributions to Variorum. All pull requests should start from the ``dev``
 branch and target ``dev``.
 
-There is a branch for each release, originate from ``dev``, and are named
-``releases/v<major>.<minor>.x``.
+There is a branch for each release, each originating from ``dev``, and follows
+the naming convention ``releases/v<major>.<minor>.x``.
 
 ************************
  Continuous Integration
@@ -46,7 +46,7 @@ Linux and perform 2 types of tests:
 Unit Tests
 ==========
 
-Unit tests ensure that core Varioum features like building for supported
+Unit tests ensure that core Variorum features like building for supported
 platforms are working as expected.
 
 The status of the unit tests can be checked on the `Github Actions tab
@@ -88,7 +88,8 @@ and ``black`` will show:
    All done! ✨ 🍰 ✨
    4 files would be left unchanged.
 
-However, if your code is not compliant with PEP 8, flake8 and black will complain:
+However, if your code is not compliant with PEP 8, flake8 and black will
+complain:
 
 .. code:: console
 
@@ -99,8 +100,8 @@ However, if your code is not compliant with PEP 8, flake8 and black will complai
 .. code:: console
 
    $ black --check --diff --exclude "/(src/thirdparty_builtin/googletest|build|src/docs)/" .
-   --- src/utilities/verify_opal.py	2022-07-07 05:09:42.145667 +0000
-   +++ src/utilities/verify_opal.py	2022-07-07 05:09:46.232596 +0000
+   --- src/utilities/verify_opal.py     2022-07-07 05:09:42.145667 +0000
+   +++ src/utilities/verify_opal.py     2022-07-07 05:09:46.232596 +0000
    @@ -10,10 +10,11 @@
     import os
     import sys
@@ -118,11 +119,11 @@ However, if your code is not compliant with PEP 8, flake8 and black will complai
    1 file would be reformatted, 3 files would be left unchanged.
 
 As you address these errors with the addition or removal of lines, the line
-numbers will change, so you will want to re-run flake8 and black again to
-update them.
+numbers will change, so you will want to re-run flake8 and black again to update
+them.
 
-Alternatively, fixing the errors in reverse order will eliminate the need
-for multiple runs of flake8 and black just to re-compute line numbers.
+Alternatively, fixing the errors in reverse order will eliminate the need for
+multiple runs of flake8 and black just to re-compute line numbers.
 
 Additionally, Variorum uses `Artistic Style <http://astyle.sourceforge.net/>`_
 for formatting C/C++ files.
@@ -130,7 +131,7 @@ for formatting C/C++ files.
 .. note::
 
    We have a helper script in Variorum for calling ``astyle`` locally and
-   checking for style compilance of your C/C++ files. To call this script to
+   checking for style compliance of your C/C++ files. To call this script to
    format C/C++ files, use ``scripts/check-code-format.sh``.
 
 ***********************
