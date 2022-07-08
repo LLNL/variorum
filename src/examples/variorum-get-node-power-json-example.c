@@ -48,7 +48,7 @@ int main(void)
     /* String allocation below assumes the following:
      * Upper bound of 180 characters for hostname, timestamp and node power.
      * Upper bound of 150 characters for per-socket information */
-    s = (char *) malloc((num_sockets * 150 + 150) * sizeof(char));
+    s = (char *) malloc((num_sockets * 150 + 180) * sizeof(char));
 
     ret = variorum_get_node_power_json(&s);
     if (ret != 0)
@@ -73,10 +73,10 @@ int main(void)
         free(s);
         exit(-1);
     }
-#endif
 
     /* Print the entire JSON object */
     puts(s);
+#endif
 
     /* Deallocate the string */
     free(s);
