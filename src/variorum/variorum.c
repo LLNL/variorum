@@ -989,7 +989,7 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-int variorum_get_node_power_json(json_t *get_power_obj)
+int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -1007,9 +1007,14 @@ int variorum_get_node_power_json(json_t *get_power_obj)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        return 0;
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
+
     }
-    err = g_platform.variorum_get_node_power_json(get_power_obj);
+
+    err = g_platform.variorum_get_node_power_json(get_power_obj_str);
+
     if (err)
     {
         return -1;
@@ -1026,7 +1031,7 @@ int variorum_get_node_power_json(json_t *get_power_obj)
     return err;
 }
 
-int variorum_get_node_power_domain_info_json(json_t *get_domain_obj)
+int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     int err = 0;
 #ifdef VARIORUM_LOG
@@ -1044,9 +1049,11 @@ int variorum_get_node_power_domain_info_json(json_t *get_domain_obj)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        return 0;
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
     }
-    err = g_platform.variorum_get_node_power_domain_info_json(get_domain_obj);
+    err = g_platform.variorum_get_node_power_domain_info_json(get_domain_obj_str);
     if (err)
     {
         return -1;

@@ -385,27 +385,38 @@ int fm_06_2d_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_2d_get_node_power_json(json_t *get_power_obj)
+int fm_06_2d_get_node_power_json(char **get_power_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
+
+    json_t *get_power_obj = json_object();
 
     json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
 
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
     return 0;
 }
 
-int fm_06_2d_get_node_power_domain_info_json(json_t *get_domain_obj)
+int fm_06_2d_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
 
+    json_t *get_domain_obj = json_object();
+
     json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
-                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit, msrs.msr_pkg_power_limit);
+                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit,
+                               msrs.msr_pkg_power_limit);
+
+    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    json_decref(get_domain_obj);
 
     return 0;
 }

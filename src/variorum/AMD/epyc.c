@@ -498,7 +498,7 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
  * the variorum development team.
  * We expect to test and update these two functions when access is made available.
  * */
-int epyc_get_node_power_json(json_t *get_power_obj)
+int epyc_get_node_power_json(char **get_power_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -510,6 +510,7 @@ int epyc_get_node_power_json(json_t *get_power_obj)
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
+    json_t *get_power_obj = json_object();
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -555,10 +556,14 @@ int epyc_get_node_power_json(json_t *get_power_obj)
 
     // Set the node power key with pwrnode value.
     json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
+
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
     return 0;
 }
 
-int epyc_get_node_power_domain_info_json(json_t *get_domain_obj)
+int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -570,6 +575,7 @@ int epyc_get_node_power_domain_info_json(json_t *get_domain_obj)
     int ret = 0;
     uint32_t max_power = 0;
     char range_str[100];
+    json_t *get_domain_obj = json_object();
 
     //Get max power from E-SMI from socket 0, same for both sockets.
     //E-SMI doesn't expose minimum yet, something we need AMD to help with.
@@ -599,6 +605,9 @@ int epyc_get_node_power_domain_info_json(json_t *get_domain_obj)
                         json_string("[Watts]"));
     json_object_set_new(get_domain_obj, "control_range",
                         json_string(range_str));
+
+    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    json_decref(get_domain_obj);
 
     return 0;
 }

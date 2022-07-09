@@ -7,7 +7,6 @@
 #define VARIORUM_H_INCLUDE
 
 #include <stdio.h>
-#include <jansson.h>
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
@@ -443,7 +442,8 @@ int variorum_disable_turbo(void);
 /****************/
 /* JSON Support */
 /****************/
-/// @brief Populate json_t object parameter with total node power.
+/// @brief Populate a string in JSON format with total node power, socket-level,
+/// memory-level and GPU-level power.
 ///
 /// @supparch
 /// - AMD EPYC Milan
@@ -456,13 +456,16 @@ int variorum_disable_turbo(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 ///
-/// @param [out] get_power_obj JSON object storing power info.
+/// @param [out] output String (passed by reference) that contains the node-level
+/// power information.
 ///
-/// @return 0 if successful or if feature has not been implemented or is
-/// not supported, otherwise -1
-int variorum_get_node_power_json(json_t *get_power_obj);
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings.
+int variorum_get_node_power_json(char **get_power_obj_str);
 
-/// @brief Populate json_t object parameter with measurable power domains.
+/// @brief Populate a string in JSON format with measurable and controllable
+/// power domains, along with the ranges.
 ///
 /// @supparch
 /// - AMD EPYC Milan
@@ -475,11 +478,13 @@ int variorum_get_node_power_json(json_t *get_power_obj);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 ///
-/// @param [out] get_domain_obj JSON object storing domain-level info.
+/// @param [out] output String (passed by reference) that contains the node-level
+/// domain information.
 ///
-/// @return 0 if successful or if feature has not been implemented or is
-/// not supported, otherwise -1
-int variorum_get_node_power_domain_info_json(json_t *get_domain_obj);
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings.
+int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /***********/
 /* Testing */

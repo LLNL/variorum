@@ -7,7 +7,6 @@
 #define CONFIG_ARCHIECTURE_H_INCLUDE
 
 #include <stdint.h>
-#include <jansson.h>
 
 #include <variorum_config.h>
 
@@ -196,12 +195,12 @@ struct platform
     /// @brief Function pointer to get JSON object for node power data.
     ///
     /// @return Error code.
-    int (*variorum_get_node_power_json)(json_t *get_power_obj);
+    int (*variorum_get_node_power_json)(char **get_power_obj_str);
 
     /// @brief Function pointer to get JSON object for power domain information.
     ///
     /// @return Error code.
-    int (*variorum_get_node_power_domain_info_json)(json_t *get_domain_obj);
+    int (*variorum_get_node_power_domain_info_json)(char **get_domain_obj_str);
 
     /// @brief Function pointer to get list of available frequencies.
     ///

@@ -4,26 +4,32 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <variorum.h>
-#include <jansson.h>
 
 int main(void)
 {
     int ret;
-    json_t *my_domain_obj = NULL;
     char *s = NULL;
 
-    // Create JSON object and pass to variorum API as reference.
-    my_domain_obj = json_object();
-    ret = variorum_get_node_power_domain_info_json(my_domain_obj);
+    /* Allocate string based on vendor-neutral JSON structure*/
+    s = (char *) malloc(800 * sizeof(char));
+
+    ret = variorum_get_node_power_domain_info_json(&s);
+
     if (ret != 0)
     {
-        printf("First run: JSON get node power domain information failed!\n");
+        printf("JSON get node power domain information failed!\n");
+        free(s);
+        exit(-1);
     }
-    s = json_dumps(my_domain_obj, 0);
+
+    /* Print the entire JSON object */
     puts(s);
 
-    json_decref(my_domain_obj);
+    /* Deallocate the string */
+    free(s);
+
     return ret;
 }

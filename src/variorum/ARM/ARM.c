@@ -85,22 +85,36 @@ int arm_cap_socket_frequency(int cpuid, int freq)
     return ret;
 }
 
-int arm_get_power_json(json_t *get_power_obj)
+int arm_get_power_json(char **get_power_obj_str)
 {
     int ret;
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
+
+    json_t *get_power_obj = json_object();
+
     ret = json_get_power_data(get_power_obj);
+
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
     return ret;
 }
 
-int arm_get_power_domain_info_json(json_t *get_power_domain_obj)
+int arm_get_power_domain_info_json(char **get_domain_obj_str)
 {
     int ret;
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    ret = json_get_power_domain_info(get_power_domain_obj);
+
+    json_t *get_domain_obj = json_object();
+
+    ret = json_get_power_domain_info(get_domain_obj);
+
+    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    json_decref(get_domain_obj);
+
     return ret;
 }

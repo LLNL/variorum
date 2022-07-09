@@ -22,6 +22,7 @@ static struct icelake_6a_offsets msrs =
     .msr_pkg_power_info           = 0x614,
     .msr_dram_power_limit         = 0x618,
     .msr_dram_energy_status       = 0x619,
+    .msr_dram_power_info          = 0x61C,
 };
 
 int fm_06_6a_get_power_limits(int long_ver)
@@ -94,6 +95,8 @@ int fm_06_6a_get_features(void)
             msrs.msr_dram_power_limit);
     fprintf(stdout, "msr_dram_energy_status       = 0x%lx\n",
             msrs.msr_dram_energy_status);
+    fprintf(stdout, "msr_dram_power_info          = 0x%lx\n",
+            msrs.msr_dram_power_info);
     return 0;
 }
 
@@ -115,3 +118,40 @@ int fm_06_6a_get_power(int long_ver)
     }
     return 0;
 }
+
+int fm_06_6a_get_node_power_json(char **get_power_obj_str)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_t *get_power_obj = json_object();
+
+    json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
+                        msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                        msrs.msr_dram_energy_status);
+
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
+    return 0;
+}
+
+int fm_06_6a_get_node_power_domain_info_json(char **get_domain_obj_str)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    json_t *get_domain_obj = json_object();
+
+    json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
+                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit,
+                               msrs.msr_pkg_power_limit);
+
+    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    json_decref(get_domain_obj);
+
+    return 0;
+}
+
