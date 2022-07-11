@@ -1,6 +1,6 @@
-from ctypes import *    
+import ctypes
+from ctypes import *
 import pyVariorum
-import pyJansson
     
 def runtests(v):
     print("\n=== Running Variorum Print Power:")
@@ -17,17 +17,15 @@ def runtests(v):
     print("\n######## Verifying with Variorum Print Power Limit:")
     v.variorum_print_power_limit()
 
-def runJSONtests(v,j):
+def runJSONtests(v):
     print("\n=== Running Variorum JSON Get Node Power:")
-    my_power_obj = j.json_object()
-    v.variorum_get_node_power_json(my_power_obj)
-    s = j.json_dumps(my_power_obj)
-    print(s)
-    #j.json_decref(my_power_obj) 
-    
+    jsonbuf = ctypes.create_unicode_buffer(1000)
+    bufptr = c_char_p(addressof(jsonbuf))
+    v.variorum_get_node_power_json(bufptr)
+    print(bufptr.value.decode('utf-8'))
+    # print(bufptr.value)
 
 if __name__ == "__main__":
     v = pyVariorum.variorum()
-    j = pyJansson.jansson()
     runtests(v)
-    runJSONtests(v,j)
+    runJSONtests(v)
