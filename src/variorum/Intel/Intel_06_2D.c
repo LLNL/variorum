@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <SandyBridge_2D.h>
+#include <Intel_06_2D.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>

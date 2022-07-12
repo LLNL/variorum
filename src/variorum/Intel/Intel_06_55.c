@@ -5,14 +5,14 @@
 
 #include <stdio.h>
 
-#include <KabyLake_9E.h>
+#include <Intel_06_55.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
 #include <power_features.h>
 #include <thermal_features.h>
 
-static struct kabylake_9e_offsets msrs =
+static struct skylake_55_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
     .ia32_time_stamp_counter      = 0x10,
@@ -20,7 +20,6 @@ static struct kabylake_9e_offsets msrs =
     .ia32_perf_status             = 0x198,
     .ia32_therm_interrupt         = 0x19B,
     .ia32_therm_status            = 0x19C,
-    .msr_therm2_ctl               = 0x19D,
     .ia32_misc_enable             = 0x1A0,
     .msr_temperature_target       = 0x1A2,
     .msr_turbo_ratio_limit        = 0x1AD,
@@ -64,10 +63,10 @@ static struct kabylake_9e_offsets msrs =
     .ia32_perfevtsel_counters[4]  = 0x18A,
     .ia32_perfevtsel_counters[5]  = 0x18B,
     .ia32_perfevtsel_counters[6]  = 0x18C,
-    .ia32_perfevtsel_counters[7]  = 0x18D
+    .ia32_perfevtsel_counters[7]  = 0x18D,
 };
 
-int fm_06_9e_get_power_limits(int long_ver)
+int fm_06_55_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -127,7 +126,7 @@ int fm_06_9e_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_9e_cap_power_limits(int package_power_limit)
+int fm_06_55_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -145,7 +144,7 @@ int fm_06_9e_cap_power_limits(int package_power_limit)
     return 0;
 }
 
-int fm_06_9e_get_features(void)
+int fm_06_55_get_features(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -162,7 +161,6 @@ int fm_06_9e_get_features(void)
             msrs.ia32_therm_interrupt);
     fprintf(stdout, "ia32_therm_status            = 0x%lx\n",
             msrs.ia32_therm_status);
-    fprintf(stdout, "msr_therm2_ctl               = 0x%lx\n", msrs.msr_therm2_ctl);
     fprintf(stdout, "ia32_misc_enable             = 0x%lx\n",
             msrs.ia32_misc_enable);
     fprintf(stdout, "msr_temperature_target       = 0x%lx\n",
@@ -246,7 +244,7 @@ int fm_06_9e_get_features(void)
     return 0;
 }
 
-int fm_06_9e_get_thermals(int long_ver)
+int fm_06_55_get_thermals(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -265,7 +263,7 @@ int fm_06_9e_get_thermals(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_counters(int long_ver)
+int fm_06_55_get_counters(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -286,7 +284,7 @@ int fm_06_9e_get_counters(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_clocks(int long_ver)
+int fm_06_55_get_clocks(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -307,7 +305,7 @@ int fm_06_9e_get_clocks(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_power(int long_ver)
+int fm_06_55_get_power(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -326,7 +324,7 @@ int fm_06_9e_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_9e_poll_power(FILE *output)
+int fm_06_55_poll_power(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -338,7 +336,7 @@ int fm_06_9e_poll_power(FILE *output)
     return 0;
 }
 
-int fm_06_9e_monitoring(FILE *output)
+int fm_06_55_monitoring(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -352,7 +350,7 @@ int fm_06_9e_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_9e_get_node_power_json(char **get_power_obj_str)
+int fm_06_55_get_node_power_json(char **get_power_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -370,7 +368,7 @@ int fm_06_9e_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int fm_06_9e_get_node_power_domain_info_json(char **get_domain_obj_str)
+int fm_06_55_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -388,7 +386,7 @@ int fm_06_9e_get_node_power_domain_info_json(char **get_domain_obj_str)
     return 0;
 }
 
-int fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
+int fm_06_55_cap_best_effort_node_power_limit(int node_limit)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -414,12 +412,25 @@ int fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
 
     int pkg_limit = node_limit / nsockets;
 
-    fm_06_9e_cap_power_limits(pkg_limit);
+    fm_06_55_cap_power_limits(pkg_limit);
 
     return 0;
 }
 
-int fm_06_9e_get_frequencies(void)
+int fm_06_55_cap_frequency(int core_freq_mhz)
+{
+    unsigned nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads);
+
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+
+    cap_p_state(core_freq_mhz, CORE, msrs.ia32_perf_status);
+    return 0;
+}
+
+int fm_06_55_get_frequencies(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

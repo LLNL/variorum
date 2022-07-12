@@ -4,16 +4,18 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <stdlib.h>
 
-#include <Haswell_3F.h>
+#include <Intel_06_3E.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
 #include <misc_features.h>
 #include <power_features.h>
 #include <thermal_features.h>
+#include <variorum_error.h>
 
-static struct haswell_3f_offsets msrs =
+static struct ivybridge_3e_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
     .ia32_time_stamp_counter      = 0x10,
@@ -21,13 +23,11 @@ static struct haswell_3f_offsets msrs =
     .ia32_perf_status             = 0x198,
     .ia32_therm_interrupt         = 0x19B,
     .ia32_therm_status            = 0x19C,
+    .msr_therm2_ctl               = 0x19D,
     .ia32_misc_enable             = 0x1A0,
     .msr_temperature_target       = 0x1A2,
     .msr_turbo_ratio_limit        = 0x1AD,
     .msr_turbo_ratio_limit1       = 0x1AE,
-    .msr_config_tdp_level1        = 0x649,
-    .msr_config_tdp_level2        = 0x64A,
-    .msr_config_tdp_nominal       = 0x648,
     .ia32_package_therm_status    = 0x1B1,
     .ia32_package_therm_interrupt = 0x1B2,
     .ia32_fixed_counters[0]       = 0x309,
@@ -65,9 +65,13 @@ static struct haswell_3f_offsets msrs =
     .ia32_perfevtsel_counters[5]  = 0x18B,
     .ia32_perfevtsel_counters[6]  = 0x18C,
     .ia32_perfevtsel_counters[7]  = 0x18D,
+    .msrs_pcu_pmon_evtsel[0]      = 0xC30,
+    .msrs_pcu_pmon_evtsel[1]      = 0xC31,
+    .msrs_pcu_pmon_evtsel[2]      = 0xC32,
+    .msrs_pcu_pmon_evtsel[3]      = 0xC33
 };
 
-int fm_06_3f_get_power_limits(int long_ver)
+int fm_06_3e_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -141,7 +145,7 @@ int fm_06_3f_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_3f_cap_power_limits(int package_power_limit)
+int fm_06_3e_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -159,7 +163,7 @@ int fm_06_3f_cap_power_limits(int package_power_limit)
     return 0;
 }
 
-int fm_06_3f_get_features(void)
+int fm_06_3e_get_features(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -176,6 +180,7 @@ int fm_06_3f_get_features(void)
             msrs.ia32_therm_interrupt);
     fprintf(stdout, "ia32_therm_status            = 0x%lx\n",
             msrs.ia32_therm_status);
+    fprintf(stdout, "msr_therm2_ctl               = 0x%lx\n", msrs.msr_therm2_ctl);
     fprintf(stdout, "ia32_misc_enable             = 0x%lx\n",
             msrs.ia32_misc_enable);
     fprintf(stdout, "msr_temperature_target       = 0x%lx\n",
@@ -256,10 +261,18 @@ int fm_06_3f_get_features(void)
             msrs.ia32_perfevtsel_counters[6]);
     fprintf(stdout, "ia32_perfevtsel_counters[7]  = 0x%lx\n",
             msrs.ia32_perfevtsel_counters[7]);
+    fprintf(stdout, "msrs_pcu_pmon_evtsel[0]      = 0x%lx\n",
+            msrs.msrs_pcu_pmon_evtsel[0]);
+    fprintf(stdout, "msrs_pcu_pmon_evtsel[1]      = 0x%lx\n",
+            msrs.msrs_pcu_pmon_evtsel[1]);
+    fprintf(stdout, "msrs_pcu_pmon_evtsel[2]      = 0x%lx\n",
+            msrs.msrs_pcu_pmon_evtsel[2]);
+    fprintf(stdout, "msrs_pcu_pmon_evtsel[3]      = 0x%lx\n",
+            msrs.msrs_pcu_pmon_evtsel[3]);
     return 0;
 }
 
-int fm_06_3f_get_thermals(int long_ver)
+int fm_06_3e_get_thermals(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -278,7 +291,7 @@ int fm_06_3f_get_thermals(int long_ver)
     return 0;
 }
 
-int fm_06_3f_get_counters(int long_ver)
+int fm_06_3e_get_counters(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -299,7 +312,7 @@ int fm_06_3f_get_counters(int long_ver)
     return 0;
 }
 
-int fm_06_3f_get_clocks(int long_ver)
+int fm_06_3e_get_clocks(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -309,18 +322,18 @@ int fm_06_3f_get_clocks(int long_ver)
     {
         print_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
                           msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                          CORE);
+                          SOCKET);
     }
     else if (long_ver == 1)
     {
         print_verbose_clocks_data(stdout, msrs.ia32_aperf, msrs.ia32_mperf,
                                   msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
-                                  CORE);
+                                  SOCKET);
     }
     return 0;
 }
 
-int fm_06_3f_get_power(int long_ver)
+int fm_06_3e_get_power(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -339,7 +352,7 @@ int fm_06_3f_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_3f_enable_turbo(void)
+int fm_06_3e_enable_turbo(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -351,7 +364,7 @@ int fm_06_3f_enable_turbo(void)
     return 0;
 }
 
-int fm_06_3f_disable_turbo(void)
+int fm_06_3e_disable_turbo(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -362,7 +375,8 @@ int fm_06_3f_disable_turbo(void)
 
     return 0;
 }
-int fm_06_3f_get_turbo_status(void)
+
+int fm_06_3e_get_turbo_status(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -374,7 +388,7 @@ int fm_06_3f_get_turbo_status(void)
     return 0;
 }
 
-int fm_06_3f_poll_power(FILE *output)
+int fm_06_3e_poll_power(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -386,7 +400,7 @@ int fm_06_3f_poll_power(FILE *output)
     return 0;
 }
 
-int fm_06_3f_monitoring(FILE *output)
+int fm_06_3e_monitoring(FILE *output)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -400,7 +414,7 @@ int fm_06_3f_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_3f_get_node_power_json(char **get_power_obj_str)
+int fm_06_3e_get_node_power_json(char **get_power_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -418,7 +432,7 @@ int fm_06_3f_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int fm_06_3f_get_node_power_domain_info_json(char **get_domain_obj_str)
+int fm_06_3e_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -427,15 +441,15 @@ int fm_06_3f_get_node_power_domain_info_json(char **get_domain_obj_str)
     json_t *get_domain_obj = json_object();
 
     json_get_power_domain_info(get_domain_obj, msrs.msr_pkg_power_info,
-                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit, msrs.msr_pkg_power_limit);
+                               msrs.msr_dram_power_info, msrs.msr_rapl_power_unit,
+                               msrs.msr_pkg_power_limit);
 
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
     json_decref(get_domain_obj);
-
     return 0;
 }
 
-int fm_06_3f_cap_best_effort_node_power_limit(int node_limit)
+int fm_06_3e_cap_best_effort_node_power_limit(int node_limit)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -461,12 +475,12 @@ int fm_06_3f_cap_best_effort_node_power_limit(int node_limit)
 
     int pkg_limit = node_limit / nsockets;
 
-    fm_06_3f_cap_power_limits(pkg_limit);
+    fm_06_3e_cap_power_limits(pkg_limit);
 
     return 0;
 }
 
-int fm_06_3f_get_frequencies(void)
+int fm_06_3e_get_frequencies(void)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -474,6 +488,34 @@ int fm_06_3f_get_frequencies(void)
 
     get_available_frequencies(stdout, &msrs.msr_platform_info,
                               &msrs.msr_turbo_ratio_limit, &msrs.msr_turbo_ratio_limit1,
-                              &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2);
+                              NULL, NULL);
+    //    /* Turbo Range
+    //     * Default ratio for 1C Max Turbo == P01
+    //     * All core turbo == P0n
+    //     * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
+    //     */
+    //    fprintf(stdout, "=== Turbo Schedule ===\n");
+    //    if (get_turbo_ratio_limits(msrs.msr_turbo_ratio_limit,
+    //                               msrs.msr_turbo_ratio_limit1) != 0)
+    //    {
+    //        variorum_error_handler("Values do not match across sockets",
+    //                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+    //    }
+    //    fprintf(stdout, "\n");
+    //
+    //    /* P-State Table -- P1, Pn, and Pm
+    //     * Read IA32_PLATFORM_INFO 0xCE
+    //     * Field "Maximum Efficiency Ratio: Bits 47:40 == Pn
+    //     * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
+    //     * Field "Minimum Operating Ratio: Bits 55:48 == Pm
+    //     */
+    //    fprintf(stdout, "=== P-State Table ===\n");
+    //    fprintf(stdout, "Max Efficiency Ratio = %d MHz\n",
+    //            get_max_non_turbo_ratio(msrs.msr_platform_info));
+    //    fprintf(stdout, "Max Non-Turbo Ratio  = %d MHz\n",
+    //            get_max_efficiency_ratio(msrs.msr_platform_info));
+    //    fprintf(stdout, "Min Operating Ratio  = %d MHz\n",
+    //            get_min_operating_ratio(msrs.msr_platform_info));
+
     return 0;
 }

@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-#include <Broadwell_4F.h>
+#include <Intel_06_4F.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
