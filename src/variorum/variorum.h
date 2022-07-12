@@ -18,6 +18,8 @@
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [in] output Location for output (stdout, stderr, filename).
 ///
@@ -36,6 +38,8 @@ int variorum_poll_power(FILE *output);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [in] output Location for output (stdout, stderr, filename).
 ///
@@ -56,6 +60,8 @@ int variorum_monitoring(FILE *output);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [in] socket_power_limit Desired power limit for each socket.
 ///
@@ -74,6 +80,8 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [in] node_power_limit Desired power limit for the node.
 ///
@@ -96,6 +104,8 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @param [in] gpu_power_ratio Desired power ratio (percentage).
@@ -110,6 +120,8 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 /// @supparch
 /// - AMD EPYC Milan
 /// - Intel Skylake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [in] cpu_freq_mhz Desired CPU frequency for each core in MHz.
 ///
@@ -152,6 +164,8 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -170,6 +184,8 @@ int variorum_print_verbose_power_limit(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -186,6 +202,8 @@ int variorum_print_power_limit(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -202,6 +220,8 @@ int variorum_print_verbose_thermals(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -217,6 +237,8 @@ int variorum_print_thermals(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -231,6 +253,8 @@ int variorum_print_verbose_counters(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -249,6 +273,8 @@ int variorum_print_counters(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -268,6 +294,8 @@ int variorum_print_verbose_power(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -286,6 +314,8 @@ int variorum_print_power(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -304,6 +334,8 @@ int variorum_print_verbose_frequency(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -328,6 +360,8 @@ void variorum_print_topology(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -362,6 +396,8 @@ int variorum_print_turbo(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -383,6 +419,8 @@ int variorum_print_verbose_gpu_utilization(void);
 /// - Intel Skylake
 /// - Intel Kaby Lake
 /// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -398,6 +436,8 @@ int variorum_print_gpu_utilization(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -455,6 +495,8 @@ int variorum_disable_turbo(void);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// power information.
@@ -477,6 +519,8 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// domain information.
