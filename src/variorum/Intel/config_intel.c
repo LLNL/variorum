@@ -9,14 +9,14 @@
 #include <config_intel.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include <SandyBridge_2A.h>
-#include <SandyBridge_2D.h>
-#include <IvyBridge_3E.h>
-#include <Broadwell_4F.h>
-#include <Haswell_3F.h>
-#include <KabyLake_9E.h>
-#include <Skylake_55.h>
-#include <IceLake_6A.h>
+#include <Intel_06_2A.h>
+#include <Intel_06_2D.h>
+#include <Intel_06_3E.h>
+#include <Intel_06_4F.h>
+#include <Intel_06_3F.h>
+#include <Intel_06_9E.h>
+#include <Intel_06_55.h>
+#include <Intel_06_6A.h>
 
 uint64_t *detect_intel_arch(void)
 {

@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-#include <IceLake_6A.h>
+#include <Intel_06_6A.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
