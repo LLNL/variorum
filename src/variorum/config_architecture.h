@@ -80,6 +80,13 @@ enum arm_arch_e
     ARMV8 = 1, //ARM Juno
 };
 
+/// @brief List of AMD GPU family and models.
+/// @todo: we need to find architecture detection info here.
+enum amd_gpu_arch_e
+{
+    MI50 = 50, // MI50 for Corona.
+};
+
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -225,6 +232,8 @@ struct platform
     uint64_t *nvidia_arch;
     /// @brief Identifier for ARM architecture.
     uint64_t *arm_arch;
+    /// @brief Identifier for AMD GPU architecture.
+    uint64_t *amd_gpu_arch;
 
     /// @brief Hostname.
     char hostname[1024];
