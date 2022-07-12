@@ -102,7 +102,7 @@ Supported Intel Microarchitectures:
     0x3E (Haswell)
     0x4F (Broadwell)
     0x9E (Kaby Lake)
-    0x55 (Skylake)
+    0x55 (Skylake, Cascade Lake, Cooper Lake)
     0x6A (Ice Lake)
 
 Supported Nvidia Microrchitectures:
