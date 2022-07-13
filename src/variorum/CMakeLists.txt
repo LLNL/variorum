@@ -84,7 +84,7 @@ endif()
 
 
 if(VARIORUM_WITH_AMD_GPU)
-    list(APPEND variorum_headers AMD_GPU/config_amd_gpu.h ${variorum_amd_gpu_headers} ${ROCM_INCLUDE_DIRS}/rocm_smi.h)
+    list(APPEND variorum_headers AMD_GPU/config_amd_gpu.h ${variorum_amd_gpu_headers} ${ROCM_INCLUDE_DIRS}/rocm_smi/rocm_smi.h)
     list(APPEND variorum_sources AMD_GPU/config_amd_gpu.c)
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_amd_gpu>)
     list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/AMD_GPU ${ROCM_INCLUDE_DIRS})
@@ -125,7 +125,7 @@ if(VARIORUM_WITH_AMD)
 target_link_libraries(variorum PUBLIC ${ESMI_LIBRARY})
 endif()
 if(VARIORUM_WITH_AMD_GPU)
-target_link_libraries(variorum PUBLIC ${ROCM_HEADER})
+target_link_libraries(variorum PUBLIC ${ROCM_LIBRARY})
 endif()
 
 install(TARGETS variorum

@@ -68,6 +68,11 @@ if(VARIORUM_WITH_ARM)
 else()
     message(STATUS "Building without support for ARM architectures (VARIORUM_WITH_ARM == OFF)")
 endif()
+if(VARIORUM_WITH_AMD_GPU)
+    message(STATUS "Building support for AMD GPU architectures (VARIORUM_WITH_AMD_GPU == ON)")
+else()
+    message(STATUS "Building without support for AMD GPU architectures (VARIORUM_WITH_AMD_GPU == OFF)")
+endif()
 
 #############
 # DEBUGGING #
