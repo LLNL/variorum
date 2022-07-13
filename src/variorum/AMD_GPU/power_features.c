@@ -72,13 +72,13 @@ void get_power_data(int chipid, int total_sockets, int long_ver, FILE *output)
             fprintf(output,
                     "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
                     " Power: %lf W, Timestamp: %lf sec\n",
-                    hostname, chipid, dev_id, pwr_val_flt,
+                    hostname, chipid, i, pwr_val_flt,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
             fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %lf %lf\n",
-                    hostname, chipid, dev_id, pwr_val_flt,
+                    hostname, chipid, i, pwr_val_flt,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
