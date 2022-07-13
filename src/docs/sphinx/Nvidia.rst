@@ -52,7 +52,7 @@ variables set on our test platform (Lassen supercomputer at LLNL):
 For your build system, you will need to enable Variorum to build with NVIDIA and
 set two path variables as described below:
 
-   -  ``VARIORUM_WITH_NVIDIA=ON``
+   -  ``VARIORUM_WITH_NVIDIA_GPU=ON``
    -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
       '-L' flag)
    -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc

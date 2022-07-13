@@ -24,7 +24,7 @@
 #include <config_ibm.h>
 #endif
 
-#ifdef VARIORUM_WITH_NVIDIA
+#ifdef VARIORUM_WITH_NVIDIA_GPU
 #include <config_nvidia.h>
 #endif
 
@@ -92,6 +92,9 @@ int variorum_exit()
         return err;
     }
 #endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    shutdownNVML();
+#endif
 
 #ifdef VARIORUM_WITH_INTEL
     free(g_platform.intel_arch);
@@ -99,7 +102,7 @@ int variorum_exit()
 #ifdef VARIORUM_WITH_IBM
     free(g_platform.ibm_arch);
 #endif
-#ifdef VARIORUM_WITH_NVIDIA
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     free(g_platform.nvidia_arch);
 #endif
 #ifdef VARIORUM_WITH_ARM
@@ -121,7 +124,7 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_IBM
     g_platform.ibm_arch = detect_ibm_arch();
 #endif
-#ifdef VARIORUM_WITH_NVIDIA
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     g_platform.nvidia_arch = detect_gpu_arch();
 #endif
 #ifdef VARIORUM_WITH_ARM
@@ -328,7 +331,7 @@ int variorum_set_func_ptrs()
 #ifdef VARIORUM_WITH_IBM
     err = set_ibm_func_ptrs();
 #endif
-#ifdef VARIORUM_WITH_NVIDIA
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     err = set_nvidia_func_ptrs();
 #endif
 #ifdef VARIORUM_WITH_ARM

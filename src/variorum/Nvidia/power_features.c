@@ -29,7 +29,7 @@ void initNVML(void)
         result = nvmlDeviceGetHandleByIndex(d, &m_unit_devices_file_desc[d]);
         if (result != NVML_SUCCESS)
         {
-            variorum_error_handler("Could not get GPU device handle",
+            variorum_error_handler("Could not get NVIDIA GPU device handle",
                                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
         }
@@ -65,17 +65,17 @@ void get_power_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
+                    "_NVIDIA_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
                     m_hostname, chipid, d, value);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_POWER_USAGE Host Socket DeviceID Power_W\n");
+                fprintf(output, "_NVIDIA_GPU_POWER_USAGE Host Socket DeviceID Power_W\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_POWER_USAGE %s %d %d %lf\n",
+            fprintf(output, "_NVIDIA_GPU_POWER_USAGE %s %d %d %lf\n",
                     m_hostname, chipid, d, value);
         }
     }
@@ -97,17 +97,17 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %u C\n",
+                    "_NVIDIA_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %u C\n",
                     m_hostname, chipid, d, gpu_temp);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_TEMPERATURE Host Socket DeviceID Temperature_C\n");
+                fprintf(output, "_NVIDIA_GPU_TEMPERATURE Host Socket DeviceID Temperature_C\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_TEMPERATURE %s %d %d %d\n",
+            fprintf(output, "_NVIDIA_GPU_TEMPERATURE %s %d %d %d\n",
                     m_hostname, chipid, d, gpu_temp);
         }
     }
@@ -132,17 +132,17 @@ void get_power_limits(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_POWER_LIMIT Host: %s, Socket: %d, DeviceID: %d, PowerLimit: %0.3lf W\n",
+                    "_NVIDIA_GPU_POWER_LIMIT Host: %s, Socket: %d, DeviceID: %d, PowerLimit: %0.3lf W\n",
                     m_hostname, chipid, d, value);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_POWER_LIMIT Host Socket DeviceID PowerLimit_W\n");
+                fprintf(output, "_NVIDIA_GPU_POWER_LIMIT Host Socket DeviceID PowerLimit_W\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_POWER_LIMIT %s %d %d %0.3lf\n",
+            fprintf(output, "_NVIDIA_GPU_POWER_LIMIT %s %d %d %0.3lf\n",
                     m_hostname, chipid, d, value);
         }
     }
@@ -165,17 +165,17 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d, GPU_Clock: %d MHz\n",
+                    "_NVIDIA_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d, GPU_Clock: %d MHz\n",
                     m_hostname, chipid, d, gpu_clock);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_CLOCKS Host Socket DeviceID GPU_Clock_MHz\n");
+                fprintf(output, "_NVIDIA_GPU_CLOCKS Host Socket DeviceID GPU_Clock_MHz\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_CLOCKS %s %d %d %d\n",
+            fprintf(output, "_NVIDIA_GPU_CLOCKS %s %d %d %d\n",
                     m_hostname, chipid, d, gpu_clock);
         }
     }
@@ -196,17 +196,18 @@ void get_gpu_utilization(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d, SM_Utilization: %d%%, Memory_Utilization: %d%%\n",
+                    "_NVIDIA_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d, SM_Utilization: %d%%, Memory_Utilization: %d%%\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_UTILIZATION Host Socket DeviceID SMUtil_%% MemUtil_%%\n");
+                fprintf(output,
+                        "_NVIDIA_GPU_UTILIZATION Host Socket DeviceID SMUtil_%% MemUtil_%%\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_UTILIZATION %s %d %d %d %d\n",
+            fprintf(output, "_NVIDIA_GPU_UTILIZATION %s %d %d %d %d\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
     }
