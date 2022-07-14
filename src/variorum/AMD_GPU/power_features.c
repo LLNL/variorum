@@ -13,11 +13,10 @@
 #include <variorum_timers.h>
 #include <sys/time.h>
 
-void get_power_data(int chipid, int total_sockets, int long_ver, FILE *output)
+void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
     rsmi_status_t ret;
     uint32_t num_devices;
-    uint16_t dev_id;
     int gpus_per_socket;
     char hostname[1024];
     static int init = 0;
@@ -42,10 +41,10 @@ void get_power_data(int chipid, int total_sockets, int long_ver, FILE *output)
     {
         init = 1;
         gettimeofday(&start, NULL);
-        if (long_ver == 0)
+        if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER Host Socket DeviceID Power Timestamp_sec\n");
+                    "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
         }
     }
 
@@ -57,17 +56,13 @@ void get_power_data(int chipid, int total_sockets, int long_ver, FILE *output)
         uint64_t pwr_val = -1;
         double pwr_val_flt = -1.0;
 
-        // We don't need to get a device ID apparently. Just index into the number
-        // of devices returned by rsmi_num_monitor_devices
-        // ret = rsmi_dev_id_get(i, &dev_id);
-
-        // printf("\nSanity check. ChipID: %d, i:%d, dev_id: %d", chipid, i, dev_id);
+        // printf("\nSanity check. ChipID: %d, dev_id: %d", chipid, i);
 
         ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
 
         pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
 
-        if (long_ver == 0)
+        if (verbose == 1)
         {
             fprintf(output,
                     "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"

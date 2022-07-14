@@ -81,10 +81,9 @@ enum arm_arch_e
 };
 
 /// @brief List of AMD GPU family and models.
-/// @todo: we need to find architecture detection info here.
 enum amd_gpu_arch_e
 {
-    MI50 = 50, // MI50 for Corona.
+    AMD_INSTINCT = 1,
 };
 
 /// @brief Platform-specific information.

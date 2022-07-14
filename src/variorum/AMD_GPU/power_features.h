@@ -11,6 +11,6 @@
 
 #include <rocm_smi/rocm_smi.h>
 
-void get_power_data(int chipid, int total_sockets, int long_ver, FILE *output);
+void get_power_data(int chipid, int total_sockets, int verbose, FILE *output);
 
 #endif

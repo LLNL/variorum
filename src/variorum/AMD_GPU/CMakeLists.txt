@@ -4,12 +4,12 @@
 # SPDX-License-Identifier: MIT
 
 set(variorum_amd_gpu_headers
-  ${CMAKE_CURRENT_SOURCE_DIR}/MI50.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/instinctGPU.h
   ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h
   CACHE INTERNAL "")
 
 set(variorum_amd_gpu_sources
-  ${CMAKE_CURRENT_SOURCE_DIR}/MI50.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/instinctGPU.c
   ${CMAKE_CURRENT_SOURCE_DIR}/power_features.c
   CACHE INTERNAL "")
 
