@@ -108,7 +108,6 @@ jobs:
             ENABLE_MPI: ON
             ENABLE_OPENMP: ON
             VARIORUM_DEBUG: ON
-            VARIORUM_LOG: ON
             ENABLE_WARNINGS: ON
 
           - config: shared_debug_log_docs
@@ -120,7 +119,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: ON
-            VARIORUM_LOG: ON
 
           - config: shared_debug_docs
             BUILD_SHARED_LIBS: ON
@@ -131,7 +129,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-            VARIORUM_LOG: OFF
 
           - config: shared_debug_log
             BUILD_SHARED_LIBS: ON
@@ -142,7 +139,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: ON
-            VARIORUM_LOG: ON
 
           - config: shared_debug
             BUILD_SHARED_LIBS: ON
@@ -153,7 +149,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-            VARIORUM_LOG: OFF
 
           - config: static_debug_log_docs
             BUILD_SHARED_LIBS: OFF
@@ -164,7 +159,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-            VARIORUM_LOG: ON
 
           - config: static_debug_docs
             BUILD_SHARED_LIBS: OFF
@@ -175,7 +169,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: ON
-            VARIORUM_LOG: OFF
 
           - config: static_debug_log
             BUILD_SHARED_LIBS: OFF
@@ -186,7 +179,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: ON
-            VARIORUM_LOG: ON
 
           - config: static_debug
             BUILD_SHARED_LIBS: OFF
@@ -197,7 +189,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-            VARIORUM_LOG: OFF
 
           - config: shared_release_log_docs
             BUILD_SHARED_LIBS: ON
@@ -208,7 +199,6 @@ jobs:
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-            VARIORUM_LOG: ON
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
@@ -247,7 +237,6 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{matrix.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{matrix.ENABLE_OPENMP}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{matrix.VARIORUM_DEBUG}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${{matrix.VARIORUM_LOG}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_WARNINGS=${{matrix.ENABLE_WARNINGS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
           echo ${CMAKE_OPTS}
@@ -282,7 +271,6 @@ jobs:
           ENABLE_MPI: OFF
           ENABLE_OPENMP: OFF
           VARIORUM_DEBUG: OFF
-          VARIORUM_LOG: OFF
           USE_MSR_SAFE_BEFORE_1_5_0: OFF
         run: |
           # create out-of-source build and install dir
@@ -297,7 +285,6 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{env.ENABLE_OPENMP}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{env.VARIORUM_DEBUG}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${{env.VARIORUM_LOG}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DUSE_MSR_SAFE_BEFORE_1_5_0=${{env.USE_MSR_SAFE_BEFORE_1_5_0}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
           echo ${CMAKE_OPTS}
@@ -426,7 +413,6 @@ jobs:
       ENABLE_MPI: ON
       ENABLE_OPENMP: ON
       VARIORUM_DEBUG: OFF
-      VARIORUM_LOG: ON
 
     steps:
       - uses: actions/checkout@v2
@@ -495,7 +481,6 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{env.VARIORUM_DEBUG}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_LOG=${{env.VARIORUM_LOG}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DUSE_MSR_SAFE_BEFORE_1_5_0=${{env.USE_MSR_SAFE_BEFORE_1_5_0}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${{env.HWLOC_DIR}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DJANSSON_DIR=${{env.JANSSON_DIR}}"

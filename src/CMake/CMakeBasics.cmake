@@ -82,11 +82,6 @@ if (VARIORUM_DEBUG)
 else()
     message(STATUS "Building without debug statements (VARIORUM_DEBUG == OFF)")
 endif()
-if (VARIORUM_LOG)
-    message(STATUS "Building with logging statements (VARIORUM_LOG == ON)")
-else()
-    message(STATUS "Building without logging statements (VARIORUM_LOG == OFF)")
-endif()
 
 #################
 # Documentation #

@@ -139,19 +139,24 @@ int variorum_detect_arch(void)
     g_platform.amd_gpu_arch = detect_amd_gpu_arch();
 #endif
 
-#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
-    printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
+
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && strlen(val) > 0)
+    {
+#if defined(VARIORUM_WITH_INTEL)
+        printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
 #endif
-#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_IBM)
-    printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
+#if defined(VARIORUM_WITH_IBM)
+        printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
 #endif
-#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_AMD)
-    printf("AMD Family: 0x%lx, Model: 0x%lx\n",
-           (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
+#if defined(VARIORUM_WITH_AMD)
+        printf("AMD Family: 0x%lx, Model: 0x%lx\n",
+               (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
-#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_AMD_GPU)
-    printf("AMD GPU Model: MI-%d\n", *g_platform.amd_gpu_arch);
+#if defined(VARIORUM_WITH_AMD_GPU)
+        printf("AMD GPU Model: MI-%d\n", *g_platform.amd_gpu_arch);
 #endif
+    }
 
     if (g_platform.intel_arch   == NULL &&
         g_platform.ibm_arch     == NULL &&

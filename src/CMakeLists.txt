@@ -29,7 +29,6 @@ option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia architectures"           OFF)
 option(VARIORUM_WITH_AMD_GPU     "Support AMD_GPU architectures"          OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
-option(VARIORUM_LOG              "Enable logging statements"              ON)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
