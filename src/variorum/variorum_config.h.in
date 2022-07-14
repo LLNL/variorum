@@ -16,7 +16,6 @@
 =======
 >>>>>>> 95bde0d (Nvidia port cleanup (#298))
 #cmakedefine VARIORUM_DEBUG             @VARIORUM_DEBUG@
-#cmakedefine VARIORUM_LOG               @VARIORUM_LOG@
 
 #cmakedefine VARIORUM_INSTALL_PREFIX "${VARIORUM_INSTALL_PREFIX}"
 
