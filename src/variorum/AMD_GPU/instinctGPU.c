@@ -41,7 +41,7 @@ int instinctGPU_get_power_limit(int verbose)
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_data(iter, nsockets, verbose, stdout);
+        get_power_limit_data(iter, nsockets, verbose, stdout);
     }
     return 0;
 }
@@ -59,7 +59,7 @@ int instinctGPU_get_thermals(int verbose)
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_data(iter, nsockets, verbose, stdout);
+        get_thermals_data(iter, nsockets, verbose, stdout);
     }
     return 0;
 }
@@ -76,7 +76,7 @@ int instinctGPU_get_clocks(int verbose)
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_data(iter, nsockets, verbose, stdout);
+        get_clocks_data(iter, nsockets, verbose, stdout);
     }
     return 0;
 }
@@ -93,7 +93,7 @@ int instinctGPU_get_gpu_utilization(int verbose)
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_data(iter, nsockets, verbose, stdout);
+        get_gpu_utilization_data(iter, nsockets, verbose, stdout);
     }
     return 0;
 }

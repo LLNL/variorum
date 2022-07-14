@@ -12,5 +12,12 @@
 #include <rocm_smi/rocm_smi.h>
 
 void get_power_data(int chipid, int total_sockets, int verbose, FILE *output);
+void get_power_limit_data(int chipid, int total_sockets, int verbose,
+                          FILE *output);
+void get_thermals_data(int chipid, int total_sockets, int verbose,
+                       FILE *output);
+void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output);
+void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
+                              FILE *output);
 
 #endif
