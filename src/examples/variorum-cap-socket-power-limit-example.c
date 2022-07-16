@@ -14,14 +14,14 @@ int main(int argc, char **argv)
     int ret = 0;
     int pkg_pow_lim_watts = 0;
 
-    const char *usage = "Usage: %s [-hvl] power_lim_watts\n";
+    const char *usage = "Usage: %s [-hv] [-l Watts]\n";
     int opt;
-    while ((opt = getopt(argc, argv, "hvl")) != -1)
+    while ((opt = getopt(argc, argv, "hvl:")) != -1)
     {
         switch (opt)
         {
             case 'v':
-		printf("%s\n", variorum_get_current_version());
+                printf("%s\n", variorum_get_current_version());
                 return 0;
                 break;
             case 'h':

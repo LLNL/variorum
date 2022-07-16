@@ -16,7 +16,7 @@ int main(int argc, char **argv)
         switch (opt)
         {
             case 'v':
-		printf("%s\n", variorum_get_current_version());
+                printf("%s\n", variorum_get_current_version());
                 return 0;
                 break;
             case 'h':

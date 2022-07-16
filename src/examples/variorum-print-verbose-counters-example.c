@@ -17,12 +17,12 @@ int main(int argc, char **argv)
         switch (opt)
         {
             case 'v':
-		printf("%s\n", variorum_get_current_version());
-		exit(0);
+                printf("%s\n", variorum_get_current_version());
+                exit(0);
                 break;
             case 'h':
                 printf(usage, argv[0]);
-		exit(0);
+                exit(0);
                 break;
             default:
                 fprintf(stderr, usage, argv[0]);

@@ -15,14 +15,14 @@ int main(int argc, char **argv)
     int cpu_id = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "Usage: %s [-hifv] socket_id cpu_freq_mhz\n";
+    const char *usage = "Usage: %s [-hv] [-i socket] [-f MHz]\n";
     int opt;
-    while ((opt = getopt(argc, argv, "hifv")) != -1)
+    while ((opt = getopt(argc, argv, "hi:f:v")) != -1)
     {
         switch (opt)
         {
             case 'v':
-		printf("%s\n", variorum_get_current_version());
+                printf("%s\n", variorum_get_current_version());
                 return 0;
                 break;
             case 'h':

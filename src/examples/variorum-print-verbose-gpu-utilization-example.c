@@ -18,7 +18,7 @@ int main(int argc, char **argv)
         switch (opt)
         {
             case 'v':
-                printf(QuoteMacro(VARIORUM_VERSION)"\n");
+                printf("%s\n", variorum_get_current_version());
                 return 0;
                 break;
             case 'h':
