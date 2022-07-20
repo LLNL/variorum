@@ -5,7 +5,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-TMP=$(./scripts/check-rst-format.sh)
+./scripts/check-rst-format.sh
 
 RES=$(git ls-files -m)
 
@@ -14,6 +14,7 @@ echo -e "$RES"
 if [ -z "$RES" ]; then
     exit 0
 else
+    echo -e "Formatting issue found in RST files. Please run ./scripts/check-rst-format.sh."
     exit 1
 fi
 

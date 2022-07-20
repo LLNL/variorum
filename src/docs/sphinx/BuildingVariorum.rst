@@ -164,16 +164,16 @@ The Variorum spack package provides several `variants
 that customize the options and dependencies used to build Variorum (see table
 below). Variants are enabled using ``+`` and disabled using ``~``.
 
-   +----------------+----------------------------------------+------------------------------+
-   | Variant        | Description                            | Default                      |
-   +================+========================================+==============================+
-   | **shared**     | Build Variorum as shared library       | ON (+shared)                 |
-   +----------------+----------------------------------------+------------------------------+
-   | **docs**       | Build Variorum's Documentation         | OFF (~docs)                  |
-   +----------------+----------------------------------------+------------------------------+
-   | **log**        | Enable Variorum's logging              | OFF (~log)                   |
-   |                | infrastructure                         |                              |
-   +----------------+----------------------------------------+------------------------------+
-   | **build_type** | Specify build type                     | Release with Debug Info      |
-   |                |                                        | (build_type=RelWithDebugInfo) |
-   +----------------+----------------------------------------+------------------------------+
++----------------+----------------------------------------+-------------------------------+
+| Variant        | Description                            | Default                       |
++================+========================================+===============================+
+| **shared**     | Build Variorum as shared library       | ON (+shared)                  |
++----------------+----------------------------------------+-------------------------------+
+| **docs**       | Build Variorum's Documentation         | OFF (~docs)                   |
++----------------+----------------------------------------+-------------------------------+
+| **log**        | Enable Variorum's logging              | OFF (~log)                    |
+|                | infrastructure                         |                               |
++----------------+----------------------------------------+-------------------------------+
+| **build_type** | Specify build type                     | Release with Debug Info       |
+|                |                                        | (build_type=RelWithDebugInfo) |
++----------------+----------------------------------------+-------------------------------+

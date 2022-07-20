@@ -8,11 +8,11 @@
  Example Programs
 ##################
 
-Variorum provides some examples in the ``examples/`` directory. These include 
-examples of our APIs, usage with MPI and OpenMP, and an example for integrating 
-with Variorum using the JSON API. 
-Note that on Intel systems, we make a call to Variorum print API twice in our examples, 
-as Intel systems require a delta between values to report adequate power numbers. 
+Variorum provides some examples in the ``examples/`` directory. These include
+examples of our APIs, usage with MPI and OpenMP, and an example for integrating
+with Variorum using the JSON API. Note that on Intel systems, we make a call to
+Variorum print API twice in our examples, as Intel systems require a delta
+between values to report adequate power numbers.
 
 .. note::
 
@@ -28,7 +28,7 @@ prints the output in tabular format that can be filtered and parsed by a data
 analysis framework, such as ``R`` or ``Python``.
 
 On an Intel platform, the output of this example should be similar to the
-following. 
+following.
 
 .. code::
 
