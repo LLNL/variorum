@@ -105,7 +105,8 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
+                    "_AMD_GPU_POWER_CAP Host Socket DeviceID PowerCap_Current"
+                    "PowerCap_Min PowerCap_Max Timestamp_sec\n");
         }
     }
 
@@ -114,27 +115,29 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t pwr_val = -1;
+        uint64_t pwr_val = -1, pwr_min = -1, pwr_max = -1;
         double pwr_val_flt = -1.0;
 
         // printf("\nSanity check. ChipID: %d, dev_id: %d", chipid, i);
 
-        ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+        ret = rsmi_dev_power_cap_get(i, 0, &pwr_val);
+        ret = rsmi_dev_power_cap_range_get(i, 0, &pwr_max, &pwr_min);
 
         pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
 
         if (verbose == 1)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Power: %lf W, Timestamp: %lf sec\n",
-                    hostname, chipid, i, pwr_val_flt,
+                    "_AMD_GPU_POWER_CAP Host: %s, Socket: %d, DeviceID: %d,"
+                    " PowerCap_Current: %0.2lf W, PowerCap_Min: %d W, PowerCap_Max: %d W,"
+                    "Timestamp: %lf sec\n",
+                    hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %lf %lf\n",
-                    hostname, chipid, i, pwr_val_flt,
+            fprintf(output, "_AMD_GPU_POWER_CAP %s %d %d %0.2lf %d %d %lf\n",
+                    hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
