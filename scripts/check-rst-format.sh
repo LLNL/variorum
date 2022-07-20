@@ -5,9 +5,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-# re-format all *.rst files in src/docs directory
-FILES=$(find src -type f  \( -name *.rst \))
-
-rstfmt -w 80 ${FILES}
+rstfmt -w 80 src/docs/sphinx src/docs/sphinx/api
 
 #

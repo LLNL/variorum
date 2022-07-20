@@ -38,14 +38,14 @@ used to easily integrate with Variorum (see :doc:`VariorumTools`).
 Obtaining Power Consumption
 ===========================
 
-The API to obtain node power has the following format. It takes a string (``char**``)
-by reference as input, and populates this string with a JSON object with CPU, memory,
-GPU (when available), and total node power. The total node power is estimated as
-a summation of available domains if it is not directly reported by the
-underlying architecture (such as Intel).
+The API to obtain node power has the following format. It takes a string
+(``char**``) by reference as input, and populates this string with a JSON object
+with CPU, memory, GPU (when available), and total node power. The total node
+power is estimated as a summation of available domains if it is not directly
+reported by the underlying architecture (such as Intel).
 
-The ``variorum_get_node_power_json(char**)`` includes a string type JSON object with the
-following keys:
+The ``variorum_get_node_power_json(char**)`` includes a string type JSON object
+with the following keys:
 
 -  hostname (string value)
 -  timestamp (integer value)
@@ -57,25 +57,26 @@ following keys:
 The "*" here refers to Socket ID. While more than one socket is supported, our
 test systems had only 2 sockets. Note that on the IBM Power9 platform, only the
 first socket (Chip-0) has the PWRSYS sensor, which directly reports total node
-power. Addtionally, both sockets here report CPU, Memory and GPU power. 
+power. Addtionally, both sockets here report CPU, Memory and GPU power.
 
-On Intel microarchitectures, total node power is not reported by hardware. As a result,
-total node power is estimated by adding CPU and DRAM power on both sockets. 
+On Intel microarchitectures, total node power is not reported by hardware. As a
+result, total node power is estimated by adding CPU and DRAM power on both
+sockets.
 
-For GPU power, IBM Power9
-reports a single value, which is the sum of power consumed by all the GPUs on a
-particular socket. Our JSON object captures this with a ``power_gpu_socket_*``
-interface, and does not report individual GPU power in the JSON object (this
-data is however available separately without JSON). 
+For GPU power, IBM Power9 reports a single value, which is the sum of power
+consumed by all the GPUs on a particular socket. Our JSON object captures this
+with a ``power_gpu_socket_*`` interface, and does not report individual GPU
+power in the JSON object (this data is however available separately without
+JSON).
 
 On systems without GPUs, or systems without memory power information, the value
-of the JSON fields is currently set to -1.0 to indicate that the
-GPU power or memory power cannot be measured directly. This has been done to
-ensure that the JSON object in itself stays vendor-neutral from a tools
-perspective. A future extension through NVML integration will
-allow for this information to report individual GPU power as well as total GPU
-power per socket with a cross-architectural build, similar to Variorum's
-``variorum_get_node_power()`` API.
+of the JSON fields is currently set to -1.0 to indicate that the GPU power or
+memory power cannot be measured directly. This has been done to ensure that the
+JSON object in itself stays vendor-neutral from a tools perspective. A future
+extension through NVML integration will allow for this information to report
+individual GPU power as well as total GPU power per socket with a
+cross-architectural build, similar to Variorum's ``variorum_get_node_power()``
+API.
 
 Querying Power Domains
 ======================
