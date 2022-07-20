@@ -105,7 +105,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_CAP Host Socket DeviceID PowerCap_Current"
+                    "_AMD_GPU_POWER_CAP Host Socket DeviceID PowerCap_Current "
                     "PowerCap_Min PowerCap_Max Timestamp_sec\n");
         }
     }
@@ -124,6 +124,8 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         ret = rsmi_dev_power_cap_range_get(i, 0, &pwr_max, &pwr_min);
 
         pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
+        pwr_max = (pwr_max / (1000 * 1000)); // Convert to Watts.
+        pwr_min = (pwr_min / (1000 * 1000)); // Convert to Watts.
 
         if (verbose == 1)
         {
@@ -237,7 +239,8 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
         if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
+                    "_AMD_GPU_CLOCKS Host Socket DeviceID SystemClock_MHz "
+                    "MemoryClock_MHz Timestamp_sec\n");
         }
     }
 
@@ -246,27 +249,29 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t pwr_val = -1;
-        double pwr_val_flt = -1.0;
+        rsmi_frequencies_t f_sys, f_mem;
+        uint32_t f_sys_val, f_mem_val;
 
         // printf("\nSanity check. ChipID: %d, dev_id: %d", chipid, i);
 
-        ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+        ret = rsmi_dev_gpu_clk_freq_get(i, RSMI_CLK_TYPE_SYS, &f_sys);
+        ret = rsmi_dev_gpu_clk_freq_get(i, RSMI_CLK_TYPE_MEM, &f_mem);
 
-        pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
+        f_sys_val = f_sys.frequency[f_sys.current] / (1000 * 1000); // Convert to MHz
+        f_mem_val = f_mem.frequency[f_mem.current] / (1000 * 1000); // Convert to MHz
 
         if (verbose == 1)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Power: %lf W, Timestamp: %lf sec\n",
-                    hostname, chipid, i, pwr_val_flt,
+                    "_AMD_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d,"
+                    " SystemClock: %d MHz, MemoryClock: %d MHz, Timestamp: %lf sec\n",
+                    hostname, chipid, i, f_sys_val, f_mem_val,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %lf %lf\n",
-                    hostname, chipid, i, pwr_val_flt,
+            fprintf(output, "_AMD_GPU_CLOCKS %s %d %d %d %d %lf\n",
+                    hostname, chipid, i, f_sys_val, f_mem_val,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
@@ -302,7 +307,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
+                    "_AMD_GPU_UTILIZATION Host Socket DeviceID GFX_Util Mem_Util Timestamp_sec\n");
         }
     }
 
@@ -311,27 +316,31 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t pwr_val = -1;
-        double pwr_val_flt = -1.0;
+        rsmi_utilization_counter_t util_ctr[2];
+        uint64_t ts; //Timestamp returned by RSMI API that we don't currently use.
+
+        // This requests ROCM GPU GFX Activity.
+        util_ctr[0].type = RSMI_UTILIZATION_COUNTER_FIRST;
+        // This requests ROCM GPU Memory Activity.
+        util_ctr[1].type = RSMI_COARSE_GRAIN_MEM_ACTIVITY;
 
         // printf("\nSanity check. ChipID: %d, dev_id: %d", chipid, i);
 
-        ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+        ret = rsmi_utilization_count_get(i, util_ctr, 2, &ts);
 
-        pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
 
         if (verbose == 1)
         {
             fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Power: %lf W, Timestamp: %lf sec\n",
-                    hostname, chipid, i, pwr_val_flt,
+                    "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
+                    "GFX_Util: %d \%, Mem_Util: %d \%, Timestamp: %lf sec\n",
+                    hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %lf %lf\n",
-                    hostname, chipid, i, pwr_val_flt,
+            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %d %d %lf\n",
+                    hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
