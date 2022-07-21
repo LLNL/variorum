@@ -7,6 +7,7 @@
 #define CONFIG_NVIDIA_H_INCLUDE
 
 #include <inttypes.h>
+
 #include <power_features.h>
 #include <Volta.h>
 
