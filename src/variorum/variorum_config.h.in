@@ -11,7 +11,10 @@
 #cmakedefine VARIORUM_WITH_IBM          @VARIORUM_WITH_IBM@
 #cmakedefine VARIORUM_WITH_NVIDIA_GPU   @VARIORUM_WITH_NVIDIA_GPU@
 #cmakedefine VARIORUM_WITH_ARM          @VARIORUM_WITH_ARM@
+<<<<<<< HEAD
 #cmakedefine VARIORUM_WITH_AMD_GPU      @VARIORUM_WITH_AMD_GPU@
+=======
+>>>>>>> 95bde0d (Nvidia port cleanup (#298))
 #cmakedefine VARIORUM_DEBUG             @VARIORUM_DEBUG@
 #cmakedefine VARIORUM_LOG               @VARIORUM_LOG@
 
