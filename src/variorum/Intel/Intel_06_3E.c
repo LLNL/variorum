@@ -14,7 +14,7 @@
 #include <power_features.h>
 #include <thermal_features.h>
 #include <variorum_error.h>
-
+#include <string.h>
 static struct ivybridge_3e_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
