@@ -124,7 +124,7 @@ Details of the AMD E-SMS CPU stack can be found on the `AMD Developer website
 
 
 .. image:: images/AMD_ESMS.png
-   :height: 300px
+   :height: 350px
    :align: center
 
 
@@ -137,18 +137,24 @@ Variorum interfaces with AMD's ROCm-SMI library for obtaining power and energy
 information for GPUs. These ROCm-SMI APIs are described below.
 
 -  ``rsmi_num_monitor_devices``: Get the number of GPU devices.
+
 -  ``rsmi_dev_power_ave_get``: Get the current average power consumption of a 
-    GPU device over a short time window in microwatts.
+   GPU device over a short time window in microwatts.
+ 
 -  ``rsmi_dev_power_cap_get``: Get the current power cap in microwatts on a GPU 
-    device which, when reached, causes the system to take action to reduce power.
+   device which, when reached, causes the system to take action to reduce power.
+   
 -  ``rsmi_dev_power_cap_range_get``: Get the range of valid values for the power cap, 
-    including the maximum possible and the minimum possible cap on a GPU device.
+   including the maximum possible and the minimum possible cap on a GPU device.
+    
 -  ``rsmi_dev_temp_metric_get``: Get the temperature metric value for the specified 
-    metric and sensor (e.g. Current or Max temperature), from the GPU device.
+   metric and sensor (e.g. Current or Max temperature), from the GPU device.
+    
 -  ``rsmi_dev_gpu_clk_freq_get``: Get the list of possible system clock speeds 
-    for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
+   for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
+    
 -  ``rsmi_utilization_count_get``: Get coarse grain utilization counter of the 
-    specified GPU device, including graphics and memory activity counters.
+   specified GPU device, including graphics and memory activity counters.
 
 
 ************
@@ -158,4 +164,4 @@ information for GPUs. These ROCm-SMI APIs are described below.
 -  `AMD EPYC processors Fam19h technical reference
    <https://www.amd.com/system/files/TechDocs/55898_B1_pub_0.50.zip>`_
 -  `AMD ROCm-SMI technical reference
-    <https://github.com/RadeonOpenCompute/rocm_smi_lib/blob/master/rocm_smi/docs/ROCm_SMI_Manual.pdf>`_
+   <https://github.com/RadeonOpenCompute/rocm_smi_lib/blob/master/rocm_smi/docs/ROCm_SMI_Manual.pdf>`_
