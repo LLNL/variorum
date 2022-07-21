@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -24,11 +25,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             case 'l':
                 node_pow_lim_watts = atoi(optarg);
                 break;

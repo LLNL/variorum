@@ -3,11 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <variorum_config.h>
-#include <getopt.h>
 #include <variorum.h>
 #include <variorum_topology.h>
 
@@ -28,25 +27,6 @@ static inline double do_work(int input)
 
 int main(int argc, char **argv)
 {
-    const char *usage = "Usage: %s [-hv] \n";
-    int opt;
-    while ((opt = getopt(argc, argv, "hv")) != -1)
-    {
-        switch (opt)
-        {
-            case 'v':
-                printf("%s\n", variorum_get_current_version());
-                return 0;
-                break;
-            case 'h':
-                printf(usage, argv[0]);
-                return 0;
-                break;
-            default:
-                fprintf(stderr, usage, argv[0]);
-                return -1;
-        }
-    }
     int ret;
     char *s = NULL;
     int num_sockets = 0;
@@ -55,6 +35,24 @@ int main(int argc, char **argv)
     int size = 1E4;
     double x = 0.0;
 #endif
+
+    const char *usage = "Usage: %s [-hv]\n";
+    int opt;
+    while ((opt = getopt(argc, argv, "hv")) != -1)
+    {
+        switch (opt)
+        {
+            case 'v':
+                printf("%s\n", variorum_get_current_version());
+                return 0;
+            case 'h':
+                printf(usage, argv[0]);
+                return 0;
+            default:
+                fprintf(stderr, usage, argv[0]);
+                return -1;
+        }
+    }
 
     /* Determine number of sockets */
     num_sockets = variorum_get_num_sockets();

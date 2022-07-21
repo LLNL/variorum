@@ -3,8 +3,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-#include <stdio.h>
 #include <getopt.h>
+#include <stdio.h>
+
 #include <variorum.h>
 
 #ifdef SECOND_RUN
@@ -31,7 +32,7 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    const char *usage = "Usage: %s [-hv] \n";
+    const char *usage = "Usage: %s [-hv]\n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {
@@ -40,11 +41,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;

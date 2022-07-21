@@ -3,16 +3,18 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <variorum_config.h>
-#include <getopt.h>
 #include <variorum.h>
 
 int main(int argc, char **argv)
 {
-    const char *usage = "Usage: %s [-hv] \n";
+    int ret;
+    char *s = NULL;
+
+    const char *usage = "Usage: %s [-hv]\n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {
@@ -21,18 +23,14 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;
         }
     }
-    int ret;
-    char *s = NULL;
 
     /* Allocate string based on vendor-neutral JSON structure*/
     s = (char *) malloc(800 * sizeof(char));

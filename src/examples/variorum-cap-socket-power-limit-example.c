@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -14,7 +15,7 @@ int main(int argc, char **argv)
     int ret = 0;
     int pkg_pow_lim_watts = 0;
 
-    const char *usage = "Usage: %s [-hv] [-l Watts]\n";
+    const char *usage = "Usage: %s [-hv] -l Watts\n";
     int opt;
     while ((opt = getopt(argc, argv, "hvl:")) != -1)
     {
@@ -23,11 +24,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             case 'l':
                 pkg_pow_lim_watts = atoi(optarg);
                 break;

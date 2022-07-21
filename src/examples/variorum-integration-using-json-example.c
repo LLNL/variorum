@@ -3,12 +3,12 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <variorum.h>
 #include <variorum_topology.h>
-#include <jansson.h>
 
 #ifdef SECOND_RUN
 static inline double do_work(int input)

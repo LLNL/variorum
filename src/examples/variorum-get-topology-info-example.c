@@ -3,28 +3,28 @@
 //
 // SPDX-License-Identifier: MIT
 
-#include <stdio.h>
 #include <getopt.h>
+#include <stdio.h>
+
 #include <variorum.h>
 #include <variorum_topology.h>
 
 int main(int argc, char **argv)
 {
     int num_sockets, num_cores, num_threads;
+
     int opt;
     const char *usage = "Usage: %s [-hv]\n";
-    while ((opt = getopt(argc, argv, "hvl")) != -1)
+    while ((opt = getopt(argc, argv, "hv")) != -1)
     {
         switch (opt)
         {
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;

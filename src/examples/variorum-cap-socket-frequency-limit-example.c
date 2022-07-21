@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -15,7 +16,7 @@ int main(int argc, char **argv)
     int cpu_id = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "Usage: %s [-hv] [-i socket] [-f MHz]\n";
+    const char *usage = "Usage: %s [-hv] -i socket -f MHz\n";
     int opt;
     while ((opt = getopt(argc, argv, "hi:f:v")) != -1)
     {
@@ -24,11 +25,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             case 'i':
                 cpu_id = atoi(optarg);
                 break;

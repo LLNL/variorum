@@ -3,8 +3,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-#include <stdio.h>
 #include <getopt.h>
+#include <stdio.h>
+
 #include <variorum.h>
 
 int main(int argc, char **argv)
@@ -15,7 +16,7 @@ int main(int argc, char **argv)
      * How do we distinguish errors if this function pointer does not exist
      * because it has not yet been implemented or if it cannot be implemented?
      */
-    const char *usage = "Usage: %s [-hv] \n";
+    const char *usage = "Usage: %s [-hv]\n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {
@@ -24,11 +25,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;

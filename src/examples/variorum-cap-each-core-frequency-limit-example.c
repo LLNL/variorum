@@ -24,11 +24,9 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-                break;
             case 'h':
                 printf(usage, argv[0]);
                 return 0;
-                break;
             case 'f':
                 cpu_freq_mhz = atoi(optarg);
                 break;
