@@ -8,8 +8,6 @@
 
 #include <config_nvidia.h>
 #include <config_architecture.h>
-#include <power_features.h>
-#include <Volta.h>
 #include <variorum_error.h>
 
 uint64_t *detect_gpu_arch(void)
