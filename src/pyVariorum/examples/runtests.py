@@ -23,7 +23,7 @@ def runJSONtests(v):
     jsonbuf = create_unicode_buffer(1000)
     bufptr = c_char_p(addressof(jsonbuf))
     v.variorum_get_node_power_json(bufptr)
-    print(bufptr.value.decode('utf-8'))
+    print(bufptr.value.decode("utf-8"))
     # print(bufptr.value)
 
 

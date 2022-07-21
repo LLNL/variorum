@@ -2,7 +2,6 @@ from ctypes import c_int, c_char_p, CDLL, POINTER
 
 
 class variorum:
-
     def __init__(self):
         try:
             self.variorum_c = CDLL("libvariorum.so")
@@ -16,10 +15,14 @@ class variorum:
         self.variorum_print_power_limit = self.variorum_c.variorum_print_power_limit
         self.variorum_print_power_limit.restype = c_int
 
-        self.variorum_print_verbose_power_limit = self.variorum_c.variorum_print_verbose_power_limit
+        self.variorum_print_verbose_power_limit = (
+            self.variorum_c.variorum_print_verbose_power_limit
+        )
         self.variorum_print_verbose_power_limit.restype = c_int
 
-        self.variorum_cap_best_effort_node_power_limit = self.variorum_c.variorum_cap_best_effort_node_power_limit
+        self.variorum_cap_best_effort_node_power_limit = (
+            self.variorum_c.variorum_cap_best_effort_node_power_limit
+        )
         self.variorum_cap_best_effort_node_power_limit.argtypes = [c_int]
         self.variorum_cap_best_effort_node_power_limit.restype = c_int
 
