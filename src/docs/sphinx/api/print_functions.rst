@@ -18,6 +18,8 @@ output formats supported by Variorum.
 
 Defined in ``variorum/variorum.h``.
 
+.. doxygenfunction:: variorum_get_current_version
+
 .. doxygenfunction:: variorum_print_verbose_power_limit
 
 .. doxygenfunction:: variorum_print_power_limit
