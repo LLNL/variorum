@@ -264,7 +264,7 @@ int variorum_print_verbose_counters(void);
 /// not supported, otherwise -1
 int variorum_print_counters(void);
 
-/// @brief Print energy and power usage data in long format.
+/// @brief Print power usage data in long format.
 ///
 /// @supparch
 /// - AMD EPYC Milan
@@ -286,7 +286,7 @@ int variorum_print_counters(void);
 /// not supported, otherwise -1
 int variorum_print_verbose_power(void);
 
-/// @brief Print energy and power usage data in CSV format.
+/// @brief Print power usage data in CSV format.
 ///
 /// @supparch
 /// - AMD EPYC Milan

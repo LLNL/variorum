@@ -136,7 +136,7 @@ AMD: Running this software on AMD platforms depends on the AMD Energy Driver,
 AMD HSMP driver, and AMD E-SMI library being available with the correct
 permissions.
 
-AMD GPU: Running this software on AMD GPU platforms depends on the ROCm-SMI v5.1.0.
+AMD GPU: Running this software on AMD GPU platforms depends on the ROCm-SMI library.
 
 ARM: Running this software on ARM platforms depends on the Linux Hardware
 Monitoring (hwmon) subsystem for access to the monitoring and control
