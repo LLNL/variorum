@@ -128,13 +128,13 @@ Details of the AMD E-SMS CPU stack can be found on the `AMD Developer website
    :align: center
 
 
+
 ********************************************
  Monitoring and Control Through ROCM-SMI API
 ********************************************
 
 Variorum interfaces with AMD's ROCm-SMI library for obtaining power and energy
 information for GPUs. These ROCm-SMI APIs are described below.
-
 
 -  ``rsmi_num_monitor_devices``: Get the number of GPU devices.
 -  ``rsmi_dev_power_ave_get``: Get the current average power consumption of a 
@@ -146,7 +146,7 @@ information for GPUs. These ROCm-SMI APIs are described below.
 -  ``rsmi_dev_temp_metric_get``: Get the temperature metric value for the specified 
     metric and sensor (e.g. Current or Max temperature), from the GPU device.
 -  ``rsmi_dev_gpu_clk_freq_get``: Get the list of possible system clock speeds 
-   for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
+    for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
 -  ``rsmi_utilization_count_get``: Get coarse grain utilization counter of the 
     specified GPU device, including graphics and memory activity counters.
 
