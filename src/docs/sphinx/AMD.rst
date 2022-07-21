@@ -18,9 +18,9 @@ stack of its drivers as well as its in-band libraries that Variorum leverages.
 
 Beginning with Variorum 0.5.0, AMD processors from the AMD EPYC Milan family
 19h, models 0-Fh and 30h-3Fh are supported. The current port is also expected to
-work on upcoming AMD EPYC Genoa architecture. This functionality has been tested
-on Linux distributions SLES15 and Ubuntu 18.04. This version of depends on the
-AMD open-sourced software stack components listed below:
+be supported on the upcoming AMD EPYC Genoa architecture. This functionality has 
+been tested on Linux distributions SLES15 and Ubuntu 18.04. This port depends 
+on the AMD open-sourced software stack components listed below:
 
 #. EPYC System Management Interface In-band Library (E-SMI library) available
    at https://github.com/amd/esmi_ib_library
@@ -73,9 +73,10 @@ supercomputer at Lawrence Livermore National Laboratory.
  Requirements for AMD GPUs
 **************************
 
-Beginning with Variorum v0.6.0, we support AMD Radeon Instinct GPUs with 
-the help of the Radeon Open Compute management (ROCm) stack. Variorum AMD GPU 
-port currently requires ROCm System Management Interface (ROCm-SMI) v5.1.0 and up,
+Beginning with Variorum 0.6.0, we support AMD Radeon Instinct GPUs with 
+the help of the Radeon Open Compute management (ROCm) stack. The Variorum AMD GPU 
+port currently requires `ROCm System Management Interface (ROCm-SMI) v5.1.0
+<https://rocmdocs.amd.com/en/latest/index.html>`_,
 and supports various AMD GPUs including (but not limited) to MI50, MI60, MI100, 
 and MI200. Future versions on ROCm-SMI are expected to be backward compatible, and
 upcoming AMD GPU hardware for El Capitan supercomputer is expected to be supported 
@@ -123,12 +124,13 @@ Details of the AMD E-SMS CPU stack can be found on the `AMD Developer website
 
 
 .. image:: images/AMD_ESMS.png
-   :height: 400px
+   :height: 300px
    :align: center
+
 
 ********************************************
  Monitoring and Control Through ROCM-SMI API
-*******************************************
+********************************************
 
 Variorum interfaces with AMD's ROCm-SMI library for obtaining power and energy
 information for GPUs. These ROCm-SMI APIs are described below.
@@ -147,6 +149,7 @@ information for GPUs. These ROCm-SMI APIs are described below.
    for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
 -  ``rsmi_utilization_count_get``: Get coarse grain utilization counter of the 
     specified GPU device, including graphics and memory activity counters.
+
 
 ************
  References
