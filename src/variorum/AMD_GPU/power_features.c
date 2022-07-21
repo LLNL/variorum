@@ -32,6 +32,7 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
+        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -121,6 +122,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
+        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -222,6 +224,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
+        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -311,6 +314,7 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
+        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -411,6 +415,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
+        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -467,7 +472,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %d %d %lf\n",
+            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %d %d %lf\n",
                     hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
