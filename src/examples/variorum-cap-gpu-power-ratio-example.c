@@ -14,17 +14,17 @@ int main(int argc, char **argv)
     int ret = 0;
     int gpu_power_ratio_pct = 0;
 
-    const char *usage = "Usage: %s [-hv] -r percent\n";
+    const char *usage = "Usage: %s [-h] [-v] -r percent\n";
     int opt;
-    while ((opt = getopt(argc, argv, "r:vh")) != -1)
+    while ((opt = getopt(argc, argv, "hvr:")) != -1)
     {
         switch (opt)
         {
-            case 'v':
-                printf("%s\n", variorum_get_current_version());
-                return 0;
             case 'h':
                 printf(usage, argv[0]);
+                return 0;
+            case 'v':
+                printf("%s\n", variorum_get_current_version());
                 return 0;
             case 'r':
                 gpu_power_ratio_pct = atoi(optarg);

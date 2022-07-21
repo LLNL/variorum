@@ -40,27 +40,22 @@ int main(int argc, char **argv)
     double x = 0.0;
 #endif
 
-    const char *usage = "Usage: %s [-hv]\n";
+    const char *usage = "Usage: %s [-h] [-v]\n";
     int opt;
     while ((opt = getopt(argc, argv, "hv")) != -1)
     {
         switch (opt)
         {
-            case 'v':
-                printf("%s\n", variorum_get_current_version());
-                return 0;
             case 'h':
                 printf(usage, argv[0]);
+                return 0;
+            case 'v':
+                printf("%s\n", variorum_get_current_version());
                 return 0;
             default:
                 fprintf(stderr, usage, argv[0]);
                 return -1;
         }
-    }
-    if (argc > 1)
-    {
-        printf("Fatal Error: No argument needed.\n");
-        return 1;
     }
 
     gethostname(hostname, 1024);

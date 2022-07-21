@@ -14,17 +14,17 @@ int main(int argc, char **argv)
     int ret = 0;
     int cpu_freq_mhz = 0;
 
-    const char *usage = "Usage: %s [-hv] -f MHz\n";
+    const char *usage = "Usage: %s [-h] [-v] -f MHz\n";
     int opt;
-    while ((opt = getopt(argc, argv, "vhf:")) != -1)
+    while ((opt = getopt(argc, argv, "hvf:")) != -1)
     {
         switch (opt)
         {
-            case 'v':
-                printf("%s\n", variorum_get_current_version());
-                return 0;
             case 'h':
                 printf(usage, argv[0]);
+                return 0;
+            case 'v':
+                printf("%s\n", variorum_get_current_version());
                 return 0;
             case 'f':
                 cpu_freq_mhz = atoi(optarg);

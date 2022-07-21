@@ -15,17 +15,17 @@ int main(int argc, char **argv)
     // 500W is based on minimum power on IBM Witherspoon
     int node_pow_lim_watts = 500;
 
-    const char *usage = "Usage: %s [-hv] -l Watts\n";
+    const char *usage = "Usage: %s [-h] [-v] -l watts\n";
     int opt;
     while ((opt = getopt(argc, argv, "hvl:")) != -1)
     {
         switch (opt)
         {
-            case 'v':
-                printf("%s\n", variorum_get_current_version());
-                return 0;
             case 'h':
                 printf(usage, argv[0]);
+                return 0;
+            case 'v':
+                printf("%s\n", variorum_get_current_version());
                 return 0;
             case 'l':
                 node_pow_lim_watts = atoi(optarg);
