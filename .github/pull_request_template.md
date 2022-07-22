@@ -24,7 +24,9 @@ instructions so we can reproduce.
 
 # Checklist:
 
-- [ ] I have run `./scripts/check-code-format.sh` and confirm my code follows the style guidelines of variorum
+- [ ] I have run `./scripts/check-code-format.sh` and confirm my C code follows the style guidelines of variorum
+- [ ] I have run `black --check --diff` and confirm my python code follows the style guidelines of variorum
+- [ ] I have run `./scripts/check-rst-format.sh` and confirm my documentation follows the style guidelines of variorum
 - [ ] I have added comments in my code
 - [ ] My changes generate no new warnings
 - [ ] New and existing unit tests pass with my changes
