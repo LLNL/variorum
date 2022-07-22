@@ -18,6 +18,10 @@ output formats supported by Variorum.
 
 Defined in ``variorum/variorum.h``.
 
+.. doxygenfunction:: variorum_print_verbose_power
+
+.. doxygenfunction:: variorum_print_power
+
 .. doxygenfunction:: variorum_print_verbose_power_limit
 
 .. doxygenfunction:: variorum_print_power_limit
@@ -29,10 +33,6 @@ Defined in ``variorum/variorum.h``.
 .. doxygenfunction:: variorum_print_verbose_counters
 
 .. doxygenfunction:: variorum_print_counters
-
-.. doxygenfunction:: variorum_print_verbose_power
-
-.. doxygenfunction:: variorum_print_power
 
 .. doxygenfunction:: variorum_print_verbose_frequency
 
@@ -57,4 +57,6 @@ Defined in ``variorum/variorum.h``.
 .. doxygenfunction:: variorum_poll_power
 
 .. doxygenfunction:: variorum_monitoring
+
+.. doxygenfunction:: variorum_get_current_version
 

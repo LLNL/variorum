@@ -530,10 +530,20 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// check for NULL strings.
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
+/// @brief Returns Variorum version as a constant string.
+///
+/// @supparch
+/// - All architectures
+///
+/// @return Returns a constant string containing the
+/// current value of VARIORUM_VERSION.
+#define QuoteIdent(ident) #ident
+#define QuoteMacro(macro) QuoteIdent(macro)
+char *variorum_get_current_version(void);
+
 /***********/
 /* Testing */
 /***********/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
-
 #endif

@@ -1138,4 +1138,7 @@ int variorum_print_energy(void)
     return err;
 }
 
-
+char *variorum_get_current_version()
+{
+    return QuoteMacro(VARIORUM_VERSION);
+}
