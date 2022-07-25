@@ -26,6 +26,7 @@ option(VARIORUM_WITH_ARM         "Support ARM architectures"              OFF)
 option(VARIORUM_WITH_IBM         "Support IBM architectures"              OFF)
 option(VARIORUM_WITH_INTEL       "Support Intel architectures"            ON)
 option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia architectures"           OFF)
+option(VARIORUM_WITH_AMD_GPU     "Support AMD_GPU architectures"          OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 option(VARIORUM_LOG              "Enable logging statements"              ON)

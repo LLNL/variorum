@@ -9,20 +9,22 @@
 ##############
 
 AMD platforms support in-band monitoring and control through sensors and
-machine-specific registers. AMD provides and open-source stack of its drivers as
-well as its in-band library that Variorum leverages.
+machine-specific registers for CPUs as well as GPUs. AMD provides and
+open-source stack of its drivers as well as its in-band libraries that Variorum
+leverages.
 
-**************
- Requirements
-**************
+***************************
+ Requirements for AMD CPUs
+***************************
 
 Beginning with Variorum 0.5.0, AMD processors from the AMD EPYC Milan family
-19h, models 0-Fh and 30h-3Fh are supported. This functionality has been tested
-on Linux distributions SLES15 and Ubuntu 18.04. This version of depends on the
-AMD open-sourced software stack components listed below:
+19h, models 0-Fh and 30h-3Fh are supported. The current port is also expected to
+be supported on the upcoming AMD EPYC Genoa architecture. This functionality has
+been tested on Linux distributions SLES15 and Ubuntu 18.04. This port depends on
+the AMD open-sourced software stack components listed below:
 
-#. EPYC™ System Management Interface In-band Library (E-SMI library) available
-   at https://github.com/amd/esmi_ib_library
+#. EPYC System Management Interface In-band Library (E-SMI library) available at
+   https://github.com/amd/esmi_ib_library
 #. AMD Energy Driver https://github.com/amd/amd_energy
 #. HSMP driver for power metrics https://github.com/amd/amd_hsmp
 
@@ -68,6 +70,19 @@ AMD Power Control Knobs are exposed through HSMP via sysfs.
 We expect a similar software stack to be available on the upcoming El Capitan
 supercomputer at Lawrence Livermore National Laboratory.
 
+***************************
+ Requirements for AMD GPUs
+***************************
+
+Beginning with Variorum 0.6.0, we support AMD Radeon Instinct GPUs with the help
+of the Radeon Open Compute management (ROCm) stack. The Variorum AMD GPU port
+currently requires `ROCm System Management Interface (ROCm-SMI) v5.1.0
+<https://rocmdocs.amd.com/en/latest/index.html>`_, and supports various AMD GPUs
+including (but not limited) to MI50, MI60, MI100, and MI200. Future versions on
+ROCm-SMI are expected to be backward compatible, and upcoming AMD GPU hardware
+for El Capitan supercomputer is expected to be supported through ROCm-SMI as
+well.
+
 ******************************************
  Monitoring and Control Through E-SMI API
 ******************************************
@@ -105,9 +120,48 @@ Energy telemetry
 -  ``esmi_core_energy_get()``: Get software accumulated 64-bit energy counter
    for a given core
 
+Details of the AMD E-SMS CPU stack can be found on the `AMD Developer website
+<https://developer.amd.com/e-sms/>`_. We reproduce a figure from this stack
+below.
+
+.. image:: images/AMD_ESMS.png
+   :height: 350px
+   :align: center
+
+*********************************************
+ Monitoring and Control Through ROCM-SMI API
+*********************************************
+
+Variorum interfaces with AMD's ROCm-SMI library for obtaining power and energy
+information for GPUs. These ROCm-SMI APIs are described below.
+
+-  ``rsmi_num_monitor_devices``: Get the number of GPU devices.
+
+-  ``rsmi_dev_power_ave_get``: Get the current average power consumption of a
+   GPU device over a short time window in microwatts.
+
+-  ``rsmi_dev_power_cap_get``: Get the current power cap in microwatts on a GPU
+   device which, when reached, causes the system to take action to reduce power.
+
+-  ``rsmi_dev_power_cap_range_get``: Get the range of valid values for the power
+   cap, including the maximum possible and the minimum possible cap on a GPU
+   device.
+
+-  ``rsmi_dev_temp_metric_get``: Get the temperature metric value for the
+   specified metric and sensor (e.g. Current or Max temperature), from the GPU
+   device.
+
+-  ``rsmi_dev_gpu_clk_freq_get``: Get the list of possible system clock speeds
+   for a GPU device for a specified clock type (e.g. Graphics or Memory clock).
+
+-  ``rsmi_utilization_count_get``: Get coarse grain utilization counter of the
+   specified GPU device, including graphics and memory activity counters.
+
 ************
  References
 ************
 
--  `AMD EPYC™ processors Fam19h technical reference
+-  `AMD EPYC processors Fam19h technical reference
    <https://www.amd.com/system/files/TechDocs/55898_B1_pub_0.50.zip>`_
+-  `AMD ROCm-SMI technical reference
+   <https://github.com/RadeonOpenCompute/rocm_smi_lib/blob/master/rocm_smi/docs/ROCm_SMI_Manual.pdf>`_

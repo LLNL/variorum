@@ -26,10 +26,10 @@ focus areas:
 
 Variorum is a key player for the `power management` and `hardware co-design`
 focus areas for Argo. Details about the broader Argo project, along with
-relevant source code, publications, and accomplishments can be found on the Argo
-website (https://web.cels.anl.gov/projects/argo/). The Argo project is also a
-key contributor to the :doc:`PowerStack`, which is a community effort for power
-management.
+relevant source code, publications, and accomplishments can be found on the
+`Argo website <https://web.cels.anl.gov/projects/argo/>`_. The Argo project is
+also a key contributor to the :doc:`PowerStack`, which is a community effort for
+power management.
 
 `Dynamic power management` is expected to be critical in the exascale era, both
 in terms of not exceeding the overall available power budget and in terms of

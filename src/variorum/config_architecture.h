@@ -80,6 +80,12 @@ enum arm_arch_e
     ARMV8 = 1, //ARM Juno
 };
 
+/// @brief List of AMD GPU family and models.
+enum amd_gpu_arch_e
+{
+    AMD_INSTINCT = 1,
+};
+
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -225,6 +231,8 @@ struct platform
     uint64_t *nvidia_arch;
     /// @brief Identifier for ARM architecture.
     uint64_t *arm_arch;
+    /// @brief Identifier for AMD GPU architecture.
+    uint64_t *amd_gpu_arch;
 
     /// @brief Hostname.
     char hostname[1024];

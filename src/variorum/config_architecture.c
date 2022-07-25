@@ -32,9 +32,12 @@
 #include <config_arm.h>
 #endif
 
-
 #ifdef VARIORUM_WITH_AMD
 #include <config_amd.h>
+#endif
+
+#ifdef VARIORUM_WITH_AMD_GPU
+#include <config_amd_gpu.h>
 #endif
 
 struct platform g_platform;
@@ -112,6 +115,9 @@ int variorum_exit()
     esmi_exit();
     free(g_platform.amd_arch);
 #endif
+#ifdef VARIORUM_WITH_AMD_GPU
+    free(g_platform.amd_gpu_arch);
+#endif
 
     return err;
 }
@@ -133,6 +139,9 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_AMD
     g_platform.amd_arch = detect_amd_arch();
 #endif
+#ifdef VARIORUM_WITH_AMD_GPU
+    g_platform.amd_gpu_arch = detect_amd_gpu_arch();
+#endif
 
 #if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_INTEL)
     printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
@@ -144,12 +153,16 @@ int variorum_detect_arch(void)
     printf("AMD Family: 0x%lx, Model: 0x%lx\n",
            (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
+#if defined(VARIORUM_LOG) && defined(VARIORUM_WITH_AMD_GPU)
+    printf("AMD GPU Model: MI-%d\n", *g_platform.amd_gpu_arch);
+#endif
 
     if (g_platform.intel_arch   == NULL &&
         g_platform.ibm_arch     == NULL &&
         g_platform.nvidia_arch  == NULL &&
         g_platform.arm_arch     == NULL &&
-        g_platform.amd_arch     == NULL)
+        g_platform.amd_arch     == NULL &&
+        g_platform.amd_gpu_arch == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
@@ -340,8 +353,10 @@ int variorum_set_func_ptrs()
 #ifdef VARIORUM_WITH_AMD
     err = set_amd_func_ptrs();
 #endif
+#ifdef VARIORUM_WITH_AMD_GPU
+    err = set_amd_gpu_func_ptrs();
+#endif
     return err;
-
 }
 
 ////setfixedcounters = fixed_ctr0,

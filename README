@@ -86,6 +86,10 @@ Supported AMD Microrchitectures:
 
     Family 19h, Models 0~Fh and 30h ~ 3Fh (EPYC Milan)
 
+Supported AMD GPUs:
+
+    AMD Radeon Instinct, all models from MI50 onwards. 
+
 Supported ARM Microrchitectures:
 
     Juno r2
@@ -131,6 +135,8 @@ are running on.
 AMD: Running this software on AMD platforms depends on the AMD Energy Driver,
 AMD HSMP driver, and AMD E-SMI library being available with the correct
 permissions.
+
+AMD GPU: Running this software on AMD GPU platforms depends on the ROCm-SMI library.
 
 ARM: Running this software on ARM platforms depends on the Linux Hardware
 Monitoring (hwmon) subsystem for access to the monitoring and control

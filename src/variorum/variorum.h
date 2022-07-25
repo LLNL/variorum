@@ -156,6 +156,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -176,6 +177,7 @@ int variorum_print_verbose_power_limit(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -195,6 +197,7 @@ int variorum_print_power_limit(void);
 /// @brief Print thermal data in long format.
 ///
 /// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -213,6 +216,7 @@ int variorum_print_verbose_thermals(void);
 /// @brief Print thermal data in CSV format.
 ///
 /// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -260,10 +264,11 @@ int variorum_print_verbose_counters(void);
 /// not supported, otherwise -1
 int variorum_print_counters(void);
 
-/// @brief Print energy and power usage data in long format.
+/// @brief Print power usage data in long format.
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - IBM Power9
 /// - Intel Sandy Bridge
@@ -281,10 +286,11 @@ int variorum_print_counters(void);
 /// not supported, otherwise -1
 int variorum_print_verbose_power(void);
 
-/// @brief Print energy and power usage data in CSV format.
+/// @brief Print power usage data in CSV format.
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - IBM Power9
 /// - Intel Sandy Bridge
@@ -307,6 +313,7 @@ int variorum_print_power(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -327,6 +334,7 @@ int variorum_print_verbose_frequency(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno v2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -383,6 +391,7 @@ int variorum_print_turbo(void);
 /// @brief Print verbose GPU streaming multi-processor and memory utilization.
 ///
 /// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - NVIDIA Volta
 ///
 /// @unsupported
@@ -406,6 +415,7 @@ int variorum_print_verbose_gpu_utilization(void);
 /// @brief Print CSV-formatted GPU streaming multi-processor and memory utilization.
 ///
 /// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - NVIDIA Volta
 ///
 /// @unsupported
