@@ -897,7 +897,39 @@ int variorum_print_energy(void)
                                __FUNCTION__, __LINE__);
         return 0;
     }
-    err = g_platform.variorum_print_energy();
+    err = g_platform.variorum_print_energy(0);
+    if (err)
+    {
+        return -1;
+    }
+#ifdef VARIORUM_LOG
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#else
+    err = variorum_exit();
+#endif
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_print_verbose_energy(void)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    if (g_platform.variorum_print_energy == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return 0;
+    }
+    err = g_platform.variorum_print_energy(1);
     if (err)
     {
         return -1;

@@ -10,6 +10,8 @@
 
 int p9_get_power(int long_ver);
 
+int p9_get_energy(int long_ver);
+
 int p9_get_power_limits(int long_ver);
 
 int p9_cap_socket_power_limit(int long_ver);

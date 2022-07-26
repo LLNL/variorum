@@ -16,7 +16,7 @@ int epyc_set_socket_power_limit(int pcap_new);
 
 int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new);
 
-int epyc_print_energy();
+int epyc_print_energy(int long_ver);
 
 int epyc_print_boostlimit();
 

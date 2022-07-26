@@ -298,7 +298,7 @@ static struct EPYC_19h_offsets msrs =
     .msr_pkg_energy_stat         = 0xC001029B
 };
 
-int epyc_print_energy()
+int epyc_print_energy(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

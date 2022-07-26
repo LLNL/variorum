@@ -465,6 +465,15 @@ int variorum_print_available_frequencies(void);
 /// not supported, otherwise -1
 int variorum_print_energy(void);
 
+/// @brief Print verbose format of core and socket energy if available.
+///
+/// @supparch
+/// - None
+///
+/// @return 0 if successful or if feature has not been implemented or is
+/// not supported, otherwise -1
+int variorum_print_verbose_energy(void);
+
 /***************************/
 /* Enable/Disable Features */
 /***************************/

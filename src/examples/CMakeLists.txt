@@ -40,6 +40,7 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
     variorum-print-energy-example
+    variorum-print-verbose-energy-example
 )
 
 message(STATUS "Adding variorum examples")

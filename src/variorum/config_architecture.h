@@ -216,7 +216,7 @@ struct platform
     /// @brief Function pointer to print energy for all cores and sockets.
     ///
     /// @return Error code.
-    int (*variorum_print_energy)(void);
+    int (*variorum_print_energy)(int long_ver);
 
     /******************************/
     /* Platform-Specific Topology */

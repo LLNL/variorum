@@ -36,6 +36,7 @@ int set_ibm_func_ptrs(void)
         g_platform.variorum_get_node_power_json = p9_get_node_power_json;
         g_platform.variorum_get_node_power_domain_info_json =
             p9_get_node_power_domain_info_json;
+        g_platform.variorum_print_energy = p9_get_energy;
     }
     else
     {
