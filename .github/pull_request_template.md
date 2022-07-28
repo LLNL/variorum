@@ -28,7 +28,7 @@ instructions so we can reproduce.
 - [ ] I have run `flake8` and `black --check --diff` and confirm my python code follows the style guidelines of variorum
 - [ ] I have run `./scripts/check-rst-format.sh` and confirm my documentation follows the style guidelines of variorum
 - [ ] I have added comments in my code
-- [ ] My changes generate no new warnings
+- [ ] My changes generate no new warnings (build with `-DENABLE_WARNINGS=ON`)
 - [ ] New and existing unit tests pass with my changes
 
 Thank you for taking the time to contribute to Variorum!
