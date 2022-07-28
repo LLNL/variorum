@@ -20,7 +20,7 @@
 int epyc_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -83,7 +83,7 @@ int epyc_get_power(int long_ver)
 int epyc_get_power_limits(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -166,7 +166,7 @@ int epyc_get_power_limits(int long_ver)
 int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
     }
@@ -240,7 +240,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
 int epyc_set_socket_power_limit(int pcap_new)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -297,7 +297,7 @@ static struct EPYC_19h_offsets msrs =
 int epyc_print_energy()
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -355,7 +355,7 @@ energy_batch:
 int epyc_print_boostlimit()
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n\n", __FUNCTION__);
     }
@@ -384,7 +384,7 @@ int epyc_print_boostlimit()
 int epyc_set_each_core_boostlimit(int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
     }
@@ -421,7 +421,7 @@ int epyc_set_each_core_boostlimit(int boostlimit)
 int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
     }
@@ -480,7 +480,7 @@ int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 int epyc_set_socket_boostlimit(int socket, int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
     }
@@ -513,7 +513,7 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
 int epyc_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -580,7 +580,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
 int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }

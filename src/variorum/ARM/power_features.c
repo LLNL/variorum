@@ -459,7 +459,7 @@ int json_get_power_data(json_t *get_power_obj)
 int json_get_power_domain_info(json_t *get_domain_obj)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }

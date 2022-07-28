@@ -46,9 +46,9 @@ struct platform g_platform;
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 {
     int err = 0;
-    char *val = getenv("VARIORUM_LOG");
 
-    if (val != NULL && strlen(val) > 0)
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
     {
         printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
     }
@@ -78,8 +78,9 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
 int variorum_exit(const char *filename, const char *func_name, int line_num)
 {
     int err = 0;
+
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
     }
@@ -139,9 +140,8 @@ int variorum_detect_arch(void)
     g_platform.amd_gpu_arch = detect_amd_gpu_arch();
 #endif
 
-
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
 #if defined(VARIORUM_WITH_INTEL)
         printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);

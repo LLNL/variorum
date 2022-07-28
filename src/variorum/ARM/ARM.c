@@ -20,7 +20,7 @@ int arm_get_power(int long_ver)
 {
     int ret;
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -32,7 +32,7 @@ int arm_get_thermals(int long_ver)
 {
     int ret;
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -43,7 +43,7 @@ int arm_get_thermals(int long_ver)
 int arm_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -61,7 +61,7 @@ int arm_get_clocks(int long_ver)
 int arm_get_frequencies(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -79,7 +79,7 @@ int arm_get_frequencies(void)
 int arm_cap_socket_frequency(int cpuid, int freq)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -99,7 +99,7 @@ int arm_get_power_json(char **get_power_obj_str)
 {
     int ret;
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -116,7 +116,7 @@ int arm_get_power_domain_info_json(char **get_domain_obj_str)
 {
     int ret;
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val))
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }

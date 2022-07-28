@@ -32,7 +32,7 @@ int fm_06_6a_get_power_limits(int long_ver)
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -77,7 +77,7 @@ int fm_06_6a_get_power_limits(int long_ver)
 int fm_06_6a_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -105,7 +105,7 @@ int fm_06_6a_get_features(void)
 int fm_06_6a_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -125,7 +125,7 @@ int fm_06_6a_get_power(int long_ver)
 int fm_06_6a_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -145,7 +145,7 @@ int fm_06_6a_get_node_power_json(char **get_power_obj_str)
 int fm_06_6a_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }

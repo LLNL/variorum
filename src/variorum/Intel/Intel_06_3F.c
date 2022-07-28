@@ -75,7 +75,7 @@ int fm_06_3f_get_power_limits(int long_ver)
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -150,7 +150,7 @@ int fm_06_3f_cap_power_limits(int package_power_limit)
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -165,7 +165,7 @@ int fm_06_3f_cap_power_limits(int package_power_limit)
 int fm_06_3f_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -266,7 +266,7 @@ int fm_06_3f_get_features(void)
 int fm_06_3f_get_thermals(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -286,7 +286,7 @@ int fm_06_3f_get_thermals(int long_ver)
 int fm_06_3f_get_counters(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -308,7 +308,7 @@ int fm_06_3f_get_counters(int long_ver)
 int fm_06_3f_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -330,7 +330,7 @@ int fm_06_3f_get_clocks(int long_ver)
 int fm_06_3f_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -350,7 +350,7 @@ int fm_06_3f_get_power(int long_ver)
 int fm_06_3f_enable_turbo(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -363,7 +363,7 @@ int fm_06_3f_enable_turbo(void)
 int fm_06_3f_disable_turbo(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -375,7 +375,7 @@ int fm_06_3f_disable_turbo(void)
 int fm_06_3f_get_turbo_status(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -388,7 +388,7 @@ int fm_06_3f_get_turbo_status(void)
 int fm_06_3f_poll_power(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -401,7 +401,7 @@ int fm_06_3f_poll_power(FILE *output)
 int fm_06_3f_monitoring(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -416,7 +416,7 @@ int fm_06_3f_monitoring(FILE *output)
 int fm_06_3f_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -435,7 +435,7 @@ int fm_06_3f_get_node_power_json(char **get_power_obj_str)
 int fm_06_3f_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -452,7 +452,7 @@ int fm_06_3f_get_node_power_domain_info_json(char **get_domain_obj_str)
 int fm_06_3f_cap_best_effort_node_power_limit(int node_limit)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
@@ -484,7 +484,7 @@ int fm_06_3f_cap_best_effort_node_power_limit(int node_limit)
 int fm_06_3f_get_frequencies(void)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }

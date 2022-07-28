@@ -42,7 +42,7 @@ uint64_t *detect_intel_arch(void)
 int gpu_power_ratio_unimplemented(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && strlen(val) > 0)
+    if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
