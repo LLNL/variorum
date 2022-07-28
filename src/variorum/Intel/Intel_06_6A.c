@@ -37,6 +37,7 @@ int fm_06_6a_get_power_limits(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     for (socket = 0; socket < nsockets; socket++)
     {
         if (long_ver == 0)
@@ -82,6 +83,7 @@ int fm_06_6a_get_features(void)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     fprintf(stdout, "msr_platform_info            = 0x%lx\n",
             msrs.msr_platform_info);
     fprintf(stdout, "ia32_time_stamp_counter      = 0x%lx\n",
@@ -110,6 +112,7 @@ int fm_06_6a_get_power(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     if (long_ver == 0)
     {
         print_power_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,

@@ -462,6 +462,7 @@ int json_get_power_domain_info(json_t *get_domain_obj)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;

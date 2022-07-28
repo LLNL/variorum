@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <string.h>
 
 #include <ARM.h>
 #include <config_architecture.h>
@@ -104,6 +103,7 @@ int arm_get_power_json(char **get_power_obj_str)
         printf("Running %s\n", __FUNCTION__);
     }
     json_t *get_power_obj = json_object();
+
     ret = json_get_power_data(get_power_obj);
 
     *get_power_obj_str = json_dumps(get_power_obj, 0);
@@ -122,7 +122,9 @@ int arm_get_power_domain_info_json(char **get_domain_obj_str)
     }
 
     json_t *get_domain_obj = json_object();
+
     ret = json_get_power_domain_info(get_domain_obj);
+
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
     json_decref(get_domain_obj);
 

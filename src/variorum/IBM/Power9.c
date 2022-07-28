@@ -79,6 +79,7 @@ int p9_get_power_limits(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     char hostname[1024];
     FILE *fp = NULL;
     int pcap_current = 0;
@@ -287,6 +288,7 @@ int p9_monitoring(FILE *output)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     void *buf;
     int fd;
     int rc;
@@ -353,6 +355,7 @@ int p9_cap_socket_power_limit(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     if (long_ver == 0 || long_ver == 1)
     {
         printf("Socket limits cannot be set separately on IBM Power9 architecture. Please use cap_node_power_limit API.\n");
@@ -368,6 +371,7 @@ int p9_get_node_power_json(char **get_power_obj_str)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     void *buf;
     int fd;
     int rc;

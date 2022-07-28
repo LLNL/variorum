@@ -11,7 +11,6 @@
 #include <variorum_error.h>
 #include <power_features.h>
 
-
 int instinctGPU_get_power(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
