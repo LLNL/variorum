@@ -23,6 +23,7 @@ int epyc_get_power(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     int i, ret;
     uint32_t current_power;
 
@@ -86,6 +87,7 @@ int epyc_get_power_limits(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     int i, ret;
     uint32_t power, pcap_current, pcap_max;
 
@@ -169,6 +171,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
     {
         printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
     }
+
     int i, ret;
     uint32_t pcap_test;
     uint32_t max_power = 0;
@@ -243,6 +246,7 @@ int epyc_set_socket_power_limit(int pcap_new)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     int i, ret;
     uint32_t max_power = 0;
 
@@ -300,6 +304,7 @@ int epyc_print_energy()
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     int ret;
     if (!esmi_init())
     {
@@ -358,6 +363,7 @@ int epyc_print_boostlimit()
     {
         printf("Running %s\n\n", __FUNCTION__);
     }
+
     int i, ret;
     uint32_t boostlimit;
 
@@ -387,6 +393,7 @@ int epyc_set_each_core_boostlimit(int boostlimit)
     {
         printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
     }
+
     int i, ret;
     uint32_t core_boost_lim = 0;
 
