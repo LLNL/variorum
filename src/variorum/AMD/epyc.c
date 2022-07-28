@@ -420,9 +420,11 @@ int epyc_set_each_core_boostlimit(int boostlimit)
 /*
 int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && strlen(val) > 0)
+    {
+        printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
+    }
 
     int i, ret;
     uint32_t core_boost_lim = 0;
