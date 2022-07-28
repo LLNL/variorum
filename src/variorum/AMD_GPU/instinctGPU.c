@@ -60,7 +60,7 @@ int instinctGPU_get_thermals(int verbose)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    
+
     int iter = 0;
     int nsockets;
 
@@ -80,7 +80,7 @@ int instinctGPU_get_clocks(int verbose)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    
+
     int iter = 0;
     int nsockets;
 
@@ -100,7 +100,7 @@ int instinctGPU_get_gpu_utilization(int verbose)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    
+
     int iter = 0;
     int nsockets;
 
