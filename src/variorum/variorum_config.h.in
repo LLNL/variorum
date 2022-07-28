@@ -13,7 +13,6 @@
 #cmakedefine VARIORUM_WITH_ARM          @VARIORUM_WITH_ARM@
 #cmakedefine VARIORUM_WITH_AMD_GPU      @VARIORUM_WITH_AMD_GPU@
 #cmakedefine VARIORUM_DEBUG             @VARIORUM_DEBUG@
-#cmakedefine VARIORUM_LOG               @VARIORUM_LOG@
 
 #cmakedefine VARIORUM_INSTALL_PREFIX "${VARIORUM_INSTALL_PREFIX}"
 

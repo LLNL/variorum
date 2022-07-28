@@ -14,9 +14,12 @@
 
 int p9_get_power(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     void *buf;
     int fd;
     int rc;
@@ -71,9 +74,12 @@ int p9_get_power(int long_ver)
 
 int p9_get_power_limits(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     char hostname[1024];
     FILE *fp = NULL;
     int pcap_current = 0;
@@ -152,9 +158,11 @@ int p9_get_power_limits(int long_ver)
 
 int p9_cap_and_verify_node_power_limit(int pcap_new)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
+    }
 
     char hostname[1024];
     FILE *fp = NULL;
@@ -218,9 +226,11 @@ int p9_cap_and_verify_node_power_limit(int pcap_new)
 
 int p9_cap_gpu_power_ratio(int gpu_power_ratio)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s with value %d\n", __FUNCTION__, gpu_power_ratio);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s with value %d\n", __FUNCTION__, gpu_power_ratio);
+    }
 
     char hostname[1024];
     FILE *fp1 = NULL;
@@ -274,9 +284,12 @@ int p9_monitoring(FILE *output)
      * For the first cut, we are just printing power info, we can add other info later.
      * */
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     void *buf;
     int fd;
     int rc;
@@ -338,9 +351,11 @@ int p9_monitoring(FILE *output)
 
 int p9_cap_socket_power_limit(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     if (long_ver == 0 || long_ver == 1)
     {
@@ -352,9 +367,11 @@ int p9_cap_socket_power_limit(int long_ver)
 
 int p9_get_node_power_json(char **get_power_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     void *buf;
     int fd;
@@ -425,9 +442,11 @@ int p9_get_node_power_json(char **get_power_obj_str)
 
 int p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     char hostname[1024];
     struct timeval tv;

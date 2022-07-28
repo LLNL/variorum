@@ -15,7 +15,6 @@ set(ENABLE_OPENMP OFF CACHE BOOL "")
 set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
-set(VARIORUM_LOG OFF CACHE BOOL "")                                                
 set(VARIORUM_DEBUG OFF CACHE BOOL "") 
 
 set(VARIORUM_WITH_AMD OFF CACHE BOOL "")

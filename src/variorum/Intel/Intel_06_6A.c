@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <Intel_06_6A.h>
 #include <clocks_features.h>
@@ -31,9 +32,11 @@ int fm_06_6a_get_power_limits(int long_ver)
     unsigned nsockets, ncores, nthreads;
     variorum_get_topology(&nsockets, &ncores, &nthreads);
 
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     for (socket = 0; socket < nsockets; socket++)
     {
@@ -75,9 +78,11 @@ int fm_06_6a_get_power_limits(int long_ver)
 
 int fm_06_6a_get_features(void)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     fprintf(stdout, "msr_platform_info            = 0x%lx\n",
             msrs.msr_platform_info);
@@ -102,9 +107,11 @@ int fm_06_6a_get_features(void)
 
 int fm_06_6a_get_power(int long_ver)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     if (long_ver == 0)
     {
@@ -121,9 +128,11 @@ int fm_06_6a_get_power(int long_ver)
 
 int fm_06_6a_get_node_power_json(char **get_power_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     json_t *get_power_obj = json_object();
 
@@ -139,9 +148,11 @@ int fm_06_6a_get_node_power_json(char **get_power_obj_str)
 
 int fm_06_6a_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
     json_t *get_domain_obj = json_object();
 

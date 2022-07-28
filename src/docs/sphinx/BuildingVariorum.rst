@@ -143,8 +143,6 @@ Variorum's build system supports the following CMake options:
 -  ``BUILD_TESTS (default=ON)`` - Controls if unit tests are built.
 -  ``VARIORUM_DEBUG (default=OFF)`` - Enable Variorum debug statements, useful
    if values are not translating correctly.
--  ``VARIORUM_LOG (default=ON)`` - Enable Variorum logging statements, useful
-   for tracking what code path is being taken.
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0,
    dependency of Intel architectures for accessing counters from userspace.
 
@@ -177,3 +175,10 @@ below). Variants are enabled using ``+`` and disabled using ``~``.
 | **build_type** | Specify build type                     | Release with Debug Info       |
 |                |                                        | (build_type=RelWithDebugInfo) |
 +----------------+----------------------------------------+-------------------------------+
+
+***********
+ Debugging
+***********
+
+Setting the ``VARIORUM_LOG`` environment variable at runtime to
+``VARIORUM_LOG=1`` will print out debugging information.

@@ -13,9 +13,12 @@
 
 int instinctGPU_get_power(int verbose)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     int iter = 0;
     int nsockets;
 
@@ -31,9 +34,12 @@ int instinctGPU_get_power(int verbose)
 
 int instinctGPU_get_power_limit(int verbose)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     int iter = 0;
     int nsockets;
 
@@ -49,9 +55,12 @@ int instinctGPU_get_power_limit(int verbose)
 
 int instinctGPU_get_thermals(int verbose)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     int iter = 0;
     int nsockets;
 
@@ -66,9 +75,12 @@ int instinctGPU_get_thermals(int verbose)
 
 int instinctGPU_get_clocks(int verbose)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     int iter = 0;
     int nsockets;
 
@@ -83,9 +95,12 @@ int instinctGPU_get_clocks(int verbose)
 
 int instinctGPU_get_gpu_utilization(int verbose)
 {
-#ifdef VARIORUM_LOG
-    printf("Running %s\n", __FUNCTION__);
-#endif
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
     int iter = 0;
     int nsockets;
 
