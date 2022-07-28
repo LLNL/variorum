@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/time.h>
-#include <string.h>
 
 #include <config_architecture.h>
 #include <epyc.h>

@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <Intel_06_2D.h>
 #include <clocks_features.h>

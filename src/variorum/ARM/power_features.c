@@ -10,7 +10,6 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <fcntl.h>
-#include <string.h>
 #include <inttypes.h>
 
 #include <power_features.h>

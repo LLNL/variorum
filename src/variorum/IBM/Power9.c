@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <string.h>
 
 #include <config_architecture.h>
 #include <Power9.h>

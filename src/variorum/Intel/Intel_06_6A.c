@@ -4,8 +4,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <Intel_06_6A.h>
-#include <string.h>
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
