@@ -180,5 +180,5 @@ below). Variants are enabled using ``+`` and disabled using ``~``.
  Debugging
 ***********
 
-Setting the ``VARIORUM_LOG`` environment variable at runtime will print out
-debugging information.
+Setting the ``VARIORUM_LOG`` environment variable at runtime to
+``VARIORUM_LOG=1`` will print out debugging information.
