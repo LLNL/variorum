@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <inttypes.h>
+#include <string.h>
 
 #include <power_features.h>
 #include <config_architecture.h>
