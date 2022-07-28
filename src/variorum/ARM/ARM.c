@@ -23,6 +23,7 @@ int arm_get_power(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     ret = get_power_data(long_ver, stdout);
     return ret;
 }
@@ -35,6 +36,7 @@ int arm_get_thermals(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     ret = get_thermal_data(long_ver, stdout);
     return ret;
 }
@@ -46,6 +48,7 @@ int arm_get_clocks(int long_ver)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     unsigned iter = 0;
     unsigned nsockets;
     int ret;
@@ -64,6 +67,7 @@ int arm_get_frequencies(void)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     unsigned iter = 0;
     unsigned nsockets;
     int ret;
@@ -82,6 +86,7 @@ int arm_cap_socket_frequency(int cpuid, int freq)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     unsigned iter = 0;
     unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
@@ -102,6 +107,7 @@ int arm_get_power_json(char **get_power_obj_str)
     {
         printf("Running %s\n", __FUNCTION__);
     }
+
     json_t *get_power_obj = json_object();
 
     ret = json_get_power_data(get_power_obj);
