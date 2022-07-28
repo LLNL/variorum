@@ -76,7 +76,7 @@ supercomputer at Lawrence Livermore National Laboratory.
 
 Beginning with Variorum 0.6.0, we support AMD Radeon Instinct GPUs with the help
 of the Radeon Open Compute management (ROCm) stack. The Variorum AMD GPU port
-currently requires `ROCm System Management Interface (ROCm-SMI) v5.1.0
+currently requires `ROCm System Management Interface (ROCm-SMI) v5.2.0
 <https://rocmdocs.amd.com/en/latest/index.html>`_, and supports various AMD GPUs
 including (but not limited) to MI50, MI60, MI100, and MI200. Future versions on
 ROCm-SMI are expected to be backward compatible, and upcoming AMD GPU hardware
