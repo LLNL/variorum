@@ -8,7 +8,7 @@ stages:
 
 build-quartz-format:
  tags:
-   - batch
+   - shell
    - quartz
  stage: format
  script:
@@ -18,9 +18,18 @@ build-quartz-format:
    - export PATH="${PWD}/bin:${PATH}"
    - cd -
    - echo -e "PWD:" ${PWD}
-   - ./scripts/astyle-format.sh
+   - ./scripts/.ci-check-code-format.sh
    - err=$?
    - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
+
+build-quartz-format-rst:
+ tags:
+   - shell
+   - quartz
+ stage: format
+ script:
+   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
+   - ./scripts/.ci-check-rst-format.sh
 
 # no access to msr-safe on quartz
 build-quartz:
@@ -43,7 +52,7 @@ build-quartz:
    - groups
    - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
    - cd build-gitlab-quartz
-   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@4.9.3.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@8.3.1.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
@@ -85,7 +94,7 @@ build-lassen-cpu:
    - groups
    - mkdir build-gitlab-lassen-cpu && mkdir install-gitlab-lassen-cpu
    - cd build-gitlab-lassen-cpu
-   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
@@ -127,7 +136,7 @@ build-lassen-gpu:
    - groups
    - mkdir build-gitlab-lassen-gpu && mkdir install-gitlab-lassen-gpu
    - cd build-gitlab-lassen-gpu
-   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1-cuda@10.1.243.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
@@ -179,7 +188,7 @@ build-catalyst:
    - groups
    - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
    - cd build-gitlab-catalyst
-   - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@4.9.3.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@8.3.1.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
