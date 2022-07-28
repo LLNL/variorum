@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 
 #include <ARM.h>
 #include <config_architecture.h>

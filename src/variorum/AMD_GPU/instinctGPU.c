@@ -5,11 +5,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <instinctGPU.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <power_features.h>
+
 
 int instinctGPU_get_power(int verbose)
 {
