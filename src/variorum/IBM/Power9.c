@@ -163,6 +163,7 @@ int p9_cap_and_verify_node_power_limit(int pcap_new)
     {
         printf("Running %s with value %d\n", __FUNCTION__, pcap_new);
     }
+
     char hostname[1024];
     FILE *fp = NULL;
     int pcap_test = 0;
