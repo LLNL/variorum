@@ -154,7 +154,7 @@ int variorum_detect_arch(void)
                (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
 #if defined(VARIORUM_WITH_AMD_GPU)
-        printf("AMD GPU Model: MI-%d\n", *g_platform.amd_gpu_arch);
+        printf("AMD GPU Model: MI-%ld\n", *g_platform.amd_gpu_arch);
 #endif
     }
 

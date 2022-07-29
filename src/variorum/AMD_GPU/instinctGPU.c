@@ -19,8 +19,8 @@ int instinctGPU_get_power(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -40,8 +40,8 @@ int instinctGPU_get_power_limit(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -61,8 +61,8 @@ int instinctGPU_get_thermals(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -81,8 +81,8 @@ int instinctGPU_get_clocks(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 
@@ -101,8 +101,8 @@ int instinctGPU_get_gpu_utilization(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL);
 

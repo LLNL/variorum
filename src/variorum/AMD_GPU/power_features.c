@@ -182,14 +182,14 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         {
             fprintf(output,
                     "_AMD_GPU_POWER_CAP Host: %s, Socket: %d, DeviceID: %d,"
-                    " PowerCap_Current: %0.2lf W, PowerCap_Min: %d W, PowerCap_Max: %d W,"
+                    " PowerCap_Current: %0.2lf W, PowerCap_Min: %ld W, PowerCap_Max: %ld W,"
                     "Timestamp: %lf sec\n",
                     hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_CAP %s %d %d %0.2lf %d %d %lf\n",
+            fprintf(output, "_AMD_GPU_POWER_CAP %s %d %d %0.2lf %ld %ld %lf\n",
                     hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
@@ -254,7 +254,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t temp_val = -1;
+        int64_t temp_val = -1;
         double temp_val_flt = -1.0;
 
         ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
@@ -466,13 +466,13 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         {
             fprintf(output,
                     "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
-                    "GFX_Util: %d \%, Mem_Util: %d \%, Timestamp: %lf sec\n",
+                    "GFX_Util: %ld%%, Mem_Util: %ld%%, Timestamp: %lf sec\n",
                     hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %d %d %lf\n",
+            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %ld %ld %lf\n",
                     hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
                     (now.tv_usec - start.tv_usec) / 1000000.0);
         }
