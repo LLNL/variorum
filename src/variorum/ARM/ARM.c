@@ -99,7 +99,7 @@ int arm_cap_socket_frequency(int cpuid, int freq)
     }
 
     variorum_get_topology(&nsockets, NULL, NULL);
-    if (cpuid < 0 || cpuid >= int(nsockets))
+    if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
         return -1;
