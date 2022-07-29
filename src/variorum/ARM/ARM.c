@@ -47,7 +47,7 @@ int arm_get_thermals(int long_ver)
 
 int arm_get_clocks(int long_ver)
 {
-    int ret =0;
+    int ret = 0;
     unsigned iter = 0;
     unsigned nsockets;
 
@@ -91,7 +91,7 @@ int arm_cap_socket_frequency(int cpuid, int freq)
 {
     int ret = 0;
     unsigned nsockets;
- 
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
