@@ -4,10 +4,13 @@
 # SPDX-License-Identifier: MIT
 
 # c compiler
-set(CMAKE_C_COMPILER "gcc" CACHE PATH "")
+set(CMAKE_C_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.2.1/bin/gcc" CACHE PATH "")
 
 # cpp compiler
-set(CMAKE_CXX_COMPILER "g++" CACHE PATH "")
+set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.2.1/bin/g++" CACHE PATH "")
+
+# fortran compiler
+set(CMAKE_Fortran_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.2.1/bin/gfortran" CACHE PATH "")
 
 set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP OFF CACHE BOOL "")
