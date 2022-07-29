@@ -30,6 +30,8 @@ int read_file_ui64(const int file, uint64_t *val)
         return 0;
     }
     sscanf(buf, "%"SCNu64, val);
+
+    return bytes_read;
 }
 
 int write_file_ui64(const int file, uint64_t val)
@@ -41,14 +43,20 @@ int write_file_ui64(const int file, uint64_t val)
     {
         return 0;
     }
+
+    return bytes_written;
 }
 
 int read_array_ui64(const int fd, uint64_t **array)
 {
-    int num_freq = 0;
     int iter = 0;
     char buf[4096];
-    int rd = read(fd, buf, 4096);
+    int bytes_read = read(fd, buf, 4096);
+
+    if (bytes_read == 0)
+    {
+        return 0;
+    }
 
     int nfreq = 0;
     char *fptr = buf;
@@ -293,7 +301,6 @@ int get_clocks_data(int chipid, int verbose, FILE *output)
 
 int get_frequencies(int chipid, FILE *output)
 {
-    static int init_output = 0;
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
     int freq_fd;
@@ -334,8 +341,6 @@ int get_frequencies(int chipid, FILE *output)
 
 int cap_socket_frequency(int socketid, int new_freq)
 {
-    static int init_output = 0;
-    uint64_t freq_val;
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
     sprintf(freq_fname, "%s%d/scaling_setspeed", freq_path, socketid);
@@ -428,7 +433,7 @@ int json_get_power_data(json_t *get_power_obj)
        and GPU power exists only on socket 0.
        The value for m_num_package has been obtained in the init_arm() call. */
 
-    for (i = 0; i < m_num_package; i++)
+    for (i = 0; i < (int)m_num_package; i++)
     {
         char mem_str[36] = "power_mem_watts_socket_";
         char gpu_str[36] = "power_gpu_watts_socket_";

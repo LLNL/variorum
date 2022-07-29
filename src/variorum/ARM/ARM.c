@@ -17,7 +17,8 @@
 
 int arm_get_power(int long_ver)
 {
-    int ret;
+    int ret = 0;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -25,12 +26,14 @@ int arm_get_power(int long_ver)
     }
 
     ret = get_power_data(long_ver, stdout);
+
     return ret;
 }
 
 int arm_get_thermals(int long_ver)
 {
-    int ret;
+    int ret = 0;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -38,70 +41,78 @@ int arm_get_thermals(int long_ver)
     }
 
     ret = get_thermal_data(long_ver, stdout);
+
     return ret;
 }
 
 int arm_get_clocks(int long_ver)
 {
+    int ret = 0;
+    unsigned iter = 0;
+    unsigned nsockets;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
-    int ret;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = get_clocks_data(iter, long_ver, stdout);
     }
+
     return ret;
 }
 
 int arm_get_frequencies(void)
 {
+    int ret = 0;
+    unsigned iter = 0;
+    unsigned nsockets;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
-    int ret;
     variorum_get_topology(&nsockets, NULL, NULL);
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = get_frequencies(iter, stdout);
     }
+
     return ret;
 }
 
 int arm_cap_socket_frequency(int cpuid, int freq)
 {
+    int ret = 0;
+    unsigned nsockets;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL);
-    if (cpuid < 0 || cpuid >= nsockets)
+    if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
         return -1;
     }
-    int ret = cap_socket_frequency(cpuid, freq);
+    ret = cap_socket_frequency(cpuid, freq);
+
     return ret;
 }
 
 int arm_get_power_json(char **get_power_obj_str)
 {
-    int ret;
+    int ret = 0;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -120,7 +131,8 @@ int arm_get_power_json(char **get_power_obj_str)
 
 int arm_get_power_domain_info_json(char **get_domain_obj_str)
 {
-    int ret;
+    int ret = 0;
+
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
