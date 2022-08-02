@@ -143,17 +143,17 @@ int variorum_detect_arch(void)
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
-#if defined(VARIORUM_WITH_INTEL)
+#ifdef VARIORUM_WITH_INTEL
         printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
 #endif
-#if defined(VARIORUM_WITH_IBM)
+#ifdef VARIORUM_WITH_IBM
         printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
 #endif
-#if defined(VARIORUM_WITH_AMD)
+#ifdef VARIORUM_WITH_AMD
         printf("AMD Family: 0x%lx, Model: 0x%lx\n",
                (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
-#if defined(VARIORUM_WITH_AMD_GPU)
+#ifdef VARIORUM_WITH_AMD_GPU
         printf("AMD GPU Model: MI-%ld\n", *g_platform.amd_gpu_arch);
 #endif
     }
