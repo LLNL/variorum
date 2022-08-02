@@ -118,15 +118,15 @@ Variorum's build system supports the following CMake options:
 -  ``JANSSON_DIR`` - Path to a JANSSON install.
 -  ``SPHINX_EXECUTABLE`` - Path to sphinx-build binary (required for
    documentation).
--  ``VARIORUM_WITH_AMD (default=OFF)`` - Enable Variorum build for AMD
+-  ``VARIORUM_WITH_AMD_CPU (default=OFF)`` - Enable Variorum build for AMD CPU
    architecture.
--  ``VARIORUM_WITH_NVIDIA_GPU (default=OFF)`` - Enable Variorum build for Nvidia
+-  ``VARIORUM_WITH_NVIDIA_GPU (default=OFF)`` - Enable Variorum build for Nvidia GPU
    architecture.
--  ``VARIORUM_WITH_IBM (default=OFF)`` - Enable Variorum build for IBM
+-  ``VARIORUM_WITH_IBM_CPU (default=OFF)`` - Enable Variorum build for IBM CPU
    architecture.
--  ``VARIORUM_WITH_ARM (default=OFF)`` - Enable Variorum build for ARM
+-  ``VARIORUM_WITH_ARM_CPU (default=OFF)`` - Enable Variorum build for ARM CPU
    architecture.
--  ``VARIORUM_WITH_INTEL (default=ON)`` - Enable Variorum build for Intel
+-  ``VARIORUM_WITH_INTEL_CPU (default=ON)`` - Enable Variorum build for Intel CPU
    architecture.
 -  ``ENABLE_FORTRAN (default=ON)`` - Enable Fortran compiler for building
    example integration with Fortran application, Fortran compiler must exist.
