@@ -70,7 +70,7 @@ enum ibm_arch_e
 
 /// @brief List of NVIDIA family and models.
 /// @todo: we need to find architecture detection info here.
-enum nvidia_arch_e
+enum nvidia_gpu_arch_e
 {
     VOLTA = 1, // Volta
 };
