@@ -31,7 +31,8 @@ int set_arm_func_ptrs(int idx)
         g_platform[idx].variorum_print_thermals                  = arm_get_thermals;
         g_platform[idx].variorum_print_frequency                 = arm_get_clocks;
         g_platform[idx].variorum_print_available_frequencies     = arm_get_frequencies;
-        g_platform[idx].variorum_cap_socket_frequency_limit      = arm_cap_socket_frequency;
+        g_platform[idx].variorum_cap_socket_frequency_limit      =
+            arm_cap_socket_frequency;
         g_platform[idx].variorum_get_node_power_json             = arm_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             arm_get_power_domain_info_json;

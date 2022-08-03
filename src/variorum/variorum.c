@@ -250,7 +250,7 @@ int variorum_cap_best_effort_node_power_limit(int *node_power_limits)
             continue;
         }
         err = g_platform[i].variorum_cap_best_effort_node_power_limit(
-            node_power_limits[i]);
+                  node_power_limits[i]);
         if (err)
         {
             return -1;
@@ -382,7 +382,8 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
                                    __FUNCTION__, __LINE__);
             return -1;
         }
-        err = g_platform[i].variorum_cap_socket_frequency_limit(socketid, socket_freq_mhz);
+        err = g_platform[i].variorum_cap_socket_frequency_limit(socketid,
+                socket_freq_mhz);
         if (err)
         {
             return -1;
@@ -946,7 +947,8 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
             // to explicitly check for NULL strings.
             return -1;
         }
-        err = g_platform[i].variorum_get_node_power_domain_info_json(get_domain_obj_str);
+        err = g_platform[i].variorum_get_node_power_domain_info_json(
+                  get_domain_obj_str);
         if (err)
         {
             return -1;

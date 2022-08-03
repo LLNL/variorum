@@ -97,7 +97,8 @@ int set_intel_func_ptrs(int idx)
     else if (*g_platform[idx].arch_id == FM_06_2D)
     {
         g_platform[idx].variorum_print_power_limit = fm_06_2d_get_power_limits;
-        g_platform[idx].variorum_cap_each_socket_power_limit = fm_06_2d_cap_power_limits;
+        g_platform[idx].variorum_cap_each_socket_power_limit =
+            fm_06_2d_cap_power_limits;
         g_platform[idx].variorum_print_features = fm_06_2d_get_features;
         g_platform[idx].variorum_print_thermals = fm_06_2d_get_thermals;
         g_platform[idx].variorum_print_counters = fm_06_2d_get_counters;

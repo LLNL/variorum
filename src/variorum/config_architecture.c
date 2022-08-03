@@ -131,17 +131,17 @@ int variorum_detect_arch(void)
     g_platform[P_NVIDIA_IDX].arch_id = detect_gpu_arch();
     printf("Nvidia -- idx%d\n", P_NVIDIA_IDX);
 #endif
-//#ifdef VARIORUM_WITH_AMD_GPU
-//    g_platform.amd_gpu_arch = detect_amd_gpu_arch();
-//#endif
+    //#ifdef VARIORUM_WITH_AMD_GPU
+    //    g_platform.amd_gpu_arch = detect_amd_gpu_arch();
+    //#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
 #ifdef VARIORUM_WITH_ARM
-    g_platform[P_ARM_IDX].arch_id = detect_arm_arch();
-    printf("ARM -- idx%d\n", P_ARM_IDX);
-    printf("Arm Model: 0x%lx\n", *g_platform[P_ARM_IDX].arch_id);
+        g_platform[P_ARM_IDX].arch_id = detect_arm_arch();
+        printf("ARM -- idx%d\n", P_ARM_IDX);
+        printf("Arm Model: 0x%lx\n", *g_platform[P_ARM_IDX].arch_id);
 #endif
 #ifdef VARIORUM_WITH_INTEL
         printf("Intel Model: 0x%lx\n", *g_platform[P_INTEL_IDX].arch_id);
@@ -149,7 +149,7 @@ int variorum_detect_arch(void)
 #if defined(VARIORUM_WITH_IBM)
 #endif
 #if defined(VARIORUM_WITH_NVIDIA_GPU)
-    printf("Nvidia Model: 0x%lx\n", *g_platform[P_NVIDIA_IDX].arch_id);
+        printf("Nvidia Model: 0x%lx\n", *g_platform[P_NVIDIA_IDX].arch_id);
 #endif
     }
 
@@ -348,12 +348,12 @@ int variorum_set_func_ptrs()
         return err;
     }
 #endif
-//#ifdef VARIORUM_WITH_AMD
-//    err = set_amd_func_ptrs(P_AMD_IDX);
-//#endif
-//#ifdef VARIORUM_WITH_AMD_GPU
-//    err = set_amd_gpu_func_ptrs(P_AMD_GPU_IDX);
-//#endif
+    //#ifdef VARIORUM_WITH_AMD
+    //    err = set_amd_func_ptrs(P_AMD_IDX);
+    //#endif
+    //#ifdef VARIORUM_WITH_AMD_GPU
+    //    err = set_amd_gpu_func_ptrs(P_AMD_GPU_IDX);
+    //#endif
 #ifdef VARIORUM_WITH_ARM
     err = set_arm_func_ptrs(P_ARM_IDX);
 #endif
