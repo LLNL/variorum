@@ -1,3 +1,8 @@
+# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
+
 # c compiler
 set(CMAKE_C_COMPILER "/usr/tce/packages/gcc/gcc-8.3.1/bin/gcc" CACHE PATH "")
 
