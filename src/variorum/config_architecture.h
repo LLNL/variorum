@@ -88,7 +88,7 @@ enum supported_platforms_e
 #ifdef VARIORUM_WITH_IBM
     P_IBM_IDX,
 #endif
-#ifdef VARIORUM_WITH_NVIDIA
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     P_NVIDIA_IDX,
 #endif
 #ifdef VARIORUM_WITH_ARM

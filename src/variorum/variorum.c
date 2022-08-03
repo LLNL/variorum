@@ -264,47 +264,6 @@ int variorum_cap_best_effort_node_power_limit(int *node_power_limits)
     return err;
 }
 
-int variorum_cap_and_verify_node_power_limit(int node_power_limit)
-{
-    int err = 0;
-    int i;
-#ifdef VARIORUM_LOG
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_enter();
-#endif
-    if (err)
-    {
-        return -1;
-    }
-    for (i = 0; i < P_NUM_PLATFORMS; i++)
-    {
-        if (g_platform[i].variorum_cap_and_verify_node_power_limit == NULL)
-        {
-            variorum_error_handler("Feature not yet implemented or is not supported",
-                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                                   getenv("HOSTNAME"), __FILE__,
-                                   __FUNCTION__, __LINE__);
-            return 0;
-        }
-        err = g_platform[i].variorum_cap_and_verify_node_power_limit(node_power_limit);
-        if (err)
-        {
-            return -1;
-        }
-    }
-#ifdef VARIORUM_LOG
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-#else
-    err = variorum_exit();
-#endif
-    if (err)
-    {
-        return -1;
-    }
-    return err;
-}
-
 int variorum_cap_gpu_power_ratio(int gpu_power_ratio)
 {
     int err = 0;
@@ -390,7 +349,7 @@ int variorum_cap_each_core_frequency_limit(int core_freq_mhz)
                                    __FUNCTION__, __LINE__);
             return 0;
         }
-        err = g_platform[i].variorum_cap_each_core_frequency(core_freq_mhz);
+        err = g_platform[i].variorum_cap_each_core_frequency_limit(core_freq_mhz);
         if (err)
         {
             return -1;
@@ -415,7 +374,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
     }
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_cap_socket_frequency == NULL)
+        if (g_platform[i].variorum_cap_socket_frequency_limit == NULL)
         {
             variorum_error_handler("Feature not yet implemented or is not supported",
                                    VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -423,7 +382,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
                                    __FUNCTION__, __LINE__);
             return -1;
         }
-        err = g_platform[i].variorum_cap_socket_frequency(socketid, socket_freq_mhz);
+        err = g_platform[i].variorum_cap_socket_frequency_limit(socketid, socket_freq_mhz);
         if (err)
         {
             return -1;
@@ -963,32 +922,36 @@ int variorum_get_node_power_json(char **get_power_obj_str)
         return -1;
     }
     return err;
+#endif
 }
 
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     int err = 0;
+    int i;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-    if (g_platform.variorum_get_node_power_domain_info_json == NULL)
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        // For the JSON functions, we return a -1 here, so users don't need
-        // to explicitly check for NULL strings.
-        return -1;
+        if (g_platform[i].variorum_get_node_power_domain_info_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            // For the JSON functions, we return a -1 here, so users don't need
+            // to explicitly check for NULL strings.
+            return -1;
+        }
+        err = g_platform[i].variorum_get_node_power_domain_info_json(get_domain_obj_str);
+        if (err)
+        {
+            return -1;
+        }
     }
-    err = g_platform.variorum_get_node_power_domain_info_json(get_domain_obj_str);
-    if (err)
-    {
-        return -1;
-    }
-#endif
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1032,22 +995,26 @@ int variorum_print_available_frequencies(void)
 int variorum_print_energy(void)
 {
     int err = 0;
+    int i;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-    if (g_platform.variorum_print_energy == NULL)
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return 0;
-    }
-    err = g_platform.variorum_print_energy();
-    if (err)
-    {
-        return -1;
+        if (g_platform[i].variorum_print_energy == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
+        }
+        err = g_platform[i].variorum_print_energy();
+        if (err)
+        {
+            return -1;
+        }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
@@ -1061,4 +1028,3 @@ char *variorum_get_current_version()
 {
     return QuoteMacro(VARIORUM_VERSION);
 }
-#endif

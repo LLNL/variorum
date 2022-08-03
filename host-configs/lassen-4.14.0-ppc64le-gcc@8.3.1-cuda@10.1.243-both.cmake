@@ -1,14 +1,14 @@
 # c compiler
-set(CMAKE_C_COMPILER "gcc" CACHE PATH "")
+set(CMAKE_C_COMPILER "/usr/tce/packages/gcc/gcc-8.3.1/bin/gcc" CACHE PATH "")
 
 # cpp compiler
-set(CMAKE_CXX_COMPILER "g++" CACHE PATH "")
+set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc/gcc-8.3.1/bin/g++" CACHE PATH "")
 
 set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD OFF CACHE BOOL "")
-set(VARIORUM_WITH_NVIDIA ON CACHE BOOL "")
+set(VARIORUM_WITH_NVIDIA_GPU ON CACHE BOOL "")
 set(VARIORUM_WITH_IBM ON CACHE BOOL "")
 set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
 
@@ -19,3 +19,5 @@ set(CMAKE_SHARED_LINKER_FLAGS "-L/usr/tce/packages/cuda/cuda-10.1.243/nvidia/tar
 
 # path to global hwloc install
 set(HWLOC_DIR "/usr/global/tools/hwloc/blueos_3_ppc64le_ib/hwloc-1.11.10-cuda/" CACHE PATH "")
+
+set(NVML_DIR "/usr/tce/packages/cuda/cuda-10.1.243" CACHE PATH "")

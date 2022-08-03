@@ -40,7 +40,7 @@
 #include <config_amd_gpu.h>
 #endif
 
-struct platform g_platform;
+struct platform g_platform[2];
 
 
 int variorum_enter(const char *filename, const char *func_name, int line_num)
@@ -212,7 +212,7 @@ void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
             exit(-1);
         }
 
-        g_platform.total_cores = variorum_get_num_cores();
+        g_platform[idx].total_cores = variorum_get_num_cores();
         if (g_platform[idx].total_cores == -1)
         {
             fprintf(stderr, "%s:%d "
@@ -319,7 +319,6 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_print_turbo = NULL;
         g_platform[i].variorum_poll_power = NULL;
         g_platform[i].variorum_print_gpu_utilization = NULL;
-        g_platform[i].variorum_cap_each_core_frequency = NULL;
         g_platform[i].variorum_monitoring = NULL;
         g_platform[i].variorum_get_node_power_json = NULL;
         g_platform[i].variorum_get_node_power_domain_info_json = NULL;
