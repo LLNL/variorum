@@ -893,29 +893,31 @@ int variorum_disable_turbo(void)
 int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
+    int i;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-#if 0
-    if (g_platform.variorum_get_node_power_json == NULL)
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        // For the JSON functions, we return a -1 here, so users don't need
-        // to explicitly check for NULL strings.
-        return -1;
+        if (g_platform[i].variorum_get_node_power_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            // For the JSON functions, we return a -1 here, so users don't need
+            // to explicitly check for NULL strings.
+            return -1;
 
-    }
+        }
 
-    err = g_platform.variorum_get_node_power_json(get_power_obj_str);
-
-    if (err)
-    {
-        return -1;
+        err = g_platform[i].variorum_get_node_power_json(get_power_obj_str);
+        if (err)
+        {
+            return -1;
+        }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
@@ -923,7 +925,6 @@ int variorum_get_node_power_json(char **get_power_obj_str)
         return -1;
     }
     return err;
-#endif
 }
 
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)

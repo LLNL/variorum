@@ -268,9 +268,9 @@ int variorum_exit(const char *filename,
                   const char *func_name,
                   int line_num);
 
-void variorum_get_topology(int *nsockets,
-                           int *ncores,
-                           int *nthreads,
+void variorum_get_topology(unsigned *nsockets,
+                           unsigned *ncores,
+                           unsigned *nthreads,
                            int idx);
 
 int variorum_set_func_ptrs(void);

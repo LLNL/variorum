@@ -37,8 +37,8 @@ int volta_get_thermals(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    int iter = 0;
-    int nsockets;
+    unsigned iter = 0;
+    unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
