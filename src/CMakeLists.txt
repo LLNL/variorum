@@ -27,6 +27,7 @@ option(VARIORUM_WITH_ARM_CPU     "Support ARM CPU architectures"          OFF)
 option(VARIORUM_WITH_IBM_CPU     "Support IBM CPU architectures"          OFF)
 option(VARIORUM_WITH_INTEL_CPU   "Support Intel CPU architectures"        ON)
 option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia GPU architectures"       OFF)
+option(VARIORUM_WITH_INTEL_DGPU  "Support Intel DGPU architectures"       OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 

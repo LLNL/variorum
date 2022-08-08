@@ -61,3 +61,8 @@ include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
 install(DIRECTORY using-with-make using-with-cmake
         DESTINATION examples)
+
+# quick hack
+if(VARIORUM_WITH_INTEL_DGPU)
+	set(CMAKE_EXE_LINKER_FLAGS "-lze_loader -lstdc++ -L${APMIDG_DIR}/lib64/ -lapmidg")
+endif()

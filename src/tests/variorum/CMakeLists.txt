@@ -29,3 +29,8 @@ foreach(TEST ${BASIC_TESTS})
 endforeach()
 
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
+
+# quick hack
+if(VARIORUM_WITH_INTEL_DGPU)
+	set(CMAKE_EXE_LINKER_FLAGS "-lze_loader -lstdc++ -L${APMIDG_DIR}/lib64/ -lapmidg")
+endif()
