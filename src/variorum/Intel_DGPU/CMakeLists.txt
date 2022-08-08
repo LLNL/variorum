@@ -1,6 +1,7 @@
-# Copyright 2019-2021 Lawrence Livermore National Security, LLC, and
-# other Variorum Project Developers. See the top-level LICENSE file
-# for details.  SPDX-License-Identifier: MIT
+# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Variorum Project Developers. See the top-level LICENSE file for details.
+#
+# SPDX-License-Identifier: MIT
 
 set(variorum_intel_dgpu_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/DGPU.h

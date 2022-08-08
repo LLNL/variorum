@@ -1,6 +1,5 @@
-// Copyright 2019-2021 Lawrence Livermore National Security, LLC, and
-// other Variorum Project Developers. See the top-level LICENSE file
-// for details.
+// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
 
@@ -48,8 +47,8 @@ void get_power_data(int chipid, int verbose, FILE *output)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-	int pi = 0; // only report the global power domain now
-	double value = apmidg_readpoweravg(d, pi);
+        int pi = 0; // only report the global power domain now
+        double value = apmidg_readpoweravg(d, pi);
 
         if (verbose)
         {
@@ -79,9 +78,9 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-	double temp_C;
-	int ti = 0; // only report the first temp sensor now
-	apmidg_readtemp(d, ti, &temp_C);
+        double temp_C;
+        int ti = 0; // only report the first temp sensor now
+        apmidg_readtemp(d, ti, &temp_C);
 
 
         if (verbose)
@@ -112,10 +111,10 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-	double freq_MHz;
-	int fi = 0; // only report the first freq domain now
+        double freq_MHz;
+        int fi = 0; // only report the first freq domain now
 
-	apmidg_readfreq(d, fi, &freq_MHz);
+        apmidg_readfreq(d, fi, &freq_MHz);
 
         if (verbose)
         {
