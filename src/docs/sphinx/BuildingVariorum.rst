@@ -120,8 +120,6 @@ Variorum's build system supports the following CMake options:
    documentation).
 -  ``VARIORUM_WITH_AMD_CPU (default=OFF)`` - Enable Variorum build for AMD CPU
    architecture.
--  ``VARIORUM_WITH_AMD_GPU (default=OFF)`` - Enable Variorum build for AMD
-   GPU architecture.
 -  ``VARIORUM_WITH_NVIDIA_GPU (default=OFF)`` - Enable Variorum build for Nvidia
    GPU architecture.
 -  ``VARIORUM_WITH_IBM_CPU (default=OFF)`` - Enable Variorum build for IBM CPU
