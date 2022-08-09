@@ -109,6 +109,10 @@ Supported Intel Microarchitectures:
     0x55 (Skylake, Cascade Lake, Cooper Lake)
     0x6A (Ice Lake)
 
+Supported Intel GPUs:
+
+    Intel Arctic Sound, Intel Ponte Vecchio 
+
 Supported Nvidia Microrchitectures:
 
     Volta (requires [CUDA Toolkit[(https://developer.nvidia.com/cuda-downloads))
