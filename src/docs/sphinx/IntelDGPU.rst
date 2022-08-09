@@ -8,11 +8,12 @@
  Intel Discrete GPUs Overview
 ##############################
 
-This page provides a detailed description of the the Intel DGPU port of Variorum.
-The functionality of this port depends on Intel-specific proprietary software
-stack as well as open-source software components described below. The high-level
-API provided by Variorum is read-only (i.e., monitoring-only), primarily because
-of the access limitations on our target platform.
+This page provides a detailed description of the the Intel DGPU port
+of Variorum.  The functionality of this port depends on Intel-specific
+proprietary software stack as well as open-source software components
+described below. The high-level API provided by Variorum is currently
+read-only (i.e., monitoring-only), primarily because of the access
+limitations on our target platform.
 
 **************
  Requirements
@@ -20,13 +21,17 @@ of the access limitations on our target platform.
 
 The Intel DGPU port of Variorum depends on:
 
--  APMIDG
+-  APMIDG 0.3.0 or later
 
--  One API
+-  One API 2022.06.30.002 or later
 
-- Other knobs/permissions 
+We have tested our port with Aurora early access systems with Intel
+ATS GPUs.
 
-We have tested our port with ... 
+Note: at this point, monitoring power of Intel DGPU requires no
+additional permission. However, the permission default setting may
+change in a future driver release. Please consult your sysadmin.
+
 
 *********************
  Build Configuration
@@ -34,18 +39,17 @@ We have tested our port with ...
 
 We provide an example CMake host config file, which defines the CMake build
 variables set on our test platform (Aurora early access supercomputer at ANL):
-`lassen-4.14.0-ppc64le-gcc@4.9.3-cuda@10.1.243.cmake`. (please edit)
+`arcticus-apmidg-oneapi.cmake`.
 
-For your build system, you will need to enable Variorum to build with ...  and
-set two path variables as described below:
+For your build system, you will need to enable Variorum to build with INTEL_DGPU set two path variables as described below:
 
-   -  ``VARIORUM_WITH_NVIDIA_GPU=ON``
-   -  ``CMAKE_SHARED_LINKER_FLAGS``: Path to libnvidia-ml.so (prefixed with the
+   -  ``VARIORUM_WITH_INTEL_DGPU=ON``
+   -  ``APMDIG_DIR``: Path to libapmidg.so (prefixed with the
       '-L' flag)
-   -  ``HWLOC_DIR``: Path for the CUDA-aware version of libhwloc
+
 
 ************
  References
 ************
 
--  Please add reference 
+-  `APMDIG library <https://github.com/anlsys/apmidg>`_
