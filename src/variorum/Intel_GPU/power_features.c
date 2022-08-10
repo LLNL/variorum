@@ -53,17 +53,17 @@ void get_power_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
+                    "_INTEL_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
                     m_hostname, chipid, d, value);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_POWER_USAGE Host Socket DeviceID Power_W\n");
+                fprintf(output, "_INTEL_GPU_POWER_USAGE Host Socket DeviceID Power_W\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_POWER_USAGE %s %d %d %lf\n",
+            fprintf(output, "_INTEL_GPU_POWER_USAGE %s %d %d %lf\n",
                     m_hostname, chipid, d, value);
         }
     }
@@ -86,17 +86,17 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %.1lf C\n",
+                    "_INTLE_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %.1lf C\n",
                     m_hostname, chipid, d, temp_C);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_TEMPERATURE Host Socket DeviceID Temperature_C\n");
+                fprintf(output, "_INTEL_GPU_TEMPERATURE Host Socket DeviceID Temperature_C\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_TEMPERATURE %s %d %d %.1lf\n",
+            fprintf(output, "_INTEL_GPU_TEMPERATURE %s %d %d %.1lf\n",
                     m_hostname, chipid, d, temp_C);
         }
     }
@@ -119,17 +119,17 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
         if (verbose)
         {
             fprintf(output,
-                    "_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d, GPU_Clock: %d MHz\n",
+                    "_INTEL_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d, GPU_Clock: %d MHz\n",
                     m_hostname, chipid, d, (int)freq_MHz);
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_GPU_CLOCKS Host Socket DeviceID GPU_Clock_MHz\n");
+                fprintf(output, "_INTEL_GPU_CLOCKS Host Socket DeviceID GPU_Clock_MHz\n");
                 init_output = 1;
             }
-            fprintf(output, "_GPU_CLOCKS %s %d %d %d\n",
+            fprintf(output, "_INTEL_GPU_CLOCKS %s %d %d %d\n",
                     m_hostname, chipid, d, (int)freq_MHz);
         }
     }
