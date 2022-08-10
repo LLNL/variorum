@@ -1,3 +1,22 @@
+# Thu Sept 15 2022 Stephanie Brink <brink2@llnl.gov> v0.6.0
+Version 0.6.0 is a major release.
+
+### New features
+* Add python wrappers and python module pyVariorum
+* Support for new architectures: Intel discrete GPUs, AMD GPUs through ROCm-SMI
+
+### API changes
+* Update JSON APIs to use char* instead of json_t*
+* Creates new variorum_topology.h header to expose get topology APIs
+
+### Other notable changes
+* VARIORUM_LOG moved from a build variable to an environment variable
+* Update architecture-related names to be more granular, for example,
+  VARIORUM_WITH_AMD became VARIORUM_WITH_AMD_CPU and VARIORUM_WITH_AMD_GPU, and
+  SandyBridge_2A.h became Intel_06_2A.h
+* Standardized examples with -h and -v flags, for printing the help menu and
+  Variorum version, respectively
+
 # Wed Jun 22 2022 Stephanie Brink <brink2@llnl.gov> v0.5.0
 Version 0.5.0 is a major release.
 
