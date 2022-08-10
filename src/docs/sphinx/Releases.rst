@@ -12,6 +12,18 @@ Variorum is under constant development. So, we recommend using our ``dev``
 branch, which contains our latest features.
 
 ********
+ v0.6.0
+********
+
+09/15/2022: Major release adds support for two new architectures, Intel discrete
+GPUs and AMD GPUs, adds python wrappers and a pyVariorum python module, updates
+existing JSON APIs to use char* instead of json_t*, creates new
+variorum_topology.h header to expose get topology APIs, moves VARIORUM_LOG from
+a build variable to an environment variable, standardizes examples with -h and
+-v flags. `v0.6.0 tarball here
+<https://github.com/LLNL/variorum/archive/v0.6.0.tar.gz>`_.
+
+********
  v0.5.0
 ********
 
