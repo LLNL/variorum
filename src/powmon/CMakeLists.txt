@@ -41,6 +41,6 @@ install(TARGETS powmon power_wrapper_static power_wrapper_dynamic
         DESTINATION bin)
 
 # quick hack
-if(VARIORUM_WITH_INTEL_DGPU)
+if(VARIORUM_WITH_INTEL_GPU)
 	set(CMAKE_EXE_LINKER_FLAGS "-lze_loader -lstdc++ -L${APMIDG_DIR}/lib64/ -lapmidg")
 endif()

@@ -3,13 +3,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-#ifndef CONFIG_INTEL_DGPU_H_INCLUDE
-#define CONFIG_INTEL_DGPU_H_INCLUDE
+#ifndef CONFIG_INTEL_GPU_H_INCLUDE
+#define CONFIG_INTEL_GPU_H_INCLUDE
 
 #include <inttypes.h>
 
-extern uint64_t *detect_intel_dgpu_arch(void);
+extern uint64_t *detect_intel_gpu_arch(void);
 
-extern int set_intel_dgpu_func_ptrs(void);
+extern int set_intel_gpu_func_ptrs(void);
 
 #endif

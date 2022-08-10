@@ -15,7 +15,7 @@
 # $ cmake -C ../host-configs/arcticus-apmidg-oneapi.cmake -DCMAKE_INSTALL_PREFIX=__INST_DIR__ ../src
 #
 # Please contact Kazutomo Yoshii <kazutomo@mcs.anl.gov>
-# if you have a question on Intel DGPU support.
+# if you have a question on Intel discrete GPU support.
 
 set(ENABLE_FORTRAN OFF CACHE PATH "")
 
@@ -24,7 +24,7 @@ set(VARIORUM_WITH_AMD OFF CACHE BOOL "")
 set(VARIORUM_WITH_ARM OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL OFF CACHE BOOL "")
-set(VARIORUM_WITH_INTEL_DGPU ON CACHE BOOL "")
+set(VARIORUM_WITH_INTEL_GPU ON CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA OFF CACHE BOOL "")
 
 set(ENABLE_MPI OFF CACHE BOOL "")

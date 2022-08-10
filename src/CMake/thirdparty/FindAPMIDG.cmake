@@ -44,5 +44,5 @@ endif()
 
 # Abort if all methods fail
 if(NOT APMIDG_FOUND)
-    message(FATAL_ERROR "Intel DGPU support needs explict APMIDG_DIR")
+    message(FATAL_ERROR "Intel discrete GPU support needs explict APMIDG_DIR")
 endif()

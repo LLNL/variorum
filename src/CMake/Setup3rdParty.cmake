@@ -14,7 +14,7 @@ endif()
 if(VARIORUM_WITH_AMD_GPU)
     include(CMake/thirdparty/FindROCM.cmake)
 endif()
-if(VARIORUM_WITH_INTEL_DGPU)
+if(VARIORUM_WITH_INTEL_GPU)
     include(CMake/thirdparty/FindAPMIDG.cmake)
 endif()
 

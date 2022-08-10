@@ -17,5 +17,5 @@ These are the currently supported platforms in Variorum.
    ARM
    IBM
    Intel
-   IntelDGPU
+   IntelGPU
    Nvidia

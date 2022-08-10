@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <DGPU.h>
+#include <GPU.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <power_features.h>
 
-int intel_dgpu_get_power(int long_ver)
+int intel_gpu_get_power(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -26,7 +26,7 @@ int intel_dgpu_get_power(int long_ver)
     return 0;
 }
 
-int intel_dgpu_get_thermals(int long_ver)
+int intel_gpu_get_thermals(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
@@ -42,7 +42,7 @@ int intel_dgpu_get_thermals(int long_ver)
     return 0;
 }
 
-int intel_dgpu_get_clocks(int long_ver)
+int intel_gpu_get_clocks(int long_ver)
 {
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);

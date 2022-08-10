@@ -3,13 +3,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-#ifndef DGPU_H_INCLUDE
-#define DGPU_H_INCLUDE
+#ifndef INTEL_GPU_H_INCLUDE
+#define INTEL_GPU_H_INCLUDE
 
-extern int intel_dgpu_get_power(int long_ver);
+extern int intel_gpu_get_power(int long_ver);
 
-extern int intel_dgpu_get_thermals(int long_ver);
+extern int intel_gpu_get_thermals(int long_ver);
 
-extern int intel_dgpu_get_clocks(int long_ver);
+extern int intel_gpu_get_clocks(int long_ver);
 
 #endif
