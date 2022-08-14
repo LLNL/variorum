@@ -22,11 +22,11 @@ option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
 
 option(VARIORUM_WITH_AMD_CPU     "Support AMD CPU architectures"          OFF)
+option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
 option(VARIORUM_WITH_ARM_CPU     "Support ARM CPU architectures"          OFF)
 option(VARIORUM_WITH_IBM_CPU     "Support IBM CPU architectures"          OFF)
 option(VARIORUM_WITH_INTEL_CPU   "Support Intel CPU architectures"        ON)
 option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia GPU architectures"       OFF)
-option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
