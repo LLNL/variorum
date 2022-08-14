@@ -5,7 +5,7 @@
 
 include(CMake/thirdparty/SetupHwloc.cmake)
 include(CMake/thirdparty/SetupJansson.cmake)
-if(VARIORUM_WITH_AMD)
+if(VARIORUM_WITH_AMD_CPU)
 include(CMake/thirdparty/Setupesmi.cmake)
 endif()
 if(VARIORUM_WITH_NVIDIA_GPU)
