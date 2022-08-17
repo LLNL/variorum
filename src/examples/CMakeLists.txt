@@ -57,6 +57,10 @@ if(OPENMP_FOUND)
     add_subdirectory(openmp-examples)
 endif()
 
+if(FORTRAN_FOUND)
+    add_subdirectory(fortran-examples)
+endif()
+
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
 install(DIRECTORY using-with-make using-with-cmake

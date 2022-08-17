@@ -6,14 +6,14 @@
 target_link_libraries(variorum ${variorum_deps})
 
 set(FORTRAN_EXAMPLES
-    variorum-print-power-example
+    variorum-print-power-fortran-example
 )
 
 message(STATUS "Adding variorum Fortran examples")
 foreach(EXAMPLE ${FORTRAN_EXAMPLES})
     message(STATUS " [*] Adding Fortran example: ${EXAMPLE}")
     enable_language(Fortran)
-    add_executable(${EXAMPLE} ${EXAMPLE}.f)
+    add_executable(${EXAMPLE} ${EXAMPLE}.f90)
     target_link_libraries(${EXAMPLE} variorum ${variorum_deps})
 endforeach()
 
