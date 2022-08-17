@@ -362,8 +362,8 @@ jobs:
       - name: Test install with fortran example
         run: |
           cd ${GITHUB_WORKSPACE} && cd build
-          echo -e "PWD:" ${PWD}
           cd ./examples/fortran-examples
+          echo -e "PWD:" ${PWD}
           ./variorum-print-power-fortran-example
 
   check-code-format:
