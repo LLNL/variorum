@@ -15,12 +15,12 @@
 #include <variorum_config.h>
 #include <variorum_error.h>
 
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
 #include <config_intel.h>
 #include <msr_core.h>
 #endif
 
-#ifdef VARIORUM_WITH_IBM
+#ifdef VARIORUM_WITH_IBM_CPU
 #include <config_ibm.h>
 #endif
 
@@ -28,11 +28,11 @@
 #include <config_nvidia.h>
 #endif
 
-#ifdef VARIORUM_WITH_ARM
+#ifdef VARIORUM_WITH_ARM_CPU
 #include <config_arm.h>
 #endif
 
-#ifdef VARIORUM_WITH_AMD
+#ifdef VARIORUM_WITH_AMD_CPU
 #include <config_amd.h>
 #endif
 
@@ -85,7 +85,7 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
         printf("_LOG_VARIORUM_EXIT:%s:%s::%d\n", filename, func_name, line_num);
     }
 
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
     err = finalize_msr();
     if (err)
     {
@@ -96,19 +96,19 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
     shutdownNVML();
 #endif
 
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
     free(g_platform.intel_arch);
 #endif
-#ifdef VARIORUM_WITH_IBM
+#ifdef VARIORUM_WITH_IBM_CPU
     free(g_platform.ibm_arch);
 #endif
 #ifdef VARIORUM_WITH_NVIDIA_GPU
-    free(g_platform.nvidia_arch);
+    free(g_platform.nvidia_gpu_arch);
 #endif
-#ifdef VARIORUM_WITH_ARM
+#ifdef VARIORUM_WITH_ARM_CPU
     free(g_platform.arm_arch);
 #endif
-#ifdef VARIORUM_WITH_AMD
+#ifdef VARIORUM_WITH_AMD_CPU
     esmi_exit();
     free(g_platform.amd_arch);
 #endif
@@ -121,19 +121,19 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 
 int variorum_detect_arch(void)
 {
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
     g_platform.intel_arch = detect_intel_arch();
 #endif
-#ifdef VARIORUM_WITH_IBM
+#ifdef VARIORUM_WITH_IBM_CPU
     g_platform.ibm_arch = detect_ibm_arch();
 #endif
 #ifdef VARIORUM_WITH_NVIDIA_GPU
-    g_platform.nvidia_arch = detect_gpu_arch();
+    g_platform.nvidia_gpu_arch = detect_gpu_arch();
 #endif
-#ifdef VARIORUM_WITH_ARM
+#ifdef VARIORUM_WITH_ARM_CPU
     g_platform.arm_arch = detect_arm_arch();
 #endif
-#ifdef VARIORUM_WITH_AMD
+#ifdef VARIORUM_WITH_AMD_CPU
     g_platform.amd_arch = detect_amd_arch();
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU
@@ -143,13 +143,13 @@ int variorum_detect_arch(void)
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
         printf("Intel Model: 0x%lx\n", *g_platform.intel_arch);
 #endif
-#ifdef VARIORUM_WITH_IBM
+#ifdef VARIORUM_WITH_IBM_CPU
         printf("IBM Model: 0x%lx\n", *g_platform.ibm_arch);
 #endif
-#ifdef VARIORUM_WITH_AMD
+#ifdef VARIORUM_WITH_AMD_CPU
         printf("AMD Family: 0x%lx, Model: 0x%lx\n",
                (*g_platform.amd_arch >> 8) & 0xFF, *g_platform.amd_arch & 0xFF);
 #endif
@@ -158,12 +158,12 @@ int variorum_detect_arch(void)
 #endif
     }
 
-    if (g_platform.intel_arch   == NULL &&
-        g_platform.ibm_arch     == NULL &&
-        g_platform.nvidia_arch  == NULL &&
-        g_platform.arm_arch     == NULL &&
-        g_platform.amd_arch     == NULL &&
-        g_platform.amd_gpu_arch == NULL)
+    if (g_platform.intel_arch       == NULL &&
+        g_platform.ibm_arch         == NULL &&
+        g_platform.nvidia_gpu_arch  == NULL &&
+        g_platform.arm_arch         == NULL &&
+        g_platform.amd_arch         == NULL &&
+        g_platform.amd_gpu_arch     == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
@@ -334,7 +334,7 @@ int variorum_set_func_ptrs()
 {
     int err = 0;
 
-#ifdef VARIORUM_WITH_INTEL
+#ifdef VARIORUM_WITH_INTEL_CPU
     err = set_intel_func_ptrs();
     if (err)
     {
@@ -342,16 +342,16 @@ int variorum_set_func_ptrs()
     }
     err = init_msr();
 #endif
-#ifdef VARIORUM_WITH_IBM
+#ifdef VARIORUM_WITH_IBM_CPU
     err = set_ibm_func_ptrs();
 #endif
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     err = set_nvidia_func_ptrs();
 #endif
-#ifdef VARIORUM_WITH_ARM
+#ifdef VARIORUM_WITH_ARM_CPU
     err = set_arm_func_ptrs();
 #endif
-#ifdef VARIORUM_WITH_AMD
+#ifdef VARIORUM_WITH_AMD_CPU
     err = set_amd_func_ptrs();
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU

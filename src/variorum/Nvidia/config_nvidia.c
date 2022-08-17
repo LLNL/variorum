@@ -22,7 +22,7 @@ int set_nvidia_func_ptrs(void)
 {
     int err = 0;
 
-    if (*g_platform.nvidia_arch == VOLTA)
+    if (*g_platform.nvidia_gpu_arch == VOLTA)
     {
         /* Initialize monitoring interfaces */
         g_platform.variorum_print_power           = volta_get_power;

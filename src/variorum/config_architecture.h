@@ -70,7 +70,7 @@ enum ibm_arch_e
 
 /// @brief List of NVIDIA family and models.
 /// @todo: we need to find architecture detection info here.
-enum nvidia_arch_e
+enum nvidia_gpu_arch_e
 {
     VOLTA = 1, // Volta
 };
@@ -221,15 +221,15 @@ struct platform
     /******************************/
     /* Platform-Specific Topology */
     /******************************/
-    /// @brief Unique family and model for Intel architectures.
+    /// @brief Unique family and model for Intel CPU architectures.
     uint64_t *intel_arch;
-    /// @brief Identifier for AMD architecture.
+    /// @brief Identifier for AMD CPU architecture.
     uint64_t *amd_arch;
-    /// @brief Identifier for IBM architecture.
+    /// @brief Identifier for IBM CPU architecture.
     uint64_t *ibm_arch;
-    /// @brief Identifier for NVIDIA architecture.
-    uint64_t *nvidia_arch;
-    /// @brief Identifier for ARM architecture.
+    /// @brief Identifier for NVIDIA GPU architecture.
+    uint64_t *nvidia_gpu_arch;
+    /// @brief Identifier for ARM CPU architecture.
     uint64_t *arm_arch;
     /// @brief Identifier for AMD GPU architecture.
     uint64_t *amd_gpu_arch;
