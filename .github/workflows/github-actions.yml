@@ -362,8 +362,8 @@ jobs:
       - name: Test install with fortran example
         run: |
           cd ${GITHUB_WORKSPACE} && cd install
-          cd ./examples/fortran-examples
           echo -e "PWD:" ${PWD}
+          cd ./examples/fortran-examples
           mkdir _test_build
           cd _test_build
           cmake ../
