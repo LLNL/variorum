@@ -168,13 +168,13 @@ int variorum_detect_arch(void)
 #endif
     }
 
-    if (g_platform.intel_arch   == NULL &&
-        g_platform.intel_gpu_arch == NULL &&
-        g_platform.ibm_arch     == NULL &&
-        g_platform.nvidia_arch  == NULL &&
-        g_platform.arm_arch     == NULL &&
-        g_platform.amd_arch     == NULL &&
-        g_platform.amd_gpu_arch == NULL)
+    if (g_platform.intel_arch       == NULL &&
+        g_platform.intel_gpu_arch   == NULL &&
+        g_platform.ibm_arch         == NULL &&
+        g_platform.nvidia_gpu_arch  == NULL &&
+        g_platform.arm_arch         == NULL &&
+        g_platform.amd_arch         == NULL &&
+        g_platform.amd_gpu_arch     == NULL)
     {
         variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
