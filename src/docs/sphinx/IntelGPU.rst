@@ -46,11 +46,12 @@ build the Intel GPU port.
 
 We provide an example CMake host config file, which defines the CMake build
 variables set on our test platform (Aurora early access supercomputer at ANL):
-`arcticus-apmidg-oneapi.cmake`.
+``arcticus-apmidg-oneapi.cmake``.
 
-If you want to build other systems than JLSE nodes, please install all compiler
-and library dependencies, and then you will need to enable Variorum to build
-with INTEL_GPU set two path variables as described below:
+If you want to build variorum on other systems besides JLSE nodes, please
+install all compiler and library dependencies, and then you will need to enable
+Variorum to build with INTEL_GPU and set three path variables as described
+below:
 
    -  ``VARIORUM_WITH_INTEL_GPU=ON``
    -  ``APMDIG_DIR``: Path to libapmidg.so (prefixed with the '-L' flag)
@@ -64,7 +65,7 @@ with INTEL_GPU set two path variables as described below:
 The Intel GPU port enumerates the system GPU devices at initialization in the
 ``initAPMIDG()`` method, which internally obtains the number of Intel GPU
 devices via ``apmidg_getndevs()``. The number of GPUs per socket is simply the
-number of available GPUs devided by the number of CPU sockets returned by
+number of available GPUs divided by the number of CPU sockets returned by
 ``variorum_get_topology()``.
 
 *****************************************************
