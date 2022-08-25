@@ -324,15 +324,16 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
     rapl->old_pkg_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->old_pkg_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->pkg_delta_joules = (double *) calloc(nsockets, sizeof(double));
-    rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(double));
+    rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->pkg_watts = (double *) calloc(nsockets, sizeof(double));
     load_socket_batch(msr_pkg_energy_status, rapl->pkg_bits, RAPL_DATA);
 
     rapl->dram_bits = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
-    rapl->old_dram_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->dram_joules = (double *) calloc(nsockets, sizeof(double));
+    rapl->old_dram_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->old_dram_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->dram_delta_joules = (double *) calloc(nsockets, sizeof(double));
+    rapl->dram_delta_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->dram_watts = (double *) calloc(nsockets, sizeof(double));
     load_socket_batch(msr_dram_energy_status, rapl->dram_bits, RAPL_DATA);
 
@@ -1057,7 +1058,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
         }
 
         /* Check to see if there was wraparound and use corresponding translation. */
-        if ((double)*rapl->dram_bits[i] - (double)rapl->dram_pkg_bits[i] < 0)
+        if ((double)*rapl->dram_bits[i] - (double)rapl->old_dram_bits[i] < 0)
         {
             rapl->dram_delta_bits[i] = (uint64_t)((*rapl->dram_bits[i] +
                                                   (uint64_t)max_joules) - rapl->old_dram_bits[i]);

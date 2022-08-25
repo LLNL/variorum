@@ -159,6 +159,7 @@ struct rapl_data
     double *old_dram_joules;
     /// @brief Difference in DRAM energy usage between two data measurements.
     double *dram_delta_joules;
+    uint64_t *dram_delta_bits;
     /// @brief DRAM power consumption (in Watts) derived by dividing difference
     /// in DRAM energy usage by time elapsed between data measurements.
     double *dram_watts;
