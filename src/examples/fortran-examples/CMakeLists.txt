@@ -7,6 +7,7 @@ target_link_libraries(variorum ${variorum_deps})
 
 set(FORTRAN_EXAMPLES
     variorum-print-power-fortran-example
+    variorum-print-thermals-fortran-example
 )
 
 message(STATUS "Adding variorum Fortran examples")
