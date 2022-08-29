@@ -9,8 +9,18 @@
 ##########
 
 Variorum is under constant development. So, we recommend using our ``dev``
-branch, which contains our latest features. The ``main`` branch will be updated
-as releases occur.
+branch, which contains our latest features.
+
+********
+ v0.5.0
+********
+
+06/22/2022: Major release adds support for new architectures, AMD CPUs and Intel
+Ice Lake CPU, adds examples for integrating Variorum into OpenMP and MPI
+programs, adds dependency on rankstr library for MPI examples (optional),
+renames clock_speed to frequency and power_limits to power_limit throughout
+Variorum API, deprecates set_and_verify API. `v0.5.0 tarball here
+<https://github.com/LLNL/variorum/archive/v0.5.0.tar.gz>`_.
 
 ********
  v0.4.1
