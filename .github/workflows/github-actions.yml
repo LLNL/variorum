@@ -359,13 +359,6 @@ jobs:
           make VERBOSE=1
           ./ep.W.x
 
-      - name: Test install with fortran example
-        run: |
-          cd ${GITHUB_WORKSPACE} && cd build
-          cd ./examples/fortran-examples
-          echo -e "PWD:" ${PWD}
-          ./variorum-print-power-fortran-example
-
   check-code-format:
     runs-on: ubuntu-latest
 
