@@ -8,9 +8,7 @@
 
 #include <config_intel_gpu.h>
 #include <config_architecture.h>
-#include <power_features.h>
 #include <variorum_error.h>
-#include <GPU.h>
 
 uint64_t *detect_intel_gpu_arch(void)
 {

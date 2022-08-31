@@ -32,6 +32,10 @@
 #include <config_nvidia.h>
 #endif
 
+#ifdef VARIORUM_WITH_INTEL_GPU
+#include <config_intel_gpu.h>
+#endif
+
 #ifdef VARIORUM_WITH_ARM_CPU
 #include <config_arm.h>
 #endif
@@ -99,6 +103,10 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     shutdownNVML();
 #endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    shutdownAPMIDG();
+#endif
+
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     free(g_platform.intel_arch);
