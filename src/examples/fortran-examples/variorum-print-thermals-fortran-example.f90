@@ -11,7 +11,7 @@ program main
   r = variorum_print_thermals()
 
   if (r .ne. 0) then
-    print*, "Variorum print thermals failed." 
+    print*, "Variorum print thermals failed."
   end if
 
 end program main

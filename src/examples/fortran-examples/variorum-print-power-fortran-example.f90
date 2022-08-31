@@ -11,14 +11,14 @@ program main
   val = 5
   r = variorum_print_power()
   if (r .ne. 0) then
-    print*, "Variorum print thermals failed." 
+    print*, "Variorum print power failed."
   end if
 
   ret = do_work(val)
 
   r = variorum_print_power()
   if (r .ne. 0) then
-    print*, "Variorum print thermals failed." 
+    print*, "Variorum print power failed."
   end if
 
 contains
