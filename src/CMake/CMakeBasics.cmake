@@ -22,7 +22,7 @@ message(STATUS "CMake build tool name: ${CMAKE_BUILD_TOOL}")
 
 ### Enable warnings
 macro(ENABLE_WARNINGS)
-    add_definitions(-Wall -Wextra -Werror)
+    add_definitions(-Wall -Wextra)
 endmacro()
 
 if(ENABLE_WARNINGS)
