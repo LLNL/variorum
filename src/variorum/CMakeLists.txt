@@ -92,7 +92,7 @@ if(VARIORUM_WITH_AMD_GPU)
 endif()
 
 if(FORTRAN_FOUND)
-    add_library(variorum_fortran OBJECT variorum.f90)
+    add_library(variorum_fortran OBJECT ../wrappers/fortran/variorum.f90)
     list(APPEND variorum_sources $<TARGET_OBJECTS:variorum_fortran>)
 
     #####################################################
