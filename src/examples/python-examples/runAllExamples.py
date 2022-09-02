@@ -5,7 +5,6 @@
 
 from ctypes import create_unicode_buffer, addressof, c_char_p
 from pyVariorum import variorum
-import sys
 
 
 def runPrintAPIexamples(v):
@@ -63,7 +62,7 @@ def runPrintAPIexamples(v):
     print("\n=== Running Variorum Get Current Version:")
     buf = create_unicode_buffer(64)
     buf = v.variorum_get_current_version()
-    print("Variorum version is: " + buf.decode("utf-8")) 
+    print("Variorum version is: " + buf.decode("utf-8"))
 
 
 def runCapAPIexamples(v):
