@@ -105,19 +105,9 @@ class variorum:
         self.variorum_print_energy = self.variorum_c.variorum_print_energy
         self.variorum_print_energy.restype = c_int
 
-        # Poll Power
-        self.variorum_poll_power = self.variorum_c.variorum_poll_power
-        self.variorum_cap_best_effort_node_power_limit.argtypes = [POINTER(c_void_p)]
-        self.variorum_poll_power.restype = c_int
-
-        # Monitoring
-        self.variorum_monitoring = self.variorum_c.variorum_monitoring
-        self.variorum_cap_best_effort_node_power_limit.argtypes = [POINTER(c_void_p)]
-        self.variorum_monitoring.restype = c_int
-
         # Get Current version
         self.variorum_get_current_version = self.variorum_c.variorum_get_current_version
-        self.variorum_get_current_version.restype = POINTER(c_char_p)
+        self.variorum_get_current_version.restype = c_char_p
 
         """
         Variorum Cap Functions
