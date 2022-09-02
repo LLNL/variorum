@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-from ctypes import c_int, c_char_p, c_void_p, CDLL, POINTER
+from ctypes import c_int, c_char_p, CDLL, POINTER
 
 
 class variorum:
