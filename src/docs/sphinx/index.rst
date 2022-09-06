@@ -103,6 +103,7 @@ the nation's exascale computing imperative.
 
    ContribGuide
    VariorumDevel
+   UnitTesting
    VariorumTools
 
 .. toctree::
