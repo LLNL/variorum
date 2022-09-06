@@ -71,11 +71,7 @@ void variorum_error_message(enum variorum_error_e err, char *msg, size_t size)
 char *get_variorum_error_message(enum variorum_error_e err)
 {
     char *brief_msg = (char *) malloc(NAME_MAX * sizeof(char));
-    if (err)
-    {
-        err = err;
-    }
-    else
+    if (err == 0)
     {
         err = VARIORUM_ERROR_RUNTIME;
     }

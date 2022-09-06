@@ -128,6 +128,8 @@ Variorum's build system supports the following CMake options:
    architecture.
 -  ``VARIORUM_WITH_INTEL_CPU (default=ON)`` - Enable Variorum build for Intel
    CPU architecture.
+-  ``VARIORUM_WITH_INTEL_GPU (default=OFF)`` - Enable Variorum build for Intel
+   discrete GPU architecture.
 -  ``ENABLE_FORTRAN (default=ON)`` - Enable Fortran compiler for building
    example integration with Fortran application, Fortran compiler must exist.
 -  ``ENABLE_MPI (default=OFF)`` - Enable MPI compiler for building MPI examples,

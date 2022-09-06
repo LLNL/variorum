@@ -20,12 +20,20 @@
 #include <msr_core.h>
 #endif
 
+#ifdef VARIORUM_WITH_INTEL_GPU
+#include <config_intel_gpu.h>
+#endif
+
 #ifdef VARIORUM_WITH_IBM_CPU
 #include <config_ibm.h>
 #endif
 
 #ifdef VARIORUM_WITH_NVIDIA_GPU
 #include <config_nvidia.h>
+#endif
+
+#ifdef VARIORUM_WITH_INTEL_GPU
+#include <config_intel_gpu.h>
 #endif
 
 #ifdef VARIORUM_WITH_ARM_CPU
@@ -95,9 +103,16 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     shutdownNVML();
 #endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    shutdownAPMIDG();
+#endif
+
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     free(g_platform.intel_arch);
+#endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    free(g_platform.intel_gpu_arch);
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
     free(g_platform.ibm_arch);
@@ -123,6 +138,9 @@ int variorum_detect_arch(void)
 {
 #ifdef VARIORUM_WITH_INTEL_CPU
     g_platform.intel_arch = detect_intel_arch();
+#endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    g_platform.intel_gpu_arch = detect_intel_gpu_arch();
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
     g_platform.ibm_arch = detect_ibm_arch();
@@ -159,6 +177,7 @@ int variorum_detect_arch(void)
     }
 
     if (g_platform.intel_arch       == NULL &&
+        g_platform.intel_gpu_arch   == NULL &&
         g_platform.ibm_arch         == NULL &&
         g_platform.nvidia_gpu_arch  == NULL &&
         g_platform.arm_arch         == NULL &&
@@ -341,6 +360,9 @@ int variorum_set_func_ptrs()
         return err;
     }
     err = init_msr();
+#endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    err = set_intel_gpu_func_ptrs();
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
     err = set_ibm_func_ptrs();
