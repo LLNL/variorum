@@ -11,7 +11,7 @@ class variorum:
         try:
             self.variorum_c = CDLL("libvariorum.so")
         except Exception:
-            print("\nVariorum shared library not found. Please check path to .so file")
+            print("\nVariorum shared library not found. Please update LD_LIBRARY_PATH.")
 
         """
         Variorum Print Functions
@@ -120,6 +120,32 @@ class variorum:
         self.variorum_cap_best_effort_node_power_limit.argtypes = [c_int]
         self.variorum_cap_best_effort_node_power_limit.restype = c_int
 
+        # Cap Each Socket Power Limit
+        self.variorum_cap_each_socket_power_limit = (
+            self.variorum_c.variorum_cap_each_socket_power_limit
+        )
+        self.variorum_cap_each_socket_power_limit.argtypes = [c_int]
+        self.variorum_cap_each_socket_power_limit.restype = c_int
+
+        # Cap Each Core Frequency Limit
+        self.variorum_cap_each_core_frequency_limit = (
+            self.variorum_c.variorum_cap_each_core_frequency_limit
+        )
+        self.variorum_cap_each_core_frequency_limit.argtypes = [c_int]
+        self.variorum_cap_each_core_frequency_limit.restype = c_int
+
+        # Cap Socket Frequency Limit
+        self.variorum_cap_socket_frequency_limit = (
+            self.variorum_c.variorum_cap_socket_frequency_limit
+        )
+        self.variorum_cap_socket_frequency_limit.argtypes = [c_int, c_int]
+        self.variorum_cap_socket_frequency_limit.restype = c_int
+
+        # Cap GPU Power Ratio
+        self.variorum_cap_gpu_power_ratio = self.variorum_c.variorum_cap_gpu_power_ratio
+        self.variorum_cap_gpu_power_ratio.argtypes = [c_int]
+        self.variorum_cap_gpu_power_ratio.restype = c_int
+
         """
         Variorum JSON Functions
         """
@@ -129,10 +155,37 @@ class variorum:
         self.variorum_get_node_power_json.argtypes = [POINTER(c_char_p)]
         self.variorum_get_node_power_json.restype = c_int
 
+        # Get Node Power Domain Information in JSON Format
+        self.variorum_get_node_power_domain_info_json = (
+            self.variorum_c.variorum_get_node_power_domain_info_json
+        )
+        self.variorum_get_node_power_domain_info_json.argtypes = [POINTER(c_char_p)]
+        self.variorum_get_node_power_domain_info_json.restype = c_int
+
         """
         Variorum Miscellaneous Functions
         """
 
+        # Enable TurboBoost
+        self.variorum_enable_turbo = self.variorum_c.variorum_enable_turbo
+        self.variorum_enable_turbo.restype = c_int
+
+        # Disable TurboBoost
+        self.variorum_disable_turbo = self.variorum_c.variorum_disable_turbo
+        self.variorum_disable_turbo.restype = c_int
+
         """
         Variorum Topology Functions
         """
+
+        # Get Number of Sockets
+        self.variorum_get_num_sockets = self.variorum_c.variorum_get_num_sockets
+        self.variorum_get_num_sockets.restype = c_int
+
+        # Get Number of Cores
+        self.variorum_get_num_cores = self.variorum_c.variorum_get_num_cores
+        self.variorum_get_num_cores.restype = c_int
+
+        # Get Number of Threads
+        self.variorum_get_num_threads = self.variorum_c.variorum_get_num_threads
+        self.variorum_get_num_threads.restype = c_int
