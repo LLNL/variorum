@@ -71,12 +71,24 @@ def runCapAPIexamples(v):
     print("\n######## Verifying Power Cap with Variorum Print Power Limit:")
     v.variorum_print_power_limit()
 
+    print("\n=== Running Variorum Cap Each Socket Power Limit (input = 100W):")
+    v.variorum_cap_each_socket_power_limit(100)
+
+    print("\n=== Running Variorum Cap GPU Power Ratio (input = 80%):")
+    v.variorum_cap_gpu_power_ratio(80)
+
 
 def runJSONAPIexamples(v):
     print("\n=== Running Variorum JSON Get Node Power:")
     jsonbuf = create_unicode_buffer(1000)
     bufptr = c_char_p(addressof(jsonbuf))
     v.variorum_get_node_power_json(bufptr)
+    print(bufptr.value.decode("utf-8"))
+
+    print("\n=== Running Variorum JSON Get Node Power Domain Info:")
+    jsonbuf = create_unicode_buffer(1000)
+    bufptr = c_char_p(addressof(jsonbuf))
+    v.variorum_get_node_power_domain_info_json(bufptr)
     print(bufptr.value.decode("utf-8"))
 
 

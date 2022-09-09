@@ -17,6 +17,7 @@ option(BUILD_DOCS                "Build documentation"                    ON)
 option(BUILD_TESTS               "Build tests"                            ON)
 
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
+option(ENABLE_PYTHON             "Build Python support"                   ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
@@ -41,6 +42,11 @@ endif()
 ### Invoke CMake Fortran setup
 if(ENABLE_FORTRAN)
     enable_language(Fortran)
+endif()
+
+### Invoke CMake Python setup
+if(ENABLE_PYTHON)
+    find_package(Python COMPONENTS Interpreter REQUIRED)
 endif()
 
 ### Invoke CMake MPI setup
