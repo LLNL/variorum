@@ -28,7 +28,7 @@ for method-level power data, a `Flux <http://flux-framework.org>`_ power
 management module for scheduling, and `Sandia's OVIS Lightweight Distributed Metric
 Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_ monitoring plugin.
 Upcoming integration also includes developing a Variorum interface for 
-`PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM <https://geopm.github.io>`_ 
+`PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM <https://geopm.github.io>`_. 
 
 Links to Variorum's integrations with each of these frameworks can be found
 below. Note that these integrations are in early development stages and are
