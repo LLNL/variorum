@@ -27,8 +27,10 @@ for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service
 for method-level power data, a `Flux <http://flux-framework.org>`_ power
 management module for scheduling, and `Sandia's OVIS Lightweight Distributed
 Metric Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_ monitoring
-plugin. Upcoming integration also includes developing a Variorum interface for
-`PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM
+plugin. These enable Variorum to be used at scale across multiple layers of the
+PowerStack, application/user layer, resource management layer, and system-level
+layer. Upcoming integrations also include developing a Variorum interface for
+`PowerAPI <https://pwrapi.github.io>`_ and `Intel GEOPM
 <https://geopm.github.io>`_.
 
 Links to Variorum's integrations with each of these frameworks can be found
