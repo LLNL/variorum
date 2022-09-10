@@ -40,8 +40,8 @@ expected to be updated to support more features and tests.
       <https://github.com/LLNL/Caliper/tree/master/src/services/variorum>`_
    -  `Flux System Power Manager Module with Variorum
       <https://github.com/flux-framework/flux-power-mgr>`_
-   - `LDMS Power Monitoring Plugin with Variorum
-      <>`_
+   - `LDMS Power Monitoring Plugin with Variorum 
+     <https://github.com/ovis-hpc/ovis/tree/OVIS-4/ldms/src/contrib/sampler>`_
 
 *************************************
  Contributing Integrations with JSON

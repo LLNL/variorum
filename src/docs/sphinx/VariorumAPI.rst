@@ -32,13 +32,13 @@ implementations in Variorum are described in the following sections:
 *******************
 
 As of v0.6.0, Variorum also supports Fortran and Python APIs for Variorum, these
-can be found in the `src/wrappers` directory. By default, if Fortan or Python is
-found on the system, these wrappers will be enabled. The Fortran wrapper is
-built and installed if enabled, and for the Python module, called pyVariorum, a
-`pip` based install or setting of `PYTHONPATH` is needed. Please refer to the
-README in the `src/wrappers/python` for the details. Examples on the usage of
-these wrappers can be found in the `src/examples/fortran-examples` and the
-`src/examples/python-examples` directories respectively.
+can be found in the ``src/wrappers`` directory. By default, these wrappers will
+be enabled. The Fortran wrapper is built and installed if Fortran is found and
+enabled. For the Python module (called ``pyVariorum``), a ``pip`` based install
+or setting of ``PYTHONPATH`` is needed. Please refer to the ``README`` in the
+``src/wrappers/python`` directory for the details. Examples on the usage of
+these wrappers can be found in the ``src/examples/fortran-examples`` and the
+``src/examples/python-examples`` directories respectively.
 
 **********
  JSON API
