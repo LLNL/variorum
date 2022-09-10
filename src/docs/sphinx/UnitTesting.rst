@@ -10,7 +10,7 @@
 
 We use GitHub Actions for CI testing Variorum pull requests.
 
-* `Variorum GitHub Actions <https://github.com/LLNL/variorum/actions>`_
+-  `Variorum GitHub Actions <https://github.com/LLNL/variorum/actions>`_
 
 Internally, we are also using `GitLab <https://lc.llnl.gov/gitlab>`_ runners on
 Livermore Computing systems for further CI testing on known hardware
@@ -18,9 +18,9 @@ architectures.
 
 Variorum's CI testing covers:
 
-* code formatting compliance for C/C++, RST, and Python files
-* building variorum
-* running variorum's unit tests
+-  code formatting compliance for C/C++, RST, and Python files
+-  building variorum
+-  running variorum's unit tests
 
 Within one of our GitLab runners, we are also leveraging `Ansible
 <https://www.ansible.com/>`_ to further expand our CI testing across an
