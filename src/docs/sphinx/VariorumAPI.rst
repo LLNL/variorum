@@ -38,7 +38,7 @@ enabled. For the Python module (called ``pyVariorum``), a ``pip`` based install
 or setting of ``PYTHONPATH`` is needed. Please refer to the ``README`` in the
 ``src/wrappers/python`` directory for the details. Examples on the usage of
 these wrappers can be found in the ``src/examples/fortran-examples`` and the
-``src/examples/python-examples`` directories respectively.
+``src/examples/python-examples`` directories, respectively.
 
 **********
  JSON API
