@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+from ctypes import create_unicode_buffer, addressof, c_char_p
+
 from pyVariorum import variorum
 
 if __name__ == "__main__":

@@ -8,4 +8,4 @@ from pyVariorum import variorum
 if __name__ == "__main__":
     v = variorum.variorum()
     print("\n=== Running Variorum Print Power:")
-    v.variorum_print_power();
+    v.variorum_print_power()
