@@ -24,11 +24,14 @@ manner.
 
 Current integration efforts include a `Kokkos <https://kokkos.org>`_ connector
 for power monitoring, a `Caliper <https://software.llnl.gov/Caliper/>`_ service
-for method-level power data, and a `Flux <http://flux-framework.org>`_ power
-management module for scheduling. Upcoming integration also includes developing
-a Variorum interface for `PowerAPI <https://pwrapi.github.io>`_, `Intel's GEOPM
-<https://geopm.github.io>`_ and `Sandia's OVIS Lightweight Distributed Metric
-Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_.
+for method-level power data, a `Flux <http://flux-framework.org>`_ power
+management module for scheduling, and `Sandia's OVIS Lightweight Distributed
+Metric Service (LDMS) <https://github.com/ovis-hpc/ovis-wiki/wiki>`_ monitoring
+plugin. These enable Variorum to be used at scale across multiple layers of the
+PowerStack, application/user layer, resource management layer, and system-level
+layer. Upcoming integrations also include developing a Variorum interface for
+`PowerAPI <https://pwrapi.github.io>`_ and `Intel GEOPM
+<https://geopm.github.io>`_.
 
 Links to Variorum's integrations with each of these frameworks can be found
 below. Note that these integrations are in early development stages and are
@@ -40,6 +43,8 @@ expected to be updated to support more features and tests.
       <https://github.com/LLNL/Caliper/tree/master/src/services/variorum>`_
    -  `Flux System Power Manager Module with Variorum
       <https://github.com/flux-framework/flux-power-mgr>`_
+   -  `LDMS Power Monitoring Plugin with Variorum
+      <https://github.com/ovis-hpc/ovis/tree/OVIS-4/ldms/src/contrib/sampler>`_
 
 *************************************
  Contributing Integrations with JSON

@@ -9,7 +9,7 @@
 ##############
 
 Variorum supports vendor-neutral power and energy management through its rich
-API. Please refer to the top-level API, as well as the specific descritptions of
+API. Please refer to the top-level API, as well as the specific descriptions of
 the JSON API and the Best Effort Power Capping API. The JSON API allows system
 software interacting with Variorum to obtain data in a portable, vendor-neutral
 manner.
@@ -26,6 +26,19 @@ implementations in Variorum are described in the following sections:
 -  :doc:`api/cap_functions`
 -  :doc:`api/json_support_functions`
 -  :doc:`api/enable_disable_functions`
+
+*******************
+ Variorum Wrappers
+*******************
+
+As of v0.6.0, Variorum also supports Fortran and Python APIs for Variorum, these
+can be found in the ``src/wrappers`` directory. By default, these wrappers will
+be enabled. The Fortran wrapper is built and installed if Fortran is found and
+enabled. For the Python module (called ``pyVariorum``), a ``pip`` based install
+or setting of ``PYTHONPATH`` is needed. Please refer to the ``README`` in the
+``src/wrappers/python`` directory for the details. Examples on the usage of
+these wrappers can be found in the ``src/examples/fortran-examples`` and the
+``src/examples/python-examples`` directories, respectively.
 
 **********
  JSON API
