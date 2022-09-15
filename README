@@ -52,12 +52,6 @@ check for a specified local install of these dependencies, then it will check
 if it has been pre-installed. If it can find neither, it will clone and build
 the dependency from source (will fail on machines without internet access).
 
-By default `BUILD_DOCS=ON`, so the build system looks for `Doxygen` and `Sphinx`.
-If you do not want to include these dependencies, simply toggle
-`BUILD_DOCS=OFF` in `CMakeCache.txt` or run the `CMake` command as follows:
-
-    $ cmake -DCMAKE_INSTALL_PREFIX=../install -DBUILD_DOCS=OFF ../src
-
 
 ## CMake Host Config Files
 We provide configuration files for specific systems to pre-populate the cache.
@@ -88,7 +82,7 @@ Supported AMD Microrchitectures:
 
 Supported AMD GPUs:
 
-    AMD Radeon Instinct, all models from MI50 onwards. 
+    AMD Radeon Instinct, all models from MI50 onwards.
 
 Supported ARM Microrchitectures:
 
@@ -111,7 +105,7 @@ Supported Intel Microarchitectures:
 
 Supported Intel GPUs:
 
-    Intel Arctic Sound, Intel Ponte Vecchio 
+    Intel Arctic Sound, Intel Ponte Vecchio
 
 Supported Nvidia Microrchitectures:
 
@@ -123,8 +117,7 @@ From within the build directory, unit tests can be executed as follows:
 ```
     $ make test
 ```
-Please report any failed tests to the project team at
-<variorum-maintainers@llnl.gov>.
+Please report any failed tests to the project maintainers.
 
 
 ## Examples
@@ -165,32 +158,13 @@ Bugs and feature requests are being tracked on [GitHub
 Issues](https://github.com/LLNL/variorum/issues).
 
 
-## Mailing List
-If you have questions about Variorum, identify a bug, or have ideas about
-expanding the functionality of Variorum and are interested in contributing to
-its development, please send an email to our open mailing list at
-<variorum-users@llnl.gov>. We are very interested in improving Variorum and
-exploring new use cases.
-
-If you are interested in keeping up with Variorum or communicating with its
-developers and users, please join our open mailing list by sending an email as
-follows:
-
-```
-To: listserv@listserv.llnl.gov
-Subject: (leave this field empty)
-
-Subscribe variorum-users
-```
-
-
 ## Contributing
 We welcome all kinds of contributions: new features, bug fixes, documentation,
 edits, etc.!
 
 To contribute, make a pull request, with `dev` as the destination branch. We
-use GitHub Actions to run CI tests, and your branch must pass these tests before being
-merged.
+use GitHub Actions to run CI tests, and your branch must pass these tests
+before being merged.
 
 See the [CONTRIBUTING](./CONTRIBUTING.md) for more information.
 
@@ -203,8 +177,9 @@ Barry Rountree, <rountree@llnl.gov>
 
 Please feel free to contact the developers with any questions or feedback.
 
-We collect names of those who have contributed to Variorum over
-the years. See the current list in [Contributors](https://variorum.readthedocs.io/en/latest/Contributors.html).
+We collect names of those who have contributed to Variorum over the years. See
+the current list in
+[Contributors](https://variorum.readthedocs.io/en/latest/Contributors.html).
 
 ## License
 Variorum is released under the MIT license. For more details, see the
@@ -215,8 +190,8 @@ SPDX-License-Identifier: MIT
 `LLNL-CODE-789253`
 
 ## Acknowledgments
-This research was supported by the Exascale Computing Project (17-SC-20-SC),
-a joint project of the U.S. Department of Energy's Office of Science and 
-National Nuclear Security Administration, responsible for delivering a capable 
-exascale ecosystem, including software, applications, and hardware technology, 
-to support the nation's exascale computing imperative.
+This research was supported by the Exascale Computing Project (17-SC-20-SC), a
+joint project of the U.S. Department of Energy's Office of Science and National
+Nuclear Security Administration, responsible for delivering a capable exascale
+ecosystem, including software, applications, and hardware technology, to
+support the nation's exascale computing imperative.
