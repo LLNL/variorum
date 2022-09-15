@@ -132,6 +132,8 @@ Variorum's build system supports the following CMake options:
    discrete GPU architecture.
 -  ``ENABLE_FORTRAN (default=ON)`` - Enable Fortran compiler for building
    example integration with Fortran application, Fortran compiler must exist.
+-  ``ENABLE_PYTHON (default=ON)`` - Enable Python wrappers for adding PyVariorum
+   examples.
 -  ``ENABLE_MPI (default=OFF)`` - Enable MPI compiler for building MPI examples,
    MPI compiler must exist.
 -  ``ENABLE_OPENMP (default=ON)`` - Enable OpenMP extensions for building OpenMP

@@ -61,6 +61,10 @@ if(FORTRAN_FOUND)
     add_subdirectory(fortran-examples)
 endif()
 
+if(Python_FOUND)
+    add_subdirectory(python-examples)
+endif()
+
 include_directories(${CMAKE_SOURCE_DIR}/variorum)
 
 install(DIRECTORY using-with-make using-with-cmake
