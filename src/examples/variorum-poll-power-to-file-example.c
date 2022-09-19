@@ -86,6 +86,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
+    printf("Final result: %f\n", x);
     ret = variorum_poll_power(logfile);
     if (ret != 0)
     {

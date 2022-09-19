@@ -60,6 +60,7 @@ int main(int argc, char **argv)
     {
         x += do_work(i);
     }
+    printf("Final result: %f\n", x);
     ret = variorum_print_counters();
     if (ret != 0)
     {
