@@ -7,11 +7,24 @@
 if(HWLOC_DIR)
     message(STATUS "Looking for Hwloc using HWLOC_DIR = ${HWLOC_DIR}")
 
+    find_path(HWLOC_INCLUDE_DIRS
+        NAMES hwloc.h
+        HINTS ${HWLOC_DIR}/include
+    )
+    if(NOT HWLOC_INCLUDE_DIRS)
+        MESSAGE(FATAL_ERROR "Could not find hwloc.h in ${HWLOC_DIR}/include")
+    endif()
+
+    find_library(HWLOC_LIBRARY
+        NAMES libhwloc.so
+        HINTS ${HWLOC_DIR}/lib
+    )
+    if(NOT HWLOC_LIBRARY)
+        MESSAGE(FATAL_ERROR "Could not find libhwloc.so in ${HWLOC_DIR}/lib")
+    endif()
+
     set(HWLOC_FOUND TRUE CACHE INTERNAL "")
-    set(VARIORUM_HWLOC_DIR ${HWLOC_DIR} CACHE INTERNAL "")
     set(HWLOC_DIR ${HWLOC_DIR} CACHE PATH "" FORCE)
-    set(HWLOC_INCLUDE_DIRS ${HWLOC_DIR}/include CACHE PATH "" FORCE)
-    set(HWLOC_LIBRARY ${HWLOC_DIR}/lib/libhwloc.so CACHE PATH "" FORCE)
     include_directories(${HWLOC_INCLUDE_DIRS})
 
     message(STATUS "FOUND hwloc")
@@ -21,6 +34,8 @@ if(HWLOC_DIR)
 # If HWLOC_DIR not specified, then try to automatically find the HWLOC header
 # and library
 elseif(NOT HWLOC_FOUND)
+    message(STATUS "Looking for Hwloc install on system")
+
     find_path(HWLOC_INCLUDE_DIRS
         NAMES hwloc.h
     )
