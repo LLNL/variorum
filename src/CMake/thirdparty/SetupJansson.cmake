@@ -7,11 +7,25 @@
 if(JANSSON_DIR)
     message(STATUS "Looking for Jansson using JANSSON_DIR = ${JANSSON_DIR}")
 
+    find_path(JANSSON_INCLUDE_DIRS
+        NAMES jansson.h
+        HINTS ${JANSSON_DIR}/include
+    )
+    if(NOT JANSSON_INCLUDE_DIRS)
+        MESSAGE(FATAL_ERROR "Could not find jansson.h in ${JANSSON_DIR}/include")
+    endif()
+
+    find_library(JANSSON_LIBRARY
+        NAMES libjansson.so
+        HINTS ${JANSSON_DIR}/lib
+    )
+    if(NOT JANSSON_LIBRARY)
+        MESSAGE(FATAL_ERROR "Could not find libjansson.so in ${JANSSON_DIR}/lib")
+    endif()
+
     set(JANSSON_FOUND TRUE CACHE INTERNAL "")
     set(VARIORUM_JANSSON_DIR ${JANSSON_DIR} CACHE INTERNAL "")
     set(JANSSON_DIR ${JANSSON_DIR} CACHE PATH "" FORCE)
-    set(JANSSON_INCLUDE_DIRS ${JANSSON_DIR}/include CACHE PATH "" FORCE)
-    set(JANSSON_LIBRARY ${JANSSON_DIR}/lib/libjansson.so CACHE PATH "" FORCE)
     include_directories(${JANSSON_INCLUDE_DIRS})
 
     message(STATUS "FOUND jansson")
