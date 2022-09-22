@@ -260,3 +260,14 @@ build-corona:
    - echo -e "PWD:" ${PWD}
    - make VERBOSE=1 FFLAGS+=-fallow-invalid-boz
    - ./ep.W.x
+
+# build across power lab
+build-cztb2:
+ tags:
+   - shell
+   - cztb2
+ stage: build
+ script:
+   - git clone $VARIORUM_ANSIBLE
+   - cd variorum-ansible-setup
+   - ansible-playbook variorum-powerlab-playbook.yml
