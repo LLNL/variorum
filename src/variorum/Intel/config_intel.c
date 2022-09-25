@@ -20,38 +20,38 @@
 
 /* Recognized architecture and variants (09/2022)
  *
- * 06_2A	Sandy Bridge
- * 06_2D	Sandy Bridge
- * 06_3A	Ivy Bridge
- * 06_3C	Haswell
- * 06_3D	Broadwell
- * 06_3E	Ivy Bridge
- * 06_3F	Haswell
- * 06_45	Haswell
- * 06_46	Haswell
- * 06_47	Broadwell
- * 06_4E	Skylake
- * 06_4F	Broadwell
- * 06_55	Skylake, Cascade Lake, Cooper Lake
- * 06_56	Broadwell
- * 06_5E	Skylake
- * 06_66	Cannon Lake
- * 06_6A	Ice Lake
- * 06_6C	Ice Lake
- * 06_7D	Ice Lake
- * 06_7E	Ice Lake
- * 06_8C	Tiger Lake
- * 06_8D	Tiger Lake
- * 06_8E	Coffee Lake
- * 06_8F	Sapphire Rapids
- * 06_97	Alder Lake
- * 06_9E	Kaby Lake, Coffee Lake
- * 06_9A	Alder Lake
- * 06_A5	Comet Lake
- * 06_A6	Comet Lake
- * 06_A7	Rocket Lake (No MSRs listed in SDM)
- * 06_A8	Rocket Lake (No MSRs listed in SDM)
- * 06_BF	Alder Lake
+ * 06_2A    Sandy Bridge
+ * 06_2D    Sandy Bridge
+ * 06_3A    Ivy Bridge
+ * 06_3C    Haswell
+ * 06_3D    Broadwell
+ * 06_3E    Ivy Bridge
+ * 06_3F    Haswell
+ * 06_45    Haswell
+ * 06_46    Haswell
+ * 06_47    Broadwell
+ * 06_4E    Skylake
+ * 06_4F    Broadwell
+ * 06_55    Skylake, Cascade Lake, Cooper Lake
+ * 06_56    Broadwell
+ * 06_5E    Skylake
+ * 06_66    Cannon Lake
+ * 06_6A    Ice Lake
+ * 06_6C    Ice Lake
+ * 06_7D    Ice Lake
+ * 06_7E    Ice Lake
+ * 06_8C    Tiger Lake
+ * 06_8D    Tiger Lake
+ * 06_8E    Coffee Lake
+ * 06_8F    Sapphire Rapids
+ * 06_97    Alder Lake
+ * 06_9E    Kaby Lake, Coffee Lake
+ * 06_9A    Alder Lake
+ * 06_A5    Comet Lake
+ * 06_A6    Comet Lake
+ * 06_A7    Rocket Lake (No MSRs listed in SDM)
+ * 06_A8    Rocket Lake (No MSRs listed in SDM)
+ * 06_BF    Alder Lake
  */
 
 uint64_t *detect_intel_arch(void)
@@ -169,21 +169,24 @@ int set_intel_func_ptrs(void)
      * 3rd Generation Intel Core Processor and Intel Xeon processor E3-1200 v2
      * product family based on Ivy Bridge microarchitecture
      */
-    else if (*g_platform.intel_arch == FM_06_3A){
+    else if (*g_platform.intel_arch == FM_06_3A)
+    {
     }
     /* 06_3C
      * Haswell
      * 4th Generation Intel Core processor and Intel Xeon processor E3-1200
      * v3 product family based on Haswell microarchitecture
      */
-    else if (*g_platform.intel_arch == FM_06_3C){
+    else if (*g_platform.intel_arch == FM_06_3C)
+    {
     }
     /* 06_3D
      * Broadwell
      * Intel Core M-5xxx Processor, 5th generation Intel Core processors based on
      * Broadwell microarchitecture
      */
-    else if (*g_platform.intel_arch == FM_06_3D){
+    else if (*g_platform.intel_arch == FM_06_3D)
+    {
     }
     /* 06_3E
      * Ivy Bridge
