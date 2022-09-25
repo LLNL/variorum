@@ -40,25 +40,38 @@ enum ctl_domains_e
 /// @brief List of Intel family and models.
 enum intel_arch_e
 {
-    FM_06_2D = 45,  // Ivy Bridge-E
-    FM_06_2A = 42,  // Ivy Bridge-E
-    FM_06_3E = 62,  // Ivy Bridge
-    FM_06_3A = 58,  // Ivy Bridge
-    FM_06_3C = 60,  // Haswell, Haswell-E
-    FM_06_45 = 69,  // Haswell, Haswell-E
-    FM_06_46 = 70,  // Haswell, Haswell-E
-    FM_06_3F = 63,  // Haswell-E
-    FM_06_3D = 61,  // Broadwell
-    FM_06_47 = 71,  // Broadwell
-    FM_06_4F = 79,  // Broadwell
-    FM_06_56 = 86,  // Broadwell
-    FM_06_4E = 78,  // Skylake
-    FM_06_55 = 85,  // Skylake, Cascade Lake, Cooper Lake
-    FM_06_5E = 94,  // Skylake
-    FM_06_8E = 142, // Kaby Lake
-    FM_06_9E = 158, // Kaby Lake
-    FM_06_57 = 87,  // Knights Landing
-    FM_06_6A = 106, // IceLake
+    FM_06_2A = 0x2A, //Sandy Bridge
+    FM_06_2D = 0x2D, //Sandy Bridge
+    FM_06_3A = 0x3A, //Ivy Bridge
+    FM_06_3C = 0x3C, //Haswell
+    FM_06_3D = 0x3D, //Broadwell
+    FM_06_3E = 0x3E, //Ivy Bridge
+    FM_06_3F = 0x3F, //Haswell
+    FM_06_45 = 0x45, //Haswell
+    FM_06_46 = 0x46, //Haswell
+    FM_06_47 = 0x47, //Broadwell
+    FM_06_4E = 0x4E, //Skylake
+    FM_06_4F = 0x4F, //Broadwell
+    FM_06_55 = 0x55, //Skylake, Cascade Lake, Cooper Lake
+    FM_06_56 = 0x56, //Broadwell
+    FM_06_5E = 0x5E, //Skylake
+    FM_06_66 = 0x66, //Cannon Lake
+    FM_06_6A = 0x6A, //Ice Lake
+    FM_06_6C = 0x6C, //Ice Lake
+    FM_06_7D = 0x7D, //Ice Lake
+    FM_06_7E = 0x7E, //Ice Lake
+    FM_06_8C = 0x8C, //Tiger Lake
+    FM_06_8D = 0x8D, //Tiger Lake
+    FM_06_8E = 0x8E, //Coffee Lake
+    FM_06_8F = 0x8F, //Sapphire Rapids
+    FM_06_97 = 0x97, //Alder Lake
+    FM_06_9E = 0x9E, //Kaby Lake, Coffee Lake
+    FM_06_9A = 0x9A, //Alder Lake
+    FM_06_A5 = 0xA5, //Comet Lake
+    FM_06_A6 = 0xA6, //Comet Lake
+    FM_06_A7 = 0xA7, //Rocket Lake (No MSRs listed in SDM)
+    FM_06_A8 = 0xA8, //Rocket Lake (No MSRs listed in SDM)
+    FM_06_BF = 0xBF, //Alder Lake
 };
 
 /// @brief List of IBM family and models.
