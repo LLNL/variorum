@@ -18,6 +18,42 @@
 #include <Intel_06_55.h>
 #include <Intel_06_6A.h>
 
+/* Recognized architecture and variants (09/2022)
+ *
+ * 06_2A	Sandy Bridge
+ * 06_2D	Sandy Bridge
+ * 06_3A	Ivy Bridge
+ * 06_3C	Haswell
+ * 06_3D	Broadwell
+ * 06_3E	Ivy Bridge
+ * 06_3F	Haswell
+ * 06_45	Haswell
+ * 06_46	Haswell
+ * 06_47	Broadwell
+ * 06_4E	Skylake
+ * 06_4F	Broadwell
+ * 06_55	Skylake, Cascade Lake, Cooper Lake
+ * 06_56	Broadwell
+ * 06_5E	Skylake
+ * 06_66	Cannon Lake
+ * 06_6A	Ice Lake
+ * 06_6C	Ice Lake
+ * 06_7D	Ice Lake
+ * 06_7E	Ice Lake
+ * 06_8C	Tiger Lake
+ * 06_8D	Tiger Lake
+ * 06_8E	Coffee Lake
+ * 06_8F	Sapphire Rapids
+ * 06_97	Alder Lake
+ * 06_9E	Kaby Lake, Coffee Lake
+ * 06_9A	Alder Lake
+ * 06_A5	Comet Lake
+ * 06_A6	Comet Lake
+ * 06_A7	Rocket Lake (No MSRs listed in SDM)
+ * 06_A8	Rocket Lake (No MSRs listed in SDM)
+ * 06_BF	Alder Lake
+ */
+
 uint64_t *detect_intel_arch(void)
 {
     uint64_t rax = 1;
@@ -67,7 +103,11 @@ int set_intel_func_ptrs(void)
     // So specify a common function that exits with a log message.
     g_platform.variorum_cap_gpu_power_ratio = gpu_power_ratio_unimplemented;
 
-    // Sandy Bridge 06_2A
+    /* 06_2AH
+     * Sandy Bridge
+     * Intel Xeon processor E3-1200 product family;
+     * 2nd Generation Intel Core i7, i5, i3 Processors 2xxx Series
+     */
     if (*g_platform.intel_arch == FM_06_2A)
     {
         g_platform.variorum_print_power_limit = fm_06_2a_get_power_limits;
@@ -94,6 +134,11 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_2a_get_frequencies;
     }
+    /* 06_2D
+     * Sandy Bridge
+     * Intel Xeon processor E5 Family based on Sandy Bridge microarchitecture,
+     * Intel Core i7-39xx Processor Extreme Edition
+     */
     else if (*g_platform.intel_arch == FM_06_2D)
     {
         g_platform.variorum_print_power_limit = fm_06_2d_get_power_limits;
@@ -119,7 +164,35 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_2d_get_frequencies;
     }
-    // Ivy Bridge 06_3E
+    /* 06_3A
+     * Ivy Bridge
+     * 3rd Generation Intel Core Processor and Intel Xeon processor E3-1200 v2
+     * product family based on Ivy Bridge microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_3A){
+    }
+    /* 06_3C
+     * Haswell
+     * 4th Generation Intel Core processor and Intel Xeon processor E3-1200
+     * v3 product family based on Haswell microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_3C){
+    }
+    /* 06_3D
+     * Broadwell
+     * Intel Core M-5xxx Processor, 5th generation Intel Core processors based on
+     * Broadwell microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_3D){
+    }
+    /* 06_3E
+     * Ivy Bridge
+     * Intel Xeon processor E5-2600/1600 v2 product families and Intel Xeon
+     * processor E5-2400 v2 product family based on Ivy Bridge-E microarchitecture,
+     * Intel Core i7-49xx Processor Extreme Edition
+     * Intel Xeon processor E7-8800/4800/2800 v2 product families based on Ivy
+     * Bridge-E microarchitecture
+     */
     else if (*g_platform.intel_arch == FM_06_3E)
     {
         g_platform.variorum_print_power_limit = fm_06_3e_get_power_limits;
@@ -146,7 +219,12 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_3e_get_frequencies;
     }
-    // Haswell 06_3F
+    /* 06_3F
+     * Haswell
+     * Intel Xeon processor E5-4600/2600/1600 v3 product families, Intel Xeon
+     * processor E7 v3 product families based on Haswell-E microarchitecture,
+     * Intel Core i7-59xx Processor Extreme Edition
+     */
     else if (*g_platform.intel_arch == FM_06_3F)
     {
         g_platform.variorum_print_power_limit = fm_06_3f_get_power_limits;
@@ -173,7 +251,45 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_3f_get_frequencies;
     }
-    // Broadwell 06_4F
+    /* 06_45
+     * Haswell
+     * 4th Generation Intel Core processor and Intel Xeon processor E3-1200 v3
+     * product family based on Haswell microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_45)
+    {
+    }
+    /* 06_46
+     * Haswell
+     * 4th Generation Intel Core processor and Intel Xeon processor E3-1200 v3
+     * product family based on Haswell microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_46)
+    {
+    }
+    /* 06_47
+     * Broadwell
+     * 5th generation Intel Core processors, Intel Xeon processor E3-1200 v4
+     * product family based on Broadwell microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_47)
+    {
+    }
+    /* 06_4E
+     * Skylake
+     * 6th generation Intel Core processors and Intel Xeon processor E3-1500m v5
+     * product family and E3- 1200 v5 product family based on Skylake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_4E)
+    {
+    }
+    /* 06_4F
+     * Broadwell
+     * Intel Xeon processor E5 v4 Family based on Broadwell microarchitecture,
+     * Intel Xeon processor E7 v4 Family, Intel Core i7-69xx Processor Extreme
+     * Edition
+     */
     else if (*g_platform.intel_arch == FM_06_4F)
     {
         g_platform.variorum_print_power_limit = fm_06_4f_get_power_limits;
@@ -200,7 +316,13 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_4f_get_frequencies;
     }
-    // Skylake 06_55
+    /* 06_55
+     * Skylake, Cascade Lake, Cooper Lake
+     * Intel Xeon Processor Scalable Family based on Skylake
+     * microarchitecture, 2nd generation Intel Xeon Processor Scalable Family
+     * based on Cascade Lake product, and 3rd generation Intel Xeon Processor
+     * Scalable Family based on Cooper Lake product
+     */
     else if (*g_platform.intel_arch == FM_06_55)
     {
         g_platform.variorum_print_power_limit = fm_06_55_get_power_limits;
@@ -226,7 +348,113 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_55_get_frequencies;
     }
-    // Kaby Lake 06_9E
+    /* 06_56
+     * Broadwell
+     * Intel Xeon processor D-1500 product family based on Broadwell
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_56)
+    {
+    }
+    /* 06_5E
+     * Skylake
+     * 6th generation Intel Core processors and Intel Xeon processor E3-1500m v5
+     * product family and E3- 1200 v5 product family based on Skylake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_5E)
+    {
+    }
+    /* 06_66
+     * Cannon Lake
+     * Intel® CoreTM processors based on Cannon Lake microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_66)
+    {
+    }
+    /* 06_6A
+     * Ice Lake
+     * 3rd generation Intel® Xeon® Processor Scalable Family based on Ice Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_6A)
+    {
+        g_platform.variorum_print_power_limit = fm_06_6a_get_power_limits;
+        g_platform.variorum_print_features = fm_06_6a_get_features;
+        g_platform.variorum_print_power = fm_06_6a_get_power;
+    }
+    /* 06_6C
+     * Ice Lake
+     * 3rd generation Intel® Xeon® Processor Scalable Family based on Ice Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_6C)
+    {
+    }
+    /* 06_7D
+     * Ice Lake
+     * 10th generation Intel® CoreTM processors based on Ice Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_7D)
+    {
+    }
+    /* 06_7E
+     * Ice Lake
+     * 10th generation Intel® CoreTM processors based on Ice Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_7E)
+    {
+    }
+    /* 06_8C
+     * Tiger Lake
+     * 11th generation Intel® CoreTM processors based on Tiger Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_8C)
+    {
+    }
+    /* 06_8D
+     * Tiger Lake
+     * 11th generation Intel® CoreTM processors based on Tiger Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_8D)
+    {
+    }
+    /* 06_8E
+     * Coffee Lake
+     * 7th generation Intel® CoreTM processors based on Kaby Lake
+     * microarchitecture, 8th and 9th generation Intel® CoreTM processors based
+     * on Coffee Lake microarchitecture, Intel® Xeon® E processors based on
+     * Coffee Lake microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_8E)
+    {
+    }
+    /* 06_8F
+     * Sapphire Rapids
+     * Future Intel® Xeon® processors based on Sapphire Rapids microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_8F)
+    {
+    }
+    /* 06_97
+     * Alder Lake
+     * 12th generation Intel® CoreTM processors supporting Alder Lake
+     * performance hybrid architecture
+     */
+    else if (*g_platform.intel_arch == FM_06_97)
+    {
+    }
+    /* 06_9E
+     * Kaby Lake, Coffee Lake
+     * 7th generation Intel® CoreTM processors based on Kaby Lake
+     * microarchitecture, 8th and 9th generation Intel® CoreTM processors based
+     * on Coffee Lake microarchitecture, Intel® Xeon® E processors based on
+     * Coffee Lake microarchitecture
+     */
     else if (*g_platform.intel_arch == FM_06_9E)
     {
         g_platform.variorum_print_power_limit = fm_06_9e_get_power_limits;
@@ -251,12 +479,52 @@ int set_intel_func_ptrs(void)
         g_platform.variorum_print_available_frequencies =
             fm_06_9e_get_frequencies;
     }
-    // Ice Lake 06_6A
-    else if (*g_platform.intel_arch == FM_06_6A)
+    /* 06_9A
+     * Alder Lake
+     * 12th generation Intel® CoreTM processors supporting Alder Lake
+     * performance hybrid architecture
+     */
+    else if (*g_platform.intel_arch == FM_06_9A)
     {
-        g_platform.variorum_print_power_limit = fm_06_6a_get_power_limits;
-        g_platform.variorum_print_features = fm_06_6a_get_features;
-        g_platform.variorum_print_power = fm_06_6a_get_power;
+    }
+    /* 06_A5
+     * Comet Lake
+     * 10th generation Intel Core processors based on Comet Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_A5)
+    {
+    }
+    /* 06_A6
+     * Comet Lake
+     * 10th generation Intel Core processors based on Comet Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_A6)
+    {
+    }
+    /* 06_A7
+     * Rocket Lake
+     * 10th generation Intel Core processors based on Comet Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_A7)
+    {
+    }
+    /* 06_A8
+     * Rocket Lake
+     * 10th generation Intel Core processors based on Comet Lake
+     * microarchitecture
+     */
+    else if (*g_platform.intel_arch == FM_06_A8)
+    {
+    }
+    /* 06_BF
+     * Alder Lake
+     * [No description provided in table 2-1]
+     */
+    else if (*g_platform.intel_arch == FM_06_BF)
+    {
     }
     else
     {
