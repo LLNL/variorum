@@ -1,11 +1,9 @@
-#define _XOPEN_SOURCE 700   // ffsll()
 #include <stdint.h>
-#include <sting.h>          // ffsll()
 #include <assert.h>
 #include "sdm.h"
 
 static uint64_t map_fm2idx[] = {
-// least-significant 4 bits
+// least-significant 4 bits of the display_model.
 //   0       1       2       3       4       5       6       7       8       9       A       B       C       D       E       F
 n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, // 0 most
 n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, // 1 sig-
@@ -27,13 +25,8 @@ n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, n____x, 
 // Converts the FM_df_dm enum value found in config_architecture.h to the bitfield index found in sdm.h.
 uint64_t fm2idx( int df_dm )
 {
+    assert( assert
 	return map_fm2idx[df_dm];
-}
-
-uint64_t idx2ord( uint64_t idx ){
-    uint64_t ord ffsll( idx );
-    assert( ord );
-    return ffsll(idx) - 1;
 }
 
 static int map_idx2fm[] = {

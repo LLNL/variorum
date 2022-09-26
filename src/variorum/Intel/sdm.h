@@ -76,7 +76,7 @@ table	df_dm
 2-50	06_55H
 2-51	06_6AH
 2-52	06_8FH
-#endif
+#endif //0
 
 #ifndef CONFIG_ARCHIECTURE_H_INCLUDE
 /// @brief List of Intel family and models.
@@ -121,39 +121,39 @@ enum intel_arch_e
 // All of these models belong to display_family 06.
 enum idx_dfdm : uint64_t    // Might need -std=c23 or -std=c2x to get this to compile.
 {
-    IDX_2A = 0x0000'0000'0000'0001ULL, //Sandy Bridge
-    IDX_2D = 0x0000'0000'0000'0002ULL, //Sandy Bridge
-    IDX_3A = 0x0000'0000'0000'0004ULL, //Ivy Bridge
-    IDX_3C = 0x0000'0000'0000'0008ULL, //Haswell
-    IDX_3D = 0x0000'0000'0000'0010ULL, //Broadwell
-    IDX_3E = 0x0000'0000'0000'0020ULL, //Ivy Bridge
-    IDX_3F = 0x0000'0000'0000'0040ULL, //Haswell
-    IDX_45 = 0x0000'0000'0000'0080ULL, //Haswell
-    IDX_46 = 0x0000'0000'0000'0100ULL, //Haswell
-    IDX_47 = 0x0000'0000'0000'0200ULL, //Broadwell
-    IDX_4E = 0x0000'0000'0000'0400ULL, //Skylake
-    IDX_4F = 0x0000'0000'0000'0800ULL, //Broadwell
-    IDX_55 = 0x0000'0000'0000'1000ULL, //Skylake, Cascade Lake, Cooper Lake
-    IDX_56 = 0x0000'0000'0000'2000ULL, //Broadwell
-    IDX_5E = 0x0000'0000'0000'4000ULL, //Skylake
-    IDX_66 = 0x0000'0000'0000'8000ULL, //Cannon Lake
-    IDX_6A = 0x0000'0000'0001'0000ULL, //Ice Lake
-    IDX_6C = 0x0000'0000'0002'0000ULL, //Ice Lake
-    IDX_7D = 0x0000'0000'0004'0000ULL, //Ice Lake
-    IDX_7E = 0x0000'0000'0008'0000ULL, //Ice Lake
-    IDX_8C = 0x0000'0000'0010'0000ULL, //Tiger Lake
-    IDX_8D = 0x0000'0000'0020'0000ULL, //Tiger Lake
-    IDX_8E = 0x0000'0000'0040'0000ULL, //Coffee Lake
-    IDX_8F = 0x0000'0000'0080'0000ULL, //Sapphire Rapids
-    IDX_97 = 0x0000'0000'0100'0000ULL, //Alder Lake
-    IDX_9A = 0x0000'0000'0200'0000ULL, //Alder Lake
-    IDX_9E = 0x0000'0000'0400'0000ULL, //Kaby Lake, Coffee Lake
-    IDX_A5 = 0x0000'0000'0800'0000ULL, //Comet Lake
-    IDX_A6 = 0x0000'0000'1000'0000ULL, //Comet Lake
-    IDX_A7 = 0x0000'0000'2000'0000ULL, //Rocket Lake (No MSRs listed in SDM)
-    IDX_A8 = 0x0000'0000'4000'0000ULL, //Rocket Lake (No MSRs listed in SDM)
-    IDX_BF = 0x0000'0000'8000'0000ULL, //Alder Lake
-    n____x = 0xDECA'FBAD'DEAD'C0DEULL, //Dummy value ("no_idxx")
+    IDX_2A = 0, //Sandy Bridge
+    IDX_2D, //Sandy Bridge
+    IDX_3A, //Ivy Bridge
+    IDX_3C, //Haswell
+    IDX_3D, //Broadwell
+    IDX_3E, //Ivy Bridge
+    IDX_3F, //Haswell
+    IDX_45, //Haswell
+    IDX_46, //Haswell
+    IDX_47, //Broadwell
+    IDX_4E, //Skylake
+    IDX_4F, //Broadwell
+    IDX_55, //Skylake, Cascade Lake, Cooper Lake
+    IDX_56, //Broadwell
+    IDX_5E, //Skylake
+    IDX_66, //Cannon Lake
+    IDX_6A, //Ice Lake
+    IDX_6C, //Ice Lake
+    IDX_7D, //Ice Lake
+    IDX_7E, //Ice Lake
+    IDX_8C, //Tiger Lake
+    IDX_8D, //Tiger Lake
+    IDX_8E, //Coffee Lake
+    IDX_8F, //Sapphire Rapids
+    IDX_97, //Alder Lake
+    IDX_9A, //Alder Lake
+    IDX_9E, //Kaby Lake, Coffee Lake
+    IDX_A5, //Comet Lake
+    IDX_A6, //Comet Lake
+    IDX_A7, //Rocket Lake (No MSRs listed in SDM)
+    IDX_A8, //Rocket Lake (No MSRs listed in SDM)
+    IDX_BF, //Alder Lake
+    n____x, //Dummy value ("no_idxx")
 };
 
 // The table numbers might not be stable in future Intel revisions.
@@ -298,9 +298,39 @@ enum tables : uint64_t
     T51 = 0x0000'0000'8000'0000,
 };
 
-
-
-
+// The MSR catalog.
+uint64_t cat[] = {
+    /* 06_2AH */    T20 | T21 | T22,
+	/* 06_2DH */	T20 | T23 | T24,
+	/* 06_3AH */	T20 | T21 | T22 | T25,
+	/* 06_3CH */	T20 | T21 | T22 | T29 | T30,
+	/* 06_3DH */	T20 | T21 | T22 | T25 | T29 | T30 | T34 | T35,
+	/* 06_3EH */	T20 | T24 | T26 | T27 | T28,
+	/* 06_3FH */	T20 | T29 | T32 | T33,
+	/* 06_45H */	T20 | T21 | T22 | T29 | T30 | T31 | T38,
+	/* 06_46H */	T20 | T21 | T22 | T29 | T30,
+	/* 06_47H */	T20 | T21 | T22 | T25 | T29 | T30 | T34 | T35,
+	/* 06_4EH */	T20 | T21 | T25 | T29 | T35 | T39 | T40,
+	/* 06_4FH */	T20 | T21 | T29 | T34 | T36 | T37 | T38,
+	/* 06_55H */	T20 | T21 | T25 | T29 | T35 | T39 | T50,
+	/* 06_56H */	T20 | T29 | T34 | T36 | T37,
+	/* 06_5EH */	T20 | T21 | T25 | T29 | T35 | T39 | T40,
+	/* 06_66H */	T20 | T21 | T25 | T29 | T35 | T39 | T40 | T42 | T43,
+	/* 06_6AH */	T20 | T21 | T25 | T29 | T35 | T39 | T51,
+	/* 06_6CH */	T20 | T21 | T25 | T29 | T35 | T39,
+	/* 06_7DH */	T20 | T21 | T25 | T29 | T35 | T39 | T44,
+	/* 06_7EH */	T20 | T21 | T25 | T29 | T35 | T39 | T44,
+	/* 06_8CH */	T20 | T21 | T25 | T29 | T35 | T39 | T45,
+	/* 06_8DH */	T20 | T21 | T25 | T29 | T35 | T39 | T45,
+	/* 06_8EH */	T20 | T21 | T25 | T29 | T35 | T39 | T40,
+	/* 06_8FH */	T52,
+	/* 06_97H */	T20 | T21 | T25 | T29 | T35 | T39 | T46 | T44 | T45 | T47 | T48 | T49,
+	/* 06_9AH */	T20 | T21 | T25 | T29 | T35 | T39 | T46 | T44 | T45 | T47 | T48 | T49,
+	/* 06_9EH */	T20 | T21 | T25 | T29 | T35 | T39 | T40 | T41,
+	/* 06_A5H */	T20 | T21 | T25 | T29 | T35 | T39,
+	/* 06_A6H */	T20 | T21 | T25 | T29 | T35 | T39,
+	/* 06_BFH */	T20 | T21 | T25 | T29 | T35 | T39 | T46 | T44 | T45 | T47 | T48 | T49
+};
 
 
 #endif //SDM_H_INCLUDE
