@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -530,6 +531,9 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
+    double node_power;
+    int i, ret =0;
+    int sockID;
     json_t *get_power_obj = json_object();
 
     gethostname(hostname, 1024);
@@ -544,7 +548,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
         char mem_str[36] = "power_mem_watts_socket_";
         char gpu_str[36] = "power_gpu_watts_socket_";
 
-        snprintf(sockID, sockID_len, "%d", i);
+        snprintf(sockID, "%d", i);
         strcat(cpu_str, sockID);
         strcat(mem_str, sockID);
         strcat(gpu_str, sockID);
@@ -560,7 +564,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
         else
         {
             json_object_set_new(get_power_obj, cpu_str,
-                                json_real((double)current_power / 1000);
+                                json_real((double)current_power / 1000));
         }
 
         // GPU power set to -1.0 for vendor neutrality and first cut, as we
