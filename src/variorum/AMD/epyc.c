@@ -531,9 +531,10 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
-    double node_power;
-    int i, ret =0;
-    int sockID;
+    double node_power = 0.0;
+    int i, ret = 0;
+    int sockID_len = 12;
+    char sockID[sockID_len];
     json_t *get_power_obj = json_object();
 
     gethostname(hostname, 1024);
@@ -548,7 +549,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
         char mem_str[36] = "power_mem_watts_socket_";
         char gpu_str[36] = "power_gpu_watts_socket_";
 
-        snprintf(sockID, "%d", i);
+        snprintf(sockID, sockID_len, "%d", i);
         strcat(cpu_str, sockID);
         strcat(mem_str, sockID);
         strcat(gpu_str, sockID);
@@ -575,7 +576,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
         // memory power yet.
         json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
 
-        node_power += (double)current_power / 1000;
+        node_power += ((double)current_power / 1000);
     }
 
     // Set the node power key with pwrnode value.
@@ -607,7 +608,10 @@ int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
     //Assuming minimum is 50 W.
     ret = esmi_socket_power_cap_max_get(0, &max_power);
 
-    snprintf(range_str, sizeof range_str, "%s%d",
+    // Convert to Watts
+    max_power = max_power / 1000;
+
+    snprintf(range_str, sizeof range_str, "%s%d%s%d%s",
              "[{min: ", 50,
              ", max: ", max_power, "}]");
 
