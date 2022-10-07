@@ -48,22 +48,27 @@
 #include <config_amd_gpu.h>
 #endif
 
-struct platform g_platform;
+struct platform g_platform[2];
 
 
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 {
     int err = 0;
+    int i;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
     }
+
+    printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
+
     variorum_init_func_ptrs();
 
     //Triggers initialization on first call.  Errors assert.
     variorum_get_topology(NULL, NULL, NULL);
+
     err = variorum_detect_arch();
     if (err)
     {
