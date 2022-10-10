@@ -19,22 +19,22 @@ uint64_t *detect_ibm_arch(void)
     return model;
 }
 
-int set_ibm_func_ptrs(void)
+int set_ibm_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform.ibm_arch == POWER9)
+    if (*g_platform[idx].arch_id == POWER9)
     {
-        g_platform.variorum_print_power = p9_get_power;
-        g_platform.variorum_print_power_limit = p9_get_power_limits;
-        g_platform.variorum_cap_best_effort_node_power_limit =
+        g_platform[idx].variorum_print_power = p9_get_power;
+        g_platform[idx].variorum_print_power_limit = p9_get_power_limits;
+        g_platform[idx].variorum_cap_best_effort_node_power_limit =
             p9_cap_and_verify_node_power_limit;
-        g_platform.variorum_cap_each_socket_power_limit =
+        g_platform[idx].variorum_cap_each_socket_power_limit =
             p9_cap_socket_power_limit;
-        g_platform.variorum_cap_gpu_power_ratio = p9_cap_gpu_power_ratio;
-        g_platform.variorum_monitoring = p9_monitoring;
-        g_platform.variorum_get_node_power_json = p9_get_node_power_json;
-        g_platform.variorum_get_node_power_domain_info_json =
+        g_platform[idx].variorum_cap_gpu_power_ratio = p9_cap_gpu_power_ratio;
+        g_platform[idx].variorum_monitoring = p9_monitoring;
+        g_platform[idx].variorum_get_node_power_json = p9_get_node_power_json;
+        g_platform[idx].variorum_get_node_power_domain_info_json =
             p9_get_node_power_domain_info_json;
     }
     else

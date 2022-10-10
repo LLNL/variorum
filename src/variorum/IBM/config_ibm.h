@@ -10,6 +10,6 @@
 
 uint64_t *detect_ibm_arch(void);
 
-int set_ibm_func_ptrs(void);
+int set_ibm_func_ptrs(int idx);
 
 #endif
