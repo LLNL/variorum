@@ -75,9 +75,9 @@ static struct broadwell_4f_offsets msrs =
 
 int fm_06_4f_get_power_limits(int long_ver)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -151,9 +151,9 @@ int fm_06_4f_get_power_limits(int long_ver)
 
 int fm_06_4f_cap_power_limits(int package_power_limit)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int socket;
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -507,8 +507,8 @@ int fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
      * the floor of the value being taken. So while we will be off by 1W total,
      * we will guarantee that we stay under the specified cap. */
 
-    unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    int nsockets, ncores, nthreads;
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
 
     // Adding this for portability and rounding down.
     // Ideally line 451 should be okay as it is integer division and we have
