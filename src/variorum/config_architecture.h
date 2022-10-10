@@ -244,24 +244,6 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(void);
 
-    /******************************/
-    /* Platform-Specific Topology */
-    /******************************/
-/*    /// @brief Unique family and model for Intel CPU architectures.
-    uint64_t *intel_arch;
-    /// @brief Unique family and model for Intel GPU architectures.
-    uint64_t *intel_gpu_arch;
-    /// @brief Identifier for AMD CPU architecture.
-    uint64_t *amd_arch;
-    /// @brief Identifier for IBM CPU architecture.
-    uint64_t *ibm_arch;
-    /// @brief Identifier for NVIDIA GPU architecture.
-    uint64_t *nvidia_gpu_arch;
-    /// @brief Identifier for ARM CPU architecture.
-    uint64_t *arm_arch;
-    /// @brief Identifier for AMD GPU architecture.
-    uint64_t *amd_gpu_arch;
-*/
     /// @brief Identifier for architecture.
     unit64_t *arch_id;
     /// @brief Hostname.

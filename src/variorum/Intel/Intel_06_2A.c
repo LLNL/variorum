@@ -64,7 +64,7 @@ int fm_06_2a_get_power_limits(int long_ver)
 {
     int socket;
     int nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -140,7 +140,7 @@ int fm_06_2a_cap_power_limits(int package_power_limit)
 {
     int socket;
     int nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_IDX);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

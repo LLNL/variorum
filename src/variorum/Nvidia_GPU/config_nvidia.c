@@ -18,18 +18,18 @@ uint64_t *detect_gpu_arch(void)
     return model;
 }
 
-int set_nvidia_func_ptrs(void)
+int set_nvidia_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform.nvidia_gpu_arch == VOLTA)
+    if (*g_platform[idx].arch_id == VOLTA)
     {
         /* Initialize monitoring interfaces */
-        g_platform.variorum_print_power           = volta_get_power;
-        g_platform.variorum_print_thermals        = volta_get_thermals;
-        g_platform.variorum_print_frequency       = volta_get_clocks;
-        g_platform.variorum_print_power_limit     = volta_get_power_limits;
-        g_platform.variorum_print_gpu_utilization = volta_get_gpu_utilization;
+        g_platform[idx].variorum_print_power           = volta_get_power;
+        g_platform[idx].variorum_print_thermals        = volta_get_thermals;
+        g_platform[idx].variorum_print_frequency       = volta_get_clocks;
+        g_platform[idx].variorum_print_power_limit     = volta_get_power_limits;
+        g_platform[idx].variorum_print_gpu_utilization = volta_get_gpu_utilization;
     }
     else
     {
