@@ -120,7 +120,7 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
     shutdownAPMIDG();
 #endif
 
-  for (i = 0; i < P_NUM_PLATFORMS; i++)
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         free(g_platform[i].arch_id);
     }
@@ -171,7 +171,7 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_AMD_CPU
         printf("AMD Family: 0x%lx, Model: 0x%lx\n",
                (*g_platform[P_AMD_CPU_IDX].arch_id >> 8) & 0xFF,
-                *g_platform[P_AMD_CPU_IDX].arch_id & 0xFF);
+               *g_platform[P_AMD_CPU_IDX].arch_id & 0xFF);
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU
         printf("AMD GPU Model: MI-%ld\n", *g_platform[P_AMD_GPU_IDX].arch_id);
@@ -182,10 +182,10 @@ int variorum_detect_arch(void)
     {
         if (g_platform[i].arch_id == NULL)
         {
-        variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        return VARIORUM_ERROR_UNSUPPORTED_ARCH;
+            variorum_error_handler("No architectures detected", VARIORUM_ERROR_RUNTIME,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+            return VARIORUM_ERROR_UNSUPPORTED_ARCH;
         }
     }
 
@@ -204,10 +204,10 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
     if (!init_variorum_get_topology)
     {
-       // Commenting per Stephanie's code
-       // Patki guesses this should be left uncommented
+        // Commenting per Stephanie's code
+        // Patki guesses this should be left uncommented
 
-       // init_variorum_get_topology = 1;
+        // init_variorum_get_topology = 1;
 
         rc = variorum_init_topology();
 
@@ -280,7 +280,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
         }
 
         g_platform[idx].num_cores_per_socket = g_platform[idx].total_cores /
-                                          g_platform[idx].num_sockets;
+                                               g_platform[idx].num_sockets;
         if (g_platform[idx].total_cores % g_platform[idx].num_sockets != 0)
         {
             fprintf(stderr, "%s:%d "
@@ -294,7 +294,7 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
         }
 
         g_platform[idx].num_threads_per_core = g_platform[idx].total_threads /
-                                          g_platform[idx].total_cores;
+                                               g_platform[idx].total_cores;
         if (g_platform[idx].total_threads % g_platform[idx].total_cores != 0)
         {
             fprintf(stderr, "%s:%d "
