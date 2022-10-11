@@ -466,7 +466,7 @@ int fm_06_2d_cap_best_effort_node_power_limit(int node_limit)
      * we will guarantee that we stay under the specified cap. */
 
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     // Adding this for portability and rounding down.
     // Ideally this should be okay as it is integer division and we have

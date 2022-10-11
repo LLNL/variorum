@@ -245,7 +245,7 @@ struct platform
     int (*variorum_print_energy)(void);
 
     /// @brief Identifier for architecture.
-    unit64_t *arch_id;
+    uint64_t *arch_id;
     /// @brief Hostname.
     char hostname[1024];
     /// @brief Number of sockets in the node.

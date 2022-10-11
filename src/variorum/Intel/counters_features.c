@@ -74,7 +74,7 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
 
 void init_fixed_counter(struct fixed_counter *ctr)
 {
-    int nthreads = 0;
+    unsigned nthreads = 0;
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
 
     ctr->enable = (uint64_t *) malloc(nthreads * sizeof(uint64_t));

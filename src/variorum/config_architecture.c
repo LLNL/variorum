@@ -130,6 +130,8 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 
 int variorum_detect_arch(void)
 {
+    int i=0;
+
 #ifdef VARIORUM_WITH_INTEL_CPU
     g_platform[P_INTEL_CPU_IDX].arch_id = detect_intel_arch();
     printf("Intel CPU -- idx%d\n", P_INTEL_CPU_IDX);
@@ -360,7 +362,7 @@ int variorum_set_func_ptrs()
     int err = 0;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
-    err = set_intel_func_ptrs();
+    err = set_intel_func_ptrs(P_INTEL_CPU_IDX);
     if (err)
     {
         return err;
@@ -368,22 +370,22 @@ int variorum_set_func_ptrs()
     err = init_msr();
 #endif
 #ifdef VARIORUM_WITH_INTEL_GPU
-    err = set_intel_gpu_func_ptrs();
+    err = set_intel_gpu_func_ptrs(P_INTEL_GPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
-    err = set_ibm_func_ptrs();
+    err = set_ibm_func_ptrs(P_IBM_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_NVIDIA_GPU
-    err = set_nvidia_func_ptrs();
+    err = set_nvidia_func_ptrs(P_NVIDIA_GPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_ARM_CPU
-    err = set_arm_func_ptrs();
+    err = set_arm_func_ptrs(P_ARM_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD_CPU
-    err = set_amd_func_ptrs();
+    err = set_amd_func_ptrs(P_AMD_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU
-    err = set_amd_gpu_func_ptrs();
+    err = set_amd_gpu_func_ptrs(P_AMD_GPU_IDX);
 #endif
     return err;
 }
