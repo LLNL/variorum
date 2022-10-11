@@ -52,8 +52,15 @@
 // but can be extended to include other accelerators in the future.
 #define MAX_PLATFORMS 2
 
+#ifdef VARIORUM_WITH_AMD_CPU
+int P_MSR_CORE_IDX;
+#endif
+
+#ifdef VARIORUM_WITH_INTEL_CPU
+int P_MSR_CORE_IDX;
+#endif
+
 struct platform g_platform[MAX_PLATFORMS];
-int P_MSR_CORE_IDX = 0;
 
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 {
