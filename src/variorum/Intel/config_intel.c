@@ -192,7 +192,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = fm_06_4f_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    fm_06_4f_cap_frequency;
-        g_platform[idx][idx].variorum_get_node_power_json =
+        g_platform[idx].variorum_get_node_power_json =
             fm_06_4f_get_node_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             fm_06_4f_get_node_power_domain_info_json;
