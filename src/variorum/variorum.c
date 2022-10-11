@@ -230,7 +230,12 @@ void variorum_print_topology(void)
     return;
 }
 
-int variorum_cap_best_effort_node_power_limit(int *node_power_limits)
+// The best effort node power limit is NOT per-platform. This can only be set by
+// what we define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and
+// AMD CPUs. We need this API to do something reasonable at the node-level for
+// integration with tools such as Flux or SLURM.
+
+int variorum_cap_best_effort_node_power_limit(int node_power_limit)
 {
     int err = 0;
     int i;
@@ -239,23 +244,29 @@ int variorum_cap_best_effort_node_power_limit(int *node_power_limits)
     {
         return -1;
     }
+
+    // Obtain the index corresponding to the primary platform.
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_cap_best_effort_node_power_limit == NULL)
-        {
-            variorum_error_handler("Feature not yet implemented or is not supported",
-                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                                   getenv("HOSTNAME"), __FILE__,
-                                   __FUNCTION__, __LINE__);
-            continue;
-        }
-        err = g_platform[i].variorum_cap_best_effort_node_power_limit(
-                  node_power_limits[i]);
-        if (err)
-        {
-            return -1;
-        }
+        if ((i == P_INTEL_CPU_IDX) || (i == P_AMD_CPU_IDX) || (i == P_IBM_CPU_IDX))
+            break;
     }
+
+    if (g_platform[i].variorum_cap_best_effort_node_power_limit == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        continue;
+    }
+    err = g_platform[i].variorum_cap_best_effort_node_power_limit(
+              node_power_limit);
+    if (err)
+    {
+        return -1;
+    }
+
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {

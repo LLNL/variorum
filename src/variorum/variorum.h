@@ -87,7 +87,7 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
-int variorum_cap_best_effort_node_power_limit(int *node_power_limits);
+int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 
 /// @brief Cap the power shifting ratio for the GPU (uniform on both sockets).
 ///
