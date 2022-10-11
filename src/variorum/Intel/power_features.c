@@ -147,9 +147,11 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit,
      * We have been given watts and seconds and need to translate these into
      * bit values.
      */
-    translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr, P_INTEL_CPU_IDX);
+    translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr,
+              P_INTEL_CPU_IDX);
     /* There is only 1 translation for watts (so far). */
-    translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr,
+              P_INTEL_CPU_IDX);
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts,
             watts_bits);
@@ -201,7 +203,8 @@ static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit,
 
     // We have been given the bits to be written to the msr.
     // For sake of completeness, translate these into watts and seconds.
-    ret = translate(socket, &watts_bits, &limit->watts, BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    ret = translate(socket, &watts_bits, &limit->watts, BITS_TO_WATTS, msr,
+                    P_INTEL_CPU_IDX);
     // If the offset is > 31 (we are writing the upper PKG limit), then no
     // translation needed
     ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD,
@@ -712,16 +715,20 @@ int get_rapl_pkg_power_info(const unsigned socket,
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_pkg_power_info));
     val = MASK_VAL(info->msr_pkg_power_info, 54, 48);
-    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 46, 32);
-    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 30, 16);
-    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 14, 0);
-    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     return 0;
 }
@@ -742,16 +749,20 @@ int get_rapl_dram_power_info(const unsigned socket,
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_dram_power_info));
     val = MASK_VAL(info->msr_dram_power_info, 54, 48);
-    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 46, 32);
-    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 30, 16);
-    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 14, 0);
-    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr, P_INTEL_CPU_IDX);
+    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     return 0;
 }
