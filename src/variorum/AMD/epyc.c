@@ -47,7 +47,7 @@ int epyc_get_power(int long_ver)
     }
 
     // DELETE    fprintf(stdout, "Socket | Power(Watts)    |\n");
-    for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
     {
         gettimeofday(&now, NULL);
 
@@ -112,7 +112,7 @@ int epyc_get_power_limits(int long_ver)
 
     // DELETE fprintf(stdout,
     // "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
-    for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
     {
         gettimeofday(&now, NULL);
 
@@ -185,7 +185,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
      */
     pcap_new = (pcap_new / 2) * 1000;
 
-    for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
     {
         pcap_test = 0;
         ret = esmi_socket_power_cap_max_get(i, &max_power);
@@ -258,7 +258,7 @@ int epyc_set_socket_power_limit(int pcap_new)
     pcap_new = pcap_new * 1000;
 
     fprintf(stdout, "Socket |  Powercap(Watts)  |\n");
-    for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
     {
         ret = esmi_socket_power_cap_max_get(i, &max_power);
         if ((ret == 0) && (pcap_new > (int)max_power))
@@ -314,7 +314,7 @@ int epyc_print_energy()
 
         fprintf(stdout, "_SOCKET_ENERGY :\n");
         fprintf(stdout, " Socket |  Energy (uJoules) |\n");
-        for (i = 0; i < g_platform.num_sockets; i++)
+        for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
         {
             energy = 0;
             ret = esmi_socket_energy_get(i, &energy);
@@ -332,7 +332,7 @@ int epyc_print_energy()
         }
         printf("\n_CORE_ENERGY :\n");
         fprintf(stdout, "   Core |  Energy (uJoules) |\n");
-        for (i = 0; i < g_platform.total_cores; i++)
+        for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
         {
             energy = 0;
             ret = esmi_core_energy_get(i, &energy);
@@ -369,7 +369,7 @@ int epyc_print_boostlimit()
     uint32_t boostlimit;
 
     fprintf(stdout, " Core   | Freq (MHz)  |\n");
-    for (i = 0; i < g_platform.total_cores; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
     {
         boostlimit = 0;
         ret = esmi_core_boostlimit_get(i, &boostlimit);
@@ -397,7 +397,7 @@ int epyc_set_each_core_boostlimit(int boostlimit)
 
     int i, ret;
 
-    for (i = 0; i < g_platform.total_cores; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
     {
         ret = esmi_core_boostlimit_set(i, boostlimit);
         if (ret != 0)
@@ -539,7 +539,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
-    for (i = 0; i < g_platform.num_sockets; i++)
+    for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
     {
         char cpu_str[36] = "power_cpu_watts_socket_";
         char mem_str[36] = "power_mem_watts_socket_";

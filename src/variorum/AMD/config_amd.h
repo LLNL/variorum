@@ -11,6 +11,6 @@
 
 uint64_t *detect_amd_arch(void);
 
-int set_amd_func_ptrs(void);
+int set_amd_func_ptrs(int idx);
 
 #endif

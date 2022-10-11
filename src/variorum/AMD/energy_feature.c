@@ -19,7 +19,8 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
 {
     unsigned ncores;
-    variorum_get_topology(NULL, &ncores, NULL);
+    int ncores;
+    variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
 
     allocate_batch(RAPL_DATA, 2UL * ncores);
 
@@ -37,7 +38,7 @@ static int rapl_storage(struct rapl_data **data)
     if (!init)
     {
         init = 1;
-        variorum_get_topology(NULL, &ncores, NULL);
+        variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
 
         rapl = (struct rapl_data *) malloc(ncores * sizeof(struct rapl_data));
 
@@ -69,7 +70,7 @@ static int read_rapl_data(off_t msr_core_energy_status)
 
     if (!init)
     {
-        variorum_get_topology(NULL, &ncores, NULL);
+        variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -125,7 +126,7 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
         return batchfd;
     }
 
-    variorum_get_topology(NULL, &ncores, NULL);
+    variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
 
     read_rapl_data(msr_core_energy_status);
 
