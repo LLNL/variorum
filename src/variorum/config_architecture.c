@@ -134,6 +134,7 @@ int variorum_detect_arch(void)
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     g_platform[P_INTEL_CPU_IDX].arch_id = detect_intel_arch();
+    P_MSR_CORE_IDX = P_INTEL_CPU_IDX;
     printf("Intel CPU -- idx%d\n", P_INTEL_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_INTEL_GPU
@@ -154,6 +155,7 @@ int variorum_detect_arch(void)
 #endif
 #ifdef VARIORUM_WITH_AMD_CPU
     g_platform[P_AMD_CPU_IDX].arch_id = detect_amd_arch();
+    P_MSR_CORE_IDX = P_AMD_CPU_IDX;
     printf("AMD CPU -- idx%d\n", P_AMD_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU
