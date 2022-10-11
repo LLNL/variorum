@@ -130,7 +130,7 @@ int variorum_exit(const char *filename, const char *func_name, int line_num)
 
 int variorum_detect_arch(void)
 {
-    int i=0;
+    int i = 0;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     g_platform[P_INTEL_CPU_IDX].arch_id = detect_intel_arch();
