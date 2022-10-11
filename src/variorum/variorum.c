@@ -249,15 +249,15 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
 #ifdef VARIORUM_WITH_INTEL_CPU
-        i == P_INTEL_CPU_IDX;
+        i = P_INTEL_CPU_IDX;
         break;
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
-        i == P_IBM_CPU_IDX;
+        i = P_IBM_CPU_IDX;
         break;
 #endif
 #ifdef VARIORUM_WITH_AMD_CPU
-        i == P_AMD_CPU_IDX;
+        i = P_AMD_CPU_IDX;
         break;
 #endif
     }
