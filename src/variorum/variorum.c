@@ -268,7 +268,7 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit)
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
-        continue;
+        return 0;
     }
     err = g_platform[i].variorum_cap_best_effort_node_power_limit(
               node_power_limit);
