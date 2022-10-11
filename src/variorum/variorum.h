@@ -87,7 +87,7 @@ int variorum_cap_each_socket_power_limit(int socket_power_limit);
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
-int variorum_cap_best_effort_node_power_limit(int node_power_limit);
+int variorum_cap_best_effort_node_power_limit(int *node_power_limits);
 
 /// @brief Cap the power shifting ratio for the GPU (uniform on both sockets).
 ///
@@ -226,7 +226,6 @@ int variorum_print_verbose_thermals(void);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
-/// - Intel Arctic Sound
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -303,7 +302,6 @@ int variorum_print_verbose_power(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
-/// - Intel Arctic Sound
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -346,7 +344,6 @@ int variorum_print_verbose_frequency(void);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
-/// - Intel Arctic Sound
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
