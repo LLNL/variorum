@@ -39,8 +39,8 @@ int set_amd_func_ptrs(int idx)
 {
     int ret = 0;
     uint8_t family, model;
-    family = (*g_platform.amd_arch >> 8) & 0xFF;
-    model = *g_platform.amd_arch & 0xFF;
+    family = (*g_platform[idx].arch_id >> 8) & 0xFF;
+    model = *g_platform[idx].arch_id & 0xFF;
 
     /* Verify for the family and model */
     if (family == 0x19)
