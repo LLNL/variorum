@@ -26,7 +26,7 @@ void initAPMIDG(void)
     m_total_unit_devices = apmidg_getndevs();
 
     /* Collect number of packages and GPUs per package */
-    variorum_get_topology(&m_num_package, NULL, NULL);
+    variorum_get_topology(&m_num_package, NULL, NULL, P_INTEL_GPU_IDX);
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */
