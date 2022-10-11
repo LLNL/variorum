@@ -20,7 +20,7 @@ uint64_t *detect_amd_gpu_arch(void)
     return model;
 }
 
-int set_amd_gpu_func_ptrs(void)
+int set_amd_gpu_func_ptrs(int idx)
 {
     int err = 0;
 
