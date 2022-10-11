@@ -49,7 +49,7 @@
 #endif
 
 struct platform g_platform[2];
-
+int P_MSR_CORE_IDX = 0;
 
 int variorum_enter(const char *filename, const char *func_name, int line_num)
 {

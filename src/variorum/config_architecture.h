@@ -86,10 +86,6 @@ enum amd_gpu_arch_e
     AMD_INSTINCT = 1,
 };
 
-/// @brief Index variable to track the common MSR access functionality
-//  across Intel and AMD platforms.
-int P_MSR_CORE_IDX = 0;
-
 enum supported_platforms_e
 {
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -271,6 +267,10 @@ struct platform
 #endif
 
 extern struct platform g_platform[2];
+
+// Index variable to track the common MSR access functionality
+// across Intel and AMD platforms.
+extern int P_MSR_CORE_IDX;
 
 int variorum_enter(const char *filename,
                    const char *func_name,
