@@ -19,7 +19,6 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
 {
     unsigned ncores;
-    int ncores;
     variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
 
     allocate_batch(RAPL_DATA, 2UL * ncores);
