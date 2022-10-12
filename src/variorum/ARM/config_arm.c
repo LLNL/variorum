@@ -24,7 +24,7 @@ int set_arm_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform.arm_arch == ARMV8)
+    if (*g_platform[idx].arch_id == ARMV8)
     {
         /* Initialize interfaces */
         g_platform[idx].variorum_print_power                     = arm_get_power;
