@@ -603,6 +603,7 @@ int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
     //E-SMI doesn't expose minimum yet, something we need AMD to help with.
     //Assuming minimum is 50 W.
     ret = esmi_socket_power_cap_max_get(0, &max_power);
+
     if (ret != 0)
     {
         fprintf(stdout, "Failed to get maximum socket power, "

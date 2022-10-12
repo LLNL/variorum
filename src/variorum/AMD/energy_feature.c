@@ -112,7 +112,7 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
     static struct rapl_data *rapl = NULL;
     static int init = 0;
     unsigned ncores = 0;
-    // TODO: We can't test this API yet due to privile issues. We need to
+    // TODO: We can't test this API yet due to privilege issues. We need to
     // update the printing format here to include hostname and prefix
     // _AMDENERGY once we have ability to test.
     // char hostname[1024];
