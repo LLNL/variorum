@@ -60,7 +60,7 @@ static int rapl_storage(struct rapl_data **data)
     return 0;
 }
 
-static int read_rapl_data(off_t msr_rapl_unit, off_t msr_core_energy_status)
+static int read_rapl_data(off_t msr_core_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
@@ -127,7 +127,7 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
 
     variorum_get_topology(NULL, &ncores, NULL);
 
-    read_rapl_data(msr_rapl_unit, msr_core_energy_status);
+    read_rapl_data(msr_core_energy_status);
 
     if (!init)
     {
