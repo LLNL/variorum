@@ -230,9 +230,12 @@ void variorum_print_topology(void)
     return;
 }
 
-// The best effort node power limit is NOT per-platform. This can only be set by
-// what we define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and
-// AMD CPUs. We need this API to do something reasonable at the node-level for
+// The best effort node power limit is a node-level API, and cannot be implemented
+// at a per-platform level. This can only be set by what we define as the
+// 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs, and internally,
+// the implementation can determine how much power to allocate to CPU, GPUs and
+// memory where applicable. Current implementation is basic, and in the future,
+// we will update this API to do something reasonable at the node-level for
 // integration with tools such as Flux or SLURM.
 
 int variorum_cap_best_effort_node_power_limit(int node_power_limit)
@@ -911,6 +914,15 @@ int variorum_disable_turbo(void)
     return err;
 }
 
+
+// The variorum_get_node_power_json is a node-level API, and cannot be implemented
+// at a per-component (eg CPU, GPU) level. This can only be captured by what we
+// define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,
+// and internally, the implementation can update power usage of CPU, GPUs and
+// memory where applicable. Current implementation is basic, and in the future,
+// we will update this API to do obtain and return the GPU power usage using a new
+// JSON API for GPU power.
+
 int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
@@ -920,25 +932,39 @@ int variorum_get_node_power_json(char **get_power_obj_str)
     {
         return -1;
     }
+
+    // Obtain the index corresponding to the primary platform.
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_get_node_power_json == NULL)
-        {
-            variorum_error_handler("Feature not yet implemented or is not supported",
-                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                                   getenv("HOSTNAME"), __FILE__,
-                                   __FUNCTION__, __LINE__);
-            // For the JSON functions, we return a -1 here, so users don't need
-            // to explicitly check for NULL strings.
-            return -1;
+#ifdef VARIORUM_WITH_INTEL_CPU
+        i = P_INTEL_CPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_IBM_CPU
+        i = P_IBM_CPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_CPU
+        i = P_AMD_CPU_IDX;
+        break;
+#endif
+    }
 
-        }
+    if (g_platform[i].variorum_get_node_power_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
+    }
 
-        err = g_platform[i].variorum_get_node_power_json(get_power_obj_str);
-        if (err)
-        {
-            return -1;
-        }
+    err = g_platform[i].variorum_get_node_power_json(get_power_obj_str);
+    if (err)
+    {
+        return -1;
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
@@ -947,6 +973,14 @@ int variorum_get_node_power_json(char **get_power_obj_str)
     }
     return err;
 }
+
+// The variorum_get_node_power_domain_info_json is a node-level API, and cannot
+// be implemented at a per-component (eg CPU, GPU) level. This can only be available
+// on what we define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,
+// and internally, the implementation can update domain information of CPU, GPUs and
+// memory where applicable. Current implementation is basic, and in the future,
+// we will update this API to do obtain and return the GPU domain info using a new
+// JSON API for GPU power domain info.
 
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
@@ -957,24 +991,43 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     {
         return -1;
     }
+
+    // Obtain the index corresponding to the primary platform.
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_get_node_power_domain_info_json == NULL)
-        {
-            variorum_error_handler("Feature not yet implemented or is not supported",
-                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                                   getenv("HOSTNAME"), __FILE__,
-                                   __FUNCTION__, __LINE__);
-            // For the JSON functions, we return a -1 here, so users don't need
-            // to explicitly check for NULL strings.
-            return -1;
-        }
-        err = g_platform[i].variorum_get_node_power_domain_info_json(
-                  get_domain_obj_str);
-        if (err)
-        {
-            return -1;
-        }
+#ifdef VARIORUM_WITH_INTEL_CPU
+        i = P_INTEL_CPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_IBM_CPU
+        i = P_IBM_CPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_CPU
+        i = P_AMD_CPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_ARM_CPU
+        i = P_ARM_CPU_IDX;
+        break;
+#endif
+    }
+
+    if (g_platform[i].variorum_get_node_power_domain_info_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
+    }
+    err = g_platform[i].variorum_get_node_power_domain_info_json(
+              get_domain_obj_str);
+    if (err)
+    {
+        return -1;
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
