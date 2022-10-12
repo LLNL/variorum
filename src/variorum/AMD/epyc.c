@@ -189,7 +189,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
     {
         pcap_test = 0;
         ret = esmi_socket_power_cap_max_get(i, &max_power);
-        if ((ret == 0) && (pcap_new > max_power))
+        if ((ret == 0) && (pcap_new > (int)max_power))
         {
             printf("Input power is more than max limit,"
                    " So sets to default max %.3f Watts\n\n",
@@ -225,7 +225,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
                 (double)pcap_new / 1000, (double)pcap_test / 1000);
 #endif
 
-        if (pcap_new != pcap_test)
+        if (pcap_new != (int)pcap_test)
         {
             fprintf(stdout, "Could not verify if the power cap "
                     "was set correctly.\n");
@@ -261,7 +261,7 @@ int epyc_set_socket_power_limit(int pcap_new)
     for (i = 0; i < g_platform.num_sockets; i++)
     {
         ret = esmi_socket_power_cap_max_get(i, &max_power);
-        if ((ret == 0) && (pcap_new > max_power))
+        if ((ret == 0) && (pcap_new > (int)max_power))
         {
             printf("Input power is more than max limit,"
                    " So sets to default max %.3f Watts\n\n",
@@ -396,7 +396,6 @@ int epyc_set_each_core_boostlimit(int boostlimit)
     }
 
     int i, ret;
-    uint32_t core_boost_lim = 0;
 
     for (i = 0; i < g_platform.total_cores; i++)
     {
@@ -492,8 +491,6 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
         printf("Running %s with value %u\n\n", __FUNCTION__, boostlimit);
     }
     int ret;
-    uint32_t blimit = 0;
-    uint32_t online_core;
 
     ret = esmi_socket_boostlimit_set(socket, boostlimit);
     if (ret != 0)
@@ -524,7 +521,6 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    unsigned nsockets;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
@@ -608,6 +604,12 @@ int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
     //Assuming minimum is 50 W.
     ret = esmi_socket_power_cap_max_get(0, &max_power);
 
+    if (ret != 0)
+    {
+        fprintf(stdout, "Failed to get maximum socket power, "
+                "Err[%d]:%s\n", ret, esmi_get_err_msg(ret));
+        return ret;
+    }
     // Convert to Watts
     max_power = max_power / 1000;
 
