@@ -948,6 +948,10 @@ int variorum_get_node_power_json(char **get_power_obj_str)
         i = P_AMD_CPU_IDX;
         break;
 #endif
+#ifdef VARIORUM_WITH_ARM_CPU
+        i = P_ARM_CPU_IDX;
+        break;
+#endif
     }
 
     if (g_platform[i].variorum_get_node_power_json == NULL)
