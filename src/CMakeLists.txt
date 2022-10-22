@@ -32,8 +32,11 @@ option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia GPU architectures"       OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
+option(VARIORUM_CPRINTF          "Enable pretty-printing"                 OFF)
+
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
+set(CPRINTF_DIR "" CACHE PATH "path to cprintf installation")
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)

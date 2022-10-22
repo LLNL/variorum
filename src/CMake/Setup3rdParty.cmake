@@ -27,6 +27,10 @@ if(BUILD_DOCS)
     include(CMake/thirdparty/FindSphinx.cmake)
 endif()
 
+if(VARIORUM_CPRINTF)
+    include(Cmake/thirdparty/SetupCprintf.cmake)
+endif()
+
 if(BUILD_TESTS)
     add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
     ################################
