@@ -61,6 +61,10 @@ if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
 endif()
 
+if(VARIORUM_CPRINTF)
+    add_compile_definitions(VARIORUM_CPRINTF)
+endif()
+
 include(CMake/VariorumBuildType.cmake)
 
 include(CMake/CMakeBasics.cmake)

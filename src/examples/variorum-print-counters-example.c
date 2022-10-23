@@ -7,9 +7,6 @@
 #include <stdio.h>
 
 #include <variorum.h>
-#ifdef VARIORUM_CPRINTF
-#include <cprintf.h>
-#endif
 
 #ifdef SECOND_RUN
 static inline double do_work(int input)
@@ -45,12 +42,7 @@ int main(int argc, char **argv)
                 printf(usage, argv[0]);
                 return 0;
             case 'v':
-#ifdef VARIORUM_CPRINTF 
-                cprintf("%s\n", variorum_get_current_version());
-                cflush();
-#else
                 printf("%s\n", variorum_get_current_version());
-#endif
                 return 0;
             default:
                 fprintf(stderr, usage, argv[0]);

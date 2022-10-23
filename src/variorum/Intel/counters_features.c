@@ -10,6 +10,10 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+#ifdef VARIORUM_CPRINTF
+#include <cprintf.h>
+#endif
+
 #include <clocks_features.h>
 #include <counters_features.h>
 #include <config_architecture.h>
@@ -243,8 +247,13 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 
     if (!init)
     {
+#ifdef VARIORUM_CPRINTF
+        cfprintf(writedest,
+                "%s %s %s %s %s %s\n", "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles", "UnhaltRefCycles");
+#else
         fprintf(writedest,
                 "_FIXED_COUNTERS Host Thread InstRet UnhaltClkCycles UnhaltRefCycles\n");
+#endif
         init = 1;
     }
     variorum_get_topology(NULL, NULL, &nthreads);
@@ -254,9 +263,17 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     read_batch(FIXED_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
+#ifdef VARIORUM_CPRINTF
+        cfprintf(writedest, "%s %s %d %lu %lu %lu\n", "_FIXED_COUNTERS", hostname, i,
+                *c0->value[i], *c1->value[i], *c2->value[i]);
+#else
         fprintf(writedest, "_FIXED_COUNTERS %s %d %lu %lu %lu\n", hostname, i,
                 *c0->value[i], *c1->value[i], *c2->value[i]);
+#endif
     }
+#ifdef VARIORUM_CPRINTF
+    cflush();
+#endif
 }
 
 void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
