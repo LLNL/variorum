@@ -249,7 +249,8 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     {
 #ifdef VARIORUM_CPRINTF
         cfprintf(writedest,
-                "%s %s %s %s %s %s\n", "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles", "UnhaltRefCycles");
+                 "%s %s %s %s %s %s\n", "_FIXED_COUNTERS", "Host", "Thread", "InstRet",
+                 "UnhaltClkCycles", "UnhaltRefCycles");
 #else
         fprintf(writedest,
                 "_FIXED_COUNTERS Host Thread InstRet UnhaltClkCycles UnhaltRefCycles\n");
@@ -265,7 +266,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     {
 #ifdef VARIORUM_CPRINTF
         cfprintf(writedest, "%s %s %d %lu %lu %lu\n", "_FIXED_COUNTERS", hostname, i,
-                *c0->value[i], *c1->value[i], *c2->value[i]);
+                 *c0->value[i], *c1->value[i], *c2->value[i]);
 #else
         fprintf(writedest, "_FIXED_COUNTERS %s %d %lu %lu %lu\n", hostname, i,
                 *c0->value[i], *c1->value[i], *c2->value[i]);
