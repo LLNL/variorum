@@ -28,7 +28,7 @@ if(BUILD_DOCS)
 endif()
 
 if(VARIORUM_CPRINTF)
-    include(Cmake/thirdparty/SetupCprintf.cmake)
+    include(CMake/thirdparty/SetupCprintf.cmake)
 endif()
 
 if(BUILD_TESTS)
