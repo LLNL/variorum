@@ -1,0 +1,35 @@
+# Trigger a build pipeline for the following systems
+quartz-build-and-test:
+  variables:
+    CI_MACHINE: "quartz"
+  extends: [.build]
+
+catalyst-build-and-test:
+  variables:
+    CI_MACHINE: "catalyst"
+  extends: [.build]
+
+corona-build-and-test:
+  variables:
+    CI_MACHINE: "corona"
+  extends: [.build]
+
+lassen-gpu-build-and-test:
+  variables:
+    CI_MACHINE: "lassen-gpu"
+  extends: [.build]
+
+lassen-cpu-build-and-test:
+  variables:
+    CI_MACHINE: "lassen-cpu"
+  extends: [.build]
+
+lassen-cpu-and-gpu-build-and-test:
+  variables:
+    CI_MACHINE: "lassen-cpugpu"
+  extends: [.build]
+
+cztb2-build-and-test:
+  variables:
+    CI_MACHINE: "cztb2"
+  extends: [.build]
