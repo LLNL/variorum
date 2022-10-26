@@ -71,9 +71,9 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
     if (val != NULL && atoi(val) == 1)
     {
         printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
+        printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
     }
 
-    printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
 
     variorum_init_func_ptrs();
 
@@ -146,32 +146,25 @@ int variorum_detect_arch(void)
 #ifdef VARIORUM_WITH_INTEL_CPU
     g_platform[P_INTEL_CPU_IDX].arch_id = detect_intel_arch();
     P_MSR_CORE_IDX = P_INTEL_CPU_IDX;
-    printf("Intel CPU -- idx%d\n", P_INTEL_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_INTEL_GPU
     g_platform[P_INTEL_GPU_IDX].arch_id = detect_intel_gpu_arch();
-    printf("Intel GPU -- idx%d\n", P_INTEL_GPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_IBM_CPU
     g_platform[P_IBM_CPU_IDX].arch_id = detect_ibm_arch();
-    printf("IBM CPU -- idx%d\n", P_IBM_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     g_platform[P_NVIDIA_GPU_IDX].arch_id = detect_gpu_arch();
-    printf("NVIDIA GPU -- idx%d\n", P_NVIDIA_GPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_ARM_CPU
     g_platform[P_ARM_CPU_IDX].arch_id = detect_arm_arch();
-    printf("ARM CPU -- idx%d\n", P_ARM_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD_CPU
     g_platform[P_AMD_CPU_IDX].arch_id = detect_amd_arch();
     P_MSR_CORE_IDX = P_AMD_CPU_IDX;
-    printf("AMD CPU -- idx%d\n", P_AMD_CPU_IDX);
 #endif
 #ifdef VARIORUM_WITH_AMD_GPU
     g_platform[P_AMD_GPU_IDX].arch_id = detect_amd_gpu_arch();
-    printf("AMD GPU -- idx%d\n", P_AMD_GPU_IDX);
 #endif
 
     char *val = getenv("VARIORUM_LOG");
