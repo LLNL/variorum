@@ -25,6 +25,7 @@ set(VARIORUM_WITH_AMD_GPU ON CACHE BOOL "")
 set(VARIORUM_WITH_ARM_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL_CPU OFF CACHE BOOL "")
+set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
 # path to e_smi_library install                                                    
