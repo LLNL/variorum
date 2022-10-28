@@ -10,6 +10,6 @@
 
 uint64_t *detect_amd_gpu_arch(void);
 
-int set_amd_gpu_func_ptrs(void);
+int set_amd_gpu_func_ptrs(int idx);
 
 #endif

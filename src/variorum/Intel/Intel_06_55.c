@@ -71,7 +71,7 @@ int fm_06_55_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -133,7 +133,7 @@ int fm_06_55_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -426,7 +426,7 @@ int fm_06_55_cap_best_effort_node_power_limit(int node_limit)
      * we will guarantee that we stay under the specified cap. */
 
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     // Adding this for portability and rounding down.
     // Ideally this should be okay as it is integer division and we have
@@ -445,7 +445,7 @@ int fm_06_55_cap_best_effort_node_power_limit(int node_limit)
 int fm_06_55_cap_frequency(int core_freq_mhz)
 {
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

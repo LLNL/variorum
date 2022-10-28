@@ -20,18 +20,19 @@ uint64_t *detect_amd_gpu_arch(void)
     return model;
 }
 
-int set_amd_gpu_func_ptrs(void)
+int set_amd_gpu_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform.amd_gpu_arch == AMD_INSTINCT)
+    if (*g_platform[idx].arch_id == AMD_INSTINCT)
     {
         /* Initialize monitoring interfaces */
-        g_platform.variorum_print_power           = instinctGPU_get_power;
-        g_platform.variorum_print_thermals        = instinctGPU_get_thermals;
-        g_platform.variorum_print_frequency       = instinctGPU_get_clocks;
-        g_platform.variorum_print_power_limit     = instinctGPU_get_power_limit;
-        g_platform.variorum_print_gpu_utilization = instinctGPU_get_gpu_utilization;
+        g_platform[idx].variorum_print_power           = instinctGPU_get_power;
+        g_platform[idx].variorum_print_thermals        = instinctGPU_get_thermals;
+        g_platform[idx].variorum_print_frequency       = instinctGPU_get_clocks;
+        g_platform[idx].variorum_print_power_limit     = instinctGPU_get_power_limit;
+        g_platform[idx].variorum_print_gpu_utilization =
+            instinctGPU_get_gpu_utilization;
     }
     else
     {

@@ -22,7 +22,7 @@ int instinctGPU_get_power(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -43,7 +43,7 @@ int instinctGPU_get_power_limit(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -64,7 +64,7 @@ int instinctGPU_get_thermals(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -84,7 +84,7 @@ int instinctGPU_get_clocks(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -104,7 +104,7 @@ int instinctGPU_get_gpu_utilization(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
     {

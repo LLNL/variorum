@@ -18,7 +18,7 @@ int intel_gpu_get_power(int long_ver)
 #endif
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_power_data(iter, long_ver, stdout);
@@ -34,7 +34,7 @@ int intel_gpu_get_thermals(int long_ver)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_thermal_data(iter, long_ver, stdout);
@@ -49,7 +49,7 @@ int intel_gpu_get_clocks(int long_ver)
 #endif
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         get_clocks_data(iter, long_ver, stdout);

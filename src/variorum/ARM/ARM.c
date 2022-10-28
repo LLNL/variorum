@@ -57,7 +57,7 @@ int arm_get_clocks(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = get_clocks_data(iter, long_ver, stdout);
@@ -78,7 +78,7 @@ int arm_get_frequencies(void)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = get_frequencies(iter, stdout);
@@ -98,7 +98,7 @@ int arm_cap_socket_frequency(int cpuid, int freq)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
     if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
