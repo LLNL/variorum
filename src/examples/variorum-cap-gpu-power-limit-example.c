@@ -35,9 +35,9 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
-    if(argc == 1)
+    if (argc == 1)
     {
-        printf(usage,argv[0]);
+        printf(usage, argv[0]);
         return -1;
     }
 

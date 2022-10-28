@@ -223,7 +223,8 @@ void cap_gpu_power_limit(int chipid, unsigned int powerlimit)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        if(NVML_SUCCESS != nvmlDeviceSetPowerManagementLimit(m_unit_devices_file_desc[d], powerlimit_mwatts))
+        if (NVML_SUCCESS != nvmlDeviceSetPowerManagementLimit(
+                m_unit_devices_file_desc[d], powerlimit_mwatts))
         {
             variorum_error_handler("Could not set the specified GPU power limit",
                                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,

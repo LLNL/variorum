@@ -146,7 +146,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 ///
 /// @supparch
 /// - NVIDIA Volta and later
-/// - WIP: AMD 
+/// - WIP: AMD
 ///
 /// @param [in] gpu_power_limit Desired power limit in watts for each GPU
 ///             on the node.
