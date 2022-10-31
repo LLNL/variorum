@@ -111,7 +111,7 @@ int volta_cap_gpu_power_limit(unsigned int powerlimit)
 
     unsigned iter = 0;
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
         cap_gpu_power_limit(iter, powerlimit);
