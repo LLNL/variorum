@@ -536,20 +536,20 @@ void cap_gpu_power_limit(int chipid, int total_sockets, unsigned int powerlimit)
         ret = rsmi_dev_power_cap_set(i, 0, powerlimit_uwatts);
         if (ret != RSMI_STATUS_SUCCESS)
         {
-            if(ret == RSMI_STATUS_PERMISSION)
+            if (ret == RSMI_STATUS_PERMISSION)
             {
                 variorum_error_handler(
-                      "Insufficient permissions to set the GPU power limit",
-                      VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
-                      __FILE__, __FUNCTION__, __LINE__);
+                    "Insufficient permissions to set the GPU power limit",
+                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
+                    __FILE__, __FUNCTION__, __LINE__);
             }
-	    else
-	    {
+            else
+            {
                 variorum_error_handler(
-                      "Could not set the specified GPU power limit",
-                      VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
-                      __FILE__, __FUNCTION__, __LINE__);
-	    }
+                    "Could not set the specified GPU power limit",
+                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
+                    __FILE__, __FUNCTION__, __LINE__);
+            }
         }
     }
     ret = rsmi_shut_down();

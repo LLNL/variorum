@@ -35,7 +35,8 @@ int set_amd_gpu_func_ptrs(int idx)
             instinctGPU_get_gpu_utilization;
 
         /* Initialize control interfaces */
-        g_platform[idx].variorum_cap_gpu_power_limit   = instinctGPU_cap_gpu_power_limit;
+        g_platform[idx].variorum_cap_gpu_power_limit   =
+            instinctGPU_cap_gpu_power_limit;
     }
     else
     {
