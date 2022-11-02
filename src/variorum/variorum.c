@@ -432,7 +432,7 @@ int variorum_cap_gpu_power_limit(int gpu_power_limit)
     }
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_cap_gpu_power_ratio == NULL)
+        if (g_platform[i].variorum_cap_gpu_power_limit == NULL)
         {
             variorum_error_handler("Feature not yet implemented or is not supported",
                                    VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
