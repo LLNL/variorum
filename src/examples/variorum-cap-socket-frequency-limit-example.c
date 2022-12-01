@@ -38,6 +38,11 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
+    if (optind == 1)
+    {
+        printf(usage, argv[0]);
+        return -1;
+    }
 
     printf("Capping CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
 
