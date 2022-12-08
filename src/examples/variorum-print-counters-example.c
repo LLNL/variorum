@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 #ifdef SECOND_RUN
     int size = 1E3;
     int i;
-    double x = 0.0;
+    volatile double x = 0.0;
 #endif
 
     const char *usage = "Usage: %s [-h] [-v]\n";

@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 #ifdef SECOND_RUN
     int i;
     int size = 1E4;
-    double x = 0.0;
+    volatile double x = 0.0;
 #endif
 
     const char *usage = "Usage: %s [-h] [-v]\n";
@@ -92,7 +92,6 @@ int main(int argc, char **argv)
         free(s);
         exit(-1);
     }
-
     /* Print the entire JSON object */
     puts(s);
 #endif

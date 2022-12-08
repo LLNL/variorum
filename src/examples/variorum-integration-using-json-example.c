@@ -103,7 +103,7 @@ int main(void)
 #ifdef SECOND_RUN
     int i;
     int size = 1E4;
-    double x = 0.0;
+    volatile double x = 0.0;
 #endif
 
     /* Determine number of sockets */
