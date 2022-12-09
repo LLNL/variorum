@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        cc-version: [11, 10, 9, 8, 7]
+        cc-version: [11, 10, 9]
         config: [boilerplate, shared_debug_log_docs, shared_debug_docs, shared_debug_log, shared_debug, static_debug_log_docs, static_debug_docs, static_debug_log, static_debug, shared_release_log_docs]
 
         exclude:
@@ -21,82 +21,46 @@ jobs:
             cc-version: 11
           - config: shared_debug_log_docs
             cc-version: 10
-          - config: shared_debug_log_docs
-            cc-version: 8
-          - config: shared_debug_log_docs
-            cc-version: 7
 
           - config: shared_debug_docs
             cc-version: 11
           - config: shared_debug_docs
             cc-version: 10
-          - config: shared_debug_docs
-            cc-version: 8
-          - config: shared_debug_docs
-            cc-version: 7
 
           - config: shared_debug_log
             cc-version: 11
           - config: shared_debug_log
             cc-version: 10
-          - config: shared_debug_log
-            cc-version: 8
-          - config: shared_debug_log
-            cc-version: 7
 
           - config: shared_debug
             cc-version: 11
           - config: shared_debug
             cc-version: 10
-          - config: shared_debug
-            cc-version: 8
-          - config: shared_debug
-            cc-version: 7
 
           - config: static_debug_log_docs
             cc-version: 11
           - config: static_debug_log_docs
             cc-version: 10
-          - config: static_debug_log_docs
-            cc-version: 8
-          - config: static_debug_log_docs
-            cc-version: 7
 
           - config: static_debug_docs
             cc-version: 11
           - config: static_debug_docs
             cc-version: 10
-          - config: static_debug_docs
-            cc-version: 8
-          - config: static_debug_docs
-            cc-version: 7
 
           - config: static_debug_log
             cc-version: 11
           - config: static_debug_log
             cc-version: 10
-          - config: static_debug_log
-            cc-version: 8
-          - config: static_debug_log
-            cc-version: 7
 
           - config: static_debug
             cc-version: 11
           - config: static_debug
             cc-version: 10
-          - config: static_debug
-            cc-version: 8
-          - config: static_debug
-            cc-version: 7
 
           - config: shared_release_log_docs
             cc-version: 11
           - config: shared_release_log_docs
             cc-version: 10
-          - config: shared_release_log_docs
-            cc-version: 8
-          - config: shared_release_log_docs
-            cc-version: 7
 
         include:
           - config: boilerplate
