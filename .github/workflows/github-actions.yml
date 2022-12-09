@@ -365,96 +365,96 @@ jobs:
           cd ${GITHUB_WORKSPACE}
           ./scripts/.ci-check-rst-format.sh
 
-  build-with-spack-mirrors:
-    runs-on: ubuntu-latest
-
-    env:
-      BUILD_SHARED_LIBS: ON
-      BUILD_DOCS: ON
-      BUILD_TESTS: ON
-      CMAKE_BUILD_TYPE: RelWithDebInfo
-      ENABLE_FORTRAN: ON
-      ENABLE_MPI: ON
-      ENABLE_OPENMP: ON
-      VARIORUM_DEBUG: OFF
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install deps on ubuntu
-        run: |
-          sudo apt-get update
-          sudo apt-get install cmake gfortran python3-sphinx doxygen mpich python3-breathe
-          cmake --version
-          gcc --version
-
-      - name: Clone spack
-        uses: actions/checkout@v2
-        with:
-          repository: spack/spack
-          path: spack
-          ref: releases/v0.17
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Clone spack mirrors
-        uses: actions/checkout@v2
-        with:
-          repository: llnl/variorum-spack-mirrors
-          path: variorum-spack-mirrors
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup spack and add local mirrors
-        run: |
-          SPACK_BIN=${PWD}/spack/bin
-          echo "${SPACK_BIN}" >> ${GITHUB_PATH}
-          export PATH=${SPACK_BIN}:${PATH}
-          which spack
-          echo -e "spack version: $(spack --version)"
-          ls ${GITHUB_WORKSPACE}
-          spack mirror add local_filesystem file://${GITHUB_WORKSPACE}/variorum-spack-mirrors
-          echo -e "Setting spack mirror"
-          ls variorum-spack-mirrors
-
-      - name: Install variorum deps
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          # Install hwloc
-          spack install hwloc
-          hwloc_dir=`ls -d ${PWD}/spack/opt/spack/*/*/hwloc-*`
-          echo "HWLOC_DIR=${hwloc_dir}" >> ${GITHUB_ENV}
-          # Install jansson
-          spack install jansson
-          jansson_dir=`ls -d ${PWD}/spack/opt/spack/*/*/jansson-*`
-          echo "JANSSON_DIR=${jansson_dir}" >> ${GITHUB_ENV}
-          # Install rankstr
-          spack install rankstr
-          rankstr_dir=`ls -d ${PWD}/spack/opt/spack/*/*/rankstr-*`
-          echo "RANKSTR_DIR=${rankstr_dir}" >> ${GITHUB_ENV}
-
-      - name: Compile check
-        run: |
-          # create out-of-source build and install dir
-          mkdir build && mkdir install
-          cd build
-          # setup cmake options
-          export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{env.BUILD_DOCS}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{env.VARIORUM_DEBUG}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DUSE_MSR_SAFE_BEFORE_1_5_0=${{env.USE_MSR_SAFE_BEFORE_1_5_0}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${{env.HWLOC_DIR}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DJANSSON_DIR=${{env.JANSSON_DIR}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DRANKSTR_DIR=${{env.RANKSTR_DIR}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
-          echo ${CMAKE_OPTS}
-          cmake ${CMAKE_OPTS} ../src
-          # build
-          VERBOSE=1 make -j
-          # install
-          make -j install
-          # build docs
-          make -j docs
+#  build-with-spack-mirrors:
+#    runs-on: ubuntu-latest
+#
+#    env:
+#      BUILD_SHARED_LIBS: ON
+#      BUILD_DOCS: ON
+#      BUILD_TESTS: ON
+#      CMAKE_BUILD_TYPE: RelWithDebInfo
+#      ENABLE_FORTRAN: ON
+#      ENABLE_MPI: ON
+#      ENABLE_OPENMP: ON
+#      VARIORUM_DEBUG: OFF
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Install deps on ubuntu
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install cmake gfortran python3-sphinx doxygen mpich python3-breathe
+#          cmake --version
+#          gcc --version
+#
+#      - name: Clone spack
+#        uses: actions/checkout@v2
+#        with:
+#          repository: spack/spack
+#          path: spack
+#          ref: releases/v0.17
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Clone spack mirrors
+#        uses: actions/checkout@v2
+#        with:
+#          repository: llnl/variorum-spack-mirrors
+#          path: variorum-spack-mirrors
+#          ref: main
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Setup spack and add local mirrors
+#        run: |
+#          SPACK_BIN=${PWD}/spack/bin
+#          echo "${SPACK_BIN}" >> ${GITHUB_PATH}
+#          export PATH=${SPACK_BIN}:${PATH}
+#          which spack
+#          echo -e "spack version: $(spack --version)"
+#          ls ${GITHUB_WORKSPACE}
+#          spack mirror add local_filesystem file://${GITHUB_WORKSPACE}/variorum-spack-mirrors
+#          echo -e "Setting spack mirror"
+#          ls variorum-spack-mirrors
+#
+#      - name: Install variorum deps
+#        run: |
+#          cd ${GITHUB_WORKSPACE}
+#          # Install hwloc
+#          spack install hwloc
+#          hwloc_dir=`ls -d ${PWD}/spack/opt/spack/*/*/hwloc-*`
+#          echo "HWLOC_DIR=${hwloc_dir}" >> ${GITHUB_ENV}
+#          # Install jansson
+#          spack install jansson
+#          jansson_dir=`ls -d ${PWD}/spack/opt/spack/*/*/jansson-*`
+#          echo "JANSSON_DIR=${jansson_dir}" >> ${GITHUB_ENV}
+#          # Install rankstr
+#          spack install rankstr
+#          rankstr_dir=`ls -d ${PWD}/spack/opt/spack/*/*/rankstr-*`
+#          echo "RANKSTR_DIR=${rankstr_dir}" >> ${GITHUB_ENV}
+#
+#      - name: Compile check
+#        run: |
+#          # create out-of-source build and install dir
+#          mkdir build && mkdir install
+#          cd build
+#          # setup cmake options
+#          export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{env.BUILD_DOCS}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DVARIORUM_DEBUG=${{env.VARIORUM_DEBUG}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DUSE_MSR_SAFE_BEFORE_1_5_0=${{env.USE_MSR_SAFE_BEFORE_1_5_0}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DHWLOC_DIR=${{env.HWLOC_DIR}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DJANSSON_DIR=${{env.JANSSON_DIR}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DRANKSTR_DIR=${{env.RANKSTR_DIR}}"
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_INSTALL_PREFIX=../install"
+#          echo ${CMAKE_OPTS}
+#          cmake ${CMAKE_OPTS} ../src
+#          # build
+#          VERBOSE=1 make -j
+#          # install
+#          make -j install
+#          # build docs
+#          make -j docs
