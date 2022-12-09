@@ -10,10 +10,16 @@ set(FORTRAN_EXAMPLES
     variorum-print-thermals-fortran-example
 )
 
+enable_language(Fortran)
+
+if(CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER 10.2)
+    message(STATUS "HERE")
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-invalid-boz")
+endif()
+
 message(STATUS "Adding variorum Fortran examples")
 foreach(EXAMPLE ${FORTRAN_EXAMPLES})
     message(STATUS " [*] Adding Fortran example: ${EXAMPLE}")
-    enable_language(Fortran)
     add_executable(${EXAMPLE} ${EXAMPLE}.f90)
     target_link_libraries(${EXAMPLE} variorum ${variorum_deps})
 endforeach()
