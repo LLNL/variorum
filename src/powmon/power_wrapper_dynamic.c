@@ -39,7 +39,6 @@ static unsigned long end;
 static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
-static volatile int poll_num = 0;
 static volatile int poll_dir = 5;
 
 static pthread_mutex_t mlock;
@@ -188,7 +187,7 @@ int main(int argc, char **argv)
 
     char *fname_dat = NULL;
     int rc = 0;
-    char *fname_summary;
+    char *fname_summary = NULL;
     if (highlander())
     {
         /* Start the log file. */
