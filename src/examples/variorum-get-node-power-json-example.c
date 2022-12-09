@@ -92,6 +92,7 @@ int main(int argc, char **argv)
         free(s);
         exit(-1);
     }
+
     /* Print the entire JSON object */
     puts(s);
 #endif

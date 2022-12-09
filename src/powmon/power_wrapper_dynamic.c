@@ -39,7 +39,6 @@ static unsigned long end;
 static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
-//static volatile int poll_num = 0;
 static volatile int poll_dir = 5;
 
 static pthread_mutex_t mlock;
