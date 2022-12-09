@@ -96,7 +96,7 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -139,7 +139,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 /// @brief Cap the frequency of the target processor.
 ///
 /// @supparch
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -198,7 +198,7 @@ int variorum_print_power_limit(void);
 ///
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -217,7 +217,7 @@ int variorum_print_verbose_thermals(void);
 ///
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -270,7 +270,7 @@ int variorum_print_counters(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -292,7 +292,7 @@ int variorum_print_verbose_power(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -316,7 +316,7 @@ int variorum_print_power(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -337,7 +337,7 @@ int variorum_print_verbose_frequency(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -399,7 +399,7 @@ int variorum_print_turbo(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -423,7 +423,7 @@ int variorum_print_verbose_gpu_utilization(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -442,7 +442,7 @@ int variorum_print_gpu_utilization(void);
 /// @brief Print list of available frequencies from p-states, turbo, AVX, etc. ranges.
 ///
 /// @supparch
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -500,7 +500,7 @@ int variorum_disable_turbo(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -524,7 +524,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
