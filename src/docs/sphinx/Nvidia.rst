@@ -126,6 +126,15 @@ rate) in a fixed time window. It leverages the
 ``nvmlDeviceGetUtilizationRates()`` API of NVML to report the device utilization
 rate as a percentage in integer precision.
 
+Power capping
+=============
+
+Variorum provides an API to cap GPU device power. The API applies the power cap
+equally to all GPU devices on the system. It leverages the
+``nvmlDeviceSetPowerManagementLimit()`` API of NVML to set the power cap to the
+device after converting the specified power cap into milliwatts. This API
+requires root/administrator privileges.
+
 ************
  References
 ************

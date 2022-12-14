@@ -144,10 +144,10 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-	int current_powerlimit_mwatts=0;
+        int current_powerlimit_mwatts = 0;
         int pi = 0; // only report the global power domain
 
-	apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
+        apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
 
         if (verbose)
         {
@@ -159,7 +159,8 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-                fprintf(output, "_INTEL_GPU_POWER_LIMIT Host Socket DeviceID GPU_Power_limit_mW\n");
+                fprintf(output,
+                        "_INTEL_GPU_POWER_LIMIT Host Socket DeviceID GPU_Power_limit_mW\n");
                 init_output = 1;
             }
             fprintf(output, "_INTEL_GPU_POWER_LIMIT %s %d %d %d\n",
@@ -180,9 +181,9 @@ void cap_gpu_power_limit(int chipid, unsigned int powerlimit)
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         int pi = 0; // check the power domain
-	int current_powerlimit_mwatts=0;
+        int current_powerlimit_mwatts = 0;
         apmidg_setpwrlim(d, pi, powerlimit_mwatts);
-	apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
+        apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
 
 
         if (powerlimit_mwatts != current_powerlimit_mwatts)
