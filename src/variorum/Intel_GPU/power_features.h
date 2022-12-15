@@ -16,6 +16,7 @@ void shutdownAPMIDG(void);
 void get_power_data(int chipid, int verbose, FILE *output);
 void get_thermal_data(int chipid, int verbose, FILE *output);
 void get_clocks_data(int chipid, int verbose, FILE *output);
+void get_power_limit_data(int chipid, int verbose, FILE *output);
 void cap_gpu_power_limit(int chipid, unsigned int powerlimit);
 
 #endif

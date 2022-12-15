@@ -26,8 +26,7 @@ int set_intel_gpu_func_ptrs(int idx)
         g_platform[idx].variorum_print_power           = intel_gpu_get_power;
         g_platform[idx].variorum_print_thermals        = intel_gpu_get_thermals;
         g_platform[idx].variorum_print_frequency       = intel_gpu_get_clocks;
-        // g_platform.variorum_print_power_limit    = ; // implement this later
-
+        g_platform[idx].variorum_print_power_limit     = intel_gpu_get_power_limit;
         g_platform[idx].variorum_cap_gpu_power_limit   = intel_cap_gpu_power_limit;
     }
     else

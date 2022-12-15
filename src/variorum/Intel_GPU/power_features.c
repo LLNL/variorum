@@ -135,25 +135,61 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
     }
 }
 
+void get_power_limit_data(int chipid, int verbose, FILE *output)
+{
+    int d;
+    static int init_output = 0;
+
+    /* Iterate over all GPU device handles and print GPU clock */
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+    {
+	int current_powerlimit_mwatts=0;
+        int pi = 0; // only report the global power domain
+
+	apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
+
+        if (verbose)
+        {
+            fprintf(output,
+                    "_INTEL_GPU_POWER_LIMIT Host: %s, Socket: %d, DeviceID: %d, GPU_Power_limit: %d mW\n",
+                    m_hostname, chipid, d, current_powerlimit_mwatts);
+        }
+        else
+        {
+            if (!init_output)
+            {
+                fprintf(output, "_INTEL_GPU_POWER_LIMIT Host Socket DeviceID GPU_Power_limit_mW\n");
+                init_output = 1;
+            }
+            fprintf(output, "_INTEL_GPU_POWER_LIMIT %s %d %d %d\n",
+                    m_hostname, chipid, d, current_powerlimit_mwatts);
+        }
+    }
+}
+
+
+
 void cap_gpu_power_limit(int chipid, unsigned int powerlimit)
 {
-    unsigned int powerlimit_mwatts = powerlimit * 1000;
+    int powerlimit_mwatts = powerlimit * 1000;
     int d;
-    int retval = 0;
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        /* Set power cap: please invoke the OneAPI call to set GPU power limit below */
-        /* retval = [ OneAPI call here ]
-        if (retval != 0)
+        int pi = 0; // check the power domain
+	int current_powerlimit_mwatts=0;
+        apmidg_setpwrlim(d, pi, powerlimit_mwatts);
+	apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
+
+
+        if (powerlimit_mwatts != current_powerlimit_mwatts)
         {
             variorum_error_handler("Could not set the specified GPU power limit",
                                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
         }
-        */
     }
 }
-
