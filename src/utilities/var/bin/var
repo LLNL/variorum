@@ -1,83 +1,113 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import argparse
 
-from cmd import *
+#from cmd import *
 
 sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
 
 from pyVariorum import variorum
 
+# Find var's location and its prefix.
+VAR_FILE = os.environ["VAR_FILE"] = os.path.expanduser(__file__)
+VAR_PREFIX = os.path.dirname(os.path.dirname(VAR_FILE))
+
+# Allow var libs to be imported in our scripts
+VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
+sys.path.insert(0, VAR_LIB_PATH)
+
+# Cleanup the scope and use var package going forward
+del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
 
 if sys.version_info[0] < 3:
     v_info = sys.version_info[:3]
     sys.exit("Var requires Python 3 or higher. This is Python %d.%d.%d." % v_info)
 
-def myavail():
-    print("Running avail command")
+import var
 
-def monitor():
-    printf("Running monitor command")
+# Command parsing
+parser = argparse.ArgumentParser(description="CLI for variorum library.")
 
-def main():
-    parser = argparse.ArgumentParser(description="CLI for variorum library.")
+parser.add_argument(
+    "-V",
+    "--version",
+    action="version",
+    version="%s" % var.var_version,
+    help="show version number and exit",
+)
 
-    parser.add_argument(
-        "-V",
-        "--version",
-        action="store_true",
-        help="show version number and exit",
-    )
+parser.add_argument(
+    "-v",
+    "--verbose",
+    action="store_true",
+    dest="verbose",
+    help="print additional output during builds",
+)
 
-    subparser = parser.add_subparsers(
-        metavar="COMMAND",
-        dest="command",
-    )
-    parser_avail = subparser.add_parser(
-        "avail",
-        help="query feature set",
-        description="query feature set",
-    )
-    parser_avail.set_defaults(func=myavail)
+# Each command module implements a parser() function, to which we pass its
+# subparser for setup.
+subparsers = parser.add_subparsers(
+    title="subcommands",
+    dest="command",
+)
 
-    parser_debug = subparser.add_parser(
-        "debug",
-        help="debugging commands for troublshooting variorum",
-        description="debugging commands for troublshooting variorum",
-    )
-    parser_monitor = subparser.add_parser(
-        "monitor",
-        help="monitor feature",
-        description="monitor feature",
-    )
+import var.cmd
+for cmd in var.cmd.commands:
+    module = var.cmd.get_module(cmd)
+    subparser = subparsers.add_parser(cmd, help=module.description)
+    module.setup_parser(subparser)
+args = parser.parse_args()
 
-    parser_monitor.add_argument(
-        "-t",
-        "--tester",
-        action="store_true",
-        help="test argument to command",
-    )
+# Setup environment based on args.
+var.verbose = args.verbose
 
-    args = parser.parse_args()
+if len(sys.argv) == 1:
+    parser.print_help()
+    parser.exit()
 
-    # Just print help and exit if run with no arguments at all
-    if len(sys.argv) == 1:
-        parser.print_help()
-        parser.exit()
+command = var.cmd.get_command(args.command)
+command(parser, args)
 
-    if args.version:
-        #v = variorum.variorum()
-        #buf = create_unicode_buffer(64)
-        #buf = v.variorum_get_current_version()
-        #print(buf.decode("utf-8"))
-        print("use variorum python wrapper for version")
+#    parser_avail = subparser.add_parser(
+#        "avail",
+#        help="query feature set",
+#        description="query feature set",
+#    )
+#    parser_avail.set_defaults(func=myavail)
+#
+#    parser_debug = subparser.add_parser(
+#        "debug",
+#        help="debugging commands for troublshooting variorum",
+#        description="debugging commands for troublshooting variorum",
+#    )
+#    parser_monitor = subparser.add_parser(
+#        "monitor",
+#        help="monitor feature",
+#        description="monitor feature",
+#    )
+#
+#    parser_monitor.add_argument(
+#        "-t",
+#        "--tester",
+#        action="store_true",
+#        help="test argument to command",
+#    )
+#
+#    args = parser.parse_args()
 
-    try:
-        args.func(args)
-    except AttributeError:
-        parser.print_help()
-        parser.exit()
+## Just print help and exit if run with no arguments at all
 
-if __name__ == "__main__":
-    main()
+#    if args.version:
+#        #v = variorum.variorum()
+#        #buf = create_unicode_buffer(64)
+#        #buf = v.variorum_get_current_version()
+#        #print(buf.decode("utf-8"))
+#        print("use variorum python wrapper for version")
+#
+#    try:
+#        args.func(args)
+#    except AttributeError:
+#        parser.print_help()
+#        parser.exit()
