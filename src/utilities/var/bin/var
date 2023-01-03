@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+
+from cmd import *
+
+sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
+
+from pyVariorum import variorum
+
+
+if sys.version_info[0] < 3:
+    v_info = sys.version_info[:3]
+    sys.exit("Var requires Python 3 or higher. This is Python %d.%d.%d." % v_info)
+
+def myavail():
+    print("Running avail command")
+
+def monitor():
+    printf("Running monitor command")
+
+def main():
+    parser = argparse.ArgumentParser(description="CLI for variorum library.")
+
+    parser.add_argument(
+        "-V",
+        "--version",
+        action="store_true",
+        help="show version number and exit",
+    )
+
+    subparser = parser.add_subparsers(
+        metavar="COMMAND",
+        dest="command",
+    )
+    parser_avail = subparser.add_parser(
+        "avail",
+        help="query feature set",
+        description="query feature set",
+    )
+    parser_avail.set_defaults(func=myavail)
+
+    parser_debug = subparser.add_parser(
+        "debug",
+        help="debugging commands for troublshooting variorum",
+        description="debugging commands for troublshooting variorum",
+    )
+    parser_monitor = subparser.add_parser(
+        "monitor",
+        help="monitor feature",
+        description="monitor feature",
+    )
+
+    parser_monitor.add_argument(
+        "-t",
+        "--tester",
+        action="store_true",
+        help="test argument to command",
+    )
+
+    args = parser.parse_args()
+
+    # Just print help and exit if run with no arguments at all
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit()
+
+    if args.version:
+        #v = variorum.variorum()
+        #buf = create_unicode_buffer(64)
+        #buf = v.variorum_get_current_version()
+        #print(buf.decode("utf-8"))
+        print("use variorum python wrapper for version")
+
+    try:
+        args.func(args)
+    except AttributeError:
+        parser.print_help()
+        parser.exit()
+
+if __name__ == "__main__":
+    main()
