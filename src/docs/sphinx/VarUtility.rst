@@ -76,5 +76,6 @@ Debugging msr-safe permissions, OPAL permissions, etc.
 .. program-output:: python -V
 
 .. program-output:: echo $PATH
+   :shell:
 
 .. program-output:: var help
