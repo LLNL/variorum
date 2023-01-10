@@ -35,7 +35,8 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
-    'breathe'
+    'breathe',
+    'sphinxcontrib.programoutput',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

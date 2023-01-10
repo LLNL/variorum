@@ -68,3 +68,9 @@ Need to verify frequency or power for the domain
 Debugging msr-safe permissions, OPAL permissions, etc.
 
 ``var debug``
+
+************
+ Testing
+************
+
+.. program-output:: python -V
