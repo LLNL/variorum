@@ -7,3 +7,4 @@ channels:
 dependencies:
   - breathe==4.16.0
   - jinja2<3.1
+  - sphinxcontrib-programoutput
