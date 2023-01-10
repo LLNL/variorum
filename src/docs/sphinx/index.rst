@@ -86,6 +86,7 @@ the nation's exascale computing imperative.
    HWArchitectures
    Powmon
    Utilities
+   VarUtility
 
 .. toctree::
    :maxdepth: 2
