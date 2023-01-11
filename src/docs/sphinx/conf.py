@@ -18,8 +18,18 @@ if read_the_docs_build:
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.append("../../thirdparty_builtin/breathe")
+#sys.path.insert(0, os.path.abspath('.'))
+#sys.path.append("../../thirdparty_builtin/breathe")
+
+link_name = os.path.abspath("_var_root")
+if not os.path.exists(link_name):
+    os.symlink(os.path.abspath("../../.."), link_name, target_is_directory=True)
+sys.path.insert(0, os.path.abspath("_var_root/src/docs/sphinx"))
+sys.path.append(os.path.abspath("_var_root/src/thirdparty_builtin/breathe"))
+
+# Add the var directory to the path so that we can use its output in docs.
+os.environ["VAR_ROOT"] = os.path.abspath("_var_root")
+os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.abspath("_var_root/src/utilities/var/bin"))
 
 # -- General configuration ------------------------------------------------
 
