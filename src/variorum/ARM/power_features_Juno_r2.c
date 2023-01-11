@@ -12,8 +12,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <inttypes.h>
-
-#include "power_features_Juno_r2.h"
+#include <power_features_Juno_r2.h>
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
@@ -296,7 +295,6 @@ int arm_cpu_juno_r2_cap_socket_frequency(int socketid, int new_freq)
     return 0;
 }
 
-
 int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 {
     char hostname[1024];
@@ -388,7 +386,6 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
                         json_real((double)(gpu_power_val) / 1000000.0f));
     return 0;
 }
-
 
 int arm_cpu_juno_r2_json_get_power_domain_info(json_t *get_domain_obj)
 {
