@@ -6,20 +6,21 @@ import argparse
 
 #from cmd import *
 
-sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
+#sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
+#
+#from pyVariorum import variorum
 
-from pyVariorum import variorum
-
-# Find var's location and its prefix.
-VAR_FILE = os.environ["VAR_FILE"] = os.path.expanduser(__file__)
-VAR_PREFIX = os.path.dirname(os.path.dirname(VAR_FILE))
-
-# Allow var libs to be imported in our scripts
-VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
-sys.path.insert(0, VAR_LIB_PATH)
-
-# Cleanup the scope and use var package going forward
-del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
+## Find var's location and its prefix.
+#VAR_FILE = os.environ["VAR_FILE"] = os.path.expanduser(__file__)
+#VAR_PREFIX = os.path.dirname(os.path.dirname(VAR_FILE))
+#
+## Allow var libs to be imported in our scripts
+#VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
+#sys.path.insert(0, VAR_LIB_PATH)
+#print(sys.path)
+#
+## Cleanup the scope and use var package going forward
+#del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
 
 if sys.version_info[0] < 3:
     v_info = sys.version_info[:3]

@@ -1,10 +1,10 @@
 import os
 import re
 import multiprocessing
-from version import Version
+from var.version import Version
 
-import tty
-from utils import *
+import var.tty
+from var.utils import *
 
 # This lives in $prefix/var/var/__file__
 prefix = ancestor(__file__, 3)

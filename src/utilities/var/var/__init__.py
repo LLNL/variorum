@@ -1,2 +1,2 @@
-from globals import *
-from utils import *
+from var.globals import *
+from var.utils import *
