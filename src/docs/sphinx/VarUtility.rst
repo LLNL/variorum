@@ -13,6 +13,7 @@ The ``var`` command has many *subcommands*.
 ``var help``
 
 .. code-block:: console
+
    usage: var [-h] [-V] [-v]
            {avail,debug,help,monitor,query,read,setcap,write} ...
 
