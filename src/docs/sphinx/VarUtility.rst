@@ -78,4 +78,4 @@ Debugging msr-safe permissions, OPAL permissions, etc.
 .. program-output:: echo $PATH
    :shell:
 
-.. program-output:: var help
+.. command-output:: var help
