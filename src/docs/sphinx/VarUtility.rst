@@ -79,4 +79,7 @@ Debugging msr-safe permissions, OPAL permissions, etc.
 .. program-output:: echo $PATH
    :shell:
 
+.. program-output:: echo $PYTHONPATH
+   :shell:
+
 .. command-output:: var help
