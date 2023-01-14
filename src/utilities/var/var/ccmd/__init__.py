@@ -2,8 +2,10 @@ import os
 import re
 
 import var
-import tty as tty
-import attr as attr
+import var.tty as tty
+import var.attr as attr
+
+print("AAA", var.__file__)
 
 # Patterns to ignore in the commands directory when looking for commands.
 ignore_files = r'^\.|^__init__.py$|^#'
@@ -11,7 +13,7 @@ ignore_files = r'^\.|^__init__.py$|^#'
 SETUP_PARSER = "setup_parser"
 DESCRIPTION = "description"
 
-command_path = os.path.join(var.lib_path, "var", "cmd")
+command_path = os.path.join(var.lib_path, "var", "ccmd")
 
 commands = []
 for file in os.listdir(command_path):

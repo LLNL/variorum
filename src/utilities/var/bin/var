@@ -4,29 +4,33 @@ import os
 import sys
 import argparse
 
-from cmd import *
+#from cmd import *
 
-sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
-
-from pyVariorum import variorum
-
-# Find var's location and its prefix.
-VAR_FILE = os.environ["VAR_FILE"] = os.path.expanduser(__file__)
-VAR_PREFIX = os.path.dirname(os.path.dirname(VAR_FILE))
-
-# Allow var libs to be imported in our scripts
-VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
-sys.path.insert(0, VAR_LIB_PATH)
+#sys.path.append("/g/g19/brink2/git_root_pub/variorum/src/wrappers/python")
+#
+#from pyVariorum import variorum
+#
+## Find var's location and its prefix.
+#VAR_FILE = os.environ["VAR_FILE"] = os.path.expanduser(__file__)
+#VAR_PREFIX = os.path.dirname(os.path.dirname(VAR_FILE))
+#
+## Allow var libs to be imported in our scripts
+#VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
+#sys.path.insert(0, VAR_LIB_PATH)
+print(os.environ['PYTHONPATH'])
 print(sys.path)
-
-# Cleanup the scope and use var package going forward
-del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
-
-if sys.version_info[0] < 3:
-    v_info = sys.version_info[:3]
-    sys.exit("Var requires Python 3 or higher. This is Python %d.%d.%d." % v_info)
+print("HELLO", os.getcwd())
+#
+### Cleanup the scope and use var package going forward
+##del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
+#
+#if sys.version_info[0] < 3:
+#    v_info = sys.version_info[:3]
+#    sys.exit("Var requires Python 3 or higher. This is Python %d.%d.%d." % v_info)
 
 import var
+#import var.ccmd
+
 
 # Command parsing
 parser = argparse.ArgumentParser(description="CLI for variorum library.")
@@ -54,10 +58,11 @@ subparsers = parser.add_subparsers(
     dest="command",
 )
 
-import var.cmd
-for cmd in var.cmd.commands:
-    module = var.cmd.get_module(cmd)
-    subparser = subparsers.add_parser(cmd, help=module.description)
+#import cmd
+print("QQQ", dir(var.ccmd))
+for comm in var.ccmd.commands:
+    module = var.ccmd.get_module(comm)
+    subparser = subparsers.add_parser(comm, help=module.description)
     module.setup_parser(subparser)
 args = parser.parse_args()
 
@@ -68,7 +73,7 @@ if len(sys.argv) == 1:
     parser.print_help()
     parser.exit()
 
-command = var.cmd.get_command(args.command)
+command = var.ccmd.get_command(args.command)
 command(parser, args)
 
 #    parser_avail = subparser.add_parser(
