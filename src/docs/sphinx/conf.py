@@ -31,6 +31,7 @@ sys.path.append(os.path.abspath("_var_root/src/thirdparty_builtin/breathe"))
 os.environ["VAR_ROOT"] = os.path.abspath("_var_root")
 os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.abspath("_var_root/src/utilities/var/bin"))
 os.environ["PYTHONPATH"] = "%s%s" % (os.pathsep, os.path.abspath("_var_root/src/utilities/var/var"))
+os.environ["PYTHONPATH"] += "%s%s" % (os.pathsep, os.path.abspath("_var_root/src/utilities/var"))
 
 # -- General configuration ------------------------------------------------
 
