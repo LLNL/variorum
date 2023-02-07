@@ -10,12 +10,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <ARM.h>
+#include <ARM_Neoverse_N1.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <power_features.h>
 
-int arm_get_power(int long_ver)
+int arm_neoverse_n1_get_power(int long_ver)
 {
     int ret = 0;
 
@@ -30,7 +30,7 @@ int arm_get_power(int long_ver)
     return ret;
 }
 
-int arm_get_thermals(int long_ver)
+int arm_neoverse_n1_get_thermals(int long_ver)
 {
     int ret = 0;
 
@@ -45,7 +45,7 @@ int arm_get_thermals(int long_ver)
     return ret;
 }
 
-int arm_get_clocks(int long_ver)
+int arm_neoverse_n1_get_clocks(int long_ver)
 {
     int ret = 0;
     unsigned iter = 0;
@@ -66,7 +66,7 @@ int arm_get_clocks(int long_ver)
     return ret;
 }
 
-int arm_get_frequencies(void)
+int arm_neoverse_n1_get_frequencies(void)
 {
     int ret = 0;
     unsigned iter = 0;
@@ -87,7 +87,7 @@ int arm_get_frequencies(void)
     return ret;
 }
 
-int arm_cap_socket_frequency(int cpuid, int freq)
+int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq)
 {
     int ret = 0;
     unsigned nsockets;
@@ -109,7 +109,7 @@ int arm_cap_socket_frequency(int cpuid, int freq)
     return ret;
 }
 
-int arm_get_power_json(char **get_power_obj_str)
+int arm_neoverse_n1_get_power_json(char **get_power_obj_str)
 {
     int ret = 0;
 
@@ -129,7 +129,7 @@ int arm_get_power_json(char **get_power_obj_str)
     return ret;
 }
 
-int arm_get_power_domain_info_json(char **get_domain_obj_str)
+int arm_neoverse_n1_get_power_domain_info_json(char **get_domain_obj_str)
 {
     int ret = 0;
 

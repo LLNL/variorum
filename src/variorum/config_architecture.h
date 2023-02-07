@@ -77,7 +77,8 @@ enum nvidia_gpu_arch_e
 
 enum arm_arch_e
 {
-    ARMV8 = 1, //ARM Juno
+    ARM_JUNO_R2     = 0x410fd080, //ARM Juno r2
+    ARM_NEOVERSE_N1 = 0x413fd0c1, //ARM Neoverse N1
 };
 
 /// @brief List of AMD GPU family and models.

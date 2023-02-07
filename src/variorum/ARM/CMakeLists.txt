@@ -4,12 +4,14 @@
 # SPDX-License-Identifier: MIT
 
 set(variorum_arm_headers
-  ${CMAKE_CURRENT_SOURCE_DIR}/ARM.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Juno_r2.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Neoverse_N1.h
   ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h
   CACHE INTERNAL "")
 
 set(variorum_arm_sources
-  ${CMAKE_CURRENT_SOURCE_DIR}/ARM.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Juno_r2.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Neoverse_N1.c
   ${CMAKE_CURRENT_SOURCE_DIR}/power_features.c
   CACHE INTERNAL "")
 
