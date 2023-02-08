@@ -324,7 +324,11 @@ jobs:
           ./ep.W.x
 
   check-code-format:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7]
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
@@ -347,11 +351,12 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          python -m pip install --upgrade pip flake8 rstfmt
+          python -m pip install --upgrade pip rstfmt
 
       - name: Update Black
         run: |
-          pip install --upgrade black
+          pip install black==21.12b0
+          pip install flake8==4.0.1
 
       - name: Style check python files
         run: |
