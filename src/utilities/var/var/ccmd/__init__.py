@@ -5,8 +5,6 @@ import var
 import var.tty as tty
 import var.attr as attr
 
-print("AAA", var.__file__)
-
 # Patterns to ignore in the commands directory when looking for commands.
 ignore_files = r'^\.|^__init__.py$|^#'
 

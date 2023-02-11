@@ -17,9 +17,6 @@ import argparse
 ## Allow var libs to be imported in our scripts
 #VAR_LIB_PATH = os.path.join(VAR_PREFIX, "var")
 #sys.path.insert(0, VAR_LIB_PATH)
-print(os.environ['PYTHONPATH'])
-print(sys.path)
-print("HELLO", os.getcwd())
 #
 ### Cleanup the scope and use var package going forward
 ##del VAR_FILE, VAR_PREFIX, VAR_LIB_PATH
@@ -59,7 +56,6 @@ subparsers = parser.add_subparsers(
 )
 
 #import cmd
-print("QQQ", dir(var.ccmd))
 for comm in var.ccmd.commands:
     module = var.ccmd.get_module(comm)
     subparser = subparsers.add_parser(comm, help=module.description)
