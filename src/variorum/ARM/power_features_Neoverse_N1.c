@@ -88,14 +88,12 @@ void shutdown_arm(void)
     printf("Shutdown ARM\n");
 }
 
-int get_power_data(int verbose, FILE *output)
+int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
 {
     static int init_output = 0;
 
-    uint64_t sys_power_val;
-    uint64_t big_power_val;
-    uint64_t little_power_val;
-    uint64_t gpu_power_val;
+    uint64_t cpu_power_val;
+    uint64_t io_power_val;
 
     /* The filesystem interfaces used here and in the rest of the ARM port
      * are based on the ARM Juno R2 board technical reference documentation:
@@ -107,15 +105,11 @@ int get_power_data(int verbose, FILE *output)
      * ARM hardware implementation-specific interfaces.
      */
 
-    char *sys_power_fname = "/sys/class/hwmon/hwmon0/power1_input";
-    char *big_power_fname = "/sys/class/hwmon/hwmon0/power2_input";
-    char *little_power_fname = "/sys/class/hwmon/hwmon0/power3_input";
-    char *gpu_power_fname = "/sys/class/hwmon/hwmon0/power4_input";
+    char *cpu_power_fname = "/sys/class/hwmon/hwmon1/power1_input";
+    char *io_power_fname = "/sys/class/hwmon/hwmon1/power2_input";
 
-    int sys_power_fd = open(sys_power_fname, O_RDONLY);
-    int big_power_fd = open(big_power_fname, O_RDONLY);
-    int little_power_fd = open(little_power_fname, O_RDONLY);
-    int gpu_power_fd = open(gpu_power_fname, O_RDONLY);
+    int cpu_power_fd = open(cpu_power_fname, O_RDONLY);
+    int io_power_fd = open(io_power_fname, O_RDONLY);
 
     if (!sys_power_fd || !big_power_fd || !little_power_fd || !gpu_power_fd)
     {
@@ -127,10 +121,8 @@ int get_power_data(int verbose, FILE *output)
 
     /* Power values are reported in micro Watts */
 
-    int sys_bytes = read_file_ui64(sys_power_fd, &sys_power_val);
-    int big_bytes = read_file_ui64(big_power_fd, &big_power_val);
-    int lil_bytes = read_file_ui64(little_power_fd, &little_power_val);
-    int gpu_bytes = read_file_ui64(gpu_power_fd, &gpu_power_val);
+    int cpu_bytes = read_file_ui64(cpu_power_fd, &cpu_power_val);
+    int io_bytes = read_file_ui64(io_power_fd, &io_power_val);
 
     if (!sys_bytes || !big_bytes || !lil_bytes || !gpu_bytes)
     {
@@ -140,10 +132,8 @@ int get_power_data(int verbose, FILE *output)
         return -1;
     }
 
-    close(sys_power_fd);
-    close(big_power_fd);
-    close(little_power_fd);
-    close(gpu_power_fd);
+    close(cpu_power_fd);
+    close(io_power_fd);
 
     /* The power telemetry obtained from the power registers is in
      * microwatts. To improve readability of verbose output, Variorum
@@ -153,50 +143,39 @@ int get_power_data(int verbose, FILE *output)
     if (verbose)
     {
         fprintf(output,
-                "_ARM_POWER Host: %s, Sys: %0.2lf mW, Big: %0.2lf mW,"
-                " Little: %0.2lf mW, GPU: %0.2lf mW\n",
+                "_ARM_POWER Host: %s, CPU: %0.2lf mW, I/O: %0.2lf mW\n",
                 m_hostname,
-                (double)(sys_power_val) / 1000.0f,
-                (double)(big_power_val) / 1000.0f,
-                (double)(little_power_val) / 1000.0f,
-                (double)(gpu_power_val) / 1000.0f);
+                (double)(cpu_power_val) / 1000.0f,
+                (double)(io_power_val) / 1000.0f);
     }
     else
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_POWER Host Sys_mW Big_mW Little_mW GPU_mW\n");
+            fprintf(output, "_ARM_POWER Host CPU_mW I/O_mW\n");
             init_output = 1;
         }
-        fprintf(output, "_ARM_POWER %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+        fprintf(output, "_ARM_POWER %s %0.2lf %0.2lf\n",
                 m_hostname,
-                (double)(sys_power_val) / 1000.0f,
-                (double)(big_power_val) / 1000.0f,
-                (double)(little_power_val) / 1000.0f,
-                (double)(gpu_power_val) / 1000.0f);
+                (double)(cpu_power_val) / 1000.0f,
+                (double)(io_power_val) / 1000.0f);
     }
     return 0;
 }
 
-int get_thermal_data(int verbose, FILE *output)
+int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
 {
     static int init_output = 0;
-    uint64_t sys_therm_val;
-    uint64_t big_therm_val;
-    uint64_t little_therm_val;
-    uint64_t gpu_therm_val;
+    uint64_t loc1_therm_val;
+    uint64_t soc_therm_val;
 
-    char *sys_therm_fname = "/sys/class/hwmon/hwmon0/temp1_input";
-    char *big_therm_fname = "/sys/class/hwmon/hwmon0/temp2_input";
-    char *little_therm_fname = "/sys/class/hwmon/hwmon0/temp3_input";
-    char *gpu_therm_fname = "/sys/class/hwmon/hwmon0/temp4_input";
+    char *loc1_therm_fname = "/sys/class/hwmon/hwmon0/temp1_input";
+    char *soc_therm_fname = "/sys/class/hwmon/hwmon1/temp1_input";
 
-    int sys_therm_fd = open(sys_therm_fname, O_RDONLY);
-    int big_therm_fd = open(big_therm_fname, O_RDONLY);
-    int little_therm_fd = open(little_therm_fname, O_RDONLY);
-    int gpu_therm_fd = open(gpu_therm_fname, O_RDONLY);
+    int loc1_therm_fd = open(sys_therm_fname, O_RDONLY);
+    int soc_therm_fd = open(big_therm_fname, O_RDONLY);
 
-    if (!sys_therm_fd || !big_therm_fd || !little_therm_fd || !gpu_therm_fd)
+    if (!loc1_therm_fd || !soc_therm_fd)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -204,12 +183,10 @@ int get_thermal_data(int verbose, FILE *output)
         return -1;
     }
 
-    int sys_bytes = read_file_ui64(sys_therm_fd, &sys_therm_val);
-    int big_bytes = read_file_ui64(big_therm_fd, &big_therm_val);
-    int lil_bytes = read_file_ui64(little_therm_fd, &little_therm_val);
-    int gpu_bytes = read_file_ui64(gpu_therm_fd, &gpu_therm_val);
+    int loc1_bytes = read_file_ui64(loc1_therm_fd, &loc1_therm_val);
+    int soc_bytes = read_file_ui64(soc_therm_fd, &soc_therm_val);
 
-    if (!sys_bytes || !big_bytes || !lil_bytes || !gpu_bytes)
+    if (!loc1_bytes || !soc_bytes)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -217,21 +194,16 @@ int get_thermal_data(int verbose, FILE *output)
         return -1;
     }
 
-    close(sys_therm_fd);
-    close(big_therm_fd);
-    close(little_therm_fd);
-    close(gpu_therm_fd);
+    close(loc1_therm_fd);
+    close(soc_therm_fd);
 
     if (verbose)
     {
         fprintf(output,
-                "_ARM_TEMPERATURE Host: %s, Sys: %0.2lf C, Big: %0.2lf C,"
-                " Little: %0.2lf C, GPU: %0.2lf C\n",
+                "_ARM_TEMPERATURE Host: %s,LOC1: %0.2lf C, SOC: %0.2lf C\n"
                 m_hostname,
-                (double)(sys_therm_val) / 1000.0f,
-                (double)(big_therm_val) / 1000.0f,
-                (double)(little_therm_val) / 1000.0f,
-                (double)(gpu_therm_val) / 1000.0f);
+                (double)(loc1_therm_val) / 1000.0f,
+                (double)(soc_therm_val) / 1000.0f);
     }
     else
     {
@@ -240,17 +212,15 @@ int get_thermal_data(int verbose, FILE *output)
             fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
             init_output = 1;
         }
-        fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+        fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf\n",
                 m_hostname,
-                (double)(sys_therm_val) / 1000.0f,
-                (double)(big_therm_val) / 1000.0f,
-                (double)(little_therm_val) / 1000.0f,
-                (double)(gpu_therm_val) / 1000.0f);
+                (double)(loc1_therm_val) / 1000.0f,
+                (double)(soc_therm_val) / 1000.0f);
     }
     return 0;
 }
 
-int get_clocks_data(int chipid, int verbose, FILE *output)
+int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t freq_val;
@@ -299,7 +269,7 @@ int get_clocks_data(int chipid, int verbose, FILE *output)
     return 0;
 }
 
-int get_frequencies(int chipid, FILE *output)
+int arm_cpu_neoverse_n1_get_frequencies(int chipid, FILE *output)
 {
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
@@ -339,7 +309,7 @@ int get_frequencies(int chipid, FILE *output)
     return 0;
 }
 
-int cap_socket_frequency(int socketid, int new_freq)
+int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq)
 {
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
@@ -368,7 +338,7 @@ int cap_socket_frequency(int socketid, int new_freq)
 }
 
 
-int json_get_power_data(json_t *get_power_obj)
+int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
 {
     char hostname[1024];
     struct timeval tv;
@@ -461,7 +431,7 @@ int json_get_power_data(json_t *get_power_obj)
 }
 
 
-int json_get_power_domain_info(json_t *get_domain_obj)
+int arm_cpu_neoverse_n1_json_get_power_domain_info(json_t *get_domain_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
