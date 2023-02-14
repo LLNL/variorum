@@ -8,8 +8,8 @@
 
 #include <config_arm.h>
 #include <config_architecture.h>
-#include <power_features.h>
-#include <power_features.h>
+#include "power_features_Juno_r2.h"
+#include "power_features_Neoverse_N1.h"
 #include <ARM_Juno_r2.h>
 #include <ARM_Neoverse_N1.h>
 #include <variorum_error.h>
@@ -55,8 +55,6 @@ int set_arm_func_ptrs(int idx)
             arm_neoverse_n1_get_thermals;
         g_platform[idx].variorum_print_frequency                 =
             arm_neoverse_n1_get_clocks;
-        g_platform[idx].variorum_print_available_frequencies     =
-            arm_neoverse_n1_get_frequencies;
         g_platform[idx].variorum_cap_socket_frequency_limit      =
             arm_neoverse_n1_cap_socket_frequency;
         g_platform[idx].variorum_get_node_power_json             =

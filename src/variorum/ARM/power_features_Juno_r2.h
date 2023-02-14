@@ -9,13 +9,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <jansson.h>
-
-extern unsigned m_num_package;
-extern char m_hostname[1024];
-
-void init_arm(void);
-
-void shutdown_arm(void);
+#include <arm_util.h>
 
 int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output);
 

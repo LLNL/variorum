@@ -13,82 +13,11 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include <power_features.h>
-#include <config_architecture.h>
+#include "power_features_Juno_r2.h"
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-unsigned m_num_package;
-char m_hostname[1024];
-
-int read_file_ui64(const int file, uint64_t *val)
-{
-    char buf[32];
-    int bytes_read = read(file, buf, 32);
-    if (bytes_read == 0)
-    {
-        return 0;
-    }
-    sscanf(buf, "%"SCNu64, val);
-
-    return bytes_read;
-}
-
-int write_file_ui64(const int file, uint64_t val)
-{
-    char buf[32];
-    sprintf(buf, "%"PRIu64, val);
-    int bytes_written = write(file, buf, 32);
-    if (bytes_written <= 0)
-    {
-        return 0;
-    }
-
-    return bytes_written;
-}
-
-int read_array_ui64(const int fd, uint64_t **array)
-{
-    int iter = 0;
-    char buf[4096];
-    int bytes_read = read(fd, buf, 4096);
-
-    if (bytes_read == 0)
-    {
-        return 0;
-    }
-
-    int nfreq = 0;
-    char *fptr = buf;
-
-    for (nfreq = 0; fptr[nfreq] != '\0'; fptr[nfreq] == ' ' ? nfreq++ : * (fptr++));
-
-    uint64_t *val_array = (uint64_t *) malloc(sizeof(uint64_t) * nfreq);
-    char *tok = strtok(buf, " ");
-    while (tok && iter < nfreq)
-    {
-        val_array[iter++] = atoll(tok);
-        tok = strtok(NULL, " \n");
-    }
-    *array = val_array;
-    return nfreq;
-}
-
-void init_arm(void)
-{
-    /* Collect number of packages and GPUs per package */
-    variorum_get_topology(&m_num_package, NULL, NULL, P_ARM_CPU_IDX);
-
-    /* Save hostname */
-    gethostname(m_hostname, 1024);
-}
-
-void shutdown_arm(void)
-{
-    printf("Shutdown ARM\n");
-}
-
-int get_power_data(int verbose, FILE *output)
+int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 {
     static int init_output = 0;
 
@@ -178,7 +107,7 @@ int get_power_data(int verbose, FILE *output)
     return 0;
 }
 
-int get_thermal_data(int verbose, FILE *output)
+int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t sys_therm_val;
@@ -250,7 +179,7 @@ int get_thermal_data(int verbose, FILE *output)
     return 0;
 }
 
-int get_clocks_data(int chipid, int verbose, FILE *output)
+int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
 {
     static int init_output = 0;
     uint64_t freq_val;
@@ -299,7 +228,7 @@ int get_clocks_data(int chipid, int verbose, FILE *output)
     return 0;
 }
 
-int get_frequencies(int chipid, FILE *output)
+int arm_cpu_juno_r2_get_frequencies(int chipid, FILE *output)
 {
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
@@ -339,7 +268,7 @@ int get_frequencies(int chipid, FILE *output)
     return 0;
 }
 
-int cap_socket_frequency(int socketid, int new_freq)
+int arm_cpu_juno_r2_cap_socket_frequency(int socketid, int new_freq)
 {
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
@@ -368,7 +297,7 @@ int cap_socket_frequency(int socketid, int new_freq)
 }
 
 
-int json_get_power_data(json_t *get_power_obj)
+int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 {
     char hostname[1024];
     struct timeval tv;
@@ -461,7 +390,7 @@ int json_get_power_data(json_t *get_power_obj)
 }
 
 
-int json_get_power_domain_info(json_t *get_domain_obj)
+int arm_cpu_juno_r2_json_get_power_domain_info(json_t *get_domain_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
