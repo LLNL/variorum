@@ -13,80 +13,9 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include <power_features.h>
-#include <config_architecture.h>
+#include "power_features_Neoverse_N1.h"
 #include <variorum_error.h>
 #include <variorum_timers.h>
-
-unsigned m_num_package;
-char m_hostname[1024];
-
-int read_file_ui64(const int file, uint64_t *val)
-{
-    char buf[32];
-    int bytes_read = read(file, buf, 32);
-    if (bytes_read == 0)
-    {
-        return 0;
-    }
-    sscanf(buf, "%"SCNu64, val);
-
-    return bytes_read;
-}
-
-int write_file_ui64(const int file, uint64_t val)
-{
-    char buf[32];
-    sprintf(buf, "%"PRIu64, val);
-    int bytes_written = write(file, buf, 32);
-    if (bytes_written <= 0)
-    {
-        return 0;
-    }
-
-    return bytes_written;
-}
-
-int read_array_ui64(const int fd, uint64_t **array)
-{
-    int iter = 0;
-    char buf[4096];
-    int bytes_read = read(fd, buf, 4096);
-
-    if (bytes_read == 0)
-    {
-        return 0;
-    }
-
-    int nfreq = 0;
-    char *fptr = buf;
-
-    for (nfreq = 0; fptr[nfreq] != '\0'; fptr[nfreq] == ' ' ? nfreq++ : * (fptr++));
-
-    uint64_t *val_array = (uint64_t *) malloc(sizeof(uint64_t) * nfreq);
-    char *tok = strtok(buf, " ");
-    while (tok && iter < nfreq)
-    {
-        val_array[iter++] = atoll(tok);
-        tok = strtok(NULL, " \n");
-    }
-    *array = val_array;
-    return nfreq;
-}
-
-void init_arm(void)
-{
-    /* Collect number of packages and GPUs per package */
-    variorum_get_topology(&m_num_package, NULL, NULL, P_ARM_CPU_IDX);
-
-    /* Save hostname */
-    gethostname(m_hostname, 1024);
-}
-
-void shutdown_arm(void)
-{
-    printf("Shutdown ARM\n");
-}
 
 int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
 {
@@ -111,7 +40,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
     int cpu_power_fd = open(cpu_power_fname, O_RDONLY);
     int io_power_fd = open(io_power_fname, O_RDONLY);
 
-    if (!sys_power_fd || !big_power_fd || !little_power_fd || !gpu_power_fd)
+    if (!cpu_power_fd || !io_power_fd)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -124,7 +53,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
     int cpu_bytes = read_file_ui64(cpu_power_fd, &cpu_power_val);
     int io_bytes = read_file_ui64(io_power_fd, &io_power_val);
 
-    if (!sys_bytes || !big_bytes || !lil_bytes || !gpu_bytes)
+    if (!cpu_bytes || !io_bytes)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -172,8 +101,8 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     char *loc1_therm_fname = "/sys/class/hwmon/hwmon0/temp1_input";
     char *soc_therm_fname = "/sys/class/hwmon/hwmon1/temp1_input";
 
-    int loc1_therm_fd = open(sys_therm_fname, O_RDONLY);
-    int soc_therm_fd = open(big_therm_fname, O_RDONLY);
+    int loc1_therm_fd = open(loc1_therm_fname, O_RDONLY);
+    int soc_therm_fd = open(soc_therm_fname, O_RDONLY);
 
     if (!loc1_therm_fd || !soc_therm_fd)
     {
@@ -200,7 +129,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     if (verbose)
     {
         fprintf(output,
-                "_ARM_TEMPERATURE Host: %s,LOC1: %0.2lf C, SOC: %0.2lf C\n"
+                "_ARM_TEMPERATURE Host: %s,LOC1: %0.2lf C, SoC: %0.2lf C\n",
                 m_hostname,
                 (double)(loc1_therm_val) / 1000.0f,
                 (double)(soc_therm_val) / 1000.0f);
@@ -209,7 +138,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
+            fprintf(output, "_ARM_TEMPERATURE Host LOC1 SoC\n");
             init_output = 1;
         }
         fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf\n",
@@ -223,89 +152,57 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
 int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 {
     static int init_output = 0;
-    uint64_t freq_val;
+    uint64_t freq_val = 0;
+    uint64_t core_iter;
+    uint64_t aggregate_freq = 0;
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
-    sprintf(freq_fname, "%s%d/scaling_cur_freq", freq_path, chipid);
-    int freq_fd = open(freq_fname, O_RDONLY);
-    if (!freq_fd)
-    {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    int bytes_read = read_file_ui64(freq_fd, &freq_val);
-    if (!bytes_read)
-    {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    close(freq_fd);
 
-    /* The clocks telemetry obtained from the sysfs interface is in
-     * KHz. Variorum converts and reports this telemetry in MHz to
-     * keep it consistent with the clocks reported for other
-     * supported architectures.
-     */
+    for (core_iter = 0; core_iter < NUM_CORES; core_iter++)
+    {
+        sprintf(freq_fname, "%s%d/scaling_cur_freq", freq_path, core_iter);
+        int freq_fd = open(freq_fname, O_RDONLY);
+        if (!freq_fd)
+        {
+            variorum_error_handler("Error encountered in accessing sysfs interface",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        int bytes_read = read_file_ui64(freq_fd, &freq_val);
+        if (!bytes_read)
+        {
+            variorum_error_handler("Error encountered in accessing sysfs interface",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return -1;
+        }
+        close(freq_fd);
+
+        /* The clocks telemetry obtained from the sysfs interface is in
+         * KHz. Variorum converts and reports this telemetry in MHz to
+         * keep it consistent with the clocks reported for other
+         * supported architectures.
+         */
+        aggregate_freq += freq_val / 1000;
+    }
+    freq_val = aggregate_freq / NUM_CORES;
     if (verbose)
     {
         fprintf(output,
-                "_ARM_CLOCKS Host: %s, CPU: %s, Socket: %d, Clock: %"PRIu64" MHz\n",
-                m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+                "_ARM_CLOCKS Host: %s, Socket: %d, Clock: %"PRIu64" MHz\n",
+                m_hostname, chipid, freq_val);
     }
     else
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_CLOCKS Host CPU Socket Clock_MHz\n");
+            fprintf(output, "_ARM_CLOCKS Host Socket Clock_MHz\n");
             init_output = 1;
         }
-        fprintf(output, "_ARM_CLOCKS %s %s %d %"PRIu64"\n",
-                m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+        fprintf(output, "_ARM_CLOCKS %s %d %"PRIu64"\n",
+                m_hostname, chipid, freq_val);
     }
-    return 0;
-}
-
-int arm_cpu_neoverse_n1_get_frequencies(int chipid, FILE *output)
-{
-    char freq_fname[4096];
-    char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
-    int freq_fd;
-    uint64_t *freq_array;
-    int arr_size;
-
-    sprintf(freq_fname, "%s%d/scaling_available_frequencies", freq_path, chipid);
-    freq_fd = open(freq_fname, O_RDONLY);
-
-    if (!freq_fd)
-    {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-
-    arr_size = read_array_ui64(freq_fd, &freq_array);
-    if (!arr_size)
-    {
-        variorum_error_handler("Error encountered in accessing sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    close(freq_fd);
-
-    fprintf(output, "=== Available frequencies for %s CPU (ID: %d) in MHz ===\n",
-            (chipid == 0) ? "Big" : "Little", chipid);
-    for (int i = 0; i < arr_size; i++)
-    {
-        fprintf(output, "%"PRIu64" ", freq_array[i] / 1000);
-    }
-    fprintf(output, "\n");
-    free(freq_array);
     return 0;
 }
 

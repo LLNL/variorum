@@ -9,19 +9,13 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <jansson.h>
+#include <arm_util.h>
 
-extern unsigned m_num_package;
-extern char m_hostname[1024];
-
-void init_arm(void);
-
-void shutdown_arm(void);
+#define NUM_CORES 80
 
 int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output);
 
 int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output);
-
-int arm_cpu_neoverse_n1_get_frequencies(int chipid, FILE *output);
 
 int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output);
 

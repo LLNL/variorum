@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <config_architecture.h>
 
 extern unsigned m_num_package;
 extern char m_hostname[1024];

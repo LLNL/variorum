@@ -66,27 +66,6 @@ int arm_neoverse_n1_get_clocks(int long_ver)
     return ret;
 }
 
-int arm_neoverse_n1_get_frequencies(void)
-{
-    int ret = 0;
-    unsigned iter = 0;
-    unsigned nsockets;
-
-    char *val = getenv("VARIORUM_LOG");
-    if (val != NULL && atoi(val) == 1)
-    {
-        printf("Running %s\n", __FUNCTION__);
-    }
-
-    variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
-    for (iter = 0; iter < nsockets; iter++)
-    {
-        ret = arm_cpu_neoverse_n1_get_frequencies(iter, stdout);
-    }
-
-    return ret;
-}
-
 int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq)
 {
     int ret = 0;
