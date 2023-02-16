@@ -1,0 +1,132 @@
+Design notes for the Variorum shim library.
+
+I. Introduction
+
+The original goal of the shim library was to provide a portable environment for
+CI/CD work.  Not all build and test machines would be able to have the msr-safe
+kernel module loaded; emulating the behavior of that kernel module in userspace
+with a library and a bit of LD_PRELOAD tricker would allow Variorum to test
+Intel-related code paths even if that module wasn't present.
+
+That code has been written and rewritten, but additional functionality beckons.
+
+* Support writes to MSRs in addition to reads
+* Handle the vagaries of multiple Intel architectures (both at the MSR and bit
+level)
+* Become more like a processor emulator:  timers and energy accumulators
+increase between reads
+* Handle error injection (in particular now that the msr-safe kernel module has
+documented, unambiguous error codes)
+* Handle specified allowlists
+
+Intel is a bit of a special case in that Variorum relies on a specialized kernel
+module and C library calls.  While that's true for some AMD functionality as
+well, most other architectures rely on a combination of userspace libraries
+(hwloc, hwmon, rocm, whatever nvidia uses) and C calls to sysfs.  Extending the
+shim concept to other architectures opens up even more possibilies.
+
+* The shim can take over the functionality of any library and mimic any version
+of any library---we can test support across multiple versions of hwloc, for 
+example.
+* The shim is indifferent to the underlying architecture.  It can not only
+eumulate any combination of CPU and accelerator, it can mimic any number of
+accerlators, sockets, cores, hyperthreads.
+* While this may stretch the bounds of utility, in theory the shim library could
+mimic a multi-socket board with different vendors' processors in each socket.
+If hwloc (or equivalent) can describe such a thing, the shim can (pretend to)
+run it.
+* If the small bit of assembly that is used to query CPUID was moved into
+a library, the shim could make up stories about this as well.
+
+The result could be--given sufficient developer effort--a library that would
+allow testing all architecture code paths and their error conditions on an
+arbitrary build machine.  Getting there is going to take a bit more planning
+than I've applied thus far.  The rest of this document is a road map for brining
+this capability online.
+
+
+II.  Priorities
+
+The single most pressing need is to get read-replay working on, in order of
+importance,  ``generic'' Intel, AMD, nVidia, Power, and Arm architectures.  A
+step to getting there can be ``read succeeds and returns 0'' or ``read succeeds
+and returns a random value,'' but these are less-useful for Variorum CI/CD
+scenarios and should only be considered intermediate milestones.
+
+The second priority is mimicking persistent writes, but only if there are
+Variorum calls whose correctness depends on reading back a value that was
+previously written.  I don't now if these exist; they may well not.
+
+The third priority is error injection:  the ability for a tester to instruct the
+shim that a particular mimicked library call should fail in a specific way.
+This feature is critical for testing Variorum error handling code that might not
+otherwise be executed in the test environment.
+
+Accomplishing these three priorities should be sufficient for a v1.0 release.
+Future feature decisions should be driven by customer needs.  It would be fun to
+see how Variorum reacts to a 10k-core processor, but unless we're porting it to
+Cerebras, there's no need to tie up development effort to make that happen.
+
+III.  Constraints
+
+* To the extent possible, Variorum code should not be modified.  The shim should
+deal with what's there.
+* The Intel and AMD msr-safe interfaces are the only ones that may result in
+library calls being passed along to the underlying (actual) library.  In
+particular, open(2), pread(2), etc. may be directed to logging or other files,
+and the shim library should reroute them without modifiecation.
+* For the remaining libraries, the shim will provide its own set of headers and
+completely replace the target library.
+* There will be a cmake variable USE_SHIM in Variorum that will cause the build
+system to pick up the shim headers and link to the shim library.  Note that
+LD_PRELOAD may be a better choice for handling the C library.
+* There will be finer-grained variables for situations where the tester wants to
+use regular libraries for some hardware and shim libraries for other hardware.
+The shim code should be oblivious to this.  (I think this implies that we need
+separate shim libraries instead of one monster library with all supported APIs.)
+* The user interface for error injection will be handled through environment
+variables until the point where this becomes too awkward.  For testing
+environments, this approach should be easier to work with than using
+configuration files.
+* While the shim library will exist in the Variourum project, it will likely be
+too unstable to be included in the cmake build system until we are ready for the
+v1.0 release.  
+
+
+IV.  Proposed Issue/PR list
+
+Read-replay priority
+    Intel
+        100:    Map all MSRs of a generic processor for replay
+        101:    Catalog all files and system calls used by msr-safe
+        102:    Write code to capture and examine system calls
+        103:    Track/intercept system calls associate with msr-safe
+        104:    Add read-reply/write-success for single-core interfaces
+        105:    Add read-reply/write-success for batch interface
+        106:    Add read-reply for version interface
+    AMD
+        110:    Map all MSRs of a generic processor for replay
+        111:    Leverage Intel work so the AMD list can be swapped in
+        112:    Map all rocm library calls for replay
+        113:    Implement shim rocm library
+        114:    Implement shim rocm headers
+        115:    Add rocm library/headers to Variorum cmake
+        116:    Map all esmi library calls for replay
+        117:    Implement shim esmi library
+        118:    Implement shim esmi headers
+        119:    Add esmi library/headers to Variorum cmake
+    nVidia
+        120:    Map all nvml library calls for replay
+        121:    Implement shim nvml library
+        122:    Implement shim nvml headers
+        123:    Add nvml library/headers to Variorum cmake
+
+
+V.  Open quesetions
+
+* Is Variorum going to support the stock msr kernel module going forward?
+* How difficult is it to add code coverage metrics to the CI/CD process?
+* How much of a priority is it to implement allowlist functionality?
+* Any plans to have Variorum manage the allowlist?
+* How does Variorum know if it's reading MSRs on an Intel or AMD machines?  I
+assume there is some CPUID call in there, or are we relying on hwloc?
