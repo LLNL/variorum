@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
 # SPDX-License-Identifier: MIT
@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Variorum'
-copyright = u'2019-2022, LLNS'
+copyright = u'2019-2023, LLNS'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
