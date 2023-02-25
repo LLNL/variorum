@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
     printf("Capping GPU power limit to %dW\n", gpu_power_limit);
 
-    ret = variorum_cap_gpu_power_limit(gpu_power_limit);
+    ret = variorum_cap_each_gpu_power_limit(gpu_power_limit);
     if (ret != 0)
     {
         printf("Cap GPU power limit failed!\n");

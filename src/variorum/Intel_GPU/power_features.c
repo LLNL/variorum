@@ -169,9 +169,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
     }
 }
 
-
-
-void cap_gpu_power_limit(int chipid, unsigned int powerlimit)
+void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 {
     int powerlimit_mwatts = powerlimit * 1000;
     int d;

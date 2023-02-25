@@ -114,8 +114,7 @@ using the corresponding APMIDG APIs.
 Power control
 =============
 
-Variorum provides an API to cap the power usage of an Intel Discrete GPU
-device. To set the power cap, Variorum uses the ``apmidg_setpwrlim()``
+In Variorum's GPU power capping API, Variorum uses the ``apmidg_setpwrlim()``
 API of APMIDG which takes as input the GPU device ID, the power domain ID
 and the power cap in milliwatts.
 

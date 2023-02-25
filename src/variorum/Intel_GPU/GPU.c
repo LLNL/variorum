@@ -72,8 +72,6 @@ int intel_gpu_get_power_limit(int long_ver)
     return 0;
 }
 
-
-
 int intel_cap_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
