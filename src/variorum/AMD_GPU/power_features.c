@@ -488,7 +488,8 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     }
 }
 
-void cap_gpu_power_limit(int chipid, int total_sockets, unsigned int powerlimit)
+void cap_each_gpu_power_limit(int chipid, int total_sockets,
+                              unsigned int powerlimit)
 {
     rsmi_status_t ret;
     uint32_t num_devices;

@@ -57,7 +57,7 @@ int intel_gpu_get_clocks(int long_ver)
     return 0;
 }
 
-int intel_cap_gpu_power_limit(unsigned int powerlimit)
+int intel_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -70,7 +70,7 @@ int intel_cap_gpu_power_limit(unsigned int powerlimit)
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        cap_gpu_power_limit(iter, powerlimit);
+        cap_each_gpu_power_limit(iter, powerlimit);
     }
     return 0;
 }

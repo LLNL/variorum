@@ -101,7 +101,7 @@ int volta_get_gpu_utilization(int long_ver)
     return 0;
 }
 
-int volta_cap_gpu_power_limit(unsigned int powerlimit)
+int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -114,7 +114,7 @@ int volta_cap_gpu_power_limit(unsigned int powerlimit)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        cap_gpu_power_limit(iter, powerlimit);
+        cap_each_gpu_power_limit(iter, powerlimit);
     }
     return 0;
 }
