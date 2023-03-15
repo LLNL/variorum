@@ -167,6 +167,14 @@ struct platform
 
     int (*variorum_cap_each_core_frequency_limit)(int core_freq_mhz);
 
+    /// @brief Cap the power usage identically of each GPU on the node.
+    ///
+    /// @param [in] gpu_power_limit Desired power limit in watts for each GPU
+    ///             on the node.
+    ///
+    /// @return 0 if successful, otherwise -1
+    int (*variorum_cap_each_gpu_power_limit)(unsigned int gpu_power_limit);
+
     /// @brief Function pointer to print the feature set.
     ///
     /// @return Error code.

@@ -129,13 +129,6 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 /// not supported, otherwise -1
 int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 
-///// @brief Cap the power limit of the GPU domain.
-/////
-///// @param [in] gpu_power_limit Desired power limit for each GPU.
-/////
-///// @return Error code.
-//int cap_each_gpu_power_limit(int gpu_power_limit);
-
 /// @brief Cap the frequency of the target processor.
 ///
 /// @supparch
@@ -148,6 +141,19 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
 int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
+
+/// @brief Cap the power usage identically of each GPU on the node.
+///
+/// @supparch
+/// - NVIDIA Volta, Ampere
+/// - AMD Instinct (MI-50 onwards)
+//  - Intel Discrete GPU
+///
+/// @param [in] gpu_power_limit Desired power limit in watts for each GPU
+///             on the node.
+///
+/// @return 0 if successful, otherwise -1
+int variorum_cap_each_gpu_power_limit(int gpu_power_limit);
 
 /*******************/
 /* Print Functions */

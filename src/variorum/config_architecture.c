@@ -345,7 +345,7 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_cap_each_socket_power_limit = NULL;
         g_platform[i].variorum_cap_each_core_frequency_limit = NULL;
         g_platform[i].variorum_print_available_frequencies = NULL;
-        g_platform[i].variorum_cap_gpu_power_ratio = NULL;
+        g_platform[i].variorum_cap_each_gpu_power_limit = NULL;
         g_platform[i].variorum_print_features = NULL;
         g_platform[i].variorum_print_thermals = NULL;
         g_platform[i].variorum_print_counters = NULL;

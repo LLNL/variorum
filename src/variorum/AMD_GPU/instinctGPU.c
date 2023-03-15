@@ -112,3 +112,21 @@ int instinctGPU_get_gpu_utilization(int verbose)
     }
     return 0;
 }
+
+int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        cap_each_gpu_power_limit(iter, nsockets, powerlimit);
+    }
+    return 0;
+}

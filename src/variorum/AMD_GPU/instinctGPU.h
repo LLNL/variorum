@@ -11,5 +11,6 @@ int instinctGPU_get_power_limit(int verbose);
 int instinctGPU_get_thermals(int verbose);
 int instinctGPU_get_clocks(int verbose);
 int instinctGPU_get_gpu_utilization(int verbose);
+int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit);
 
 #endif

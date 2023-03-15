@@ -30,4 +30,6 @@ void get_power_limits(int chipid, int verbose, FILE *output);
 
 void get_gpu_utilization(int chipid, int verbose, FILE *output);
 
+void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit);
+
 #endif
