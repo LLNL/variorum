@@ -74,3 +74,18 @@ int intel_cap_each_gpu_power_limit(unsigned int powerlimit)
     }
     return 0;
 }
+
+int intel_gpu_get_power_limit(int long_ver)
+{
+#ifdef VARIORUM_LOG
+    printf("Running %s\n", __FUNCTION__);
+#endif
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        get_power_limit_data(iter, long_ver, stdout);
+    }
+    return 0;
+}
