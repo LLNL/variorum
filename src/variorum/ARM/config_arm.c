@@ -17,10 +17,12 @@
 uint64_t *detect_arm_arch(void)
 {
     // ARM systems come in various flavors. For now, we will use a default model number.
-    uint64_t *model = (uint64_t *) malloc(sizeof(uint64_t));
+    unsigned long *model = (unsigned long *) malloc(sizeof(uint64_t));
     asm volatile(
         "mrs %0, MIDR_EL1"
         : "=r"(*model));
+    *model = (*model & 0x00ffff);
+    *model = (*model >> 4);
     return model;
 }
 
@@ -28,7 +30,8 @@ int set_arm_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform[idx].arch_id == ARM_JUNO_R2)
+    if (*g_platform[idx].arch_id == ARM_CORTEX_A72 ||
+        *g_platform[idx].arch_id == ARM_CORTEX_A53)
     {
         /* Initialize interfaces */
         g_platform[idx].variorum_print_power                     =
