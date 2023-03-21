@@ -208,28 +208,38 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 
 int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq)
 {
+    static int init_output = 0;
+    uint64_t core_iter;
+    uint64_t aggregate_freq = 0;
+
+
+
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
-    sprintf(freq_fname, "%s%d/scaling_setspeed", freq_path, socketid);
-    int freq_fd = open(freq_fname, O_WRONLY);
-    if (!freq_fd)
+
+    for (core_iter = 0; core_iter < NUM_CORES; core_iter++)
     {
-        variorum_error_handler("Error encountered in opening the sysfs interface",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return -1;
-    }
-    else
-    {
-        int bytes_written = write_file_ui64(freq_fd, new_freq * 1000);
-        if (!bytes_written)
+        sprintf(freq_fname, "%s%d/scaling_setspeed", freq_path, core_iter);
+        int freq_fd = open(freq_fname, O_WRONLY);
+        if (!freq_fd)
         {
-            variorum_error_handler("Error encountered in writing to the sysfs interface",
+            variorum_error_handler("Error encountered in opening the sysfs interface",
                                    VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
                                    __FILE__, __FUNCTION__, __LINE__);
             return -1;
         }
-        close(freq_fd);
+        else
+        {
+            int bytes_written = write_file_ui64(freq_fd, new_freq * 1000);
+            if (!bytes_written)
+            {
+                variorum_error_handler("Error encountered in writing to the sysfs interface",
+                                       VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                       __FILE__, __FUNCTION__, __LINE__);
+                return -1;
+            }
+            close(freq_fd);
+        }
     }
     return 0;
 }
