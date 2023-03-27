@@ -24,14 +24,11 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
     uint64_t cpu_power_val;
     uint64_t io_power_val;
 
-    /* The filesystem interfaces used here and in the rest of the ARM port
-     * are based on the ARM Juno R2 board technical reference documentation:
+    /* The filesystem interfaces used for the Neoverse N1 platform are
+     * based on the technical reference documentation for the platform:
      * ARM Versatile Express Juno r2 Development Platform (V2M-Juno r2)
      * Technical Reference Manual.
-     * https://developer.arm.com/documentation/100114/0200/.
-     * Other ARM implementations should have the same common interfaces
-     * available through ARM distributions of Linux. This port does not cover
-     * ARM hardware implementation-specific interfaces.
+     * https://developer.arm.com/documentation/100616/latest.
      */
 
     char *cpu_power_fname = "/sys/class/hwmon/hwmon1/power1_input";
@@ -129,7 +126,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     if (verbose)
     {
         fprintf(output,
-                "_ARM_TEMPERATURE Host: %s,LOC1: %0.2lf C, SoC: %0.2lf C\n",
+                "_ARM_TEMPERATURE Host: %s, Ethernet Controller 1: %0.2lf C, SoC: %0.2lf C\n",
                 m_hostname,
                 (double)(loc1_therm_val) / 1000.0f,
                 (double)(soc_therm_val) / 1000.0f);
@@ -138,7 +135,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-            fprintf(output, "_ARM_TEMPERATURE Host LOC1 SoC\n");
+            fprintf(output, "_ARM_TEMPERATURE Host EthCtr1 SoC\n");
             init_output = 1;
         }
         fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf\n",
@@ -251,10 +248,8 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
     struct timeval tv;
     uint64_t ts;
 
-    uint64_t sys_power_val;
-    uint64_t big_power_val;
-    uint64_t little_power_val;
-    uint64_t gpu_power_val;
+    uint64_t cpu_power_val;
+    uint64_t io_power_val;
     int i;
 
     char sockID[4];
@@ -268,17 +263,13 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
     /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
 
-    char *sys_power_fname = "/sys/class/hwmon/hwmon0/power1_input";
-    char *big_power_fname = "/sys/class/hwmon/hwmon0/power2_input";
-    char *little_power_fname = "/sys/class/hwmon/hwmon0/power3_input";
-    char *gpu_power_fname = "/sys/class/hwmon/hwmon0/power4_input";
+    char *cpu_power_fname = "/sys/class/hwmon/hwmon1/power1_input";
+    char *io_power_fname = "/sys/class/hwmon/hwmon1/power2_input";
 
-    int sys_power_fd = open(sys_power_fname, O_RDONLY);
-    int big_power_fd = open(big_power_fname, O_RDONLY);
-    int little_power_fd = open(little_power_fname, O_RDONLY);
-    int gpu_power_fd = open(gpu_power_fname, O_RDONLY);
+    int cpu_power_fd = open(cpu_power_fname, O_RDONLY);
+    int io_power_fd = open(io_power_fname, O_RDONLY);
 
-    if (!sys_power_fd || !big_power_fd || !little_power_fd || !gpu_power_fd)
+    if (!cpu_power_fd || !io_power_fd)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -288,12 +279,10 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
 
     /* Power values are reported in micro Watts */
 
-    int sys_bytes = read_file_ui64(sys_power_fd, &sys_power_val);
-    int big_bytes = read_file_ui64(big_power_fd, &big_power_val);
-    int lil_bytes = read_file_ui64(little_power_fd, &little_power_val);
-    int gpu_bytes = read_file_ui64(gpu_power_fd, &gpu_power_val);
+    int cpu_bytes = read_file_ui64(cpu_power_fd, &cpu_power_val);
+    int io_bytes = read_file_ui64(io_power_fd, &io_power_val);
 
-    if (!sys_bytes || !big_bytes || !lil_bytes || !gpu_bytes)
+    if (!cpu_bytes || !io_bytes)
     {
         variorum_error_handler("Error encountered in accessing hwmon interface",
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
@@ -301,10 +290,8 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
         return -1;
     }
 
-    close(sys_power_fd);
-    close(big_power_fd);
-    close(little_power_fd);
-    close(gpu_power_fd);
+    close(cpu_power_fd);
+    close(io_power_fd);
 
     /* Initialize GPU and memory to -1 first, as there is no memory power,
        and GPU power exists only on socket 0.
@@ -326,14 +313,10 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
-    json_object_set_new(get_power_obj, "power_node_watts",
-                        json_real((double)(sys_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0",
-                        json_real((double)(big_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1",
-                        json_real((double)(little_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0",
-                        json_real((double)(gpu_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_cpu_watts",
+                        json_real((double)(cpu_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "power_io_watts",
+                        json_real((double)(io_power_val) / 1000000.0f));
     return 0;
 }
 
@@ -359,7 +342,7 @@ int arm_cpu_neoverse_n1_json_get_power_domain_info(json_t *get_domain_obj)
     json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
     json_object_set_new(get_domain_obj, "measurement",
-                        json_string("[power_cpu, power_gpu]"));
+                        json_string("[power_cpu]"));
     json_object_set_new(get_domain_obj, "control",
                         json_string("[]"));
     json_object_set_new(get_domain_obj, "unsupported",
