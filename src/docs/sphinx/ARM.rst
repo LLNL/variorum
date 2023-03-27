@@ -8,11 +8,16 @@
  ARM Overview
 ##############
 
-This implementation of the ARM port of Variorum supports the Arm Juno r2 SoC.
+Variorum supports two flavors of ARM architectures: - Arm Juno r2 SoC - Ampere
+Neoverse N1
+
 The Arm Juno r2 platform is a big.LITTLE cluster with Cortex-A72 (big) and
 Cortex-A53 (LITTLE) clusters (also called processors), respectively. It also has
 an Arm Mali GP-GPU. We have tested the ARM functionality of Variorum on Linaro
 supported Linux.
+
+The Ampere Neoverse N1 platform is an 80-core single-processor platform with two
+Nvidia Ampere GPUs.
 
 **************
  Requirements
@@ -65,16 +70,27 @@ Interface (SCPI).
 
 Instantaneous temperatures are reported in degree Celsius.
 
+On the Neoverse N1 system, the following thermal sensors are provided:
+
+   -  Ethernet connector temperature: ``/sys/class/hwmon/hwmon0/temp1_input``
+   -  SoC temperature: ``/sys/class/hwmon/hwmon1/temp1_input``
+
 Clocks telemetry
 ================
 
 Clocks are collected by the sysfs interface using the GetClockValue command in
-SCPI. A separate ``policy*/`` subdirectory is provided for the big and LITTLE
-cluster.
+SCPI on both of the supported ARM platforms. On the Arm Juno r2 platform, a
+separate ``policy*/`` subdirectory is provided for the big and LITTLE clusters.
 
    -  big clocks: ``/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq``
    -  LITTLE clocks:
       ``/sys/devices/system/cpu/cpufreq/policy1/scaling_cur_freq``
+
+On the Neoverse N1 platform, a separate ``policy*/`` subdirectory is provided
+for each core in the SoC.
+
+   -  Core clocks:
+      ``/sys/devices/system/cpu/cpufreq/policy[0-79]/scaling_cur_freq``
 
 Frequencies are reported by the sysfs interface in KHz. Variorum reports the
 clocks in MHz to keep it consistent with the clocks reported for other supported
@@ -84,11 +100,18 @@ Frequency control
 =================
 
 The sysfs interface uses the SetClockValue SCPI command to set processor
-frequency for the following user-facing interfaces:
+frequency for the following user-facing interfaces on the supported platforms:
+
+Arm Juno r2:
 
    -  big clocks: ``/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed``
    -  LITTLE clocks:
       ``/sys/devices/system/cpu/cpufreq/policy1/scaling_setspeed``
+
+Neoverse N1:
+
+   -  core clocks:
+      ``/sys/devices/system/cpu/cpufreq/policy[0-79]/scaling_setspeed``
 
 New frequency is specified in KHz to these interfaces. Variorum takes the new
 frequency as input in MHz and performs this conversion internally.
@@ -105,6 +128,8 @@ applied when the governor in ``policy*/scaling_governor`` is set to `userspace`.
 
 -  `Arm Juno r2 technical reference
    <https://developer.arm.com/documentation/100114/0200/>`_
+-  `Neoverse N1 technical reference
+   <https://developer.arm.com/documentation/100616/latest>`_
 -  `hwmon sysfs interface
    <https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface>`_
 -  `hwmon documentation
