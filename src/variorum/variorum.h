@@ -69,6 +69,44 @@ int variorum_monitoring(FILE *output);
 /// not supported, otherwise -1
 int variorum_cap_each_socket_power_limit(int socket_power_limit);
 
+/// @brief Cap the power limits for all sockets within the node.
+///
+/// @supparch
+/// - AMD EPYC Milan
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
+///
+/// @param [in] socket_power_limit Desired power limit for each socket.
+///
+/// @return 0 if successful or if feature has not been implemented or is
+/// not supported, otherwise -1
+int variorum_cap_socket_power(int socket_power_limit);
+
+/// @brief Cap the power limits for all sockets within the node.
+///
+/// @supparch
+/// - AMD EPYC Milan
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
+///
+/// @param [in] socket_power_limit Desired power limit for each socket.
+///
+/// @return 0 if successful or if feature has not been implemented or is
+/// not supported, otherwise -1
+int variorum_cap_gpu_power(int gpu_power_limit);
+
 /// @brief Cap the power limit of the node.
 ///
 /// @supparch

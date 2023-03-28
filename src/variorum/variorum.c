@@ -321,6 +321,73 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio)
     return err;
 }
 
+int variorum_cap_uniform_socket_power(int socket_power_limit)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_cap_each_socket_power_limit == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
+        }
+        err = g_platform[i].variorum_cap_each_socket_power_limit(socket_power_limit);
+        if (err)
+        {
+            return -1;
+        }
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_cap_uniform_gpu_power(int gpu_power_limit)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_cap_gpu_power == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_cap_gpu_power(gpu_power_limit);
+        if (err)
+        {
+            return -1;
+        }
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+
+}
+
 int variorum_cap_each_socket_power_limit(int socket_power_limit)
 {
     int err = 0;

@@ -244,6 +244,16 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(void);
 
+    /// @brief Cap API rehaul fix
+    //  Cap uniform socket power
+    //  @return Error code.
+    int variorum_cap_uniform_socket_power(int socket_power_limit)
+
+    /// @brief Cap API rehaul fix
+    //  Cap uniform GPU power
+    //  @return Error code.
+    int variorum_cap_uniform_gpu_power(int gpu_power_limit)
+
     /// @brief Identifier for architecture.
     uint64_t *arch_id;
     /// @brief Hostname.
