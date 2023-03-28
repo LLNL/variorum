@@ -1,0 +1,47 @@
+Summary of text from Github issues and discussion on the API:
+
+I. Introduction
+The front-facing APIs for power and frequency capping in Variorum have
+become fragmented across supported devices, domain and level of granularity.
+To fix this, the team has proposed a rehaul of the power and frequency
+ capping APIs in Variorum. This documents presents a summary of that
+ discussion that the Variorum team has had on the rehaul of the APIs.
+
+II. Summary of the discussion
+
+* Basic Capping API
+We'll support the following two basic APIs in the rehaul:
+
+- variorum_cap_best_effort_node_power(int node_power_limit) (remains unchanged)
+- variorum_cap_uniform_domain_power(int domainID, int power_limit) (new)
+
+APIs to be phased out slowly, but will be supported initially:
+
+** Cap power APIs
+- variorum_cap_uniform_socket_power(socket_power_limit) (exists and needs renaming)
+- variorum_cap_uniform_gpu_power(gpu_power_limit) (new: WIP)
+
+** Cap frequency APIs
+- variorum_cap_uniform_gpu_frequency(gpu_frequency) (new)
+- variorum_cap_uniform_gpu_memory_frequency(gpu_mem_frequency) (new)
+- variorum_cap_uniform_socket_frequency(socket_frequency) (this doesn't exist as of today)
+- variorum_cap_uniform_core_frequency(core_frequency) (exists and needs renaming or deprecation)
+
+These APIs may use the two basic APIs under the hood.
+
+* Advanced APIs
+** Cap power APIs
+- variorum_cap_non_uniform_socket_power(socketID, socket_power_limit) (exists and needs renaming)
+- variorum_cap_non_uniform_gpu_power(gpuID, gpu_power_limit) (new: WIP)
+
+** Cap frequency APIs
+- variorum_cap_non_uniform_gpu_frequency(gpuID, gpu_frequency) (new)
+- variorum_cap_non_uniform_gpu_memory_frequency(memID, gpu_mem_frequency) (new)
+- variorum_cap_non_uniform_socket_frequency(socketID, socket_frequency) (this doesn't exist as of today)
+- variorum_cap_non_uniform_core_frequency(coreID, core_frequency) (exists and needs renaming or deprecation)
+
+* Other notes
+We'll phase out some of the basic APIs in subsequent releases to let the users pick up the API changes
+- Print deprecated API log message for these APIs
+- APIs to be deprecated can use the component/domain API
+- Remove trailing '_limit' in the API names for capping
