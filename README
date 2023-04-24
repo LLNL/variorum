@@ -22,10 +22,11 @@ https://variorum.readthedocs.io
 ## Overview
 
 Variorum is an extensible vendor-neutral library for exposing power and
-performance monitoring and control of low-level hardware knobs.
+performance monitoring and control of low-level hardware knobs on GNU/Linux.
 
 
 ## Documentation
+
 To get started building and using Variorum, check out the full documentation
 here:
 
