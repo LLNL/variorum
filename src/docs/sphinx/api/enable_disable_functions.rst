@@ -8,7 +8,7 @@
 ###################################
 
 Variorum provides the following high-level functions for toggling a control
-knob.
+dial.
 
 Defined in ``variorum/variorum.h``.
 

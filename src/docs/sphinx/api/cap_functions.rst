@@ -8,7 +8,7 @@
 ########################
 
 Variorum provides the following high-level functions for applying an
-upper-bound on a particular control knob.
+upper-bound on a particular control dial.
 
 Defined in ``variorum/variorum.h``.
 

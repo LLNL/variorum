@@ -10,7 +10,7 @@
 
 Variorum is a production-grade software infrastructure for exposing low-level
 control and monitoring of a system's underlying hardware features, with a focus
-on power, energy and thermal knobs. It is a significant evolution based on an
+on power, energy and thermal dials. It is a significant evolution based on an
 older open-source library developed at LLNL, called ``libmsr``. Variorum is
 vendor-neutral, and can easily be ported to different hardware devices, as well
 as different generations within a particular device. More specifically,
