@@ -63,7 +63,7 @@ These are the most common mistakes we have seen when using these registers.
 -  Always measure effective clock frequency using IA32_APERF and IA32_MPERF.
       -  Given the amount of performance variation within the operating system
          and within and across processors, it is easy to talk oneself into a
-         story of how a particular knob relates to performance by changing the
+         story of how a particular dial relates to performance by changing the
          clock frequency. Measuring both execution time and clock frequency (and
          perhaps IPC as well) is an excellent filter for those stories.
 
