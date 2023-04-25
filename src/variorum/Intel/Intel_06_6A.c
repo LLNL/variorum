@@ -30,7 +30,7 @@ int fm_06_6a_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

@@ -18,7 +18,7 @@
 #include <variorum_timers.h>
 
 static int translate(const unsigned socket, uint64_t *bits, double *units,
-                     int type, off_t msr)
+                     int type, off_t msr, int idx)
 {
     static int init_translate = 0;
     double logremainder = 0.0;
@@ -33,7 +33,7 @@ static int translate(const unsigned socket, uint64_t *bits, double *units,
     if (!init_translate)
     {
         init_translate = 1;
-        variorum_get_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
         ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
         get_rapl_power_unit(ru, msr);
     }
@@ -45,7 +45,7 @@ static int translate(const unsigned socket, uint64_t *bits, double *units,
             break;
         case BITS_TO_JOULES_DRAM:
             /* If Haswell (06_3F) or Broadwell (06_4F), use 15.3 micro-Joules as the energy unit for DRAM. */
-            if (*g_platform.intel_arch == 63 || *g_platform.intel_arch == 79)
+            if (*g_platform[idx].arch_id == 63 || *g_platform[idx].arch_id == 79)
             {
                 *units = (double)(*bits) / STD_ENERGY_UNIT;
 #ifdef VARIORUM_DEBUG
@@ -147,9 +147,11 @@ static int calc_rapl_bits(const unsigned socket, struct rapl_limit *limit,
      * We have been given watts and seconds and need to translate these into
      * bit values.
      */
-    translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr);
+    translate(socket, &seconds_bits, &limit->seconds, SECONDS_TO_BITS_STD, msr,
+              P_INTEL_CPU_IDX);
     /* There is only 1 translation for watts (so far). */
-    translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr);
+    translate(socket, &watts_bits, &limit->watts, WATTS_TO_BITS, msr,
+              P_INTEL_CPU_IDX);
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "Converted %lf watts into %lx bits.\n", limit->watts,
             watts_bits);
@@ -201,14 +203,15 @@ static int calc_rapl_from_bits(const unsigned socket, struct rapl_limit *limit,
 
     // We have been given the bits to be written to the msr.
     // For sake of completeness, translate these into watts and seconds.
-    ret = translate(socket, &watts_bits, &limit->watts, BITS_TO_WATTS, msr);
+    ret = translate(socket, &watts_bits, &limit->watts, BITS_TO_WATTS, msr,
+                    P_INTEL_CPU_IDX);
     // If the offset is > 31 (we are writing the upper PKG limit), then no
     // translation needed
     ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD,
-                     msr);
+                     msr, P_INTEL_CPU_IDX);
     //    if (offset < 32)
     //    {
-    //        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr);
+    //        ret += translate(socket, &seconds_bits, &limit->seconds, BITS_TO_SECONDS_STD, msr, P_INTEL_CPU_IDX);
     //    }
     //    else
     //    {
@@ -296,7 +299,7 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     unsigned nsockets;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
     allocate_batch(RAPL_DATA, 2UL * nsockets);
 
@@ -336,7 +339,7 @@ int get_rapl_power_unit(struct rapl_units *ru, off_t msr)
     static unsigned nsockets, ncores, nthreads;
     unsigned i;
 
-    variorum_get_topology(&nsockets, &ncores, &nthreads);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
     if (!init_get_rapl_power_unit)
     {
         init_get_rapl_power_unit = 1;
@@ -401,7 +404,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     char hostname[1024];
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
     gethostname(hostname, 1024);
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
@@ -425,7 +428,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
     char hostname[1024];
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
     gethostname(hostname, 1024);
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
@@ -528,7 +531,7 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     char hostname[1024];
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
     gethostname(hostname, 1024);
 
     if (!init_print_package_power_limit)
@@ -554,7 +557,7 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     char hostname[1024];
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
     gethostname(hostname, 1024);
 
     if (!init_print_dram_power_limit)
@@ -712,16 +715,20 @@ int get_rapl_pkg_power_info(const unsigned socket,
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_pkg_power_info));
     val = MASK_VAL(info->msr_pkg_power_info, 54, 48);
-    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr);
+    translate(socket, &val, &(info->pkg_max_window), BITS_TO_SECONDS_STD, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 46, 32);
-    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->pkg_max_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 30, 16);
-    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->pkg_min_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_pkg_power_info, 14, 0);
-    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->pkg_therm_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     return 0;
 }
@@ -742,16 +749,20 @@ int get_rapl_dram_power_info(const unsigned socket,
 
     read_msr_by_coord(socket, 0, 0, msr, &(info->msr_dram_power_info));
     val = MASK_VAL(info->msr_dram_power_info, 54, 48);
-    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr);
+    translate(socket, &val, &(info->dram_max_window), BITS_TO_SECONDS_STD, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 46, 32);
-    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_max_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 30, 16);
-    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_min_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     val = MASK_VAL(info->msr_dram_power_info, 14, 0);
-    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr);
+    translate(socket, &val, &(info->dram_therm_power), BITS_TO_WATTS, msr,
+              P_INTEL_CPU_IDX);
 
     return 0;
 }
@@ -765,7 +776,7 @@ int rapl_storage(struct rapl_data **data)
     if (!init)
     {
         init = 1;
-        variorum_get_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
         rapl = (struct rapl_data *) malloc(nsockets * sizeof(struct rapl_data));
 
@@ -794,7 +805,7 @@ int get_power(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
     static struct rapl_data *rapl = NULL;
     unsigned nsockets;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
 #ifdef VARIORUM_DEBUG
     fprintf(stderr, "%s %s::%d DEBUG: (get_power) socket=%u\n", getenv("HOSTNAME"),
@@ -837,7 +848,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
 #endif
     if (!init)
     {
-        variorum_get_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -864,7 +875,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
             rapl->pkg_delta_bits[i] = (uint64_t)((*rapl->pkg_bits[i] +
                                                   (uint64_t)max_joules) - rapl->old_pkg_bits[i]);
             translate(i, &rapl->pkg_delta_bits[i], &rapl->pkg_delta_joules[i],
-                      BITS_TO_JOULES, msr_rapl_unit);
+                      BITS_TO_JOULES, msr_rapl_unit, P_INTEL_CPU_IDX);
 #ifdef VARIORUM_DEBUG
             fprintf(stderr, "OVF pkg%d new=0x%lx old=0x%lx -> %lf\n", i, *rapl->pkg_bits[i],
                     rapl->old_pkg_bits[i], rapl->pkg_delta_joules[i]);
@@ -922,7 +933,7 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
     unsigned i;
 
     gethostname(hostname, 1024);
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
@@ -964,7 +975,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     unsigned i;
 
     gethostname(hostname, 1024);
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
 
@@ -1015,7 +1026,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     double node_power = 0.0;
 
     gethostname(hostname, 1024);
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
@@ -1173,7 +1184,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
 
     if (!init)
     {
-        variorum_get_topology(&nsockets, NULL, NULL);
+        variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -1244,15 +1255,15 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
         //#ifdef VARIORUM_DEBUG
         //            fprintf(stderr, "DEBUG: (read_rapl_data): translating dram\n");
         //#endif
-        //            translate(s, rapl->dram_bits[s], &rapl->dram_joules[s], BITS_TO_JOULES_DRAM);
+        //            translate(s, rapl->dram_bits[s], &rapl->dram_joules[s], BITS_TO_JOULES_DRAM, P_INTEL_CPU_IDX);
         //        }
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: (read_rapl_data): translating pkg\n");
 #endif
         translate(i, rapl->pkg_bits[i], &rapl->pkg_joules[i], BITS_TO_JOULES,
-                  msr_rapl_unit);
+                  msr_rapl_unit, P_INTEL_CPU_IDX);
         translate(i, rapl->dram_bits[i], &rapl->dram_joules[i], BITS_TO_JOULES_DRAM,
-                  msr_rapl_unit);
+                  msr_rapl_unit, P_INTEL_CPU_IDX);
 #ifdef VARIORUM_DEBUG
         fprintf(stderr, "DEBUG: socket %d\n", i);
         fprintf(stderr, "DEBUG: elapsed %f\n", rapl->elapsed);
@@ -1280,7 +1291,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     unsigned i;
     int rlim_idx = 0;
 
-    variorum_get_topology(&nsockets, NULL, NULL);
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
     gethostname(hostname, 1024);
 
     get_power(msr_rapl_unit, msr_package_energy_status, msr_dram_energy_status);

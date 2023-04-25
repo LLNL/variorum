@@ -157,6 +157,9 @@ information for GPUs. These ROCm-SMI APIs are described below.
 -  ``rsmi_utilization_count_get``: Get coarse grain utilization counter of the
    specified GPU device, including graphics and memory activity counters.
 
+-  ``rsmi_dev_power_cap_set``: Set the GPU device power cap for the specified
+   GPU device in microwatts.
+
 ************
  References
 ************

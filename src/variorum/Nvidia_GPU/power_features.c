@@ -36,7 +36,7 @@ void initNVML(void)
     }
 
     /* Collect number of packages and GPUs per package */
-    variorum_get_topology(&m_num_package, NULL, NULL);
+    variorum_get_topology(&m_num_package, NULL, NULL, P_NVIDIA_GPU_IDX);
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */
@@ -209,6 +209,26 @@ void get_gpu_utilization(int chipid, int verbose, FILE *output)
             }
             fprintf(output, "_NVIDIA_GPU_UTILIZATION %s %d %d %d %d\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
+        }
+    }
+}
+
+void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
+{
+    unsigned int powerlimit_mwatts = powerlimit * 1000;
+    int d;
+    static int init_output = 0;
+
+    //Iterate over all GPU device handles for this socket and print power
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+    {
+        if (NVML_SUCCESS != nvmlDeviceSetPowerManagementLimit(
+                m_unit_devices_file_desc[d], powerlimit_mwatts))
+        {
+            variorum_error_handler("Could not set the specified GPU power limit",
+                                   VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
         }
     }
 }

@@ -20,20 +20,21 @@ uint64_t *detect_arm_arch(void)
     return model;
 }
 
-int set_arm_func_ptrs(void)
+int set_arm_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform.arm_arch == ARMV8)
+    if (*g_platform[idx].arch_id == ARMV8)
     {
         /* Initialize interfaces */
-        g_platform.variorum_print_power                 = arm_get_power;
-        g_platform.variorum_print_thermals              = arm_get_thermals;
-        g_platform.variorum_print_frequency             = arm_get_clocks;
-        g_platform.variorum_print_available_frequencies = arm_get_frequencies;
-        g_platform.variorum_cap_socket_frequency_limit  = arm_cap_socket_frequency;
-        g_platform.variorum_get_node_power_json = arm_get_power_json;
-        g_platform.variorum_get_node_power_domain_info_json =
+        g_platform[idx].variorum_print_power                     = arm_get_power;
+        g_platform[idx].variorum_print_thermals                  = arm_get_thermals;
+        g_platform[idx].variorum_print_frequency                 = arm_get_clocks;
+        g_platform[idx].variorum_print_available_frequencies     = arm_get_frequencies;
+        g_platform[idx].variorum_cap_socket_frequency_limit      =
+            arm_cap_socket_frequency;
+        g_platform[idx].variorum_get_node_power_json             = arm_get_power_json;
+        g_platform[idx].variorum_get_node_power_domain_info_json =
             arm_get_power_domain_info_json;
     }
     else

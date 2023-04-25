@@ -12,4 +12,8 @@ extern int intel_gpu_get_thermals(int long_ver);
 
 extern int intel_gpu_get_clocks(int long_ver);
 
+extern int intel_cap_each_gpu_power_limit(unsigned int powerlimit);
+
+extern int intel_gpu_get_power_limit(int long_ver);
+
 #endif

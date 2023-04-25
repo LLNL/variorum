@@ -77,7 +77,7 @@ int read_array_ui64(const int fd, uint64_t **array)
 void init_arm(void)
 {
     /* Collect number of packages and GPUs per package */
-    variorum_get_topology(&m_num_package, NULL, NULL);
+    variorum_get_topology(&m_num_package, NULL, NULL, P_ARM_CPU_IDX);
 
     /* Save hostname */
     gethostname(m_hostname, 1024);

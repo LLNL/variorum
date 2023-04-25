@@ -34,6 +34,11 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
+    if (optind == 1)
+    {
+        printf(usage, argv[0]);
+        return -1;
+    }
 
     printf("Capping GPU power ratio to %d percent.\n", gpu_power_ratio_pct);
 

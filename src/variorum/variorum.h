@@ -96,7 +96,7 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -129,17 +129,10 @@ int variorum_cap_gpu_power_ratio(int gpu_power_ratio);
 /// not supported, otherwise -1
 int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 
-///// @brief Cap the power limit of the GPU domain.
-/////
-///// @param [in] gpu_power_limit Desired power limit for each GPU.
-/////
-///// @return Error code.
-//int cap_each_gpu_power_limit(int gpu_power_limit);
-
 /// @brief Cap the frequency of the target processor.
 ///
 /// @supparch
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -148,6 +141,19 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
 int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
+
+/// @brief Cap the power usage identically of each GPU on the node.
+///
+/// @supparch
+/// - NVIDIA Volta, Ampere
+/// - AMD Instinct (MI-50 onwards)
+//  - Intel Discrete GPU
+///
+/// @param [in] gpu_power_limit Desired power limit in watts for each GPU
+///             on the node.
+///
+/// @return 0 if successful, otherwise -1
+int variorum_cap_each_gpu_power_limit(int gpu_power_limit);
 
 /*******************/
 /* Print Functions */
@@ -198,7 +204,7 @@ int variorum_print_power_limit(void);
 ///
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -217,7 +223,7 @@ int variorum_print_verbose_thermals(void);
 ///
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -270,7 +276,7 @@ int variorum_print_counters(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -292,7 +298,7 @@ int variorum_print_verbose_power(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -316,7 +322,7 @@ int variorum_print_power(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -337,7 +343,7 @@ int variorum_print_verbose_frequency(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -399,7 +405,7 @@ int variorum_print_turbo(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -423,7 +429,7 @@ int variorum_print_verbose_gpu_utilization(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -442,7 +448,7 @@ int variorum_print_gpu_utilization(void);
 /// @brief Print list of available frequencies from p-states, turbo, AVX, etc. ranges.
 ///
 /// @supparch
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -509,7 +515,7 @@ int variorum_disable_turbo(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -533,7 +539,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 ///
 /// @supparch
 /// - AMD EPYC Milan
-/// - ARM Juno v2
+/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge

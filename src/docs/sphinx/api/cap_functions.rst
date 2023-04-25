@@ -18,6 +18,8 @@ Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_cap_gpu_power_ratio
 
+.. doxygenfunction:: variorum_cap_each_gpu_power_limit
+
 .. doxygenfunction:: variorum_cap_each_core_frequency_limit
 
 .. doxygenfunction:: variorum_cap_socket_frequency_limit

@@ -143,8 +143,8 @@ int main(int argc, char **argv)
     }
 #endif
 
-    char *fname_dat;
-    char *fname_summary;
+    char *fname_dat = NULL;
+    char *fname_summary = NULL;
     int rc;
     if (highlander())
     {

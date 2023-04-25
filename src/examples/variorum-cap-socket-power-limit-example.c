@@ -34,6 +34,11 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
+    if (optind == 1)
+    {
+        printf(usage, argv[0]);
+        return -1;
+    }
 
     printf("Capping each socket to %dW.\n", pkg_pow_lim_watts);
 

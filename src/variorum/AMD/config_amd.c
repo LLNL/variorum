@@ -35,12 +35,12 @@ uint64_t *detect_amd_arch(void)
     return fh_model;
 }
 
-int set_amd_func_ptrs(void)
+int set_amd_func_ptrs(int idx)
 {
     int ret = 0;
     uint8_t family, model;
-    family = (*g_platform.amd_arch >> 8) & 0xFF;
-    model = *g_platform.amd_arch & 0xFF;
+    family = (*g_platform[idx].arch_id >> 8) & 0xFF;
+    model = *g_platform[idx].arch_id & 0xFF;
 
     /* Verify for the family and model */
     if (family == 0x19)
@@ -62,24 +62,26 @@ int set_amd_func_ptrs(void)
     switch (ret)
     {
         case 0:
-            g_platform.variorum_print_power = epyc_get_power;
-            g_platform.variorum_print_power_limit = epyc_get_power_limits;
-            g_platform.variorum_cap_each_socket_power_limit = epyc_set_socket_power_limit;
-            g_platform.variorum_cap_best_effort_node_power_limit =
+            g_platform[idx].variorum_print_power = epyc_get_power;
+            g_platform[idx].variorum_print_power_limit = epyc_get_power_limits;
+            g_platform[idx].variorum_cap_each_socket_power_limit =
+                epyc_set_socket_power_limit;
+            g_platform[idx].variorum_cap_best_effort_node_power_limit =
                 epyc_set_and_verify_best_effort_node_power_limit;
-            g_platform.variorum_print_energy = epyc_print_energy;
-            g_platform.variorum_print_frequency = epyc_print_boostlimit;
-            g_platform.variorum_cap_each_core_frequency_limit =
+            g_platform[idx].variorum_print_energy = epyc_print_energy;
+            g_platform[idx].variorum_print_frequency = epyc_print_boostlimit;
+            g_platform[idx].variorum_cap_each_core_frequency_limit =
                 epyc_set_each_core_boostlimit;
-            g_platform.variorum_cap_socket_frequency_limit = epyc_set_socket_boostlimit;
-            g_platform.variorum_get_node_power_json = epyc_get_node_power_json;
-            g_platform.variorum_get_node_power_domain_info_json =
+            g_platform[idx].variorum_cap_socket_frequency_limit =
+                epyc_set_socket_boostlimit;
+            g_platform[idx].variorum_get_node_power_json = epyc_get_node_power_json;
+            g_platform[idx].variorum_get_node_power_domain_info_json =
                 epyc_get_node_power_domain_info_json;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "
                     "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
-            g_platform.variorum_print_energy = epyc_print_energy;
+            g_platform[idx].variorum_print_energy = epyc_print_energy;
             ret = 0;
     }
     return ret;

@@ -33,6 +33,14 @@ if(BUILD_TESTS)
     # Enable GTest
     ################################
 
+    # g++ v4.9.3 no longer compiles googletest.
+    # g++ v6.1.0 and later are known to work.
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.1)
+            message(FATAL_ERROR "Minimum GNU g++ version is 6.1.0, found ${CMAKE_CXX_COMPILER_VERSION}")
+        endif()
+    endif()
+
     #
     # We always want to build gtest as a static lib, however
     # it shares our "BUILD_SHARED_LIBS" option, so we need

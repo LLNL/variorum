@@ -12,12 +12,12 @@
 int main(int argc, char **argv)
 {
     int ret = 0;
-    int cpu_id = 0;
-    int cpu_freq_mhz = 0;
+    int gpu_power_limit = 0;
 
-    const char *usage = "Usage: %s [-h] [-v] -i socket -f MHz\n";
+    const char *usage = "Usage: %s [-h] [-v] -l power_lim_watts\n";
     int opt;
-    while ((opt = getopt(argc, argv, "hvi:f:")) != -1)
+
+    while ((opt = getopt(argc, argv, "hvl:")) != -1)
     {
         switch (opt)
         {
@@ -27,35 +27,34 @@ int main(int argc, char **argv)
             case 'v':
                 printf("%s\n", variorum_get_current_version());
                 return 0;
-            case 'i':
-                cpu_id = atoi(optarg);
-                break;
-            case 'f':
-                cpu_freq_mhz = atoi(optarg);
+            case 'l':
+                gpu_power_limit = atoi(optarg);
                 break;
             default:
                 printf(usage, argv[0]);
                 return -1;
         }
     }
-    if (optind == 1)
+    if (argc == 1)
     {
         printf(usage, argv[0]);
         return -1;
     }
 
-    printf("Capping CPU %d to %d MHz.\n", cpu_id, cpu_freq_mhz);
+    printf("Capping GPU power limit to %dW\n", gpu_power_limit);
 
-    ret = variorum_cap_socket_frequency_limit(cpu_id, cpu_freq_mhz);
+    ret = variorum_cap_each_gpu_power_limit(gpu_power_limit);
     if (ret != 0)
     {
-        printf("Cap socket frequency limit failed!\n");
+        printf("Cap GPU power limit failed!\n");
+        return ret;
     }
     printf("\n");
-    ret = variorum_print_frequency();
+    ret = variorum_print_verbose_power_limit();
     if (ret != 0)
     {
-        printf("Print frequency failed!\n");
+        printf("Print power limits failed!\n");
+        return ret;
     }
     return ret;
 }

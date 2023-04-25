@@ -86,6 +86,32 @@ enum amd_gpu_arch_e
     AMD_INSTINCT = 1,
 };
 
+enum supported_platforms_e
+{
+#ifdef VARIORUM_WITH_INTEL_CPU
+    P_INTEL_CPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_INTEL_GPU
+    P_INTEL_GPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_AMD_CPU
+    P_AMD_CPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+    P_AMD_GPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_IBM_CPU
+    P_IBM_CPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    P_NVIDIA_GPU_IDX,
+#endif
+#ifdef VARIORUM_WITH_ARM_CPU
+    P_ARM_CPU_IDX,
+#endif
+    P_NUM_PLATFORMS
+};
+
 /// @brief Platform-specific information.
 ///
 /// The intersection of all features on all platforms.
@@ -140,6 +166,14 @@ struct platform
     int (*variorum_cap_each_socket_power_limit)(int socket_power_limit);
 
     int (*variorum_cap_each_core_frequency_limit)(int core_freq_mhz);
+
+    /// @brief Cap the power usage identically of each GPU on the node.
+    ///
+    /// @param [in] gpu_power_limit Desired power limit in watts for each GPU
+    ///             on the node.
+    ///
+    /// @return 0 if successful, otherwise -1
+    int (*variorum_cap_each_gpu_power_limit)(unsigned int gpu_power_limit);
 
     /// @brief Function pointer to print the feature set.
     ///
@@ -218,24 +252,8 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(int long_ver);
 
-    /******************************/
-    /* Platform-Specific Topology */
-    /******************************/
-    /// @brief Unique family and model for Intel CPU architectures.
-    uint64_t *intel_arch;
-    /// @brief Unique family and model for Intel GPU architectures.
-    uint64_t *intel_gpu_arch;
-    /// @brief Identifier for AMD CPU architecture.
-    uint64_t *amd_arch;
-    /// @brief Identifier for IBM CPU architecture.
-    uint64_t *ibm_arch;
-    /// @brief Identifier for NVIDIA GPU architecture.
-    uint64_t *nvidia_gpu_arch;
-    /// @brief Identifier for ARM CPU architecture.
-    uint64_t *arm_arch;
-    /// @brief Identifier for AMD GPU architecture.
-    uint64_t *amd_gpu_arch;
-
+    /// @brief Identifier for architecture.
+    uint64_t *arch_id;
     /// @brief Hostname.
     char hostname[1024];
     /// @brief Number of sockets in the node.
@@ -256,7 +274,11 @@ struct platform
 //    void (*set_performance_counters)();
 #endif
 
-extern struct platform g_platform;
+extern struct platform g_platform[2];
+
+// Index variable to track the common MSR access functionality
+// across Intel and AMD platforms.
+extern int P_MSR_CORE_IDX;
 
 int variorum_enter(const char *filename,
                    const char *func_name,
@@ -268,7 +290,8 @@ int variorum_exit(const char *filename,
 
 void variorum_get_topology(unsigned *nsockets,
                            unsigned *ncores,
-                           unsigned *nthreads);
+                           unsigned *nthreads,
+                           int idx);
 
 int variorum_set_func_ptrs(void);
 

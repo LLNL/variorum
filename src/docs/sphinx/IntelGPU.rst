@@ -103,6 +103,21 @@ Variorum provides an API to report instantaneous clock speed of the Intel GPU's
 execusion unit in MHz and integer precision. It leverages the
 ``apmidg_readfreq()`` APMIDG API to report the instantaneous clock speed.
 
+*******************
+ Control Interface
+*******************
+
+The Intel Discrete GPU port of Variorum leverages the device-level control APIs
+provided by APMIDG. Variorum implements the following device control APIs using
+the corresponding APMIDG APIs.
+
+Power control
+=============
+
+In Variorum's GPU power capping API, Variorum uses the ``apmidg_setpwrlim()``
+API of APMIDG which takes as input the GPU device ID, the power domain ID and
+the power cap in milliwatts.
+
 ************
  References
 ************

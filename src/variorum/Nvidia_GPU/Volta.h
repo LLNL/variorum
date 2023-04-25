@@ -16,4 +16,6 @@ int volta_get_power_limits(int long_ver);
 
 int volta_get_gpu_utilization(int long_ver);
 
+int volta_cap_each_gpu_power_limit(unsigned int powerlimit);
+
 #endif

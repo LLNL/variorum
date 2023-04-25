@@ -487,3 +487,78 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
                                __LINE__);
     }
 }
+
+void cap_each_gpu_power_limit(int chipid, int total_sockets,
+                              unsigned int powerlimit)
+{
+    rsmi_status_t ret;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    char hostname[1024];
+    static int init = 0;
+    static struct timeval start;
+    struct timeval now;
+    unsigned int powerlimit_uwatts = powerlimit * 1000000;
+
+    gethostname(hostname, 1024);
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+    }
+
+    gettimeofday(&now, NULL);
+
+    for (int i = chipid * gpus_per_socket;
+         i < (chipid + 1) * gpus_per_socket; i++)
+    {
+        ret = rsmi_dev_power_cap_set(i, 0, powerlimit_uwatts);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            if (ret == RSMI_STATUS_PERMISSION)
+            {
+                variorum_error_handler(
+                    "Insufficient permissions to set the GPU power limit",
+                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
+                    __FILE__, __FUNCTION__, __LINE__);
+            }
+            else
+            {
+                variorum_error_handler(
+                    "Could not set the specified GPU power limit",
+                    VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"),
+                    __FILE__, __FUNCTION__, __LINE__);
+            }
+        }
+    }
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+}
