@@ -78,6 +78,9 @@ int main(int argc, char **argv)
                         "\n"
                         "    -i ms_interval"
                         "        Sampling interval in milliseconds (default = 50ms).\n"
+                        "\n"
+                        "    -v\n"
+                        "        Verbose output that includes all sensors or registers.\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
@@ -94,8 +97,9 @@ int main(int argc, char **argv)
     char *logpath = NULL;
     // Default sampling interval in milliseconds
     unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+    bool measure_all = 0;
 
-    while ((opt = getopt(argc, argv, "ca:p:i:")) != -1)
+    while ((opt = getopt(argc, argv, "ca:p:i:v")) != -1)
     {
         switch (opt)
         {
@@ -118,6 +122,9 @@ int main(int argc, char **argv)
                            FASTEST_SAMPLE_INTERVAL_MS);
                     sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
                 }
+                break;
+            case 'v':
+                measure_all = 1;
                 break;
             case '?':
                 if (optopt == 'a')
@@ -261,7 +268,7 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement();
+        take_measurement(measure_all);
         end = now_ms();
 
         if (logpath)
