@@ -9,15 +9,15 @@
 ##########
 
 Variorum is an extensible, vendor-neutral library for exposing power and
-performance capabilities of low-level hardware knobs across diverse
+performance capabilities of low-level hardware dials across diverse
 architectures in a user-friendly manner. It is part of the :doc:`Argo`, and is a
 key component for node-level power management in the :doc:`PowerStack`. Variorum
 provides vendor-neutral APIs such that the user can query or control hardware
-knobs without needing to know the underlying vendor's implementation (for
+dials without needing to know the underlying vendor's implementation (for
 example, model-specific registers or sensor interfaces). These APIs enable
 application developers to gain a better understanding of power, energy, and
 performance through various metrics. Additionally, the APIs may enable system
-software to control hardware knobs to optimize for a particular goal. Variorum
+software to control hardware dials to optimize for a particular goal. Variorum
 focuses on ease of use and reduced integration burden in applications, which it
 accomplishes by providing:
 
