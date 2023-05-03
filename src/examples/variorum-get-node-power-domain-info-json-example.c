@@ -32,9 +32,6 @@ int main(int argc, char **argv)
         }
     }
 
-    /* Allocate string based on vendor-neutral JSON structure*/
-    s = (char *) malloc(800 * sizeof(char));
-
     ret = variorum_get_node_power_domain_info_json(&s);
 
     if (ret != 0)
