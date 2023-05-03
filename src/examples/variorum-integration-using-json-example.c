@@ -115,12 +115,6 @@ int main(void)
         exit(-1);
     }
 
-    /* Allocate string based on number of sockets on the platform */
-    /* String allocation below assumes the following:
-     * Upper bound of 180 characters for hostname, timestamp and node power.
-     * Upper bound of 150 characters for per-socket information */
-    s = (char *) malloc((num_sockets * 150 + 180) * sizeof(char));
-
     ret = variorum_get_node_power_json(&s);
     if (ret != 0)
     {
