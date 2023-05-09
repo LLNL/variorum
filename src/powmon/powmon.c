@@ -121,7 +121,7 @@ int main(int argc, char **argv)
                 }
                 break;
             case 'v':
-                th_args.measure_all = 1;
+                th_args.measure_all = true;
                 break;
             case '?':
                 if (optopt == 'a')

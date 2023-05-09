@@ -8,12 +8,13 @@
 #include <variorum.h>
 #include <variorum_timers.h>
 #include <jansson.h>
+#include <stdbool.h>
 
 #define FASTEST_SAMPLE_INTERVAL_MS 50
 
 struct thread_args
 {
-    bool measure_all = 0;
+    bool measure_all = false;
     unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
 };
 
@@ -34,17 +35,17 @@ void take_measurement(bool measure_all)
     pthread_mutex_lock(&mlock);
 
     // Default is to just dump out instantaneous power samples
-    if (measure_all == 0) {
+    if (measure_all == false) {
     // Extract power information from Variorum JSON API
 
     // Write out to logfile
-    fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
-            rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
-            rapl_data[9], instr0, instr1, core0, core1);
+    //fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
+      //      rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
+        //    rapl_data[9], instr0, instr1, core0, core1);
     }
 
     // Verbose output with all sensors/registers
-    if (measure_all == 1)
+    if (measure_all == true)
         variorum_monitoring(logfile);
 
 #if 0

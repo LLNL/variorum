@@ -224,8 +224,8 @@ int main(int argc, char **argv)
 
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
-        // providing `1` as input value for the take_measurement function.
-        take_measurement(1);
+        // providing `true` as input value for the take_measurement function.
+        take_measurement(true);
         end = now_ms();
 
         /* Output summary data. */
