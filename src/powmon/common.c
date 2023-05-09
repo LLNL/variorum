@@ -7,13 +7,22 @@
 
 #include <variorum.h>
 #include <variorum_timers.h>
+#include <jansson.h>
+
+#define FASTEST_SAMPLE_INTERVAL_MS 50
+
+struct thread_args
+{
+    bool measure_all = 0;
+    unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+};
 
 int init_data(void)
 {
     return 0;
 }
 
-void take_measurement(void)
+void take_measurement(bool measure_all)
 {
 #if 0
     uint64_t instr0 = 0;
@@ -24,11 +33,19 @@ void take_measurement(void)
 #endif
     pthread_mutex_lock(&mlock);
 
-    /* RAPL reads. */
-    // PKG/DRAM energy, PKG/DRAM power limit
-    //poll_power(logfile);
-    // PKG/DRAM energy, PKG/DRAM power limit, fixed counters, TSC, APERF, MPERF
-    variorum_monitoring(logfile);
+    // Default is to just dump out instantaneous power samples
+    if (measure_all == 0) {
+    // Extract power information from Variorum JSON API
+
+    // Write out to logfile
+    fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
+            rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
+            rapl_data[9], instr0, instr1, core0, core1);
+    }
+
+    // Verbose output with all sensors/registers
+    if (measure_all == 1)
+        variorum_monitoring(logfile);
 
 #if 0
     total_joules += rapl_data[0] + rapl_data[1];
@@ -59,18 +76,21 @@ void take_measurement(void)
 void *power_measurement(void *arg)
 {
     struct mstimer timer;
-    unsigned long sample_interval = *(unsigned long *)arg;
+    struct thread_args th_args;
+    th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
+    th_args.measure_all = (*(struct thread_args *)arg).measure_all;
     // According to the Intel docs, the counter wraps at most once per second.
     // 50 ms should be short enough to always get good information (this is
     // default).
-    printf("Using sampling interval of: %ld ms\n", sample_interval);
-    init_msTimer(&timer, sample_interval);
+    printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
+    printf("Using verbosity of: %ld ms\n", th_args.measure_all);
+    init_msTimer(&timer, th_args.sample_interval);
     start = now_ms();
 
     timer_sleep(&timer);
     while (running)
     {
-        take_measurement();
+        take_measurement(th_args.measure_all);
         timer_sleep(&timer);
     }
     return arg;
