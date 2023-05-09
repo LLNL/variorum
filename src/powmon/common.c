@@ -35,12 +35,13 @@ void take_measurement(bool measure_all)
     pthread_mutex_lock(&mlock);
 
     // Default is to just dump out instantaneous power samples
-    if (measure_all == false) {
-    // Extract power information from Variorum JSON API
+    if (measure_all == false)
+    {
+        // Extract power information from Variorum JSON API
 
-    // Write out to logfile
-    //fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
-      //      rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
+        // Write out to logfile
+        //fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
+        //      rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
         //    rapl_data[9], instr0, instr1, core0, core1);
     }
 
