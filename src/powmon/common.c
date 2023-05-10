@@ -25,6 +25,7 @@ int init_data(void)
 void parse_json_obj(char *s, int num_sockets)
 {
     int i, j;
+    static bool write_header = true;
 
     /* Create a Jansson based JSON structure */
     json_t *power_obj = NULL;
@@ -65,8 +66,21 @@ void parse_json_obj(char *s, int num_sockets)
     /* Extract and print values from JSON object */
     power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
 
-    printf("\nExtracted power values at node and socket level are:");
-    printf("\n\nNode Power: %lf Watts\n\n", power_node);
+    if (write_header == true)
+    {
+        fprintf(logfile,"%s %s ", "Timestamp (ms)", "Node Power (W)");
+        for (i = 0; i < num_sockets; i++)
+        {
+            fprintf(logfile,"%s", "Socket %i CPU Power (W)", i);
+            fprintf(logfile,"%s", "Socket %i GPU Power (W)", i);
+            fprintf(logfile,"%s", "Socket %i Mem Power (W)", i);
+
+            if ((i+1) == num_sockets)
+                write_header = false;
+        }
+
+    }
+     fprintf(logfile,"%ld %lf ", now_ms(), power_node);
 
     for (i = 0; i < num_sockets; i++)
     {
@@ -76,9 +90,12 @@ void parse_json_obj(char *s, int num_sockets)
         power_mem = json_real_value(json_object_get(power_obj,
                                     json_metric_names[(num_sockets * 2) + i]));
 
-        printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
-        printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
-        printf("Socket %d, Memory Power: %lf Watts\n\n", i, power_mem);
+
+        fprintf(logfile,"%lf %lf %lf ", power_cpu, power_gpu, power_mem);
+
+         // We wrote values for all sockets, let's move to the next line.
+        if ((i+1) == num_sockets)
+            fprintf(logfile, "\n");
     }
 
     /* Deallocate metric array */
@@ -126,7 +143,6 @@ void take_measurement(bool measure_all)
             free(s);
             exit(-1);
         }
-
 
         // Write out to logfile
         parse_json_obj(s, num_sockets);
