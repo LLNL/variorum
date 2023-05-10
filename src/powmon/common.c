@@ -4,23 +4,92 @@
 // SPDX-License-Identifier: MIT
 
 #include <stdint.h>
-
-#include <variorum.h>
-#include <variorum_timers.h>
-#include <jansson.h>
 #include <stdbool.h>
 
-#define FASTEST_SAMPLE_INTERVAL_MS 50
+#include <variorum.h>
+#include <variorum_topology.h>
+#include <variorum_timers.h>
+#include <jansson.h>
 
 struct thread_args
 {
-    bool measure_all = false;
-    unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+    bool measure_all;
+    unsigned long sample_interval;
 };
 
 int init_data(void)
 {
     return 0;
+}
+
+void parse_json_obj(char *s, int num_sockets)
+{
+    int i, j;
+
+    /* Create a Jansson based JSON structure */
+    json_t *power_obj = NULL;
+
+    double power_node, power_cpu, power_gpu, power_mem;
+    static char **json_metric_names = NULL;
+
+    /* List of socket-level JSON object metrics */
+    static const char *metrics[] = {"power_cpu_watts_socket_",
+                                    "power_gpu_watts_socket_",
+                                    "power_mem_watts_socket_"
+                                   };
+
+    /* Allocate space for metric names */
+    json_metric_names = malloc(3 * num_sockets * sizeof(char *));
+    for (i = 0; i < (3 * num_sockets); i++)
+    {
+        json_metric_names[i] = malloc(40);
+    }
+
+    for (i = 0; i < num_sockets; i++)
+    {
+        /* Create a metric name list for querying json object later on */
+        for (j = 0; j < 3; j++)
+        {
+            char current_metric[40];
+            char current_socket[16];
+            strcpy(current_metric, metrics[j]);
+            sprintf(current_socket, "%d", i);
+            strcat(current_metric, current_socket);
+            strcpy(json_metric_names[(num_sockets * j) + i], current_metric);
+        }
+    }
+
+    /* Load the string as a JSON object using Jansson */
+    power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+
+    /* Extract and print values from JSON object */
+    power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
+
+    printf("\nExtracted power values at node and socket level are:");
+    printf("\n\nNode Power: %lf Watts\n\n", power_node);
+
+    for (i = 0; i < num_sockets; i++)
+    {
+        power_cpu = json_real_value(json_object_get(power_obj, json_metric_names[i]));
+        power_gpu = json_real_value(json_object_get(power_obj,
+                                    json_metric_names[num_sockets + i]));
+        power_mem = json_real_value(json_object_get(power_obj,
+                                    json_metric_names[(num_sockets * 2) + i]));
+
+        printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
+        printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
+        printf("Socket %d, Memory Power: %lf Watts\n\n", i, power_mem);
+    }
+
+    /* Deallocate metric array */
+    for (i = 0; i < num_sockets * 3; i++)
+    {
+        free(json_metric_names[i]);
+    }
+    free(json_metric_names);
+
+    /*Deallocate JSON object*/
+    json_decref(power_obj);
 }
 
 void take_measurement(bool measure_all)
@@ -38,11 +107,29 @@ void take_measurement(bool measure_all)
     if (measure_all == false)
     {
         // Extract power information from Variorum JSON API
+        int ret;
+        int num_sockets = 0;
+        char *s = NULL;
+
+        num_sockets = variorum_get_num_sockets();
+
+        if (num_sockets <= 0)
+        {
+            printf("HWLOC returned an invalid number of sockets. Exiting.\n");
+            exit(-1);
+        }
+
+        ret = variorum_get_node_power_json(&s);
+        if (ret != 0)
+        {
+            printf("JSON get node power failed. Exiting.\n");
+            free(s);
+            exit(-1);
+        }
+
 
         // Write out to logfile
-        //fprintf(logfile, "%ld %lf %lf %lf %lf %lf %lf %lu %lu %lu %lu\n", now_ms(),
-        //      rapl_data[0], rapl_data[1], rapl_data[6], rapl_data[7], rapl_data[8],
-        //    rapl_data[9], instr0, instr1, core0, core1);
+        parse_json_obj(s, num_sockets);
     }
 
     // Verbose output with all sensors/registers

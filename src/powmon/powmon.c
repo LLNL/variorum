@@ -21,6 +21,8 @@
 
 #include "highlander.h"
 
+#define FASTEST_SAMPLE_INTERVAL_MS 50
+
 #if 0
 /********/
 /* RAPL */
@@ -95,6 +97,8 @@ int main(int argc, char **argv)
     char *logpath = NULL;
     // Default struct with sampling interval of 50ms and verbosity of 0.
     struct thread_args th_args;
+    th_args.sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+    th_args.measure_all = false;
 
     while ((opt = getopt(argc, argv, "ca:p:i:v")) != -1)
     {
@@ -265,7 +269,7 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement(measure_all);
+        take_measurement(th_args.measure_all);
         end = now_ms();
 
         if (logpath)
