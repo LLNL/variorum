@@ -68,23 +68,32 @@ void parse_json_obj(char *s, int num_sockets)
 
     if (write_header == true)
     {
-        fprintf(logfile, "%s %s ", "Timestamp (ms)", "Node Power (W)");
+        fprintf(logfile, "%s, %s, ", "Timestamp (ms)", "Node Power (W)");
         for (i = 0; i < num_sockets; i++)
         {
             char str[40];
             sprintf(str, "Socket %i CPU Power (W)", i);
-            fprintf(logfile, "%s", str);
+            fprintf(logfile, "%s,", str);
             sprintf(str, "Socket %i GPU Power (W)", i);
-            fprintf(logfile, "%s", str);
-            sprintf(str, "Socket %i Mem Power (W)", i);
-            fprintf(logfile, "%s", str);
+            fprintf(logfile, "%s,", str);
+            if ((i + 1) == num_sockets)
+            {
+                // Don't write out a comma after the last column name
+                sprintf(str, "Socket %i Mem Power (W)", i);
+                fprintf(logfile, "%s\n", str);
+            }
+            else
+            {
+                sprintf(str, "Socket %i Mem Power (W)", i);
+                fprintf(logfile, "%s,", str);
+            }
 
             if ((i + 1) == num_sockets)
                 write_header = false;
         }
 
     }
-    fprintf(logfile, "%ld %lf ", now_ms(), power_node);
+    fprintf(logfile, "%ld, %lf, ", now_ms(), power_node);
 
     for (i = 0; i < num_sockets; i++)
     {
@@ -94,12 +103,17 @@ void parse_json_obj(char *s, int num_sockets)
         power_mem = json_real_value(json_object_get(power_obj,
                                     json_metric_names[(num_sockets * 2) + i]));
 
-
-        fprintf(logfile, "%lf %lf %lf ", power_cpu, power_gpu, power_mem);
-
-        // We wrote values for all sockets, let's move to the next line.
         if ((i + 1) == num_sockets)
+        {
+            // Don't write out a comma after the last socket's entry.
+            // Write a new line instead.
+            fprintf(logfile, "%lf, %lf, %lf", power_cpu, power_gpu, power_mem);
             fprintf(logfile, "\n");
+        }
+        else
+        {
+            fprintf(logfile, "%lf, %lf, %lf,", power_cpu, power_gpu, power_mem);
+        }
     }
 
     /* Deallocate metric array */
@@ -192,7 +206,7 @@ void *power_measurement(void *arg)
     // 50 ms should be short enough to always get good information (this is
     // default).
     printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
-    printf("Using verbosity of: %d ms\n", th_args.measure_all);
+    printf("Using verbosity of: %d\n", th_args.measure_all);
     init_msTimer(&timer, th_args.sample_interval);
     start = now_ms();
 
