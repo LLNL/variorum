@@ -71,9 +71,13 @@ void parse_json_obj(char *s, int num_sockets)
         fprintf(logfile, "%s %s ", "Timestamp (ms)", "Node Power (W)");
         for (i = 0; i < num_sockets; i++)
         {
-            fprintf(logfile, "%s", "Socket %i CPU Power (W)", i);
-            fprintf(logfile, "%s", "Socket %i GPU Power (W)", i);
-            fprintf(logfile, "%s", "Socket %i Mem Power (W)", i);
+            char str[40];
+            sprintf(str, "Socket %i CPU Power (W)", i);
+            fprintf(logfile, "%s", str);
+            sprintf(str, "Socket %i GPU Power (W)", i);
+            fprintf(logfile, "%s", str);
+            sprintf(str, "Socket %i Mem Power (W)", i);
+            fprintf(logfile, "%s", str);
 
             if ((i + 1) == num_sockets)
                 write_header = false;
@@ -188,7 +192,7 @@ void *power_measurement(void *arg)
     // 50 ms should be short enough to always get good information (this is
     // default).
     printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
-    printf("Using verbosity of: %ld ms\n", th_args.measure_all);
+    printf("Using verbosity of: %d ms\n", th_args.measure_all);
     init_msTimer(&timer, th_args.sample_interval);
     start = now_ms();
 
