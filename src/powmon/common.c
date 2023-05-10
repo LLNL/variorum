@@ -68,19 +68,19 @@ void parse_json_obj(char *s, int num_sockets)
 
     if (write_header == true)
     {
-        fprintf(logfile,"%s %s ", "Timestamp (ms)", "Node Power (W)");
+        fprintf(logfile, "%s %s ", "Timestamp (ms)", "Node Power (W)");
         for (i = 0; i < num_sockets; i++)
         {
-            fprintf(logfile,"%s", "Socket %i CPU Power (W)", i);
-            fprintf(logfile,"%s", "Socket %i GPU Power (W)", i);
-            fprintf(logfile,"%s", "Socket %i Mem Power (W)", i);
+            fprintf(logfile, "%s", "Socket %i CPU Power (W)", i);
+            fprintf(logfile, "%s", "Socket %i GPU Power (W)", i);
+            fprintf(logfile, "%s", "Socket %i Mem Power (W)", i);
 
-            if ((i+1) == num_sockets)
+            if ((i + 1) == num_sockets)
                 write_header = false;
         }
 
     }
-     fprintf(logfile,"%ld %lf ", now_ms(), power_node);
+    fprintf(logfile, "%ld %lf ", now_ms(), power_node);
 
     for (i = 0; i < num_sockets; i++)
     {
@@ -91,10 +91,10 @@ void parse_json_obj(char *s, int num_sockets)
                                     json_metric_names[(num_sockets * 2) + i]));
 
 
-        fprintf(logfile,"%lf %lf %lf ", power_cpu, power_gpu, power_mem);
+        fprintf(logfile, "%lf %lf %lf ", power_cpu, power_gpu, power_mem);
 
-         // We wrote values for all sockets, let's move to the next line.
-        if ((i+1) == num_sockets)
+        // We wrote values for all sockets, let's move to the next line.
+        if ((i + 1) == num_sockets)
             fprintf(logfile, "\n");
     }
 
