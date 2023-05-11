@@ -22,7 +22,11 @@ message(STATUS "CMake build tool name: ${CMAKE_BUILD_TOOL}")
 
 ### Enable warnings
 macro(ENABLE_WARNINGS)
-    add_definitions(-Wall -Wextra -Werror)
+    if(FORTRAN_FOUND AND ("${CMAKE_Fortran_COMPILER}" MATCHES "ifort$" OR "${CMAKE_Fortran_COMPILER}" MATCHES "ifx$"))
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -warn")
+    endif()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 endmacro()
 
 if(ENABLE_WARNINGS)

@@ -133,6 +133,7 @@ int main(void)
     {
         x += do_work(i);
     }
+    printf("Final result: %f\n", x);
 
     ret = variorum_get_node_power_json(&s);
     if (ret != 0)
