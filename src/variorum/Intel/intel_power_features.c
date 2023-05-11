@@ -1061,12 +1061,13 @@ int delta_rapl_data(off_t msr_rapl_unit)
         if ((double)*rapl->dram_bits[i] - (double)rapl->old_dram_bits[i] < 0)
         {
             rapl->dram_delta_bits[i] = (uint64_t)((*rapl->dram_bits[i] +
-                                                  (uint64_t)max_joules) - rapl->old_dram_bits[i]);
+                                                   (uint64_t)max_joules) - rapl->old_dram_bits[i]);
             translate(i, &rapl->dram_delta_bits[i], &rapl->dram_delta_joules[i],
                       BITS_TO_JOULES, msr_rapl_unit);
 #ifdef VARIORUM_DEBUG
-            fprintf(stderr, "OVF dram%d new=0x%lx old=0x%lx -> %lf\n", i, *rapl->dram_bits[i],
-                    rapl->old_dram_bits[i], rapl->dram_delta_joules[i]);
+            fprintf(stderr, "OVF dram%d new=0x%lx old=0x%lx -> %lf\n", i,
+                    *rapl->dram_bits[i], rapl->old_dram_bits[i],
+                    rapl->dram_delta_joules[i]);
 #endif
         }
         else
