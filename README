@@ -11,7 +11,7 @@ version 0.6.0
 
 Last Update
 -----------
-15 September 2022
+24 April 2023
 
 
 Webpages
@@ -21,9 +21,8 @@ https://variorum.readthedocs.io
 
 ## Overview
 
-Variorum is an extensible vendor-neutral library for exposing power and
-performance monitoring and control of low-level hardware dials.
-
+Variorum is an extensible vendor-neutral library for Linux that exposes 
+power and performance monitoring and control of low-level hardware dials.
 
 ## Documentation
 To get started building and using Variorum, check out the full documentation
