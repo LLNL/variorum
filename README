@@ -25,7 +25,6 @@ Variorum is an extensible vendor-neutral library for Linux that exposes
 power and performance monitoring and control of low-level hardware dials.
 
 ## Documentation
-
 To get started building and using Variorum, check out the full documentation
 here:
 
