@@ -436,7 +436,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         if (verbose == 0)
         {
             fprintf(output,
-                    "_AMD_GPU_UTILIZATION Host Socket DeviceID GFX_Util Mem_Util Timestamp_sec\n");
+                    "_AMD_GPU_UTILIZATION Host Socket DeviceID Util\n");
         }
     }
 
@@ -445,15 +445,9 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        rsmi_utilization_counter_t util_ctr[2];
-        uint64_t ts; //Timestamp returned by RSMI API that we don't currently use.
+        uint32_t utilpercent; // Percentage of time the GPU was busy
 
-        // This requests ROCM GPU GFX Activity.
-        util_ctr[0].type = RSMI_UTILIZATION_COUNTER_FIRST;
-        // This requests ROCM GPU Memory Activity.
-        util_ctr[1].type = RSMI_COARSE_GRAIN_MEM_ACTIVITY;
-
-        ret = rsmi_utilization_count_get(i, util_ctr, 2, &ts);
+        ret = rsmi_dev_busy_percent_get(i, &utilpercent);
         if (ret != RSMI_STATUS_SUCCESS)
         {
             variorum_error_handler("RSMI API was not successful",
@@ -466,15 +460,12 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         {
             fprintf(output,
                     "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
-                    "GFX_Util: %ld%%, Mem_Util: %ld%%, Timestamp: %lf sec\n",
-                    hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+                    "Util: %d%%\n", hostname, chipid, i, utilpercent);
         }
         else
         {
-            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %ld %ld %lf\n",
-                    hostname, chipid, i, util_ctr[0].value, util_ctr[1].value,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %d\n",
+                    hostname, chipid, i, utilpercent);
         }
 
     }
