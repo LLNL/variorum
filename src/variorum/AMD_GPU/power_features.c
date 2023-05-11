@@ -445,7 +445,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint32_t utilpercent; //Percentage of time the GPU was busy
+        uint32_t utilpercent; // Percentage of time the GPU was busy
 
         ret = rsmi_dev_busy_percent_get(i, &utilpercent);
         if (ret != RSMI_STATUS_SUCCESS)
@@ -460,8 +460,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         {
             fprintf(output,
                     "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
-                    "Util: %d%%\n",
-                    hostname, chipid, i, utilpercent);
+                    "Util: %d%%\n", hostname, chipid, i, utilpercent);
         }
         else
         {
