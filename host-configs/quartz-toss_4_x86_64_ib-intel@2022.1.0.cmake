@@ -4,13 +4,13 @@
 # SPDX-License-Identifier: MIT
 
 # c compiler
-set(CMAKE_C_COMPILER "/usr/tce/packages/intel/intel-19.0.4/bin/icc" CACHE PATH "")
+set(CMAKE_C_COMPILER "/usr/tce/packages/intel/intel-2022.1.0-magic/bin/icx" CACHE PATH "")
 
 # cpp compiler
-set(CMAKE_CXX_COMPILER "/usr/tce/packages/intel/intel-19.0.4/bin/icpc" CACHE PATH "")
+set(CMAKE_CXX_COMPILER "/usr/tce/packages/intel/intel-2022.1.0-magic/bin/icpx" CACHE PATH "")
 
 # fortran compiler
-set(CMAKE_Fortran_COMPILER "/usr/tce/packages/intel/intel-19.0.4/bin/ifort" CACHE PATH "")
+set(CMAKE_Fortran_COMPILER "/usr/tce/packages/intel/intel-2022.1.0-magic/bin/ifx" CACHE PATH "")
 
 set(USE_MSR_SAFE_BEFORE_1_5_0 ON CACHE BOOL "")
 
