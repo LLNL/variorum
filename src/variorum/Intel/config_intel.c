@@ -17,6 +17,7 @@
 #include <Intel_06_9E.h>
 #include <Intel_06_55.h>
 #include <Intel_06_6A.h>
+#include <Intel_06_8F.h>
 
 uint64_t *detect_intel_arch(void)
 {
