@@ -266,6 +266,11 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_power_limit = fm_06_8f_get_power_limits;
         g_platform[idx].variorum_print_features = fm_06_8f_get_features;
         g_platform[idx].variorum_print_power = fm_06_8f_get_power;
+        g_platform[idx].variorum_get_node_power_json =
+            fm_06_8f_get_node_power_json;
+        g_platform[idx].variorum_get_node_power_domain_info_json =
+            fm_06_8f_get_node_power_domain_info_json;
+        g_platform[idx].variorum_monitoring = fm_06_8f_monitoring;
     }
     else
     {
