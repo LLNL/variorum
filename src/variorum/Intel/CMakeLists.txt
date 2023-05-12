@@ -17,6 +17,7 @@ set(variorum_intel_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_55.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_9E.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_6A.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_8F.h
   ${CMAKE_CURRENT_SOURCE_DIR}/variorum_cpuid.h
   CACHE INTERNAL "")
 
@@ -34,6 +35,7 @@ set(variorum_intel_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_55.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_9E.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_6A.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_8F.c
   ${CMAKE_CURRENT_SOURCE_DIR}/variorum_cpuid.c
   CACHE INTERNAL "")
 
