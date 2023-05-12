@@ -260,7 +260,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_power = fm_06_6a_get_power;
     }
     // Sapphire Rapids 06_8F
-    else if (*g_platform[idx].arch_id == FM_06_6F)
+    else if (*g_platform[idx].arch_id == FM_06_8F)
     {
         g_platform[idx].variorum_print_power_limit = fm_06_8f_get_power_limits;
         g_platform[idx].variorum_print_features = fm_06_8f_get_features;
