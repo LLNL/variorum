@@ -174,7 +174,7 @@ int fm_06_8f_get_node_power_domain_info_json(char **get_domain_obj_str)
     return 0;
 }
 
-int fm_06_9e_monitoring(FILE *output)
+int fm_06_8f_monitoring(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
