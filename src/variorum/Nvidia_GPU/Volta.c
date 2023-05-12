@@ -130,3 +130,22 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
     }
     return 0;
 }
+
+int volta_get_power_json(char **get_power_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+    /*
+        unsigned iter = 0;
+        unsigned nsockets;
+        variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+        for (iter = 0; iter < nsockets; iter++)
+        {
+            get_power_data(iter, long_ver, stdout);
+        }
+    */
+    return 0;
+}
