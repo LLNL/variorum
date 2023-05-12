@@ -24,6 +24,14 @@ static struct sapphire_rapids_6a_offsets msrs =
     .msr_dram_power_limit         = 0x618,
     .msr_dram_energy_status       = 0x619,
     .msr_dram_power_info          = 0x61C,
+    .ia32_fixed_counters[0]       = 0x309,
+    .ia32_fixed_counters[1]       = 0x30A,
+    .ia32_fixed_counters[2]       = 0x30B,
+    .ia32_fixed_ctr_ctrl          = 0x38D,
+    .ia32_perf_global_status      = 0x38E,
+    .ia32_perf_global_ctrl        = 0x38F,
+    .ia32_mperf                   = 0xE7,
+    .ia32_aperf                   = 0xE8,
 };
 
 int fm_06_8f_get_power_limits(int long_ver)

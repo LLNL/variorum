@@ -30,6 +30,19 @@ struct sapphire_rapids_6a_offsets
     off_t msr_dram_energy_status;
     /// @brief Address for DRAM_POWER_INFO.
     off_t msr_dram_power_info;
+    /// @brief Address for IA32_FIXED_CTR_CTRL.
+    off_t ia32_fixed_ctr_ctrl;
+    /// @brief Address for IA32_PERF_GLOBAL_STATUS.
+    off_t ia32_perf_global_status;
+    /// @brief Address for IA32_PERF_GLOBAL_CTRL.
+    off_t ia32_perf_global_ctrl;
+    /// @brief Address for IA32_MPERF.
+    off_t ia32_mperf;
+    /// @brief Address for IA32_APERF.
+    off_t ia32_aperf;
+    /// @brief Array of unique addresses for fixed counters.
+    off_t ia32_fixed_counters[3];
+
 };
 
 int fm_06_8f_get_power_limits(int long_ver);
