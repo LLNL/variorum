@@ -101,6 +101,7 @@ Supported Intel Microarchitectures:
     0x9E (Kaby Lake)
     0x55 (Skylake, Cascade Lake, Cooper Lake)
     0x6A (Ice Lake)
+    0x8F (Sapphire Rapids)
 
 Supported Intel GPUs:
 
