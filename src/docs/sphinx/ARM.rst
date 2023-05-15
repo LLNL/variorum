@@ -28,6 +28,17 @@ Monitoring (hwmon) subsystem for access to the telemetry and control interfaces
 on the tested ARM platform. The standardized data interfaces provided by the
 hwmon framework enable a generic ARM implementation of Variorum.
 
+**********************
+ Model Identification
+**********************
+
+Variorum use the `MIDR_EL1` (Main ID) register which provides the identification
+information of the ARM processor to initialize the low-level interfaces on the
+target architecture. Specifically, Variorum uses bits `[15:4]` of `MIDR_E1` to
+get the primary part number. For Neoverse N1 the primary part number is `0xD0C`
+whereas for Arm Juno r2 big.LITTLE SoC the primary part numbers are `0xD08`
+(Cortex-A72) and `0xD03` (Cortex-A53).
+
 ************************************************
  Monitoring and Control Through Sysfs Interface
 ************************************************
@@ -130,6 +141,10 @@ applied when the governor in ``policy*/scaling_governor`` is set to `userspace`.
    <https://developer.arm.com/documentation/100114/0200/>`_
 -  `Neoverse N1 technical reference
    <https://developer.arm.com/documentation/100616/latest>`_
+-  `Cortex-A53 technical reference
+   <https://developer.arm.com/documentation/ddi0500/latest>`_
+-  `Cortex-A72 technical reference
+   <https://developer.arm.com/documentation/100095/latest>`_
 -  `hwmon sysfs interface
    <https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface>`_
 -  `hwmon documentation
