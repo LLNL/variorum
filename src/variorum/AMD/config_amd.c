@@ -62,26 +62,26 @@ int set_amd_func_ptrs(int idx)
     switch (ret)
     {
         case 0:
-            g_platform[idx].variorum_print_power = epyc_get_power;
-            g_platform[idx].variorum_print_power_limit = epyc_get_power_limits;
+            g_platform[idx].variorum_print_power = amd_cpu_epyc_get_power;
+            g_platform[idx].variorum_print_power_limit = amd_cpu_epyc_get_power_limits;
             g_platform[idx].variorum_cap_each_socket_power_limit =
-                epyc_set_socket_power_limit;
+                amd_cpu_epyc_set_socket_power_limit;
             g_platform[idx].variorum_cap_best_effort_node_power_limit =
-                epyc_set_and_verify_best_effort_node_power_limit;
-            g_platform[idx].variorum_print_energy = epyc_print_energy;
-            g_platform[idx].variorum_print_frequency = epyc_print_boostlimit;
+                amd_cpu_epyc_set_and_verify_best_effort_node_power_limit;
+            g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
+            g_platform[idx].variorum_print_frequency = amd_cpu_epyc_print_boostlimit;
             g_platform[idx].variorum_cap_each_core_frequency_limit =
-                epyc_set_each_core_boostlimit;
+                amd_cpu_epyc_set_each_core_boostlimit;
             g_platform[idx].variorum_cap_socket_frequency_limit =
-                epyc_set_socket_boostlimit;
-            g_platform[idx].variorum_get_node_power_json = epyc_get_node_power_json;
+                amd_cpu_epyc_set_socket_boostlimit;
+            g_platform[idx].variorum_get_node_power_json = amd_cpu_epyc_get_node_power_json;
             g_platform[idx].variorum_get_node_power_domain_info_json =
-                epyc_get_node_power_domain_info_json;
+                amd_cpu_epyc_get_node_power_domain_info_json;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "
                     "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
-            g_platform[idx].variorum_print_energy = epyc_print_energy;
+            g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
             ret = 0;
     }
     return ret;

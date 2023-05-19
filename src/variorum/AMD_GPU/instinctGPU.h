@@ -6,11 +6,11 @@
 #ifndef INSTINCTGPU_H_INCLUDE
 #define INSTINCTGPU_H_INCLUDE
 
-int instinctGPU_get_power(int verbose);
-int instinctGPU_get_power_limit(int verbose);
-int instinctGPU_get_thermals(int verbose);
-int instinctGPU_get_clocks(int verbose);
-int instinctGPU_get_gpu_utilization(int verbose);
-int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit);
+int amd_gpu_instinct_get_power(int verbose);
+int amd_gpu_instinct_get_power_limit(int verbose);
+int amd_gpu_instinct_get_thermals(int verbose);
+int amd_gpu_instinct_get_clocks(int verbose);
+int amd_gpu_instinct_get_gpu_utilization(int verbose);
+int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit);
 
 #endif

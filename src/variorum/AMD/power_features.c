@@ -13,7 +13,7 @@
 #include <variorum_error.h>
 
 #include "msr_core.h"
-#include "energy_feature.h"
+#include "power_features.h"
 
 static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
