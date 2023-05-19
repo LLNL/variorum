@@ -60,7 +60,7 @@ static struct sandybridge_2a_offsets msrs =
     .ia32_perfevtsel_counters[7]  = 0x18D,
 };
 
-int fm_06_2a_get_power_limits(int long_ver)
+int intel_cpu_fm_06_2a_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -136,7 +136,7 @@ int fm_06_2a_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_2a_cap_power_limits(int package_power_limit)
+int intel_cpu_fm_06_2a_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -156,7 +156,7 @@ int fm_06_2a_cap_power_limits(int package_power_limit)
     return 0;
 }
 
-int fm_06_2a_get_features(void)
+int intel_cpu_fm_06_2a_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -246,7 +246,7 @@ int fm_06_2a_get_features(void)
     return 0;
 }
 
-int fm_06_2a_get_thermals(int long_ver)
+int intel_cpu_fm_06_2a_get_thermals(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -267,7 +267,7 @@ int fm_06_2a_get_thermals(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_counters(int long_ver)
+int intel_cpu_fm_06_2a_get_counters(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -290,7 +290,7 @@ int fm_06_2a_get_counters(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_clocks(int long_ver)
+int intel_cpu_fm_06_2a_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -313,7 +313,7 @@ int fm_06_2a_get_clocks(int long_ver)
     return 0;
 }
 
-int fm_06_2a_get_power(int long_ver)
+int intel_cpu_fm_06_2a_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -334,7 +334,7 @@ int fm_06_2a_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_2a_enable_turbo(void)
+int intel_cpu_fm_06_2a_enable_turbo(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -348,7 +348,7 @@ int fm_06_2a_enable_turbo(void)
     return 0;
 }
 
-int fm_06_2a_disable_turbo(void)
+int intel_cpu_fm_06_2a_disable_turbo(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -362,7 +362,7 @@ int fm_06_2a_disable_turbo(void)
     return 0;
 }
 
-int fm_06_2a_get_turbo_status(void)
+int intel_cpu_fm_06_2a_get_turbo_status(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -376,7 +376,7 @@ int fm_06_2a_get_turbo_status(void)
     return 0;
 }
 
-int fm_06_2a_poll_power(FILE *output)
+int intel_cpu_fm_06_2a_poll_power(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -390,7 +390,7 @@ int fm_06_2a_poll_power(FILE *output)
     return 0;
 }
 
-int fm_06_2a_monitoring(FILE *output)
+int intel_cpu_fm_06_2a_monitoring(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -406,7 +406,7 @@ int fm_06_2a_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_2a_get_node_power_json(char **get_power_obj_str)
+int intel_cpu_fm_06_2a_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -426,7 +426,8 @@ int fm_06_2a_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int fm_06_2a_get_node_power_domain_info_json(char **get_domain_obj_str)
+int intel_cpu_fm_06_2a_get_node_power_domain_info_json(char
+        **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -446,7 +447,7 @@ int fm_06_2a_get_node_power_domain_info_json(char **get_domain_obj_str)
     return 0;
 }
 
-int fm_06_2a_cap_best_effort_node_power_limit(int node_limit)
+int intel_cpu_fm_06_2a_cap_best_effort_node_power_limit(int node_limit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -474,12 +475,12 @@ int fm_06_2a_cap_best_effort_node_power_limit(int node_limit)
 
     int pkg_limit = node_limit / nsockets;
 
-    fm_06_2a_cap_power_limits(pkg_limit);
+    intel_cpu_fm_06_2a_cap_power_limits(pkg_limit);
 
     return 0;
 }
 
-int fm_06_2a_get_frequencies(void)
+int intel_cpu_fm_06_2a_get_frequencies(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

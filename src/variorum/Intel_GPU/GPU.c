@@ -57,7 +57,7 @@ int intel_gpu_get_clocks(int long_ver)
     return 0;
 }
 
-int intel_cap_each_gpu_power_limit(unsigned int powerlimit)
+int intel_gpu_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
