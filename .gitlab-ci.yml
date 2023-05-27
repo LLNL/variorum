@@ -1,3 +1,4 @@
+---
 variables:
   CUSTOM_CI_BUILDS_DIR: "/usr/workspace/variorum/gitlab-runner"
   BUILD_ROOT: ${CI_PROJECT_DIR}
@@ -6,13 +7,75 @@ stages:
   - format
   - build
 
+.astyle:
+  cache:
+    paths:
+      - astyle_3.1_linux.tar.gz
+    when: always
+
+.show_hostname_and_groups: &show_hostname_and_groups
+  - export HOSTNAME=`hostname`
+  - echo -e "Hostname:" ${HOSTNAME}
+  - groups
+
+.download_astyle: &download_astyle
+  - wget --timestamping https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
+
+.build_and_install_rankstr: &build_and_install_rankstr
+  # Build and install rankstr dependency
+  - git clone --config advice.detachedHead=false --depth 1 -- https://github.com/ECP-VeloC/rankstr.git
+  - cd rankstr
+  - mkdir build install && cd build
+  - cmake -DCMAKE_INSTALL_PREFIX=../install ..
+  - VERBOSE=1 make -j
+  - make install
+  - RANKSTR_INSTALL=${PWD}/../install
+  - cd ../../
+
+.script_lassen: &script_lassen
+  - *show_hostname_and_groups
+  - mkdir build-gitlab-lassen-"${CPUORGPU:?}" && mkdir install-gitlab-lassen-"${CPUORGPU:?}"
+  - cd build-gitlab-lassen-"${CPUORGPU:?}"
+  - echo -e "HOST_CONFIG:" ${HOST_CONFIG:?}
+  - echo -e "PWD:" ${PWD}
+  - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-"${CPUORGPU:?}" -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
+  - make VERBOSE=1
+  - make install
+  - env CTEST_OUTPUT_ON_FAILURE=1 make test
+  - cd ..
+  - echo -e "PWD:" ${PWD}
+  - which cmake
+  - cmake --version
+  - cd install-gitlab-lassen-"${CPUORGPU:?}"/examples/using-with-cmake/c
+  - echo -e "PWD:" ${PWD}
+  - mkdir _test_build
+  - cd _test_build
+  - cmake ../
+  - make VERBOSE=1
+  - ./variorum-print-power-example
+  - cd ../../../using-with-make/c
+  - echo -e "PWD:" ${PWD}
+  - make VERBOSE=1
+  - ./variorum-print-power-example
+  - cd ../../using-with-make/cpp
+  - echo -e "PWD:" ${PWD}
+  - make VERBOSE=1
+  - ./variorum-print-power-example
+  - cd ../../using-with-make/fortran
+  - echo -e "PWD:" ${PWD}
+  - make VERBOSE=1
+  - ./ep.W.x
+
 build-quartz-format:
+ extends:
+   - .astyle
+ interruptible: true
  tags:
    - shell
    - quartz
  stage: format
  script:
-   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
+   - *download_astyle
    - tar -xf astyle_3.1_linux.tar.gz
    - cd astyle/build/gcc && make
    - export PATH="${PWD}/bin:${PATH}"
@@ -23,33 +86,27 @@ build-quartz-format:
    - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
 
 build-quartz-format-rst:
+ extends:
+   - .astyle
+ interruptible: true
  tags:
    - shell
    - quartz
  stage: format
  script:
-   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
+   - *download_astyle
    - ./scripts/.ci-check-rst-format.sh
 
 # no access to msr-safe on quartz
 build-quartz:
+ interruptible: true
  tags:
    - batch
    - quartz
  stage: build
  script:
-   # Build and install rankstr dependency
-   - git clone https://github.com/ECP-VeloC/rankstr.git
-   - cd rankstr
-   - mkdir build install && cd build
-   - cmake -DCMAKE_INSTALL_PREFIX=../install ..
-   - VERBOSE=1 make -j
-   - make install
-   - RANKSTR_INSTALL=${PWD}/../install
-   - cd ../../
-   - export HOSTNAME=`hostname`
-   - echo -e "Hostname:" ${HOSTNAME}
-   - groups
+   - *build_and_install_rankstr
+   - *show_hostname_and_groups
    - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
    - cd build-gitlab-quartz
    - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@8.3.1.cmake`
@@ -84,108 +141,39 @@ build-quartz:
    #- ./ep.W.x
 
 build-lassen-cpu:
+ interruptible: true
  tags:
    - batch
    - lassen
  stage: build
  script:
-   - export HOSTNAME=`hostname`
-   - echo -e "Hostname:" ${HOSTNAME}
-   - groups
-   - mkdir build-gitlab-lassen-cpu && mkdir install-gitlab-lassen-cpu
-   - cd build-gitlab-lassen-cpu
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1.cmake`
-   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
-   - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
-   - make VERBOSE=1
-   - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
-   - cd ..
-   - echo -e "PWD:" ${PWD}
-   - which cmake
-   - cmake --version
-   - cd install-gitlab-lassen-cpu/examples/using-with-cmake/c
-   - echo -e "PWD:" ${PWD}
-   - mkdir _test_build
-   - cd _test_build
-   - cmake ../
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../../using-with-make/c
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/cpp
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/fortran
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./ep.W.x
+   - *script_lassen
+ variables:
+   CPUORGPU: 'cpu'
 
 build-lassen-gpu:
+ interruptible: true
  tags:
    - batch
    - lassen
  stage: build
  script:
-   - export HOSTNAME=`hostname`
-   - echo -e "Hostname:" ${HOSTNAME}
-   - groups
-   - mkdir build-gitlab-lassen-gpu && mkdir install-gitlab-lassen-gpu
-   - cd build-gitlab-lassen-gpu
    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1-cuda@10.1.243.cmake`
-   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
-   - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-gpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
-   - make VERBOSE=1
-   - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
-   - cd ..
-   - echo -e "PWD:" ${PWD}
-   - which cmake
-   - cmake --version
-   - cd install-gitlab-lassen-gpu/examples/using-with-cmake/c
-   - echo -e "PWD:" ${PWD}
-   - mkdir _test_build
-   - cd _test_build
-   - cmake ../
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../../using-with-make/c
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/cpp
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/fortran
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./ep.W.x
+   - *script_lassen
+ variables:
+   CPUORGPU: 'gpu'
 
 # no access to msr-safe on catalyst
 build-catalyst:
+ interruptible: true
  tags:
    - batch
    - catalyst
  stage: build
  script:
-   # Build and install rankstr dependency
-   - git clone https://github.com/ECP-VeloC/rankstr.git
-   - cd rankstr
-   - mkdir build install && cd build
-   - cmake -DCMAKE_INSTALL_PREFIX=../install ..
-   - VERBOSE=1 make -j
-   - make install
-   - RANKSTR_INSTALL=${PWD}/../install
-   - cd ../../
-   - export HOSTNAME=`hostname`
-   - echo -e "Hostname:" ${HOSTNAME}
-   - groups
+   - *build_and_install_rankstr
+   - *show_hostname_and_groups
    - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
    - cd build-gitlab-catalyst
    - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@8.3.1.cmake`
@@ -220,14 +208,13 @@ build-catalyst:
    #- ./ep.W.x
 
 build-corona:
+ interruptible: true
  tags:
    - batch
    - corona
  stage: build
  script:
-   - export HOSTNAME=`hostname`
-   - echo -e "Hostname:" ${HOSTNAME}
-   - groups
+   - *show_hostname_and_groups
    - mkdir build-gitlab-corona && mkdir install-gitlab-corona
    - cd build-gitlab-corona
    - export HOST_CONFIG=`ls ../host-configs/corona-4.18.0toss-x86_64-gcc@10.3.1-rocm@5.2.cmake`
@@ -263,11 +250,12 @@ build-corona:
 
 # build across power lab
 build-cztb2:
+ interruptible: true
  tags:
    - shell
    - cztb2
  stage: build
  script:
-   - git clone $VARIORUM_ANSIBLE
+   - git clone --config advice.detachedHead=false --depth 1 -- $VARIORUM_ANSIBLE
    - cd variorum-ansible-setup
    - ansible-playbook variorum-powerlab-playbook.yml
