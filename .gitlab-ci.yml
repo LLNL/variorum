@@ -15,14 +15,14 @@ stages:
 
 .show_hostname_and_groups: &show_hostname_and_groups
   - export HOSTNAME=`hostname`
-  - echo -e "Hostname:" ${HOSTNAME}
+  - echo -e "Hostname:" ${HOSTNAME}"
   - groups
 
 .download_astyle: &download_astyle
   - wget --timestamping https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
 
-.build_and_install_rankstr: &build_and_install_rankstr
-  # Build and install rankstr dependency
+.build_and_install_rankstr:
+  &build_and_install_rankstr # Build and install rankstr dependency
   - git clone --config advice.detachedHead=false --depth 1 -- https://github.com/ECP-VeloC/rankstr.git
   - cd rankstr
   - mkdir build install && cd build
@@ -67,195 +67,195 @@ stages:
   - ./ep.W.x
 
 build-quartz-format:
- extends:
-   - .astyle
- interruptible: true
- tags:
-   - shell
-   - quartz
- stage: format
- script:
-   - *download_astyle
-   - tar -xf astyle_3.1_linux.tar.gz
-   - cd astyle/build/gcc && make
-   - export PATH="${PWD}/bin:${PATH}"
-   - cd -
-   - echo -e "PWD:" ${PWD}
-   - ./scripts/.ci-check-code-format.sh
-   - err=$?
-   - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
+  extends:
+    - .astyle
+  interruptible: true
+  tags:
+    - shell
+    - quartz
+  stage: format
+  script:
+    - *download_astyle
+    - tar -xf astyle_3.1_linux.tar.gz
+    - cd astyle/build/gcc && make
+    - export PATH="${PWD}/bin:${PATH}"
+    - cd -
+    - echo -e "PWD:" ${PWD}
+    - ./scripts/.ci-check-code-format.sh
+    - err=$?
+    - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
 
 build-quartz-format-rst:
- extends:
-   - .astyle
- interruptible: true
- tags:
-   - shell
-   - quartz
- stage: format
- script:
-   - *download_astyle
-   - ./scripts/.ci-check-rst-format.sh
+  extends:
+    - .astyle
+  interruptible: true
+  tags:
+    - shell
+    - quartz
+  stage: format
+  script:
+    - *download_astyle
+    - ./scripts/.ci-check-rst-format.sh
 
 # no access to msr-safe on quartz
 build-quartz:
- interruptible: true
- tags:
-   - batch
-   - quartz
- stage: build
- script:
-   - *build_and_install_rankstr
-   - *show_hostname_and_groups
-   - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
-   - cd build-gitlab-quartz
-   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@8.3.1.cmake`
-   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
-   - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
-   - make VERBOSE=1
-   - make install
-   #- env CTEST_OUTPUT_ON_FAILURE=1 make test
-   #- cd ..
-   #- echo -e "PWD:" ${PWD}
-   #- which cmake
-   #- cmake --version
-   #- cd install-gitlab-quartz/examples/using-with-cmake/c
-   #- echo -e "PWD:" ${PWD}
-   #- mkdir _test_build
-   #- cd _test_build
-   #- cmake ../
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../../using-with-make/c
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../using-with-make/cpp
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../using-with-make/fortran
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./ep.W.x
+  interruptible: true
+  tags:
+    - batch
+    - quartz
+  stage: build
+  script:
+    - *build_and_install_rankstr
+    - *show_hostname_and_groups
+    - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
+    - cd build-gitlab-quartz
+    - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@8.3.1.cmake`
+    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+    - echo -e "PWD:" ${PWD}
+    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
+    - make VERBOSE=1
+    - make install
+    #- env CTEST_OUTPUT_ON_FAILURE=1 make test
+    #- cd ..
+    #- echo -e "PWD:" ${PWD}
+    #- which cmake
+    #- cmake --version
+    #- cd install-gitlab-quartz/examples/using-with-cmake/c
+    #- echo -e "PWD:" ${PWD}
+    #- mkdir _test_build
+    #- cd _test_build
+    #- cmake ../
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../../using-with-make/c
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../using-with-make/cpp
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../using-with-make/fortran
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./ep.W.x
 
 build-lassen-cpu:
- interruptible: true
- tags:
-   - batch
-   - lassen
- stage: build
- script:
-   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1.cmake`
-   - *script_lassen
- variables:
-   CPUORGPU: 'cpu'
+  interruptible: true
+  tags:
+    - batch
+    - lassen
+  stage: build
+  script:
+    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1.cmake`
+    - *script_lassen
+  variables:
+    CPUORGPU: "cpu"
 
 build-lassen-gpu:
- interruptible: true
- tags:
-   - batch
-   - lassen
- stage: build
- script:
-   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1-cuda@10.1.243.cmake`
-   - *script_lassen
- variables:
-   CPUORGPU: 'gpu'
+  interruptible: true
+  tags:
+    - batch
+    - lassen
+  stage: build
+  script:
+    - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1-cuda@10.1.243.cmake`
+    - *script_lassen
+  variables:
+    CPUORGPU: "gpu"
 
 # no access to msr-safe on catalyst
 build-catalyst:
- interruptible: true
- tags:
-   - batch
-   - catalyst
- stage: build
- script:
-   - *build_and_install_rankstr
-   - *show_hostname_and_groups
-   - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
-   - cd build-gitlab-catalyst
-   - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@8.3.1.cmake`
-   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
-   - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
-   - make VERBOSE=1
-   - make install
-   #- env CTEST_OUTPUT_ON_FAILURE=1 make test
-   #- cd ..
-   #- echo -e "PWD:" ${PWD}
-   #- which cmake
-   #- cmake --version
-   #- cd install-gitlab-catalyst/examples/using-with-cmake/c
-   #- echo -e "PWD:" ${PWD}
-   #- mkdir _test_build
-   #- cd _test_build
-   #- cmake ../
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../../using-with-make/c
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../using-with-make/cpp
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./variorum-print-power-example
-   #- cd ../../using-with-make/fortran
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
-   #- ./ep.W.x
+  interruptible: true
+  tags:
+    - batch
+    - catalyst
+  stage: build
+  script:
+    - *build_and_install_rankstr
+    - *show_hostname_and_groups
+    - mkdir build-gitlab-catalyst && mkdir install-gitlab-catalyst
+    - cd build-gitlab-catalyst
+    - export HOST_CONFIG=`ls ../host-configs/catalyst-toss_3_x86_64_ib-gcc@8.3.1.cmake`
+    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+    - echo -e "PWD:" ${PWD}
+    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-catalyst -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
+    - make VERBOSE=1
+    - make install
+    #- env CTEST_OUTPUT_ON_FAILURE=1 make test
+    #- cd ..
+    #- echo -e "PWD:" ${PWD}
+    #- which cmake
+    #- cmake --version
+    #- cd install-gitlab-catalyst/examples/using-with-cmake/c
+    #- echo -e "PWD:" ${PWD}
+    #- mkdir _test_build
+    #- cd _test_build
+    #- cmake ../
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../../using-with-make/c
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../using-with-make/cpp
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./variorum-print-power-example
+    #- cd ../../using-with-make/fortran
+    #- echo -e "PWD:" ${PWD}
+    #- make VERBOSE=1
+    #- ./ep.W.x
 
 build-corona:
- interruptible: true
- tags:
-   - batch
-   - corona
- stage: build
- script:
-   - *show_hostname_and_groups
-   - mkdir build-gitlab-corona && mkdir install-gitlab-corona
-   - cd build-gitlab-corona
-   - export HOST_CONFIG=`ls ../host-configs/corona-4.18.0toss-x86_64-gcc@10.3.1-rocm@5.2.cmake`
-   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
-   - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-corona -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
-   - make VERBOSE=1
-   - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
-   - cd ..
-   - echo -e "PWD:" ${PWD}
-   - which cmake
-   - cmake --version
-   - cd install-gitlab-corona/examples/using-with-cmake/c
-   - echo -e "PWD:" ${PWD}
-   - mkdir _test_build
-   - cd _test_build
-   - cmake ../
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../../using-with-make/c
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/cpp
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
-   - ./variorum-print-power-example
-   - cd ../../using-with-make/fortran
-   - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1 FFLAGS+=-fallow-invalid-boz
-   - ./ep.W.x
+  interruptible: true
+  tags:
+    - batch
+    - corona
+  stage: build
+  script:
+    - *show_hostname_and_groups
+    - mkdir build-gitlab-corona && mkdir install-gitlab-corona
+    - cd build-gitlab-corona
+    - export HOST_CONFIG=`ls ../host-configs/corona-4.18.0toss-x86_64-gcc@10.3.1-rocm@5.2.cmake`
+    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+    - echo -e "PWD:" ${PWD}
+    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-corona -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
+    - make VERBOSE=1
+    - make install
+    - env CTEST_OUTPUT_ON_FAILURE=1 make test
+    - cd ..
+    - echo -e "PWD:" ${PWD}
+    - which cmake
+    - cmake --version
+    - cd install-gitlab-corona/examples/using-with-cmake/c
+    - echo -e "PWD:" ${PWD}
+    - mkdir _test_build
+    - cd _test_build
+    - cmake ../
+    - make VERBOSE=1
+    - ./variorum-print-power-example
+    - cd ../../../using-with-make/c
+    - echo -e "PWD:" ${PWD}
+    - make VERBOSE=1
+    - ./variorum-print-power-example
+    - cd ../../using-with-make/cpp
+    - echo -e "PWD:" ${PWD}
+    - make VERBOSE=1
+    - ./variorum-print-power-example
+    - cd ../../using-with-make/fortran
+    - echo -e "PWD:" ${PWD}
+    - make VERBOSE=1 FFLAGS+=-fallow-invalid-boz
+    - ./ep.W.x
 
 # build across power lab
 build-cztb2:
- interruptible: true
- tags:
-   - shell
-   - cztb2
- stage: build
- script:
-   - git clone --config advice.detachedHead=false --depth 1 -- $VARIORUM_ANSIBLE
-   - cd variorum-ansible-setup
-   - ansible-playbook variorum-powerlab-playbook.yml
+  interruptible: true
+  tags:
+    - shell
+    - cztb2
+  stage: build
+  script:
+    - git clone --config advice.detachedHead=false --depth 1 -- $VARIORUM_ANSIBLE
+    - cd variorum-ansible-setup
+    - ansible-playbook variorum-powerlab-playbook.yml
