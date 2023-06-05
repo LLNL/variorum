@@ -21,6 +21,8 @@
 
 #include "highlander.h"
 
+#define FASTEST_SAMPLE_INTERVAL_MS 50
+
 #if 0
 /********/
 /* RAPL */
@@ -30,8 +32,6 @@ static double limit_joules = 0.0;
 static double max_watts = 0.0;
 static double min_watts = 1024.0;
 #endif
-
-#define FASTEST_SAMPLE_INTERVAL_MS 50
 
 /*************************/
 /* HW Counter Structures */
@@ -78,6 +78,9 @@ int main(int argc, char **argv)
                         "\n"
                         "    -i ms_interval"
                         "        Sampling interval in milliseconds (default = 50ms).\n"
+                        "\n"
+                        "    -v\n"
+                        "        Verbose output that includes all sensors or registers.\n"
                         "\n";
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
@@ -92,10 +95,12 @@ int main(int argc, char **argv)
     char **arg = NULL;
     int set_app = 0;
     char *logpath = NULL;
-    // Default sampling interval in milliseconds
-    unsigned long sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+    // Default struct with sampling interval of 50ms and verbosity of 0.
+    struct thread_args th_args;
+    th_args.sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+    th_args.measure_all = false;
 
-    while ((opt = getopt(argc, argv, "ca:p:i:")) != -1)
+    while ((opt = getopt(argc, argv, "ca:p:i:v")) != -1)
     {
         switch (opt)
         {
@@ -111,13 +116,16 @@ int main(int argc, char **argv)
                 logpath = strdup(optarg);
                 break;
             case 'i':
-                sample_interval = atol(optarg);
-                if (sample_interval < FASTEST_SAMPLE_INTERVAL_MS)
+                th_args.sample_interval = atol(optarg);
+                if (th_args.sample_interval < FASTEST_SAMPLE_INTERVAL_MS)
                 {
                     printf("Warning: Specified sample interval (-i) is faster than default. Setting to default sampling interval of %d milliseconds.\n",
                            FASTEST_SAMPLE_INTERVAL_MS);
-                    sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
+                    th_args.sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
                 }
+                break;
+            case 'v':
+                th_args.measure_all = true;
                 break;
             case '?':
                 if (optopt == 'a')
@@ -235,7 +243,7 @@ int main(int argc, char **argv)
         pthread_attr_init(&mattr);
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
-        pthread_create(&mthread, &mattr, power_measurement, (void *) &sample_interval);
+        pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
 
         /* Fork. */
         pid_t app_pid = fork();
@@ -261,7 +269,7 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement();
+        take_measurement(th_args.measure_all);
         end = now_ms();
 
         if (logpath)

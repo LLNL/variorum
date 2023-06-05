@@ -184,6 +184,8 @@ int main(int argc, char **argv)
 
         /* Set the cap. */
         //set_rapl_power(watt_cap, watt_cap);
+        // ToDo: Intel-specific, needs to move to the best
+        // effort capping technique.
         printf("Setting each package power limit to %dW\n", watt_cap);
         variorum_cap_each_socket_power_limit(watt_cap);
 
@@ -219,7 +221,11 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement();
+
+        // This is intel-specific.
+        // Preseve the original behavior with variorum_monitoring for now, by
+        // providing `true` as input value for the take_measurement function.
+        take_measurement(true);
         end = now_ms();
 
         /* Output summary data. */
