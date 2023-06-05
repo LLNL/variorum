@@ -11,7 +11,7 @@
 #include <variorum_error.h>
 #include <power_features.h>
 
-int instinctGPU_get_power(int verbose)
+int amd_gpu_instinct_get_power(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -32,7 +32,7 @@ int instinctGPU_get_power(int verbose)
 }
 
 
-int instinctGPU_get_power_limit(int verbose)
+int amd_gpu_instinct_get_power_limit(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -53,7 +53,7 @@ int instinctGPU_get_power_limit(int verbose)
 }
 
 
-int instinctGPU_get_thermals(int verbose)
+int amd_gpu_instinct_get_thermals(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -73,7 +73,7 @@ int instinctGPU_get_thermals(int verbose)
     return 0;
 }
 
-int instinctGPU_get_clocks(int verbose)
+int amd_gpu_instinct_get_clocks(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -93,7 +93,7 @@ int instinctGPU_get_clocks(int verbose)
     return 0;
 }
 
-int instinctGPU_get_gpu_utilization(int verbose)
+int amd_gpu_instinct_get_gpu_utilization(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -113,7 +113,7 @@ int instinctGPU_get_gpu_utilization(int verbose)
     return 0;
 }
 
-int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit)
+int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

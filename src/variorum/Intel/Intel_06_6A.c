@@ -26,7 +26,7 @@ static struct icelake_6a_offsets msrs =
     .msr_dram_power_info          = 0x61C,
 };
 
-int fm_06_6a_get_power_limits(int long_ver)
+int intel_cpu_fm_06_6a_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
@@ -76,7 +76,7 @@ int fm_06_6a_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_6a_get_features(void)
+int intel_cpu_fm_06_6a_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -105,7 +105,7 @@ int fm_06_6a_get_features(void)
     return 0;
 }
 
-int fm_06_6a_get_power(int long_ver)
+int intel_cpu_fm_06_6a_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -126,7 +126,7 @@ int fm_06_6a_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_6a_get_node_power_json(char **get_power_obj_str)
+int intel_cpu_fm_06_6a_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -146,7 +146,8 @@ int fm_06_6a_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int fm_06_6a_get_node_power_domain_info_json(char **get_domain_obj_str)
+int intel_cpu_fm_06_6a_get_node_power_domain_info_json(char
+        **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
