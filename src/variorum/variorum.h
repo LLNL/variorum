@@ -40,6 +40,7 @@ int variorum_poll_power(FILE *output);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [in] output Location for output (stdout, stderr, filename).
 ///
@@ -173,6 +174,7 @@ int variorum_cap_each_gpu_power_limit(int gpu_power_limit);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -194,6 +196,7 @@ int variorum_print_verbose_power_limit(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -287,6 +290,7 @@ int variorum_print_counters(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -309,6 +313,7 @@ int variorum_print_verbose_power(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - Intel Arctic Sound
 /// - NVIDIA Volta
 ///
@@ -379,6 +384,7 @@ void variorum_print_topology(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -516,6 +522,7 @@ int variorum_disable_turbo(void);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// power information.
@@ -540,6 +547,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// domain information.
