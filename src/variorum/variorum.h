@@ -97,7 +97,6 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -134,6 +133,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 ///
 /// @supparch
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -208,6 +208,7 @@ int variorum_print_power_limit(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -227,6 +228,7 @@ int variorum_print_verbose_thermals(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -280,6 +282,7 @@ int variorum_print_counters(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -303,6 +306,7 @@ int variorum_print_verbose_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -328,6 +332,7 @@ int variorum_print_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -349,6 +354,7 @@ int variorum_print_verbose_frequency(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -411,7 +417,6 @@ int variorum_print_turbo(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -435,7 +440,6 @@ int variorum_print_verbose_gpu_utilization(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -455,6 +459,7 @@ int variorum_print_gpu_utilization(void);
 ///
 /// @supparch
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -513,6 +518,7 @@ int variorum_disable_turbo(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -538,6 +544,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
