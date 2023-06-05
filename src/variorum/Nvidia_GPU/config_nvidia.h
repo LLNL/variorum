@@ -8,7 +8,7 @@
 
 #include <inttypes.h>
 
-#include "power_features.h"
+#include <power_features.h>
 #include <Volta.h>
 
 uint64_t *detect_gpu_arch(void);

@@ -9,7 +9,7 @@
 #include <Volta.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include "power_features.h"
+#include <power_features.h>
 
 int volta_get_power(int long_ver)
 {
