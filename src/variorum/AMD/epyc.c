@@ -415,8 +415,8 @@ int epyc_set_each_core_boostlimit(int boostlimit)
     }
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stdout, "Values are input:%2u MHz, test=%2u MHz\n",
-            boostlimit, core_boost_lim);
+    fprintf(stdout, "Values are input:%2u MHz\n",
+            boostlimit);
 #endif
 
     return 0;
