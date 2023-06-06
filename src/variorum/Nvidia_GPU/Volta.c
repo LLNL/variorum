@@ -24,7 +24,7 @@ int volta_get_power(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_data(iter, long_ver, stdout);
+        nvidia_gpu_get_power_data(iter, long_ver, stdout);
     }
     return 0;
 }
@@ -42,7 +42,7 @@ int volta_get_thermals(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_thermal_data(iter, long_ver, stdout);
+        nvidia_gpu_get_thermal_data(iter, long_ver, stdout);
     }
     return 0;
 }
@@ -60,7 +60,7 @@ int volta_get_clocks(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_clocks_data(iter, long_ver, stdout);
+        nvidia_gpu_get_clocks_data(iter, long_ver, stdout);
     }
     return 0;
 }
@@ -78,7 +78,7 @@ int volta_get_power_limits(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_power_limits(iter, long_ver, stdout);
+        nvidia_gpu_get_power_limits_data(iter, long_ver, stdout);
     }
     return 0;
 }
@@ -96,7 +96,7 @@ int volta_get_gpu_utilization(int long_ver)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        get_gpu_utilization(iter, long_ver, stdout);
+        nvidia_gpu_get_gpu_utilization_data(iter, long_ver, stdout);
     }
     return 0;
 }
