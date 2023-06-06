@@ -6,16 +6,16 @@
 set(variorum_arm_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Juno_r2.h
   ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Neoverse_N1.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features_Juno_r2.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features_Neoverse_N1.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/juno_r2_power_features.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/neoverse_N1_power_features.h
   ${CMAKE_CURRENT_SOURCE_DIR}/arm_util.h
   CACHE INTERNAL "")
 
 set(variorum_arm_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Juno_r2.c
   ${CMAKE_CURRENT_SOURCE_DIR}/ARM_Neoverse_N1.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features_Juno_r2.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features_Neoverse_N1.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/juno_r2_power_features.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/neoverse_N1_power_features.c
   ${CMAKE_CURRENT_SOURCE_DIR}/arm_util.c
   CACHE INTERNAL "")
 

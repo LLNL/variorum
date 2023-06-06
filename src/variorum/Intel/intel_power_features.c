@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <power_features.h>
+#include <intel_power_features.h>
 #include <config_architecture.h>
 #include <msr_core.h>
 #include <variorum_error.h>

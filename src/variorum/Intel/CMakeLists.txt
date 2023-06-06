@@ -6,7 +6,7 @@
 set(variorum_intel_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/clocks_features.h
   ${CMAKE_CURRENT_SOURCE_DIR}/counters_features.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/intel_power_features.h
   ${CMAKE_CURRENT_SOURCE_DIR}/thermal_features.h
   ${CMAKE_CURRENT_SOURCE_DIR}/misc_features.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_2A.h
@@ -24,7 +24,7 @@ set(variorum_intel_headers
 set(variorum_intel_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/clocks_features.c
   ${CMAKE_CURRENT_SOURCE_DIR}/counters_features.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/intel_power_features.c
   ${CMAKE_CURRENT_SOURCE_DIR}/thermal_features.c
   ${CMAKE_CURRENT_SOURCE_DIR}/misc_features.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Intel_06_2A.c

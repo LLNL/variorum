@@ -13,7 +13,7 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "power_features_Neoverse_N1.h"
+#include "neoverse_N1_power_features.h"
 #include <variorum_error.h>
 #include <variorum_timers.h>
 

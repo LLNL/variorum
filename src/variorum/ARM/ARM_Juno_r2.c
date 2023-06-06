@@ -13,7 +13,7 @@
 #include <ARM_Juno_r2.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include <power_features_Juno_r2.h>
+#include <juno_r2_power_features.h>
 
 int arm_juno_r2_get_power(int long_ver)
 {

@@ -9,7 +9,7 @@
 
 #include <config_architecture.h>
 #include <Power9.h>
-#include <power_features.h>
+#include <ibm_power_features.h>
 #include <variorum_error.h>
 
 int ibm_cpu_p9_get_power(int long_ver)

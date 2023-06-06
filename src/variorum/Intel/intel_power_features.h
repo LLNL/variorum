@@ -309,7 +309,7 @@ int delta_rapl_data(off_t msr_rapl_unit);
 
 #endif
 
-///* power_features.h */
+///* intel_power_features.h */
 //void pkg_energy_status(enum ctl_domains_e d,
 //                       int id,
 //                       off_t msr,
