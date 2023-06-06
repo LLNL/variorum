@@ -8,7 +8,7 @@
 
 #include <config_amd_gpu.h>
 #include <config_architecture.h>
-#include <power_features.h>
+#include <amd_gpu_power_features.h>
 #include <instinctGPU.h>
 #include <variorum_error.h>
 

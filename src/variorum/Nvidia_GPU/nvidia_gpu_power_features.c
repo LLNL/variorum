@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <power_features.h>
+#include <nvidia_gpu_power_features.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <variorum_timers.h>

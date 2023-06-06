@@ -9,7 +9,7 @@
 #include <GPU.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include <power_features.h>
+#include <intel_gpu_power_features.h>
 
 int intel_gpu_get_power(int long_ver)
 {
