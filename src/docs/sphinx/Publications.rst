@@ -16,6 +16,8 @@
  Presentations
 ***************
 
+-  Variorum: Vendor-Agnostic Power Management `Watch here <https://www.youtube.com/watch?v=rgJGgPERBao>`_
+
 -  Introduction to Variorum, ECP Tutorial Series 2021.
 
       -  :download:`Module 1 Slides
