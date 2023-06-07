@@ -13,7 +13,7 @@
 #include <ARM_Neoverse_N1.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include "power_features_Neoverse_N1.h"
+#include "neoverse_N1_power_features.h"
 
 int arm_neoverse_n1_get_power(int long_ver)
 {

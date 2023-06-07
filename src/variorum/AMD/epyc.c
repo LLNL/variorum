@@ -15,7 +15,7 @@
 #include <e_smi/e_smi.h>
 
 #include "msr_core.h"
-#include "power_features.h"
+#include "amd_power_features.h"
 
 int amd_cpu_epyc_get_power(int long_ver)
 {

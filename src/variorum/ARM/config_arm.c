@@ -8,8 +8,8 @@
 
 #include <config_arm.h>
 #include <config_architecture.h>
-#include <power_features_Juno_r2.h>
-#include <power_features_Neoverse_N1.h>
+#include "juno_r2_power_features.h"
+#include "neoverse_N1_power_features.h"
 #include <ARM_Juno_r2.h>
 #include <ARM_Neoverse_N1.h>
 #include <variorum_error.h>

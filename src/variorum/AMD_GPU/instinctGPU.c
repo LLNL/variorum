@@ -9,7 +9,7 @@
 #include <instinctGPU.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include <power_features.h>
+#include <amd_gpu_power_features.h>
 
 int amd_gpu_instinct_get_power(int verbose)
 {

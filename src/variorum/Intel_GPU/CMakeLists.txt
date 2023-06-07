@@ -5,12 +5,12 @@
 
 set(variorum_intel_gpu_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/GPU.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/intel_gpu_power_features.h
   CACHE INTERNAL "")
 
 set(variorum_intel_gpu_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/GPU.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/intel_gpu_power_features.c
   CACHE INTERNAL "")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${variorum_includes})

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include <power_features.h>
+#include <ibm_power_features.h>
 
 unsigned long read_counter(const struct occ_sensor_data_header *hb,
                            uint32_t offset)

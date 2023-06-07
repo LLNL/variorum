@@ -5,12 +5,12 @@
 
 set(variorum_amd_headers
   ${CMAKE_CURRENT_SOURCE_DIR}/epyc.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/amd_power_features.h
   CACHE INTERNAL "")
 
 set(variorum_amd_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/epyc.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/power_features.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/amd_power_features.c
   CACHE INTERNAL "")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${variorum_includes})

@@ -11,7 +11,7 @@
 #include <config_architecture.h>
 #include <counters_features.h>
 #include <misc_features.h>
-#include <power_features.h>
+#include <intel_power_features.h>
 #include <thermal_features.h>
 
 static struct haswell_3f_offsets msrs =

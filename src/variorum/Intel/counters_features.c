@@ -14,7 +14,7 @@
 #include <counters_features.h>
 #include <config_architecture.h>
 #include <msr_core.h>
-#include <power_features.h>
+#include <intel_power_features.h>
 #include <variorum_cpuid.h>
 #include <variorum_error.h>
 #include <variorum_timers.h>
