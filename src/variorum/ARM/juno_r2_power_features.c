@@ -12,7 +12,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <inttypes.h>
-#include <power_features_Juno_r2.h>
+
+#include "juno_r2_power_features.h"
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
