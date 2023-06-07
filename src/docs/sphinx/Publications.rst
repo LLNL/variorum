@@ -16,6 +16,10 @@
  Presentations
 ***************
 
+
+-  Variorum: Vendor-Agnostic Power Management `Watch here
+   <https://www.youtube.com/watch?v=rgJGgPERBao>`_
+
 -  Power Management on Exascale Platforms with Variorum, ECP Tutorial Series 2023.
 
      -  Introduction to Variorum `Recording <https://uoregon.zoom.us/rec/share/K6rSbJeeW3R0wPndnspRJ3a-_ZJ_TywH__2fGJKW3h6TutWTac77RawRmr9ypCWV.EvsYnRIV7jy8pAdK>`_
