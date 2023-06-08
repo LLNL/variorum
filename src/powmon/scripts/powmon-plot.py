@@ -19,6 +19,7 @@
 #     per-node: plot power data per node only. If the app were run on 4 nodes, 4 plots
 #     are created.
 #     aggregate: plot discriptive stats of the power data of all nodes. There should be four plots, mean, max, min, median.
+#   --description or -d: required to add a title of the figure.
 #
 # Examples:
 #   1. python3 powmon-plot.py --input "/path/to/PowerData" --type per-node
