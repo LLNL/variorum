@@ -61,13 +61,13 @@ def plotAggregatedData(aggData, outputPath, dState):
     df = pd.DataFrame(aggData, columns=col)
     plt.plot(
         df["host"],
-        df["Node Power (W)"],
+        df[" Node Power (W)"],
         label="Node Power",
         color="green",
     )
     plt.plot(
         df["host"],
-        df["Socket 0 CPU Power (W)"],
+        df[" Socket 0 CPU Power (W)"],
         label="Socket 0 CPU Power",
         color="blue",
     )
@@ -117,13 +117,13 @@ def plotAggregatedData(aggData, outputPath, dState):
 def plotPowData(df, host, outputPath, desc):
     plt.plot(
         df["Timestamp (ms)"],
-        df["Node Power (W)"],
+        df[" Node Power (W)"],
         label="Node Power",
         color="green",
     )
     plt.plot(
         df["Timestamp (ms)"],
-        df["Socket 0 CPU Power (W)"],
+        df[" Socket 0 CPU Power (W)"],
         label="Socket 0 CPU Power",
         color="blue",
     )
@@ -234,7 +234,7 @@ if __name__ == "__main__":
         "-d",
         type=str,
         required=True,
-        help="Output directory path. If not defined, plots will be saved in the input path.",
+        help="What to put in the figure title",
     )
 
     # create a new ArgumentParser object
