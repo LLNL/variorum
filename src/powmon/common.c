@@ -68,7 +68,7 @@ void parse_json_obj(char *s, int num_sockets)
 
     if (write_header == true)
     {
-        fprintf(logfile, "%s, %s, ", "Timestamp (ms)", "Node Power (W)");
+        fprintf(logfile, "%s,%s,", "Timestamp (ms)", "Node Power (W)");
         for (i = 0; i < num_sockets; i++)
         {
             char str[40];
