@@ -8,7 +8,7 @@
 #   argparse>=1.4.0
 #
 # How to run the script?
-#   python3 plotting.py [options]
+#   python3 powmon-plot.py [options]
 #
 # Options:
 #   --input or -i: required to specify power data path. Make sure the power data in the
@@ -21,10 +21,10 @@
 #     aggregate: plot discriptive stats of the power data of all nodes. There should be four plots, mean, max, min, median.
 #
 # Examples:
-#   1. python3 plotting.py --input "/path/to/PowerData" --type per-node
+#   1. python3 powmon-plot.py --input "/path/to/PowerData" --type per-node
 #     To plot power data located in "/path/to/PowerData" per node and save plots in
 #     "/path/to/PowerData".
-#   2. python3 plotting.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
+#   2. python3 powmon-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
 #     To plot descriptive stats of power data located in /path/to/PowerData/, and save the plots in
 #     "/path/where/to/SavePlots".
 
@@ -206,7 +206,7 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="plotting", description="Plotting Power Data")
+    parser = argparse.ArgumentParser(prog="powmon-plot", description="Plotting Power Data")
     parser.add_argument(
         "--input",
         "-i",
