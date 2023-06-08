@@ -34,6 +34,7 @@ import matplotlib.pyplot as plt
 from os import listdir
 import argparse
 import os
+import sys
 
 
 # ---------------------------------------------------------------------
@@ -62,13 +63,13 @@ def plotAggregatedData(aggData, outputPath, dState):
     df = pd.DataFrame(aggData, columns=col)
     plt.plot(
         df["host"],
-        df[" Node Power (W)"],
+        df["Node Power (W)"],
         label="Node Power",
         color="green",
     )
     plt.plot(
         df["host"],
-        df[" Socket 0 CPU Power (W)"],
+        df["Socket 0 CPU Power (W)"],
         label="Socket 0 CPU Power",
         color="blue",
     )
@@ -164,6 +165,7 @@ def plotPowData(df, host, outputPath, desc):
     plt.title("{0} ({1})".format(desc, host))
     plt.savefig("{0}/{1}.png".format(outputPath, host))
     plt.show()
+    plt.close()
 
 
 # ---------------------------------------------------------------------
@@ -207,7 +209,12 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="powmon-plot", description="Plotting Power Data")
+    # print(platform.python_version())
+    if sys.version_info < (3, 8):
+        sys.exit("Please use Python 3.8+")
+    parser = argparse.ArgumentParser(
+        prog="powmon-plot", description="Plotting Power Data"
+    )
     parser.add_argument(
         "--input",
         "-i",
