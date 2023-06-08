@@ -1,6 +1,6 @@
 # This script plots power data colloect by 'powmon'. It reads the CSV files of a single run, where each
 # file holds power data of a node run the tasks. It plots power data per node, where there is a figure for each node.
-#  It also plot the discriptive stats of the power data of all nodes.
+#  It also plots the descriptive stats of the power data of all nodes.
 # Requirements:
 #   pandas>=1.5.0
 #   numpy>=1.23.3
