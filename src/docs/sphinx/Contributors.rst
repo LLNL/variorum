@@ -14,6 +14,7 @@ include our academic, industrial and DOE collaborators without whose support
 this work would not be possible. We thank them for the regular discussions, bug
 fixes, feature enhancements, testbed access and other support.
 
+   -  Mohammad Al-Tahat (New Mexico State University)
    -  Peter Bailey (Google)
    -  Natalie Bates (EEHPCWG)
    -  Shilpasri Bhat (IBM)
@@ -39,6 +40,7 @@ fixes, feature enhancements, testbed access and other support.
    -  Tanzima Islam (Texas Tech University)
    -  Siddhartha Jana (EEHPCWG/Intel)
    -  Masaaki Kondo (University of Tokyo)
+   -  Naman Kulshreshtha (Clemson University)
    -  Eun K Lee (IBM)
    -  David Lowenthal (Univeristy of Arizona)
    -  Aniruddha Marathe (LLNL)
