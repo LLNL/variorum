@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
 from os import listdir
 import argparse
 import os
-import sys
+from sys import version_info
 
 
 # ---------------------------------------------------------------------
@@ -48,7 +48,7 @@ def readCsvFile(csvFile):
 # ---------------------------------------------------------------------
 # plot descriptive stats of power data
 # ---------------------------------------------------------------------
-def plotAggregatedData(aggData, outputPath, dState):
+def plotAggregatedData(aggData, outputPath, dStat):
     col = [
         "host",
         "Node Power (W)",
@@ -61,6 +61,7 @@ def plotAggregatedData(aggData, outputPath, dState):
     ]
     # convert list of list to a df
     df = pd.DataFrame(aggData, columns=col)
+    plt.figure(figsize=(11, 7))
     plt.plot(df["host"], df["Node Power (W)"], label="Node Power", color="green")
     plt.plot(
         df["host"],
@@ -95,11 +96,12 @@ def plotAggregatedData(aggData, outputPath, dState):
         label="Socket 1 Mem Power",
         color="grey",
     )
-    plt.xlabel("Host")
-    plt.ylabel("Power(Watts)")
-    plt.legend(loc="best", prop={"size": 8})
-    plt.title("{0} ({1})".format(desc, host))
-    plt.savefig("{0}/aggregated.png".format(outputPath))
+    plt.xticks(rotation=45, ha="right")
+    plt.xlabel("Host", fontsize=9)
+    plt.ylabel("Power(Watts)", fontsize=9)
+    plt.legend(loc="best", prop={"size": 9})
+    plt.title("{0} power of each device over all nodes".format(dStat))
+    plt.savefig("{0}/aggregated-{1}.png".format(outputPath, dStat))
     plt.show()
     plt.close()
 
@@ -108,6 +110,7 @@ def plotAggregatedData(aggData, outputPath, dState):
 # plot power data per node
 # ---------------------------------------------------------------------
 def plotPowData(df, host, outputPath, desc):
+    plt.figure(figsize=(11, 7))
     plt.plot(
         df["Timestamp (ms)"], df["Node Power (W)"], label="Node Power", color="green"
     )
@@ -197,8 +200,7 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    # print(platform.python_version())
-    if sys.version_info < (3, 8):
+    if version_info[0] < 3 and version_info[1] < 8:
         sys.exit("Please use Python 3.8+")
     parser = argparse.ArgumentParser(
         prog="powmon-plot", description="Plotting Power Data"
