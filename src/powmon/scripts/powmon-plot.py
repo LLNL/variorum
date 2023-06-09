@@ -62,7 +62,7 @@ def plotAggregatedData(aggData, outputPath, dStat):
     ]
     # convert list of list to a df
     df = pd.DataFrame(aggData, columns=col)
-    plt.figure(figsize=(11, 7))
+    plt.figure(figsize=(11, 10))
     plt.plot(df["host"], df["Node Power (W)"], label="Node Power", color="green")
     plt.plot(
         df["host"],
@@ -98,9 +98,9 @@ def plotAggregatedData(aggData, outputPath, dStat):
         color="grey",
     )
     plt.xticks(rotation=45, ha="right")
-    plt.xlabel("Host", fontsize=9)
-    plt.ylabel("Power(Watts)", fontsize=9)
-    plt.legend(loc="best", prop={"size": 9})
+    plt.xlabel("Host", fontsize=12)
+    plt.ylabel("Power(Watts)", fontsize=12)
+    plt.legend(loc="best", prop={"size": 10})
     plt.title("{0} power of each device over all nodes".format(dStat))
     plt.savefig("{0}/aggregated-{1}.png".format(outputPath, dStat))
     plt.show()
@@ -112,6 +112,13 @@ def plotAggregatedData(aggData, outputPath, dStat):
 # ---------------------------------------------------------------------
 def plotPowData(df, host, outputPath, desc):
     plt.figure(figsize=(11, 7))
+    # compute diff of timstamps
+    # make first row 1 instead of nan
+    # them compute the cumulative sum of timestamps
+    # TODO: needs to redo in a simplest way
+    df["Timestamp (ms)"] = df["Timestamp (ms)"].diff()
+    df["Timestamp (ms)"][0] = 1
+    df["Timestamp (ms)"] = df["Timestamp (ms)"].cumsum()
     plt.plot(
         df["Timestamp (ms)"], df["Node Power (W)"], label="Node Power", color="green"
     )
