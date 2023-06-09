@@ -53,9 +53,20 @@ of nodes through ``mpirun`` and utilize ``powmon`` with their application.
 
    $ mpirun -np <num-nodes> ./powmon -a ./application
 
-Additionally, for Intel systems only, we also provide two other tools,
-``power_wrapper_static``, and ``power_wrapper_dynamic`` that allow users to set
-a static (or dynamic) power cap and then monitor their binary application.
+We also provide a set of simple plotting scripts for ``powmon``, which are
+located in the ``src/powmon/scripts`` folder. The ``powmon-plot.py`` script can
+generate per-node as well as aggregated (across multiple nodes) graphs for the
+default version of ``powmon`` that provides node-level and CPU, GPU and memory data.
+This script works across all architectures that support Variorum's JSON API for
+collecting power. Additionally, for IBM sensors data, which can be obtained on
+with the ``powmon -v`` (verbose) option, we provide a post processing and
+R script for plots.
+
+
+In addition to ``powmon`` that is vendor-neutral, for Intel systems only,
+we provide two other power capping tools, ``power_wrapper_static``, and
+``power_wrapper_dynamic`` that allow users to set a static (or dynamic) power
+cap and then monitor their binary application.
 
 The example below will set a package-level power limit of 100W on each socket,
 and then sample the power usage while executing a sleep for 10 seconds:
