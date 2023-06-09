@@ -59,7 +59,7 @@ generate per-node as well as aggregated (across multiple nodes) graphs for the
 default version of ``powmon`` that provides node-level and CPU, GPU and memory
 data. This script works across all architectures that support Variorum's JSON
 API for collecting power. Additionally, for IBM sensors data, which can be
-obtained on with the ``powmon -v`` (verbose) option, we provide a post
+obtained with the ``powmon -v`` (verbose) option, we provide a post
 processing and R script for plots.
 
 In addition to ``powmon`` that is vendor-neutral, for Intel systems only, we
