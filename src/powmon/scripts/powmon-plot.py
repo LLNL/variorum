@@ -61,12 +61,7 @@ def plotAggregatedData(aggData, outputPath, dState):
     ]
     # convert list of list to a df
     df = pd.DataFrame(aggData, columns=col)
-    plt.plot(
-        df["host"],
-        df["Node Power (W)"],
-        label="Node Power",
-        color="green",
-    )
+    plt.plot(df["host"], df["Node Power (W)"], label="Node Power", color="green")
     plt.plot(
         df["host"],
         df["Socket 0 CPU Power (W)"],
@@ -86,10 +81,7 @@ def plotAggregatedData(aggData, outputPath, dState):
         color="red",
     )
     plt.plot(
-        df["host"],
-        df["Socket 1 CPU Power (W)"],
-        label="Socket 1 CPU Power",
-        color="m",
+        df["host"], df["Socket 1 CPU Power (W)"], label="Socket 1 CPU Power", color="m"
     )
     plt.plot(
         df["host"],
@@ -106,9 +98,7 @@ def plotAggregatedData(aggData, outputPath, dState):
     plt.xlabel("Host")
     plt.ylabel("Power(Watts)")
     plt.legend(loc="best", prop={"size": 8})
-    plt.title(
-        "{0} Power data of AMG run on. 16 nodes and 20 cores per node.".format(dState)
-    )
+    plt.title("{0} ({1})".format(desc, host))
     plt.savefig("{0}/aggregated.png".format(outputPath))
     plt.show()
 
@@ -118,14 +108,11 @@ def plotAggregatedData(aggData, outputPath, dState):
 # ---------------------------------------------------------------------
 def plotPowData(df, host, outputPath, desc):
     plt.plot(
-        df["Timestamp (ms)"],
-        df[" Node Power (W)"],
-        label="Node Power",
-        color="green",
+        df["Timestamp (ms)"], df["Node Power (W)"], label="Node Power", color="green"
     )
     plt.plot(
         df["Timestamp (ms)"],
-        df[" Socket 0 CPU Power (W)"],
+        df["Socket 0 CPU Power (W)"],
         label="Socket 0 CPU Power",
         color="blue",
     )
