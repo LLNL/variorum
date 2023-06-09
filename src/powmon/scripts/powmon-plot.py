@@ -111,6 +111,7 @@ def plotAggregatedData(aggData, outputPath, dState):
     )
     plt.savefig("{0}/aggregated.png".format(outputPath))
     plt.show()
+    plt.close()
 
 
 # ---------------------------------------------------------------------
