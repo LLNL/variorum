@@ -200,7 +200,7 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    if version_info[0] < 3 and version_info[1] < 8:
+    if version_info[0] <= 3 and version_info[1] < 8:
         sys.exit("Please use Python 3.8+")
     parser = argparse.ArgumentParser(
         prog="powmon-plot", description="Plotting Power Data"
