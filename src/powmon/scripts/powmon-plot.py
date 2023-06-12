@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-# This script plots power data colloect by 'powmon'. It reads the CSV files of a single run, where each
-# file holds power data of a node run the tasks. It plots power data per node, where there is a figure for each node.
-#  It also plots the descriptive stats of the power data of all nodes.
+# This script plots power data colloect by 'powmon'. It reads the CSV files of a single
+# run, where each file holds power data of a node run the tasks. It plots power data per
+# node, where there is a figure for each node. It also plots the descriptive stats of
+# the power data of all nodes.
+#
 # Requirements:
 #   pandas>=1.5.0
 #   numpy>=1.23.3
@@ -14,13 +16,14 @@
 #
 # Options:
 #   --input or -i: required to specify power data path. Make sure the power data in the
-#     the directory is from a single run.
-#   --output or -o: optional to specify where to save the plots. If not defined, the input path
-#     is used.
+#     directory is from a single run.
+#   --output or -o: optional to specify where to save the plots. If not defined, the
+#     input path is used.
 #   --type or -t: optional to select what to plot.
 #     per-node: plot power data per node only. If the app were run on 4 nodes, 4 plots
 #     are created.
-#     aggregate: plot discriptive stats of the power data of all nodes. There should be four plots, mean, max, min, median.
+#     aggregate: plot discriptive stats of the power data of all nodes. There should be
+#     four plots, mean, max, min, median.
 #   --description or -d: required to add a title of the figure.
 #
 # Examples:
@@ -211,7 +214,7 @@ def findStats(df, hostName):
 if __name__ == "__main__":
     if sys.version_info[0] == 2 or (sys.version_info[0] == 3 and sys.version_info[1] <= 8):
         sys.exit("Please use Python 3.8+")
-        
+
     parser = argparse.ArgumentParser(
         prog="powmon-plot", description="Plotting Power Data"
     )
@@ -262,10 +265,10 @@ if __name__ == "__main__":
         outputPath += "/"
     if not os.path.exists(outputPath):
         os.makedirs(outputPath)
-        
+
     # find csv files
     csvFiles = list_files(inputPath, ".dat")
-    
+
     if pltType == "per-node" or pltType is None:
         for csv in csvFiles:
             host = csv.split(".")[0]
