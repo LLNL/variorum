@@ -150,6 +150,24 @@ Variorum's build system supports the following CMake options:
 -  ``USE_MSR_SAFE_BEFORE_1_5_0 (default=OFF)`` - Use msr-safe prior to v1.5.0,
    dependency of Intel architectures for accessing counters from userspace.
 
+************************************
+ Building on Multiple Architectures
+************************************
+
+Several HPC systems have compute nodes that are composed of components or
+hardware from different vendors. An example is the Sierra supercomputer at LLNL,
+where the CPUs are based on IBM platform (Power9), and the GPUs are from NVIDIA
+(Volta). Because power and energy dials are vendor-specific, we need to enable a
+`multi-architecture` build for such platforms. As of version 0.7, we have added
+support for such builds within Variorum. These can now be specified with turning
+the CMake options for the associated devices, for example.
+``VARIORUM_WITH_NVIDIA_GPU`` and ``VARIORUM_WITH_IBM_CPU`` can both be set to
+``ON`` during the same build.
+
+Support for multi-architecture builds is still new and limited, especially with
+the JSON-based APIs. We are working toward adding more features in the near
+future.
+
 *********************
  Building with Spack
 *********************
