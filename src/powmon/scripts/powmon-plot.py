@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # This script plots power data colloect by 'powmon'. It reads the CSV files of a single run, where each
 # file holds power data of a node run the tasks. It plots power data per node, where there is a figure for each node.
 #  It also plots the descriptive stats of the power data of all nodes.
@@ -8,7 +10,7 @@
 #   argparse>=1.4.0
 #
 # How to run the script?
-#   python3 powmon-plot.py [options]
+#   ./powmon-plot.py [options]
 #
 # Options:
 #   --input or -i: required to specify power data path. Make sure the power data in the
@@ -22,20 +24,19 @@
 #   --description or -d: required to add a title of the figure.
 #
 # Examples:
-#   1. python3 powmon-plot.py --input "/path/to/PowerData" --type per-node
+#   1. ./powmon-plot.py --input "/path/to/PowerData" --type per-node
 #     To plot power data located in "/path/to/PowerData" per node and save plots in
 #     "/path/to/PowerData".
-#   2. python3 powmon-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
+#   2. ./powmon-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
 #     To plot descriptive stats of power data located in /path/to/PowerData/, and save the plots in
 #     "/path/where/to/SavePlots".
 
+import os
+import sys
+import argparse
+
 import pandas as pd
 import matplotlib.pyplot as plt
-from os import listdir
-import argparse
-import os
-from sys import version_info
-import sys
 
 
 # ---------------------------------------------------------------------
@@ -174,7 +175,7 @@ def list_files(dir_path, fileExt):
     if not (os.path.exists(dir_path)):
         print("Input dir {} not exist".format(dir_path))
         exit(1)
-    files = listdir(dir_path)
+    files = os.listdir(dir_path)
     return [csv for csv in files if csv.endswith(fileExt)]
 
 
@@ -208,8 +209,9 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    if version_info[0] == 2 or (version_info[0] == 3 and version_info[1] <= 8):
+    if sys.version_info[0] == 2 or (sys.version_info[0] == 3 and sys.version_info[1] <= 8):
         sys.exit("Please use Python 3.8+")
+        
     parser = argparse.ArgumentParser(
         prog="powmon-plot", description="Plotting Power Data"
     )
@@ -260,8 +262,10 @@ if __name__ == "__main__":
         outputPath += "/"
     if not os.path.exists(outputPath):
         os.makedirs(outputPath)
+        
     # find csv files
     csvFiles = list_files(inputPath, ".dat")
+    
     if pltType == "per-node" or pltType is None:
         for csv in csvFiles:
             host = csv.split(".")[0]
