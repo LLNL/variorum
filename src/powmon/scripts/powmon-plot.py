@@ -212,7 +212,9 @@ def findStats(df, hostName):
 # main
 # ---------------------------------------------------------------------
 if __name__ == "__main__":
-    if sys.version_info[0] == 2 or (sys.version_info[0] == 3 and sys.version_info[1] <= 8):
+    if sys.version_info[0] == 2 or (
+        sys.version_info[0] == 3 and sys.version_info[1] <= 8
+    ):
         sys.exit("Please use Python 3.8+")
 
     parser = argparse.ArgumentParser(
