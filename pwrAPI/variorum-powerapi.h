@@ -57,8 +57,9 @@ void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr,
     power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
 
     /* Extract and print values from JSON object */
-    *node_pwr = json_real_value(json_object_get(power_obj, "power_node_watts"));
-
+    *node_pwr  = json_real_value(json_object_get(power_obj, "power_node_watts"));
+    //printf("The node powerlevel reported is %lf watts!\n", *node_pwr);	
+	
     for (i = 0; i < num_sockets; i++)
     {
         *cpu_pwr += json_real_value(json_object_get(power_obj, json_metric_names[i]));
@@ -99,6 +100,7 @@ int PWR_CntxtDestory(PWR_Cntxt ctx) {
 
 int PWR_CntxtGetEntryPoint(PWR_Cntxt ctx, PWR_Obj* obj) {
 	*obj = ((Cntxt*)ctx)->root;	
+	return PWR_RET_SUCCESS;
 }
 
 int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
@@ -142,7 +144,7 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 	switch(obj_type) {
 		case PWR_OBJ_NODE:
 			if(type == PWR_ATTR_POWER) {
-				*( (uint64_t *)ptr ) = node_power; 
+				*( (double *)ptr ) = node_power; 
 			}
 			break;
 
@@ -168,4 +170,3 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
 
 
 #endif 
-
