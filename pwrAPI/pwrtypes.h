@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-
+#define PWR_RET_SUCCESS 0
+#define PWR_RET_FAILURE -1
 typedef void* PWR_Cntxt;
 typedef void* PWR_Grp;
 typedef void* PWR_Obj;
@@ -77,3 +78,4 @@ typedef enum {
 
 
 #endif
+

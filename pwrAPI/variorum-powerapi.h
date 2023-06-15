@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "pwrtypes.h"
 #include <jansson.h>
-#include <variorum.h>
-#include <variorum_topology.h>
+#include "../../src/variorum/variorum.h"
+#include "../../src/variorum/variorum_topology.h"
 #include <time.h>
 
 typedef struct {
@@ -79,7 +79,7 @@ void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr,
     json_decref(power_obj);
 }
 
-int PWR_CntxtInit(PWR_CntxtType type, PWR_Role role, const char* name, PWR_Cntxt* ctx) {
+int PWR_CntxtInit(PWR_Cntxt type, PWR_Role role, const char* name, PWR_Cntxt* ctx) {
 
 	if(role != PWR_ROLE_INVALID && role != PWR_ROLE_NOT_SPECIFIED) {
 		*ctx = malloc(sizeof(Cntxt));
@@ -131,11 +131,11 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 
 	if (ret != 0)
 	{
-		fprintf(stdout, “Unable to obtain power details.”);
+		fprintf(stdout, "Unable to obtain power details.");
 		exit(-1);
 	}
 
-	parse_json_obj(s, number_sockets, &node_power, &cpu_power, &gpu_power, &mem_power);
+	parse_json_obj(s, num_sockets, &node_power, &cpu_power, &gpu_power, &mem_power);
 
 	free(s);
 
@@ -167,5 +167,5 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
 
 
 
+#endif 
 
-#endif _VARIORUM_PWRAPI_H
