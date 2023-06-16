@@ -18,7 +18,7 @@ typedef struct {
 	Object* root;
 } Cntxt;
 
-void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr, double *gpu_pwr, double *mem_pwr)
+void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr, double *gpu_pwr, double *mem_pwr, PWR_Time *ts)
 {
     int i, j;
 
@@ -59,7 +59,9 @@ void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr,
     /* Extract and print values from JSON object */
     *node_pwr  = json_real_value(json_object_get(power_obj, "power_node_watts"));
     //printf("The node powerlevel reported is %lf watts!\n", *node_pwr);	
-	
+	json_int_t  tstamp  = json_integer_value(json_object_get(power_obj, "timestamp"));
+    printf("the time stamp is : %ld\n", tstamp);
+	*ts = tstamp;
     for (i = 0; i < num_sockets; i++)
     {
         *cpu_pwr += json_real_value(json_object_get(power_obj, json_metric_names[i]));
@@ -68,6 +70,7 @@ void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr,
 		*mem_pwr += json_real_value(json_object_get(power_obj,
                                     json_metric_names[(num_sockets * 2) + i]));
     }
+	printf("CPU POWER: %lf, GPU POWER: %lf, MEM POWER: %lf\n", *cpu_pwr, *gpu_pwr, *mem_pwr);
 
     /* Deallocate metric array */
     for (i = 0; i < num_sockets * 3; i++)
@@ -116,7 +119,6 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 	double gpu_power = 0.0;
 	double cpu_power = 0.0;
 	double mem_power = 0.0;
-	time_t variorum_ts;
 	char* s = NULL;
 	int num_sockets;
 	int ret;
@@ -137,7 +139,7 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 		exit(-1);
 	}
 
-	parse_json_obj(s, num_sockets, &node_power, &cpu_power, &gpu_power, &mem_power);
+	parse_json_obj(s, num_sockets, &node_power, &cpu_power, &gpu_power, &mem_power, ts);
 
 	free(s);
 
@@ -145,6 +147,12 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 		case PWR_OBJ_NODE:
 			if(type == PWR_ATTR_POWER) {
 				*( (double *)ptr ) = node_power; 
+			}
+			break;
+
+		case PWR_OBJ_MEM:
+		    if(type == PWR_ATTR_POWER) {
+				*( (double*)ptr ) = mem_power;			
 			}
 			break;
 
@@ -157,13 +165,32 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 	*ts = time(NULL);
 
 
-	return 0;			
+	return PWR_RET_SUCCESS;			
 }
 
 int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
 {
-    //return OBJECT(obj)->attrSetValue( type, (void*)ptr );
-	return 0;
+    PWR_ObjType obj_type = ((Object *)obj)->type;
+	const int* watt_limit = (const int*)ptr;
+    int ret;
+
+    switch(obj_type) {
+	    case PWR_OBJ_NODE:
+		    if(type == PWR_ATTR_POWER) {
+				ret = variorum_cap_best_effort_node_power_limit(*watt_limit);
+			}
+			if(ret) {
+			    printf("power limit setting failed!\n");
+				return PWR_RET_FAILURE;
+		    }
+			break;
+		
+		default:
+		    printf("type not supported!\n");
+			break;
+	}
+
+	return PWR_RET_SUCCESS;
 }
 
 
