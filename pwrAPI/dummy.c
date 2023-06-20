@@ -26,6 +26,22 @@ int main() {
 		printf("Power Limit Set Success!\n");
 	} else {printf("Power Limit Set Failed!\n");}
 
+	Object socket0;
+	socket0.type = PWR_OBJ_SOCKET;
+	socket0.misc = 0;
+	ret = PWR_ObjAttrGetValue(&socket0, type, &value, &now );
+	if(ret == PWR_RET_SUCCESS) {
+		printf("Socket 0 power is  %lf watts and the time is %ld\n", value, now);
+	}
+
+	Object socket1;
+    socket1.type = PWR_OBJ_SOCKET;
+    socket1.misc = 1;
+    ret = PWR_ObjAttrGetValue(&socket1, type, &value, &now );
+	if(ret == PWR_RET_SUCCESS) {
+		  printf("Socket 1 power is  %lf watts and the time is %ld\n", value, now);
+    }
+
 	return 0;
 
 }

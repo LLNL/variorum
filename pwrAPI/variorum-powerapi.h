@@ -8,6 +8,7 @@
 #include "../../src/variorum/variorum.h"
 #include "../../src/variorum/variorum_topology.h"
 #include <time.h>
+#include <string.h>
 
 typedef struct {
 	PWR_ObjType type;
@@ -18,70 +19,6 @@ typedef struct {
 	Object* root;
 } Cntxt;
 
-void parse_json_obj(char *s, int num_sockets, double *node_pwr, double *cpu_pwr, double *gpu_pwr, double *mem_pwr, PWR_Time *ts)
-{
-    int i, j;
-
-    /* Create a Jansson based JSON structure */
-    json_t *power_obj = NULL;
-    static char **json_metric_names = NULL;
-
-    /* List of socket-level JSON object metrics */
-    static const char *metrics[] = {"power_cpu_watts_socket_",
-                                    "power_gpu_watts_socket_",
-                                    "power_mem_watts_socket_"
-                                   };
-
-    /* Allocate space for metric names */
-    json_metric_names = malloc(3 * num_sockets * sizeof(char *));
-    for (i = 0; i < (3 * num_sockets); i++)
-    {
-        json_metric_names[i] = malloc(40);
-    }
-
-    for (i = 0; i < num_sockets; i++)
-    {
-        /* Create a metric name list for querying json object later on */
-        for (j = 0; j < 3; j++)
-        {
-            char current_metric[40];
-            char current_socket[16];
-            strcpy(current_metric, metrics[j]);
-            sprintf(current_socket, "%d", i);
-            strcat(current_metric, current_socket);
-            strcpy(json_metric_names[(num_sockets * j) + i], current_metric);
-        }
-    }
-
-    /* Load the string as a JSON object using Jansson */
-    power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
-
-    /* Extract and print values from JSON object */
-    *node_pwr  = json_real_value(json_object_get(power_obj, "power_node_watts"));
-    //printf("The node powerlevel reported is %lf watts!\n", *node_pwr);	
-	json_int_t  tstamp  = json_integer_value(json_object_get(power_obj, "timestamp"));
-    printf("the time stamp is : %ld\n", tstamp);
-	*ts = tstamp;
-    for (i = 0; i < num_sockets; i++)
-    {
-        *cpu_pwr += json_real_value(json_object_get(power_obj, json_metric_names[i]));
-        *gpu_pwr += json_real_value(json_object_get(power_obj,
-                                    json_metric_names[num_sockets + i]));
-		*mem_pwr += json_real_value(json_object_get(power_obj,
-                                    json_metric_names[(num_sockets * 2) + i]));
-    }
-	printf("CPU POWER: %lf, GPU POWER: %lf, MEM POWER: %lf\n", *cpu_pwr, *gpu_pwr, *mem_pwr);
-
-    /* Deallocate metric array */
-    for (i = 0; i < num_sockets * 3; i++)
-    {
-        free(json_metric_names[i]);
-    }
-    free(json_metric_names);
-
-    /*Deallocate JSON object*/
-    json_decref(power_obj);
-}
 
 int PWR_CntxtInit(PWR_Cntxt type, PWR_Role role, const char* name, PWR_Cntxt* ctx) {
 
@@ -114,15 +51,12 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 	//currently using misc value to represent socket #
 	PWR_ObjType obj_type = ((Object *)obj)->type;
 	int misc = ((Object *)obj)->misc;
-
-	double node_power = 0.0; 
-	double gpu_power = 0.0;
-	double cpu_power = 0.0;
-	double mem_power = 0.0;
+	
 	char* s = NULL;
 	int num_sockets;
-	int ret;
-	
+	int ret = variorum_get_node_power_json(&s);
+	json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+
 	num_sockets = variorum_get_num_sockets();
 
     if (num_sockets <= 0)
@@ -139,20 +73,52 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 		exit(-1);
 	}
 
-	parse_json_obj(s, num_sockets, &node_power, &cpu_power, &gpu_power, &mem_power, ts);
-
-	free(s);
 
 	switch(obj_type) {
 		case PWR_OBJ_NODE:
 			if(type == PWR_ATTR_POWER) {
-				*( (double *)ptr ) = node_power; 
+				uint64_t watts = json_real_value(json_object_get(power_obj, "power_node_watts") );
+				printf("node watts: %ld\n", watts);
+				*( (double *)ptr ) = json_real_value(json_object_get(power_obj, "power_node_watts")); 
 			}
 			break;
 
 		case PWR_OBJ_MEM:
 		    if(type == PWR_ATTR_POWER) {
+				double mem_power = 0;
+				char mem_name[25];
+				strcpy(mem_name, "power_mem_watts_socket_");
+				for(int i = 0; i < num_sockets; ++i){
+					mem_name[23] = i + '0';
+					mem_power += json_real_value(json_object_get(power_obj, mem_name));
+				}
+
 				*( (double*)ptr ) = mem_power;			
+			}
+			break;
+
+		case PWR_OBJ_SOCKET:
+			if(type == PWR_ATTR_POWER) {
+				if(misc >= num_sockets) {
+					return PWR_RET_FAILURE;
+				} else {
+					double socket_power = 0;
+					char socket_cpu[25];
+					char socket_gpu[25];
+					char socket_mem[25];
+					strcpy(socket_cpu, "power_cpu_watts_socket_");
+					strcpy(socket_gpu, "power_gpu_watts_socket_");
+					strcpy(socket_mem, "power_mem_watts_socket_");
+					socket_cpu[23] = misc + '0';
+					socket_gpu[23] = misc + '0';
+					socket_mem[23] = misc + '0';
+					socket_power += json_real_value(json_object_get(power_obj, socket_cpu) );
+					socket_power += json_real_value(json_object_get(power_obj, socket_gpu) );
+					socket_power += json_real_value(json_object_get(power_obj, socket_mem) );
+					printf("socket power is %lf\n", socket_power);
+					*( (double*)ptr ) = socket_power;
+
+				}
 			}
 			break;
 
@@ -162,7 +128,10 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 	}
 
 	//set time stamp for PWR_Time
-	*ts = time(NULL);
+	*ts = json_integer_value(json_object_get(power_obj, "timestamp"));
+	
+	json_decref(power_obj);
+	free(s);
 
 
 	return PWR_RET_SUCCESS;			
