@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <sys/resource.h>
 
 #include <config_architecture.h>
 #include <Power9.h>
@@ -438,42 +437,6 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     *get_power_obj_str = json_dumps(get_power_obj, 0);
     json_decref(get_power_obj);
     close(fd);
-    return 0;
-}
-
-int ibm_cpu_p9_get_node_util_json(char **get_power_obj_str)
-{
-    char *val = ("VARIORUM_LOG");
-    if (val != NULL && atoi(val) == 1)
-    {
-        printf("Running %s\n", __FUNCTION__);
-    }
-
-    int ru;
-    char hostname[1024];
-    struct timeval tv;
-    struct rusage rusge;
-    uint64_t ts;
-    long mem;
-    json_t *get_util_obj = json_object();
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_util_obj, "host", json_string(hostname));
-    json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
-
-    ru = getrusage(RUSAGE_SELF, &rusge);
-    if (ru < 0)
-    {
-        printf("Failed to get utilizations\n");
-        return -1;
-    }
-
-    mem = rusge.ru_maxrss;
-    json_object_set_new(get_util_obj, "memory util", json_integer(mem));
-    *get_power_obj_str = json_dumps(get_util_obj, 0);
-    json_decref(get_util_obj);
     return 0;
 }
 

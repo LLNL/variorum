@@ -22,8 +22,6 @@ int ibm_cpu_p9_monitoring(FILE *output);
 
 int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str);
 
-int ibm_cpu_p9_get_node_util_json(char **get_util_obj_str);
-
 int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 #endif

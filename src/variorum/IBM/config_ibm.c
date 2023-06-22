@@ -34,7 +34,6 @@ int set_ibm_func_ptrs(int idx)
         g_platform[idx].variorum_cap_gpu_power_ratio = ibm_cpu_p9_cap_gpu_power_ratio;
         g_platform[idx].variorum_monitoring = ibm_cpu_p9_monitoring;
         g_platform[idx].variorum_get_node_power_json = ibm_cpu_p9_get_node_power_json;
-        g_platform[idx].variorum_get_node_util_json = ibm_cpu_p9_get_node_util_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             ibm_cpu_p9_get_node_power_domain_info_json;
     }

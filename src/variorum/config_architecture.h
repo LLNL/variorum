@@ -240,11 +240,6 @@ struct platform
     /// @return Error code.
     int (*variorum_get_node_power_json)(char **get_power_obj_str);
 
-    /// @brief Function pointer to get JSON object node utilization data.
-    ///
-    /// @return Error code.
-    int (*variorum_get_node_util_json)(char **get_power_obj_str);
-
     /// @brief Function pointer to get JSON object for power domain information.
     ///
     /// @return Error code.
