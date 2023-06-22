@@ -1,5 +1,5 @@
 all: dummy.c
-	gcc -g -Wall -o pwrAPINodeExample dummy.c  -L../variorum  -l variorum -ljansson
+	gcc -std=c99 -g -Wall -o pwrAPINodeExample dummy.c  -L/home/fan10/variorum/build/variorum  -lvariorum -ljansson
 
 clean:
 	$(RM) pwrAPINodeExample
