@@ -1018,7 +1018,6 @@ int variorum_get_node_power_json(char **get_power_obj_str)
 int variorum_get_node_utilization_json(char **get_util_obj_str)
 {
     int err = 0;
-    int i;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1032,7 +1031,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
     int ru;
     char hostname[1024];
-    struct timeval tv, sstart, send, ustart, rutime;
+    struct timeval tv, rutime;
     struct rusage rusge;
     uint64_t ts;
     long mem, utime;
