@@ -40,7 +40,7 @@ double parse(const char* minmax, const char* input) {
     memset(value, '\0', len);
     
     char *valuestr;
-    for(int i = 0, j = first; i < len and j <= last; ++i, ++j) {
+    for(int i = 0, j = first; i < len && j <= last; ++i, ++j) {
         value[i] = input[j];
     }
 
