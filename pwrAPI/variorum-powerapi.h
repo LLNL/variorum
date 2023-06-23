@@ -122,6 +122,14 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 		exit(-1);
 	}
 
+	if (domain_ret != 0) 
+
+	{
+		fprintf(stdout, "Unable to obtain domain details.");
+		exit(-1);
+	}
+
+
 	switch(obj_type) {
 		case PWR_OBJ_NODE:
 			if(type == PWR_ATTR_POWER) {
