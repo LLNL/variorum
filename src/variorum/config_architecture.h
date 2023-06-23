@@ -245,6 +245,11 @@ struct platform
     /// @return Error code.
     int (*variorum_get_node_power_domain_info_json)(char **get_domain_obj_str);
 
+    /// @brief Function pointer to get JSON object for thermal information
+    ///
+    /// @return Error code.
+    int (*variorum_get_thermal_json)(char **get_thermal_obj_str);
+
     /// @brief Function pointer to get list of available frequencies.
     ///
     /// @return Error code.
