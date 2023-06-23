@@ -564,6 +564,10 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// check for NULL strings.
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
+/// @work in progress for variorum_get_thermal_json
+
+int variorum_get_thermal_json(char **get_thermal_obj_str);
+
 /// @brief Returns Variorum version as a constant string.
 ///
 /// @supparch
