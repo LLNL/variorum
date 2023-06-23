@@ -282,6 +282,12 @@ int print_verbose_therm_temp_reading(FILE *writedest,
                                      off_t msr_pkg_therm_stat,
                                      off_t msr_temp_target);
 
+/// #brief set json object string with temperature data
+int get_therm_temp_reading_json(char **get_therm_obj,
+				off_t msr_therm_stat,
+				off_t msr_pkg_therm_stat,
+				off_t msr_temp_target);
+
 /// @brief Read value of the IA32_PACKAGE_THERM_STATUS register and translate
 /// bit fields to human-readable values.
 ///

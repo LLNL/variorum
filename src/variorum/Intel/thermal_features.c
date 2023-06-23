@@ -377,6 +377,14 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     return 0;
 }
 
+int get_therm_temp_reading_json(char **get_therm_obj,
+								off_t msr_therm_stat,
+								off_t msr_pkg_therm_stat,
+								off_t msr_temp_target)
+{
+	return 0;
+}
+
 ///// @brief Initialize storage for IA32_THERM_INTERRUPT.
 /////
 ///// @param [out] ti Data for per-core thermal interrupts.

@@ -1177,7 +1177,7 @@ int variorum_get_thermal_json(char **get_thermal_obj_str){
     }
 
 	if (g_platform[i].variorum_get_thermal_json == NULL)
-    {
+    	{
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
@@ -1185,19 +1185,19 @@ int variorum_get_thermal_json(char **get_thermal_obj_str){
         // For the JSON functions, we return a -1 here, so users don't need
         // to explicitly check for NULL strings.
         return -1;
-    }
-    err = g_platform[i].variorum_get_thermal_json(
-              get_thermal_obj_str);
-    if (err)
-    {
-        return -1;
-    }
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-    return err;
+    	}
+    	err = g_platform[i].variorum_get_thermal_json(
+			get_thermal_obj_str);
+    	if (err)
+    	{
+        	return -1;
+    	}
+   	 err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    	if (err)
+    	{
+        	return -1;
+    	}
+   	return err;
 
 }
 

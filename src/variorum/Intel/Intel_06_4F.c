@@ -496,6 +496,25 @@ int intel_cpu_fm_06_4f_get_node_power_domain_info_json(char
     return 0;
 }
 
+int intel_cpu_fm_06_4f_get_thermal_json(char **get_thermal_obj_str) {
+	char *val = getenv("VARIORUM_LOG");
+	if (val != NULL && atoi(val) == 1)
+	{
+		printf("Running %s\n", __FUNCTION__);
+	}
+	
+	json_t *get_thermal_object = json_object();
+
+
+
+
+
+
+	
+	json_decref(get_domain_obj);
+	return 0;
+}
+
 int intel_cpu_fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
 {
     char *val = getenv("VARIORUM_LOG");
