@@ -492,7 +492,7 @@ int intel_cpu_fm_06_4f_get_node_power_domain_info_json(char
     return 0;
 }
 
-int intel_cpu_fm_06_4f_get_thermal_json(char **get_thermal_obj_str) {
+int intel_cpu_fm_06_4f_get_thermals_json(char **get_thermal_obj_str) {
 	char *val = getenv("VARIORUM_LOG");
 	if (val != NULL && atoi(val) == 1)
 	{
@@ -501,13 +501,12 @@ int intel_cpu_fm_06_4f_get_thermal_json(char **get_thermal_obj_str) {
 	
 	json_t *get_thermal_object = json_object();
 
+	get_therm_temp_reading_json(get_thermal_object, 
+					msrs.ia32_therm_status,
+					msrs.ia32_package_therm_status,
+					msrs.msr_temperature_target);
 
-
-
-
-
-	
-	json_decref(get_domain_obj);
+	json_decref(get_thermal_object);
 	return 0;
 }
 

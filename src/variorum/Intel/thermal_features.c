@@ -11,6 +11,7 @@
 #include <config_architecture.h>
 #include <msr_core.h>
 #include <variorum_error.h>
+#include <string.h>
 
 void get_temp_target(struct msr_temp_target *s, off_t msr)
 {
@@ -344,12 +345,57 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     return 0;
 }
 
-int get_therm_temp_reading_json(char **get_therm_obj,
+int get_therm_temp_reading_json(json_t *get_thermal_object,
 								off_t msr_therm_stat,
 								off_t msr_pkg_therm_stat,
 								off_t msr_temp_target)
 {
-	
+	struct pkg_therm_stat *pkg_stat = NULL;
+    struct msr_temp_target *t_target = NULL;
+    struct therm_stat *t_stat = NULL;
+    unsigned idx;
+    unsigned i, j, k;
+	unsigned nsockets, ncores, nthreads;
+
+	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+		
+	pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
+                   struct pkg_therm_stat));
+    get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
+
+    t_target = (struct msr_temp_target *) malloc(nsockets * sizeof(
+                   struct msr_temp_target));
+    get_temp_target(t_target, msr_temp_target);
+
+    t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
+    get_therm_stat(t_stat, msr_therm_stat);
+
+	char entry[250];
+	char key[75];
+	for (i = 0; i < nsockets; i++)
+    {
+        for (j = 0; j < ncores / nsockets; j++)
+        {
+            for (k = 0; k < nthreads / ncores; k++)
+            {
+				memset(entry, '\0', 250);
+				memset(key, '\0', 75);
+                idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                printf("_THERMALS %d %d %d ", i, j, idx);
+                printf("%d ", (int)t_target[i].temp_target);
+                printf("%d ", pkg_stat[i].readout);
+                printf("%d ", (int)t_target[i].temp_target - pkg_stat[i].readout);
+                printf("%d ", t_stat[idx].readout);
+                printf("%d ", (int)t_target[i].temp_target - t_stat[idx].readout);
+                printf("%d\n", t_stat[idx].readout_valid);
+            }
+        }
+    }
+
+    free(pkg_stat);
+    free(t_stat);
+    free(t_target);
+
 	
 
 	return 0;
