@@ -6,6 +6,8 @@
 #ifndef THERMAL_FEATURES_H_INCLUDE
 #define THERMAL_FEATURES_H_INCLUDE
 
+#include <jansson.h>
+
 /// @brief Structure containing data from MSR_TEMPERATURE_TARGET.
 ///
 /// The scope of this MSR is defined as unique for Sandy Bridge. In our
@@ -283,7 +285,7 @@ int print_verbose_therm_temp_reading(FILE *writedest,
                                      off_t msr_temp_target);
 
 /// #brief set json object string with temperature data
-int get_therm_temp_reading_json(char **get_therm_obj,
+int get_therm_temp_reading_json(json_t *get_thermal_object,
 				off_t msr_therm_stat,
 				off_t msr_pkg_therm_stat,
 				off_t msr_temp_target);

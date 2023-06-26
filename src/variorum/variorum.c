@@ -1147,7 +1147,7 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     return err;
 }
 
-int variorum_get_thermal_json(char **get_thermal_obj_str){
+int variorum_get_thermals_json(char **get_thermal_obj_str){
 	int err = 0;
 	int i;
 	err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -1176,7 +1176,7 @@ int variorum_get_thermal_json(char **get_thermal_obj_str){
 #endif
     }
 
-	if (g_platform[i].variorum_get_thermal_json == NULL)
+	if (g_platform[i].variorum_get_thermals_json == NULL)
     	{
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
@@ -1186,7 +1186,7 @@ int variorum_get_thermal_json(char **get_thermal_obj_str){
         // to explicitly check for NULL strings.
         return -1;
     	}
-    	err = g_platform[i].variorum_get_thermal_json(
+    	err = g_platform[i].variorum_get_thermals_json(
 			get_thermal_obj_str);
     	if (err)
     	{
