@@ -403,26 +403,53 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
 
-	char entry[250];
-	char key[75];
+	
 	for (i = 0; i < nsockets; i++)
     {
+		char socket[11];
+		strcpy(socket, "Socket_");
+		char num_sockets[4];
+		snprintf(num_sockets, 3, "%d", i);
+		strcat(socket, num_sockets);
+
         for (j = 0; j < ncores / nsockets; j++)
-        {
+        {	
+
+			char core[12];
+			strcpy(core, "Core_");
+			char num_cores[7];
+			snprintf(num_cores, 7, "%d", j);
+			strcat(core, num_cores);
+			
             for (k = 0; k < nthreads / ncores; k++)
             {
-				memset(entry, '\0', 250);
-				memset(key, '\0', 75);
+			
+				char thread[14];
+				strcpy(thread, "Thread_");
+				char num_threads[7];
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                printf("_THERMALS %d %d %d ", i, j, idx);
-                printf("%d ", (int)t_target[i].temp_target);
-                printf("%d ", pkg_stat[i].readout);
-                printf("%d ", (int)t_target[i].temp_target - pkg_stat[i].readout);
-                printf("%d ", t_stat[idx].readout);
-                printf("%d ", (int)t_target[i].temp_target - t_stat[idx].readout);
-                printf("%d\n", t_stat[idx].readout_valid);
+                snprintf(num_threads, 7, "%d", idx);
+				strcat(thread, num_threads);
+				json_t *thread_level_object = json_object();
+
+				int entry_size = 250;
+				char entry[entry_size];
+				snprintf(entry, entry_size, "TCC: %d C, PKG_Reading: %d, PKG_Actual: %d, Thread_Reading: %d, Thread_Actual: %d, Thread_DigitalReadingValid: %d", 
+												(int)t_target[i].temp_target,
+												pkg_stat[i].readout,
+												(int)t_target[i].temp_target - pkg_stat[i].readout,
+												t_stat[idx].readout,
+												(int)t_target[i].temp_target - t_stat[idx].readout,
+												t_stat[idx].readout_valid); 
+			
+				int key_size = 37;
+				char key[key_size];
+				snprintf(key, key_size, "%s %s %s", socket, core, thread);
+				json_object_set_new(get_thermal_object, key, json_string(entry));
             }
+			
         }
+
     }
 
     free(pkg_stat);
