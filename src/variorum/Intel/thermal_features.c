@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/time.h>
 
 #include <thermal_features.h>
 #include <config_architecture.h>
@@ -384,11 +386,11 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 								off_t msr_temp_target)
 {
 	struct pkg_therm_stat *pkg_stat = NULL;
-    struct msr_temp_target *t_target = NULL;
-    struct therm_stat *t_stat = NULL;
-    unsigned idx;
-    unsigned i, j, k;
+    unsigned i;
 	unsigned nsockets, ncores, nthreads;
+	char hostname[1024];
+	struct timeval tv;
+	uint64_t ts;
 
 	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
@@ -396,65 +398,22 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
                    struct pkg_therm_stat));
     get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
 
-    t_target = (struct msr_temp_target *) malloc(nsockets * sizeof(
-                   struct msr_temp_target));
-    get_temp_target(t_target, msr_temp_target);
+	gethostname(hostname, 1024);
+	gettimeofday(&tv, NULL);
+	ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-    t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
-    get_therm_stat(t_stat, msr_therm_stat);
+	json_object_set_new(get_thermal_object, "hostname", json_string(hostname) );
+	json_object_set_new(get_thermal_object, "timestamp", json_integer(ts) );
 
-	
 	for (i = 0; i < nsockets; i++)
     {
-		char socket[11];
-		strcpy(socket, "Socket_");
-		char num_sockets[4];
-		snprintf(num_sockets, 3, "%d", i);
-		strcat(socket, num_sockets);
-
-        for (j = 0; j < ncores / nsockets; j++)
-        {	
-
-			char core[12];
-			strcpy(core, "Core_");
-			char num_cores[7];
-			snprintf(num_cores, 7, "%d", j);
-			strcat(core, num_cores);
-			
-            for (k = 0; k < nthreads / ncores; k++)
-            {
-			
-				char thread[14];
-				strcpy(thread, "Thread_");
-				char num_threads[7];
-                idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                snprintf(num_threads, 7, "%d", idx);
-				strcat(thread, num_threads);
-				json_t *thread_level_object = json_object();
-
-				int entry_size = 250;
-				char entry[entry_size];
-				snprintf(entry, entry_size, "TCC: %d C, PKG_Reading: %d, PKG_Actual: %d, Thread_Reading: %d, Thread_Actual: %d, Thread_DigitalReadingValid: %d", 
-												(int)t_target[i].temp_target,
-												pkg_stat[i].readout,
-												(int)t_target[i].temp_target - pkg_stat[i].readout,
-												t_stat[idx].readout,
-												(int)t_target[i].temp_target - t_stat[idx].readout,
-												t_stat[idx].readout_valid); 
-			
-				int key_size = 37;
-				char key[key_size];
-				snprintf(key, key_size, "%s %s %s", socket, core, thread);
-				json_object_set_new(get_thermal_object, key, json_string(entry));
-            }
-			
-        }
-
+		char socket[20];
+		snprintf(socket, 20, "Socket_%d_temp", i);
+		int pkg_reading = pkg_stat[i].readout;
+		json_object_set_new(get_thermal_object, socket, json_integer(pkg_reading));
     }
 
     free(pkg_stat);
-    free(t_stat);
-    free(t_target);
 
 	return 0;
 }
