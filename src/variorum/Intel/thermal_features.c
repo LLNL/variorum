@@ -348,9 +348,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 }
 
 int get_therm_temp_reading_json(json_t *get_thermal_object,
-								off_t msr_therm_stat,
-								off_t msr_pkg_therm_stat,
-								off_t msr_temp_target)
+								off_t msr_therm_stat)
 {
 	struct therm_stat *t_stat = NULL;
     unsigned i, j, k;
