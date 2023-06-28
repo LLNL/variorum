@@ -51,6 +51,42 @@ int volta_get_thermals(int long_ver)
     return 0;
 }
 
+int volta_get_thermals_json(char **get_thermal_obj_str)
+{
+		char *val = getenv("VARIORUM_LOG");
+		if (val != NULL && atoi(val) == 1)
+		{
+				printf("Running %s\n", __FUNCTION__);
+		}
+
+		unsigned iter = 0;
+		unsigned nsockets;
+		variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+		
+		json_t *get_thermal_obj = json_object();
+		char hostname[1024];
+		struct timeval tv;
+		uint64_t ts;
+		gethostname(hostname, 1024);
+		gettimeofday(&tv, NULL);
+		ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+		json_object_set_new(get_thermal_obj, "hostname", json_string(hostname));
+		json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
+
+		for(iter = 0; iter < nsockets; itter++)
+		{
+				nvidia_gpu_get_thermal_json(iter, get_thermal_obj);
+
+		}
+				
+		*get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
+		json_decref(get_thermal_obj);
+		return 0;
+
+
+}
+
 int volta_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
