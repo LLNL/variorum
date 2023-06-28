@@ -352,7 +352,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 								off_t msr_pkg_therm_stat,
 								off_t msr_temp_target)
 {
-	struct pkg_therm_stat *pkg_stat = NULL;
 	struct therm_stat *t_stat = NULL;
     unsigned i, j, k;
 	unsigned nsockets, ncores, nthreads;
@@ -364,9 +363,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
 	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 		
-	pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
-                   struct pkg_therm_stat));
-    get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
 
 	t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
 	get_therm_stat(t_stat, msr_therm_stat);
@@ -382,8 +378,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     {
 		char socket[11];
 		snprintf(socket, 11, "Socket_%d", i);
-		//int pkg_reading = pkg_stat[i].readout;
-		//json_object_set_new(get_thermal_object, socket, json_integer(pkg_reading));
 
 		for(j = 0; j < ncores/nsockets; j++) 
 		{
@@ -403,10 +397,8 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 		}
     }
 
-    free(pkg_stat);
 	free(t_stat);
 
-	
 	return 0;
 }
 
