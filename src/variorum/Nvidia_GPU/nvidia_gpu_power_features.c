@@ -115,6 +115,22 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
     /*!@todo: Print GPU memory temperature */
 }
 
+void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
+{
+		unsigned gpu_temp;
+		int d;
+		static in init_output = 0;
+
+		for (d = chipid * (int)m_gpus_per_socket;
+				d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+		{
+				nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU, &gpu_temp);
+				char socket_gpu[20];
+				snprintf(socket_gpu, 20, "Socket%d_GPU%d", chipid, d);
+				json_object_set_new(output, socket_gpu, json_int(gpu_temp) );
+		}
+}
+
 void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 {
     unsigned int power_limit;
