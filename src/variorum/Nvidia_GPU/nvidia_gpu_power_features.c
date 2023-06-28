@@ -176,7 +176,6 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 {
 		unsigned gpu_temp;
 		int d;
-		static in init_output = 0;
 
 		for (d = chipid * (int)m_gpus_per_socket;
 				d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
