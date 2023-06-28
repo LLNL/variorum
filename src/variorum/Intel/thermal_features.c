@@ -353,8 +353,11 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 								off_t msr_temp_target)
 {
 	struct pkg_therm_stat *pkg_stat = NULL;
-    unsigned i;
+	struct therm_stat *t_stat = NULL;
+    unsigned i, j, k;
 	unsigned nsockets, ncores, nthreads;
+	unsigned idx;
+	float core_temp;
 	char hostname[1024];
 	struct timeval tv;
 	uint64_t ts;
@@ -365,6 +368,9 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
                    struct pkg_therm_stat));
     get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
 
+	t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
+	get_therm_stat(t_stat, msr_therm_stat);
+
 	gethostname(hostname, 1024);
 	gettimeofday(&tv, NULL);
 	ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
@@ -374,13 +380,31 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
 	for (i = 0; i < nsockets; i++)
     {
-		char socket[20];
-		snprintf(socket, 20, "Socket_%d_temp", i);
-		int pkg_reading = pkg_stat[i].readout;
-		json_object_set_new(get_thermal_object, socket, json_integer(pkg_reading));
+		char socket[11];
+		snprintf(socket, 11, "Socket_%d", i);
+		//int pkg_reading = pkg_stat[i].readout;
+		//json_object_set_new(get_thermal_object, socket, json_integer(pkg_reading));
+
+		for(j = 0; j < ncores/nsockets; j++) 
+		{
+				char key[23];
+				char core[12];
+				snprintf(core, 12, "Core_%d", j);
+				core_temp = 0;
+
+				for(k = 0; k < nthreads / ncores; k++) 
+				{
+						idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+						core_temp += t_stat[idx].readout;
+				}
+				core_temp /= (nthreads/ncores);
+				snprintf(key, 23, "%s_%s", socket, core);
+				json_object_set_new(get_thermal_object, key, json_real(core_temp));
+		}
     }
 
     free(pkg_stat);
+	free(t_stat);
 
 	
 	return 0;
