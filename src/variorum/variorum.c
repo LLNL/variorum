@@ -1102,10 +1102,21 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
         i = P_ARM_CPU_IDX;
         break;
 #endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+		i = P_NVIDIA_GPU_IDX;
+		break;
+#endif
+#ifdef	VARIORUM_WITH_AMD_GPU
+		i = P_AMD_GPU_IDX;
+		break;
+#endif
+
     }
 
     if (g_platform[i].variorum_get_thermals_json == NULL)
     {
+
+		printf("I am here!! the index of i is: %d\n", i);
         variorum_error_handler("Feature not yet implemented or is not supported",
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,

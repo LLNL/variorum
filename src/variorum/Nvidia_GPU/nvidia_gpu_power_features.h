@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include <nvml.h>
+#include <jansson.h>
 
 unsigned m_total_unit_devices;
 nvmlDevice_t *m_unit_devices_file_desc;
