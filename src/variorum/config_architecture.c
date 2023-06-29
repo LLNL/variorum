@@ -360,7 +360,7 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_get_node_power_json = NULL;
         g_platform[i].variorum_get_node_power_domain_info_json = NULL;
         g_platform[i].variorum_print_energy = NULL;
-		g_platform[i].variorum_get_thermals_json = NULL;
+        g_platform[i].variorum_get_thermals_json = NULL;
     }
 }
 
