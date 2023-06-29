@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     ret = variorum_get_thermals_json(&s);
     if (ret != 0)
     {
-        printf("First run: JSON get thermans failed!\n");
+        printf("First run: JSON get thermals failed!\n");
         free(s);
         exit(-1);
     }
