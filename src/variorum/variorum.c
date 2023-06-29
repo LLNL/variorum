@@ -1159,57 +1159,26 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-#ifdef VARIORUM_WITH_INTEL_CPU
-        i = P_INTEL_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_IBM_CPU
-        i = P_IBM_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_AMD_CPU
-        i = P_AMD_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_ARM_CPU
-        i = P_ARM_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_NVIDIA_GPU
-		i = P_NVIDIA_GPU_IDX;
-		break;
-#endif
-#ifdef	VARIORUM_WITH_AMD_GPU
-		i = P_AMD_GPU_IDX;
-		break;
-#endif
-
-    }
-
-    if (g_platform[i].variorum_get_thermals_json == NULL)
-    {
-
-		printf("I am here!! the index of i is: %d\n", i);
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        // For the JSON functions, we return a -1 here, so users don't need
-        // to explicitly check for NULL strings.
-        return -1;
-    }
-    err = g_platform[i].variorum_get_thermals_json(
-              get_thermal_obj_str);
-    if (err)
-    {
-        return -1;
+        if (g_platform[i].variorum_get_thermals_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_thermals_json(get_thermal_obj_str);
+        if (err)
+        {
+            return -1;
+        }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-    return err;
+
 
 }
 
