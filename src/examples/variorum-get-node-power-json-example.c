@@ -64,6 +64,8 @@ int main(int argc, char **argv)
 
     /* Print the entire JSON object */
     puts(s);
+
+
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
     {
