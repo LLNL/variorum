@@ -60,20 +60,10 @@ int volta_get_thermals_json(char **get_thermal_obj_str)
 		variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 		
 		json_t *get_thermal_obj = json_object();
-		char hostname[1024];
-		struct timeval tv;
-		uint64_t ts;
-		gethostname(hostname, 1024);
-		gettimeofday(&tv, NULL);
-		ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-		json_object_set_new(get_thermal_obj, "hostname", json_string(hostname));
-		json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
-
-		for(iter = 0; iter < nsockets; itter++)
+		for(iter = 0; iter < nsockets; iter++)
 		{
 				nvidia_gpu_get_thermal_json(iter, get_thermal_obj);
-
 		}
 				
 		*get_thermal_obj_str = json_dumps(get_thermal_obj, 0);

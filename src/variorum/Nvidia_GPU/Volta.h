@@ -7,7 +7,6 @@
 #define VOLTA_H_INCLUDE
 
 #include <jansson.h>
-#include <sys/time.h>
 
 int volta_get_power(int long_ver);
 

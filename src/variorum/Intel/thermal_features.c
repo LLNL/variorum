@@ -379,7 +379,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
 		for(j = 0; j < ncores/nsockets; j++) 
 		{
-				char key[23];
+				char key[1200];
 				char core[12];
 				snprintf(core, 12, "Core_%d", j);
 				core_temp = 0;
@@ -390,7 +390,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 						core_temp += t_stat[idx].readout;
 				}
 				core_temp /= (nthreads/ncores);
-				snprintf(key, 23, "%s_%s", socket, core);
+				snprintf(key, 1200, "%s_%s_%s_timestamp:%lu", hostname, socket, core, ts);
 				json_object_set_new(get_thermal_object, key, json_real(core_temp));
 		}
     }
