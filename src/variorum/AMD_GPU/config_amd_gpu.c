@@ -37,6 +37,7 @@ int set_amd_gpu_func_ptrs(int idx)
         /* Initialize control interfaces */
         g_platform[idx].variorum_cap_each_gpu_power_limit   =
             amd_gpu_instinct_cap_each_gpu_power_limit;
+		g_platform[idx].variorum_get_thermals_json	= amd_gpu_instinct_get_thermals_json;
     }
     else
     {
