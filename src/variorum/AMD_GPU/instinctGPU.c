@@ -89,19 +89,19 @@ int amd_gpu_instinct_get_thermals_json(char **get_thermal_obj_str)
     unsigned iter = 0;
     unsigned nsockets;
 
-	variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
-	json_t *get_thermal_obj = json_object();
+    json_t *get_thermal_obj = json_object();
 
-	for(iter = 0; iter < nsockets; iter++) 
-	{
+    for (iter = 0; iter < nsockets; iter++)
+    {
 
-	}
+    }
 
-	*get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
-	json_decref(get_thermal_obj);
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
+    json_decref(get_thermal_obj);
 
-	return 0;
+    return 0;
 
 }
 

@@ -381,16 +381,16 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 }
 
 int get_therm_temp_reading_json(json_t *get_thermal_object,
-								off_t msr_therm_stat)
+                                off_t msr_therm_stat)
 {
-	struct therm_stat *t_stat = NULL;
+    struct therm_stat *t_stat = NULL;
     unsigned i, j, k;
-	unsigned nsockets, ncores, nthreads;
-	unsigned idx;
-	float core_temp;
-	char hostname[1024];
-	struct timeval tv;
-	uint64_t ts;
+    unsigned nsockets, ncores, nthreads;
+    unsigned idx;
+    float core_temp;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
 
 	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
@@ -398,42 +398,42 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
                    struct pkg_therm_stat));
     get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
 
-	t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
-	get_therm_stat(t_stat, msr_therm_stat);
+    t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
+    get_therm_stat(t_stat, msr_therm_stat);
 
-	gethostname(hostname, 1024);
-	gettimeofday(&tv, NULL);
-	ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_object_set_new(get_thermal_object, "hostname", json_string(hostname) );
-	json_object_set_new(get_thermal_object, "timestamp", json_integer(ts) );
+//    json_object_set_new(get_thermal_object, "hostname", json_string(hostname));
+//    json_object_set_new(get_thermal_object, "timestamp", json_integer(ts));
 
-	for (i = 0; i < nsockets; i++)
+    for (i = 0; i < nsockets; i++)
     {
-		char socket[11];
-		snprintf(socket, 11, "Socket_%d", i);
+        char socket[11];
+        snprintf(socket, 11, "Socket_%d", i);
 
-		for(j = 0; j < ncores/nsockets; j++) 
-		{
-				char key[1200];
-				char core[12];
-				snprintf(core, 12, "Core_%d", j);
-				core_temp = 0;
+        for (j = 0; j < ncores / nsockets; j++)
+        {
+            char key[1200];
+            char core[12];
+            snprintf(core, 12, "Core_%d", j);
+            core_temp = 0;
 
-				for(k = 0; k < nthreads / ncores; k++) 
-				{
-						idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-						core_temp += t_stat[idx].readout;
-				}
-				core_temp /= (nthreads/ncores);
-				snprintf(key, 1200, "%s_%s_%s_timestamp:%lu", hostname, socket, core, ts);
-				json_object_set_new(get_thermal_object, key, json_real(core_temp));
-		}
+            for (k = 0; k < nthreads / ncores; k++)
+            {
+                idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                core_temp += t_stat[idx].readout;
+            }
+            core_temp /= (nthreads / ncores);
+            snprintf(key, 1200, "%s_%s_%s_timestamp:%lu", hostname, socket, core, ts);
+            json_object_set_new(get_thermal_object, key, json_real(core_temp));
+        }
     }
 
-	free(t_stat);
+    free(t_stat);
 
-	return 0;
+    return 0;
 }
 
 ///// @brief Initialize storage for IA32_THERM_INTERRUPT.

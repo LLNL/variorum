@@ -496,21 +496,22 @@ int intel_cpu_fm_06_4f_get_node_power_domain_info_json(char
     return 0;
 }
 
-int intel_cpu_fm_06_4f_get_thermals_json(char **get_thermal_obj_str) {
-	char *val = getenv("VARIORUM_LOG");
-	if (val != NULL && atoi(val) == 1)
-	{
-		printf("Running %s\n", __FUNCTION__);
-	}
-	
-	json_t *get_thermal_obj = json_object();
+int intel_cpu_fm_06_4f_get_thermals_json(char **get_thermal_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
 
-	get_therm_temp_reading_json(get_thermal_obj, 
-					msrs.ia32_therm_status);
+    json_t *get_thermal_obj = json_object();
 
-	*get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
-	json_decref(get_thermal_obj);
-	return 0;
+    get_therm_temp_reading_json(get_thermal_obj,
+                                msrs.ia32_therm_status);
+
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
+    json_decref(get_thermal_obj);
+    return 0;
 }
 
 int intel_cpu_fm_06_4f_cap_best_effort_node_power_limit(int node_limit)

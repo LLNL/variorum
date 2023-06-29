@@ -386,7 +386,7 @@ void get_thermals_json(int chipid, json_t *output)
     rsmi_status_t ret;
     uint32_t num_devices;
     int gpus_per_socket;
-	char hostname[1024];
+    char hostname[1024];
     static int json_init = 0;
     static struct timeval json_start;
     struct timeval now;
@@ -414,13 +414,13 @@ void get_thermals_json(int chipid, json_t *output)
 
     gpus_per_socket = num_devices / total_sockets;
 
-	if(!init) 
-	{
-		init = 1;
-		gettimeofday(&start, NULL);
-	}
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+    }
 
-	gettimeofday(&now, NULL);
+    gettimeofday(&now, NULL);
 
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
@@ -440,11 +440,12 @@ void get_thermals_json(int chipid, json_t *output)
 
         temp_val_flt = (double)(temp_val / (1000)); // Convert to Celcius.
 
-		char key[1024];
-		char socket_gpu[128];
-		snprintf(socket_gpu, 128, "socket%d_gpu%d_timestamp:%lf", chipid, i, (now.tv_usec-start.tv_usec)/1000000.0);
-		snprintf(key, 1024, "%s_%s", hostname, socket_gpu);
-		json_object_set_new(output, key, json_real(temp_val_flt));
+        char key[1024];
+        char socket_gpu[128];
+        snprintf(socket_gpu, 128, "socket%d_gpu%d_timestamp:%lf", chipid, i,
+                 (now.tv_usec - start.tv_usec) / 1000000.0);
+        snprintf(key, 1024, "%s_%s", hostname, socket_gpu);
+        json_object_set_new(output, key, json_real(temp_val_flt));
     }
 
     ret = rsmi_shut_down();

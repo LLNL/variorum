@@ -33,7 +33,7 @@ int set_nvidia_func_ptrs(int idx)
         /* Initialize control interfaces */
         g_platform[idx].variorum_cap_each_gpu_power_limit   =
             volta_cap_each_gpu_power_limit;
-		g_platform[idx].variorum_get_thermal_json			= volta_get_thermals_json;
+        g_platform[idx].variorum_get_thermal_json           = volta_get_thermals_json;
     }
     else
     {
