@@ -12,7 +12,6 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 #include <sys/time.h>
-#include <jansson.h>
 
 void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
@@ -296,7 +295,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     }
 }
 
-void get_thermals_json(int chipid, json_t *output)
+void get_thermals_json(int chipid, int total_sockets, json_t *output)
 {
 
     rsmi_status_t ret;
@@ -330,10 +329,10 @@ void get_thermals_json(int chipid, json_t *output)
 
     gpus_per_socket = num_devices / total_sockets;
 
-    if (!init)
+    if (!json_init)
     {
-        init = 1;
-        gettimeofday(&start, NULL);
+        json_init = 1;
+        gettimeofday(&json_start, NULL);
     }
 
     gettimeofday(&now, NULL);
@@ -359,7 +358,7 @@ void get_thermals_json(int chipid, json_t *output)
         char key[1024];
         char socket_gpu[128];
         snprintf(socket_gpu, 128, "socket%d_gpu%d_timestamp:%lf", chipid, i,
-                 (now.tv_usec - start.tv_usec) / 1000000.0);
+                 (now.tv_usec - json_start.tv_usec) / 1000000.0);
         snprintf(key, 1024, "%s_%s", hostname, socket_gpu);
         json_object_set_new(output, key, json_real(temp_val_flt));
     }
