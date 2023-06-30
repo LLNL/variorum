@@ -54,8 +54,8 @@ int main(int argc, char **argv)
     }
 
     ret = variorum_get_node_power_json(&s);
-    
-	if (ret != 0)
+
+    if (ret != 0)
     {
         printf("First run: JSON get node power failed!\n");
         free(s);
