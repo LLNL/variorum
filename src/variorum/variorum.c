@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <hwloc.h>
+#include <inttypes.h>
+#include <string.h>
+#include <stdio.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -13,12 +16,16 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+#define MEM_FILE "/proc/meminfo"
+#define CPU_FILE "/proc/stat" 
+
+uint64_t lastSum = 0, lastIdle = 0;
 int state = 0;
 long prevTime = 0;
 long prevMem = 0;
 int g_socket;
 int g_core;
-
+FILE* fp = 0;
 static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
@@ -1043,27 +1050,102 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     json_object_set_new(get_util_obj, "host", json_string(hostname));
     json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
 
-    ru = getrusage(RUSAGE_SELF, &rusge);
-    if (ru < 0)
+    //ru = getrusage(RUSAGE_SELF, &rusge);
+    //if (ru < 0)
+    //{
+    //    printf("Failed to get utilizations\n");
+    //    return -1;
+    //}
+    char str[100];
+    const char d[2] = " ";
+    char* token;
+    int i = 0,times,lag;
+    uint64_t sum = 0, idle;
+    double idleFraction;
+    char *s;
+    int rc, j;
+    char lbuf[256];
+    char metric_name[256];
+    uint64_t metric_value;
+    uint64_t memTotal;
+    uint64_t memFree;
+    int strcp;
+    double memUtil;
+    char *p;
+    fp = fopen(CPU_FILE, "r");
+    i = 0;
+    fgets(str,100,fp);
+    fclose(fp);
+    token = strtok(str,d);
+    sum = 0;
+    while(token!=NULL)
     {
-        printf("Failed to get utilizations\n");
+        token = strtok(NULL,d);
+        if(token!=NULL)
+        {
+            sum += strtol(token, &p, 10);
+            if(i==3)
+            {
+                idle = strtol(token, &p, 10);
+                break;
+            }
+            i++;
+        }
+    }
+    
+    idleFraction = (1.0 -  (idle-lastIdle)/(double)(sum-lastSum)) * 100;
+    lastIdle = idle;
+    lastSum = sum;
+    json_object_set_new(get_util_obj, "cpu util", json_real(idleFraction)); 
+    fp = fopen(MEM_FILE, "r");
+    if (fp == NULL) 
+    {
+        printf("no such file.");
         return -1;
     }
-
-    rutime = rusge.ru_utime;
-    utime = ((rutime.tv_sec * 1000000) + rutime.tv_usec);
-    mem = rusge.ru_maxrss;
-
-    if (state)
+    fseek(fp, 0, SEEK_SET);
+    do 
     {
-        utime -= prevTime;
-        mem -= prevMem;
-    }
+        s = fgets(lbuf, sizeof(lbuf), fp);
+        if (!s)
+            break;
 
-    prevTime = utime;
-    prevMem = mem;
-    json_object_set_new(get_util_obj, "memory util", json_integer(mem));
-    json_object_set_new(get_util_obj, "ru time", json_integer(utime));
+        rc = sscanf(lbuf, "%s%" PRIu64, metric_name, &metric_value);
+        if (rc < 2)
+            break;
+
+        /* Strip the colon from metric name if present */
+        j = strlen(metric_name);
+        if (i && metric_name[j-1] == ':')
+            metric_name[j-1] = '\0';
+        strcp = strcmp(metric_name, "MemTotal");
+        if (strcp == 0)
+        {
+            memTotal = metric_value;
+        }
+        strcp = strcmp(metric_name, "MemFree");
+        if (strcp == 0)
+        {
+            memFree = metric_value;
+        }
+        memUtil = (1 - (double) memFree / memTotal) * 100;
+    } while (s);
+    fclose(fp); 
+    //rutime = rusge.ru_utime;
+    //utime = ((rutime.tv_sec * 1000000) + rutime.tv_usec);
+    //mem = rusge.ru_maxrss;
+
+    //if (state)
+    //{
+    //    utime -= prevTime;
+    //    mem -= prevMem;
+    //}
+
+    //prevTime = utime;
+    //prevMem = mem;
+
+    json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
+    //json_object_set_new(get_util_obj, "ru time", json_integer(utime));
     *get_util_obj_str = json_dumps(get_util_obj, 0);
     json_decref(get_util_obj);
     state = 1;
