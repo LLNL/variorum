@@ -177,15 +177,31 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
     unsigned gpu_temp;
     int d;
 
+	json_t *host_obj = json_object_get(output, m_hostname);
+	if(host_obj == NULL) {
+		host_obj = json_object();
+		json_object_set_new(output, "hostname", host_obj);
+	}
+	json_t *socket_obj = json_object();
+	json_t *gpu_obj = json_object();
+	char socket_id[12];
+	snprintf(socket_id, 12, "Socket_%d", chipid);
+
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
+
         nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU,
                                  &gpu_temp);
-        char socket_gpu[1024];
-        snprintf(socket_gpu, 1024, "%s_Socket%d_GPU%d", m_hostname, chipid, d);
-        json_object_set_new(output, socket_gpu, json_integer(gpu_temp));
+		char device_id[12];
+		snprintf(device_id, 12, "Device_%d", d);
+		json_object_set_new(gpu_obj, device_id, gpu_temp);
     }
+
+	json_object_set_new(socket_obj, socket_id, gpu_obj);
+	json_object_set_new(host_obj, m_hostname, host_obj);
+
+
 }
 
 void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
