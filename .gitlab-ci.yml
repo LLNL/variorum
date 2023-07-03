@@ -122,7 +122,7 @@ build-lassen-cpu:
    - ./variorum-print-power-example
    - cd ../../using-with-make/fortran
    - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
+   - make VERBOSE=1 F77=/usr/tce/packages/gcc/gcc-8.3.1/bin/gfortran FFLAGS=-O
    - ./ep.W.x
 
 build-lassen-gpu:
@@ -164,7 +164,7 @@ build-lassen-gpu:
    - ./variorum-print-power-example
    - cd ../../using-with-make/fortran
    - echo -e "PWD:" ${PWD}
-   - make VERBOSE=1
+   - make VERBOSE=1 F77=/usr/tce/packages/gcc/gcc-8.3.1/bin/gfortran FFLAGS=-O
    - ./ep.W.x
 
 build-lassen-both:
