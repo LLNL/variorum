@@ -221,8 +221,10 @@ build-catalyst:
 
 build-corona:
  tags:
-   - batch
+   - corona212-flux-test-batch
    - corona
+ variables:
+    SCHEDULER_PARAMETERS: "-N 1 -c 1"
  stage: build
  script:
    - export HOSTNAME=`hostname`
@@ -230,7 +232,7 @@ build-corona:
    - groups
    - mkdir build-gitlab-corona && mkdir install-gitlab-corona
    - cd build-gitlab-corona
-   - export HOST_CONFIG=`ls ../host-configs/corona-4.18.0toss-x86_64-gcc@10.3.1-rocm@5.2.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/corona-4.18.0toss4-x86_64-gcc@10.3.1-rocm@5.2.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-corona -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
