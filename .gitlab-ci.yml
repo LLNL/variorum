@@ -52,7 +52,7 @@ build-quartz:
    - groups
    - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
    - cd build-gitlab-quartz
-   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_3_x86_64_ib-gcc@8.3.1.cmake`
+   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_4_x86_64_ib-gcc@10.3.1.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
