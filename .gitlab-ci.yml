@@ -167,6 +167,49 @@ build-lassen-gpu:
    - make VERBOSE=1
    - ./ep.W.x
 
+build-lassen-both:
+ tags:
+   - batch
+   - lassen
+ stage: build
+ script:
+   - export HOSTNAME=`hostname`
+   - echo -e "Hostname:" ${HOSTNAME}
+   - groups
+   - mkdir build-gitlab-lassen-both && mkdir install-gitlab-lassen-both
+   - cd build-gitlab-lassen-both
+   - export HOST_CONFIG=`ls ../host-configs/lassen-4.14.0-ppc64le-gcc@8.3.1-cuda@10.1.243-both.cmake`
+   - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
+   - echo -e "PWD:" ${PWD}
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-both -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
+   - make VERBOSE=1
+   - make install
+# disabling for now
+#   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+#   - cd ..
+#   - echo -e "PWD:" ${PWD}
+#   - which cmake
+#   - cmake --version
+#   - cd install-gitlab-lassen-both/examples/using-with-cmake/c
+#   - echo -e "PWD:" ${PWD}
+#   - mkdir _test_build
+#   - cd _test_build
+#   - cmake ../
+#   - make VERBOSE=1
+#   - ./variorum-print-power-example
+#   - cd ../../../using-with-make/c
+#   - echo -e "PWD:" ${PWD}
+#   - make VERBOSE=1
+#   - ./variorum-print-power-example
+#   - cd ../../using-with-make/cpp
+#   - echo -e "PWD:" ${PWD}
+#   - make VERBOSE=1
+#   - ./variorum-print-power-example
+#   - cd ../../using-with-make/fortran
+#   - echo -e "PWD:" ${PWD}
+#   - make VERBOSE=1
+#   - ./ep.W.x
+
 # no access to msr-safe on catalyst
 build-catalyst:
  tags:
