@@ -217,7 +217,6 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 {
     unsigned int powerlimit_mwatts = powerlimit * 1000;
     int d;
-    static int init_output = 0;
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
