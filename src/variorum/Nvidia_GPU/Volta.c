@@ -66,7 +66,7 @@ int volta_get_thermals_json(char **get_thermal_obj_str)
         nvidia_gpu_get_thermal_json(iter, get_thermal_obj);
     }
 
-    *get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
     json_decref(get_thermal_obj);
     return 0;
 

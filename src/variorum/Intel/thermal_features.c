@@ -381,6 +381,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
+	json_t *parent = json_object();
     json_t *host_obj  = json_object();
     json_object_set_new(host_obj, "timestamp", json_integer(ts));
     for (i = 0; i < nsockets; i++)
@@ -407,7 +408,9 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
         }
         json_object_set_new(host_obj, socket, socket_obj);
     }
-    json_object_set_new(get_thermal_object, hostname, host_obj);
+	json_object_set_new(parent, hostname, host_obj);
+    json_object_set_new(get_thermal_object, "hostname", parent);
+		
 
     free(pkg_stat);
     free(t_stat);
