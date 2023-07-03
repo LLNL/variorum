@@ -416,7 +416,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
 	json_t *parent = json_object();
     json_t *host_obj  = json_object();
-    json_object_set_new(host_obj, "timestamp", json_integer(ts));
+    json_object_set_new(host_obj, "Timestamp", json_integer(ts));
     for (i = 0; i < nsockets; i++)
     {
         json_t *socket_obj = json_object();

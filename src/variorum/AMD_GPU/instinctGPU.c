@@ -98,7 +98,7 @@ int amd_gpu_instinct_get_thermals_json(char **get_thermal_obj_str)
         get_thermals_json(iter, nsockets, get_thermal_obj);
     }
 
-    *get_thermal_obj_str = json_dumps(get_thermal_obj, 0);
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
     json_decref(get_thermal_obj);
 
     return 0;
