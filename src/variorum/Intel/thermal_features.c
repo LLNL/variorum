@@ -382,17 +382,17 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 
 int get_therm_temp_reading_json(json_t *get_thermal_object,
                                 off_t msr_therm_stat,
-								off_t msr_pkg_therm_stat,
-								off_t msr_temp_target)
+                                off_t msr_pkg_therm_stat,
+                                off_t msr_temp_target)
 {
     struct therm_stat *t_stat = NULL;
-	struct msr_temp_target *t_target = NULL;
-	struct pkg_therm_stat *pkg_stat = NULL;
+    struct msr_temp_target *t_target = NULL;
+    struct pkg_therm_stat *pkg_stat = NULL;
     unsigned i, j, k;
     unsigned nsockets, ncores, nthreads;
     unsigned idx;
     float core_temp;
-	int pkg_temp;
+    int pkg_temp;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
@@ -414,18 +414,18 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *host_obj  = json_object();
-	json_object_set_new(host_obj, "timestamp", json_integer(ts));
+    json_t *host_obj  = json_object();
+    json_object_set_new(host_obj, "timestamp", json_integer(ts));
     for (i = 0; i < nsockets; i++)
     {
-		json_t *socket_obj = json_object();
+        json_t *socket_obj = json_object();
         char socket[12]; //up to 9999 sockets
         snprintf(socket, 12, "Socket_%d", i);
-		pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
-		json_object_set_new(socket_obj, "PKG_Actual", json_integer(pkg_temp));
+        pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
+        json_object_set_new(socket_obj, "PKG_Actual", json_integer(pkg_temp));
         for (j = 0; j < ncores / nsockets; j++)
         {
-			json_t *core_obj = json_object();	
+            json_t *core_obj = json_object();
             char core[12]; //up to 999999 cores
             snprintf(core, 12, "Core_%d", j);
             core_temp = 0.0;
@@ -436,15 +436,15 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
                 core_temp += (int)t_target[i].temp_target - t_stat[idx].readout;
             }
             core_temp /= (nthreads / ncores);
-			json_object_set_new(socket_obj, core, json_real(core_temp));
+            json_object_set_new(socket_obj, core, json_real(core_temp));
         }
-		json_object_set_new(host_obj, socket, socket_obj);
+        json_object_set_new(host_obj, socket, socket_obj);
     }
-	json_object_set_new(get_thermal_object, hostname, host_obj);
+    json_object_set_new(get_thermal_object, hostname, host_obj);
 
-	free(pkg_stat);
+    free(pkg_stat);
     free(t_stat);
-	free(t_target);
+    free(t_target);
 
     return 0;
 }

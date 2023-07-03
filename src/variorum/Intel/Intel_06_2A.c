@@ -463,8 +463,8 @@ int intel_cpu_fm_06_2a_get_thermals_json(char **get_thermal_obj_str)
 
     get_therm_temp_reading_json(get_thermal_obj,
                                 msrs.ia32_therm_status,
-								msrs.ia32_package_therm_status,
-								msrs.msr_temperature_target);
+                                msrs.ia32_package_therm_status,
+                                msrs.msr_temperature_target);
 
     *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
     json_decref(get_thermal_obj);
