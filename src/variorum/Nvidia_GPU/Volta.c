@@ -132,7 +132,7 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
     return 0;
 }
 
-int volta_get_power_json(char **get_power_obj_str)
+int volta_get_gpu_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

@@ -239,13 +239,14 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     unsigned int power;
     double value = 0.0;
     int d;
+    int chipid;
 
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
     unsigned nsockets;
-    char devID[4];
-    char gpu_str[36] = "power_gpu_watts_device_";
+    static size_t devIDlen = 12; // Long enough to avoid format truncation.
+    char devID[devIDlen];
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -263,10 +264,10 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
             nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
             value = (double)power * 0.001f;
 
-            sprintf(devID, "%d", d);
-            strcat(cpu_str, devID);
-            json_object_set_new(get_power_obj, gpu_str, value);
+            char gpu_str[36] = "power_gpu_watts_device_";
+            snprintf(devID, devIDlen, "%d", d);
+            strcat(gpu_str, devID);
+            json_object_set_new(get_power_obj, gpu_str, json_real(value));
         }
     }
-}
 }
