@@ -177,17 +177,11 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
     unsigned gpu_temp;
     int d;
 
-    json_t *host_obj = json_object_get(output, "hostname");
-    if (host_obj == NULL)
-    {
-        host_obj = json_object();
-        json_object_set_new(output, "hostname", host_obj);
-    }
-    json_t *socket_obj = json_object_get(host_obj, m_hostname);
+    json_t *socket_obj = json_object_get(output, m_hostname);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(host_obj, m_hostname, socket_obj);
+        json_object_set_new(output, m_hostname, socket_obj);
     }
 
     char socket_id[12];
