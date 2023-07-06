@@ -233,3 +233,40 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
         }
     }
 }
+
+void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
+{
+    unsigned int power;
+    double value = 0.0;
+    int d;
+
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    unsigned nsockets;
+    char devID[4];
+    char gpu_str[36] = "power_gpu_watts_device_";
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(get_power_obj, "host", json_string(hostname));
+    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+    for (chipid = 0; chipid < nsockets; chipid++)
+    {
+        //Iterate over all GPU device handles for this socket and update object
+        for (d = chipid * (int)m_gpus_per_socket;
+             d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+        {
+            nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
+            value = (double)power * 0.001f;
+
+            sprintf(devID, "%d", d);
+            strcat(cpu_str, devID);
+            json_object_set_new(get_power_obj, gpu_str, value);
+        }
+    }
+}
+}

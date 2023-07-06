@@ -10,6 +10,7 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <nvidia_gpu_power_features.h>
+#include <jansson.h>
 
 int volta_get_power(int long_ver)
 {
@@ -138,14 +139,13 @@ int volta_get_power_json(char **get_power_obj_str)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    /*
-        unsigned iter = 0;
-        unsigned nsockets;
-        variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
-        for (iter = 0; iter < nsockets; iter++)
-        {
-            get_power_data(iter, long_ver, stdout);
-        }
-    */
+
+    json_t *get_power_obj = json_object();
+
+    nvidia_gpu_get_json_power_data(get_power_obj);
+
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
     return 0;
 }
