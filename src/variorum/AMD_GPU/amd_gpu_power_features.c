@@ -337,21 +337,21 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
     gettimeofday(&now, NULL);
 
-	json_t *host_obj = json_object_get(output, "hostname");
-	if(host_obj == NULL)
-	{
-		host_obj = json_object();
-		json_object_set_new(output, "hostname", host_obj);
-	}
+    json_t *host_obj = json_object_get(output, "hostname");
+    if (host_obj == NULL)
+    {
+        host_obj = json_object();
+        json_object_set_new(output, "hostname", host_obj);
+    }
 
-	json_t *socket_obj = json_object_get(host_obj, hostname);
-	if(socket_obj == NULL)
-	{
-		socket_obj = json_object();
-		json_object_set_new(host_obj, hostname, socket_obj);
-	}
+    json_t *socket_obj = json_object_get(host_obj, hostname);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(host_obj, hostname, socket_obj);
+    }
 
-	json_t *gpu_obj = json_object();
+    json_t *gpu_obj = json_object();
 
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
@@ -371,15 +371,16 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
         temp_val_flt = (double)(temp_val / (1000)); // Convert to Celcius.
 
-		char gpuid[12];
-		snprintf(gpuid, 12, "Device_%d", i);
-		json_object_set_new(gpu_obj, gpuid, json_real(temp_val_flt));
+        char gpuid[12];
+        snprintf(gpuid, 12, "Device_%d", i);
+        json_object_set_new(gpu_obj, gpuid, json_real(temp_val_flt));
 
     }
-	char socketid[12];
-	snprintf(socketid, 12, "Socket_%d", chipid);
-	json_object_set_new(socket_obj, socketid, gpu_obj);
-	json_object_set_new(socket_obj, "Timestamp", json_real( ( now.tv_usec - json_start.tv_usec) / 1000000.0 ) );
+    char socketid[12];
+    snprintf(socketid, 12, "Socket_%d", chipid);
+    json_object_set_new(socket_obj, socketid, gpu_obj);
+    json_object_set_new(socket_obj, "Timestamp",
+                        json_real((now.tv_usec - json_start.tv_usec) / 1000000.0));
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
