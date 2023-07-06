@@ -407,9 +407,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
         }
         json_object_set_new(host_obj, socket, socket_obj);
     }
-    json_object_set_new(parent, hostname, host_obj);
-    json_object_set_new(get_thermal_object, "hostname", parent);
-
+    json_object_set_new(get_thermal_object, hostname, host_obj);
 
     free(pkg_stat);
     free(t_stat);

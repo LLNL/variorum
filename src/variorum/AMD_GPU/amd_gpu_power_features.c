@@ -337,18 +337,11 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
     gettimeofday(&now, NULL);
 
-    json_t *host_obj = json_object_get(output, "hostname");
-    if (host_obj == NULL)
-    {
-        host_obj = json_object();
-        json_object_set_new(output, "hostname", host_obj);
-    }
-
-    json_t *socket_obj = json_object_get(host_obj, hostname);
+    json_t *socket_obj = json_object_get(output, hostname);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(host_obj, hostname, socket_obj);
+        json_object_set_new(output, hostname, socket_obj);
     }
 
     json_t *gpu_obj = json_object();
