@@ -29,16 +29,6 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     gethostname(hostname, 1024);
 
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
-
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -142,16 +132,6 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
     struct timeval now;
 
     gethostname(hostname, 1024);
-
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
 
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)
@@ -276,16 +256,6 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     int i;
 
     gethostname(hostname, 1024);
-
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
 
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)
@@ -470,16 +440,6 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
     struct timeval now;
 
     gethostname(hostname, 1024);
-
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
 
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)
@@ -678,16 +638,6 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
 
     gethostname(hostname, 1024);
 
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
-
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -885,16 +835,6 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
     unsigned int powerlimit_uwatts = powerlimit * 1000000;
 
     gethostname(hostname, 1024);
-
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
-    {
-        variorum_error_handler("Could not initialize RSMI",
-                               VARIORUM_ERROR_PLATFORM_ENV,
-                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                               __LINE__);
-        exit(-1);
-    }
 
     ret = rsmi_num_monitor_devices(&num_devices);
     if (ret != RSMI_STATUS_SUCCESS)

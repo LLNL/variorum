@@ -22,6 +22,7 @@ uint64_t *detect_amd_gpu_arch(void)
 
 int set_amd_gpu_func_ptrs(int idx)
 {
+    static int init_complete = 0;
     int err = 0;
 
     if (*g_platform[idx].arch_id == AMD_INSTINCT)
@@ -46,5 +47,19 @@ int set_amd_gpu_func_ptrs(int idx)
         err = VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
 
+
+    if (init_complete == 0)
+    {
+        ret = rsmi_init(0);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("Could not initialize RSMI",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+            exit(-1);
+        }
+        init_complete = 1;
+    }
     return err;
 }
