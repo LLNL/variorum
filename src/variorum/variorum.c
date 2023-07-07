@@ -1142,3 +1142,39 @@ char *variorum_get_current_version()
 {
     return QuoteMacro(VARIORUM_VERSION);
 }
+
+// Variorum Advanced APIs
+// For this API, the accepted domains are node:0, socket:1, memory:2, gpu:3.
+// We may need to check here for which internal function to call based on the
+// domain specifically for multi-arch build.
+double variorum_get_domain_power_value(int domain, int deviceID)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_domain_power_value == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
+        }
+        err = g_platform[i].variorum_get_domain_power_value(domain, deviceID);
+        if (err)
+        {
+            return -1;
+        }
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
