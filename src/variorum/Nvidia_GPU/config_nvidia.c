@@ -20,6 +20,7 @@ uint64_t *detect_gpu_arch(void)
 
 int set_nvidia_func_ptrs(int idx)
 {
+    static int init_complete = 0;
     int err = 0;
 
     if (*g_platform[idx].arch_id == VOLTA)
@@ -43,6 +44,10 @@ int set_nvidia_func_ptrs(int idx)
         err = VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
 
-    initNVML();
+    if (init_complete == 0)
+    {
+        initNVML();
+        init_complete = 1;
+    }
     return err;
 }

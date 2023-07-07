@@ -30,7 +30,23 @@ void initNVML(void)
     /* Initialize GPU reading */
     m_unit_devices_file_desc = NULL;
     nvmlReturn_t result = nvmlInit();
-    nvmlDeviceGetCount(&m_total_unit_devices);
+    if (result != NVML_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize NVML",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+    result = nvmlDeviceGetCount(&m_total_unit_devices);
+    if (result != NVML_SUCCESS)
+    {
+        variorum_error_handler("Could not query GPU devices on the system",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
     m_unit_devices_file_desc = (nvmlDevice_t *) malloc(sizeof(
                                    nvmlDevice_t) * m_total_unit_devices);
     if (m_unit_devices_file_desc == NULL)
