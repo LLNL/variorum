@@ -57,7 +57,9 @@ int arm_juno_r2_get_clocks(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = arm_cpu_juno_r2_get_clocks_data(iter, long_ver, stdout);
@@ -78,7 +80,9 @@ int arm_juno_r2_get_frequencies(void)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = arm_cpu_juno_r2_get_frequencies(iter, stdout);
@@ -98,7 +102,9 @@ int arm_juno_r2_cap_socket_frequency(int cpuid, int freq)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
