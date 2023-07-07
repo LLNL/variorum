@@ -24,7 +24,9 @@ int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int max_non_turbo_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -67,7 +69,9 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int max_efficiency_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -111,7 +115,9 @@ int get_min_operating_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int min_operating_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -148,7 +154,9 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
     static uint64_t **val = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -198,7 +206,9 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     static uint64_t **val2 = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -256,7 +266,9 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
     static uint64_t **val2 = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -304,7 +316,9 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     static uint64_t **l = NULL;
     int level;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         l = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -360,7 +374,9 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
     static unsigned nsockets = 0;
     static uint64_t **val = NULL;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -423,7 +439,9 @@ int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     /// Creates mask for turbo disable bit according to the architecture offset
     /// given.
     mask |= 1LL << turbo_mode_disable_bit;
@@ -468,7 +486,9 @@ int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     /// Creates mask for turbo disable bit according to the architecture offset
     /// given.
     mask |= 1LL << turbo_mode_disable_bit;
@@ -514,7 +534,9 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     mask |= 1LL << turbo_mode_disable_bit;
 
     for (socket = 0; socket < nsockets; socket++)

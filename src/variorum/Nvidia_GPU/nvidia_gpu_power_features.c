@@ -35,8 +35,10 @@ void initNVML(void)
         }
     }
 
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     /* Collect number of packages and GPUs per package */
     variorum_get_topology(&m_num_package, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */

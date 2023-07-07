@@ -75,7 +75,9 @@ int intel_cpu_fm_06_3e_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -151,7 +153,9 @@ int intel_cpu_fm_06_3e_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -492,7 +496,9 @@ int intel_cpu_fm_06_3e_cap_best_effort_node_power_limit(int node_limit)
      * we will guarantee that we stay under the specified cap. */
 
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     // Adding this for portability and rounding down.
     // Ideally this should be okay as it is integer division and we have

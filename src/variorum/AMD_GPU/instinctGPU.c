@@ -22,7 +22,9 @@ int amd_gpu_instinct_get_power(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -43,7 +45,9 @@ int amd_gpu_instinct_get_power_limit(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -64,7 +68,9 @@ int amd_gpu_instinct_get_thermals(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -84,7 +90,9 @@ int amd_gpu_instinct_get_clocks(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -104,7 +112,9 @@ int amd_gpu_instinct_get_gpu_utilization(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -123,7 +133,9 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 
     unsigned iter = 0;
     unsigned nsockets;
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         cap_each_gpu_power_limit(iter, nsockets, powerlimit);
