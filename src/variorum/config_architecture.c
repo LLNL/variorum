@@ -212,11 +212,6 @@ void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
 
     if (!init_variorum_get_topology)
     {
-        // Commenting per Stephanie's code
-        // Patki guesses this should be left uncommented
-
-        // init_variorum_get_topology = 1;
-
         rc = variorum_init_topology();
 
         if (rc != 0)
@@ -360,6 +355,7 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_get_node_power_json = NULL;
         g_platform[i].variorum_get_node_power_domain_info_json = NULL;
         g_platform[i].variorum_print_energy = NULL;
+        g_platform[i].variorum_get_domain_power_value = NULL;
     }
 }
 

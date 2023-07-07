@@ -255,6 +255,12 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(void);
 
+    /// @brief Return a double value for a given power domain and device ID.
+    ///
+    /// @return output double value with power information for the specified
+    /// domain and device ID.  Returns -1.0 for error.
+    double (*variorum_get_domain_power_value)(int domain, int deviceID);
+
     /// @brief Identifier for architecture.
     uint64_t *arch_id;
     /// @brief Hostname.

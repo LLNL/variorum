@@ -578,15 +578,15 @@ char *variorum_get_current_version(void);
 /**************************/
 /* Variorum Advanced APIs */
 /**************************/
-/// @brief Return a double value for a given power domain and device ID. 
+/// @brief Return a double value for a given power domain and device ID.
 ///
 /// @supparch
 /// - IBM Power9
 /// - Intel Broadwell
 ///
 /// @param [out] output double value with power information for the specified
-//  domain and device ID.  Returns -1 if domain, device or value is unavailable.
-//  Accepted domains are node:0, socket:1, memory:2, gpu:3. 
+/// domain and device ID.  Returns -1.0 if domain, device or value is unavailable.
+///  Accepted domains are node:0, socket:1, memory:2, gpu:3.
 double variorum_get_domain_power_value(int domain, int deviceID);
 
 /***********/
