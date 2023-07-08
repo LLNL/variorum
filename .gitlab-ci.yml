@@ -59,28 +59,28 @@ build-quartz:
    - make VERBOSE=1
    - make install
    #- env CTEST_OUTPUT_ON_FAILURE=1 make test
-   #- cd ..
-   #- echo -e "PWD:" ${PWD}
-   #- which cmake
-   #- cmake --version
-   #- cd install-gitlab-quartz/examples/using-with-cmake/c
-   #- echo -e "PWD:" ${PWD}
-   #- mkdir _test_build
-   #- cd _test_build
-   #- cmake ../
-   #- make VERBOSE=1
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-quartz/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../../using-with-make/c
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../using-with-make/cpp
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../using-with-make/fortran
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
    #- ./ep.W.x
 
 build-lassen-cpu:
@@ -238,28 +238,28 @@ build-catalyst:
    - make VERBOSE=1
    - make install
    #- env CTEST_OUTPUT_ON_FAILURE=1 make test
-   #- cd ..
-   #- echo -e "PWD:" ${PWD}
-   #- which cmake
-   #- cmake --version
-   #- cd install-gitlab-catalyst/examples/using-with-cmake/c
-   #- echo -e "PWD:" ${PWD}
-   #- mkdir _test_build
-   #- cd _test_build
-   #- cmake ../
-   #- make VERBOSE=1
+   - cd ..
+   - echo -e "PWD:" ${PWD}
+   - which cmake
+   - cmake --version
+   - cd install-gitlab-catalyst/examples/using-with-cmake/c
+   - echo -e "PWD:" ${PWD}
+   - mkdir _test_build
+   - cd _test_build
+   - cmake ../
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../../using-with-make/c
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../../using-with-make/c
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../using-with-make/cpp
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../using-with-make/cpp
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1
    #- ./variorum-print-power-example
-   #- cd ../../using-with-make/fortran
-   #- echo -e "PWD:" ${PWD}
-   #- make VERBOSE=1
+   - cd ../../using-with-make/fortran
+   - echo -e "PWD:" ${PWD}
+   - make VERBOSE=1 F77=/usr/tce/packages/gcc/gcc-8.3.1/bin/gfortran FFLAGS=-O
    #- ./ep.W.x
 
 build-corona:
