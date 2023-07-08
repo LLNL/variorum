@@ -28,7 +28,6 @@ enum power_domain {NODE = 0, PROCESSOR, MEMORY, GPU};
 int main(int argc, char **argv)
 {
     double power_value = 0.0;
-    enum power_domain domain = NODE;
 
 #ifdef SECOND_RUN
     int i;
