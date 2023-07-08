@@ -20,7 +20,7 @@ int volta_get_power(int long_ver)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -40,7 +40,7 @@ int volta_get_thermals(int long_ver)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -60,7 +60,7 @@ int volta_get_clocks(int long_ver)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -80,7 +80,7 @@ int volta_get_power_limits(int long_ver)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -100,7 +100,7 @@ int volta_get_gpu_utilization(int long_ver)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -120,7 +120,7 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
     }
 
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
