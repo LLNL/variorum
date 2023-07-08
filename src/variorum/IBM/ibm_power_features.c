@@ -371,3 +371,70 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     json_object_set_new(get_power_obj, mem_str, json_real(pwrmem));
     json_object_set_new(get_power_obj, gpu_str, json_real(pwrgpu));
 }
+
+double get_power_sensor_value(int domain, int chipid, const void *buf)
+{
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
+    int i = 0;
+    // Power in watts.
+    double power_value = 0.0;
+
+    hb = (struct occ_sensor_data_header *)(uint64_t)buf;
+    md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
+
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
+    {
+        uint32_t offset = be32toh(md[i].reading_offset);
+        uint32_t scale = be32toh(md[i].scale_factor);
+        uint64_t sample = 0;
+
+        // We are not reading counters here because power data doesn't need counter.
+        if (md[i].structure_type == OCC_SENSOR_READING_FULL)
+        {
+            sample = read_sensor(hb, offset, SENSOR_SAMPLE);
+        }
+
+        /* Ideally, we don't want to use strcmp and use offsets instead.
+         * But this was not clear to us at the time of the implementation.
+         * OCC_DATA_BLOCK contents are different because of master-slave design
+         * across different processor sockets. So the same offset can refer to
+         * a different sensor depending on the socket.
+         *
+         * Note that we're not capturing timestamp here, the common timestamp
+         * printed is the one from the end of the loop, where all 336 sensors
+         * have been scanned on P9.
+         * */
+
+        // Case 1: Return node power value.
+        if (domain == 0 && chipid == 0)
+        {
+            if (strcmp(md[i].name, "PWRSYS") == 0)
+            {
+                power_value = (double)(sample * TO_FP(scale));
+            }
+        }
+
+        // Case 2: Return current socket's power value.
+        if (domain == 1)
+        {
+            if (strcmp(md[i].name, "PWRPROC") == 0)
+            {
+                power_value = (double)(sample * TO_FP(scale));
+            }
+        }
+
+        // Case 3: Return memory power value on this socket.
+        if (domain == 2)
+        {
+            if (strcmp(md[i].name, "PWRMEM") == 0)
+            {
+                power_value = (double)(sample * TO_FP(scale));
+            }
+        }
+
+        //Note Case 4: Domain 3 GPU is handled through NVIDIA or AMD in this API.
+    }
+
+    return power_value;
+}

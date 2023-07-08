@@ -24,4 +24,5 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str);
 
 int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str);
 
+double ibm_cpu_p9_get_domain_power_value(int domain, int deviceID);
 #endif

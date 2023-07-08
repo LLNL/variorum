@@ -41,6 +41,7 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
     variorum-print-energy-example
+    variorum-get-domain-power-value-example 
 )
 
 message(STATUS "Adding variorum examples")

@@ -478,3 +478,73 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 
     return 0;
 }
+
+double ibm_cpu_p9_get_domain_power_value(int domain, int deviceID)
+{
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int fd;
+    double power_value = 0.0;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+    unsigned nsockets;
+
+    if (domain < 0 || domain >= 3 || deviceID < 0 || deviceID > 8)
+    {
+        // Domain = 3 (GPUs) is not supported here, but rather through the
+        // We don't know of any system with more than 8 GPUs, sockets, or dimms.
+        // Domain = 3 (GPUs) is not supported here, but rather through the
+        // NVIDIA and AMD ports in multi-platform build.
+        power_value = -1.0; // Returning an error.
+    }
+
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+        return -1.0;
+    }
+
+    // For non-GPU domains, the deviceID is the socket we want data from, so
+    // we use it to calculate the offsets here.
+    lseek(fd, deviceID * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+    buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+    if (!buf)
+    {
+        printf("Failed to allocate\n");
+        return -1.0;
+    }
+
+    for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+    {
+        rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+
+        if (!rc || rc < 0)
+        {
+            break;
+        }
+    }
+
+    if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+    {
+        printf("Failed to read data\n");
+        free(buf);
+        return -1.0;
+    }
+
+    power_value = get_power_sensor_value(domain, deviceID, buf);
+
+    free(buf);
+    close(fd);
+
+    return power_value;
+}

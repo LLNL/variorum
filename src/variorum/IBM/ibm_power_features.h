@@ -154,4 +154,6 @@ void json_get_power_sensors(int chipid,
                             json_t *get_power_obj,
                             const void *buf);
 
+double get_power_sensor_value(int domain, int chipid, const void *buf);
+
 #endif
