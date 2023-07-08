@@ -100,7 +100,7 @@ build-lassen-cpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-lassen-cpu -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
-   - env CTEST_OUTPUT_ON_FAILURE=1 make test
+   - env CTEST_OUTPUT_ON_FAILURE=1 TEST_NODE_POWER_LIMIT=3000 make test
    - cd ..
    - echo -e "PWD:" ${PWD}
    - which cmake
