@@ -27,7 +27,7 @@ enum power_domain {NODE = 0, PROCESSOR, MEMORY, GPU};
 
 int main(int argc, char **argv)
 {
-    double power_value;
+    double power_value = 0.0;
     enum power_domain domain = NODE;
 
 #ifdef SECOND_RUN
@@ -57,24 +57,37 @@ int main(int argc, char **argv)
     // Get power data from Node domain, deviceID is irrelevant and ignored here.
     power_value = variorum_get_domain_power_value(NODE, 0);
     printf("Power for the Node domain is %lf watts\n", power_value);
-
-    // Get power data from Socket domain and specify device (socket) ID as 1.
-    power_value = variorum_get_domain_power_value(PROCESSOR, 1);
-    printf("Processor Power for Socket 1 is %lf watts\n", power_value);
-
-    // Get power data from Memory domain and specify device (memory DIMM) ID as 0.
-    power_value = variorum_get_domain_power_value(MEMORY, 0);
-    printf("Power for Memory from Socket 0 is  %lf watts\n", power_value);
-
-/*
-    // Get power data from GPU domain and specify device (GPU) ID as 2.
-    power_value = variorum_get_domain_power_value(GPU, 2);
-    printf("Power for the GPU ID 2 is %lf watts\n", power_value);
-
     if (power_value == -1.0)
     {
         printf("Variorum get_domain_power_value failed!\n");
     }
+
+    // Get power data from Socket domain and specify device (socket) ID as 1.
+    power_value = variorum_get_domain_power_value(PROCESSOR, 1);
+    printf("Processor Power for Socket 1 is %lf watts\n", power_value);
+    if (power_value == -1.0)
+    {
+        printf("Variorum get_domain_power_value failed!\n");
+    }
+
+    // Get power data from Memory domain and specify device (memory DIMM) ID as 0.
+    power_value = variorum_get_domain_power_value(MEMORY, 0);
+    printf("Power for Memory from Socket 0 is  %lf watts\n", power_value);
+    if (power_value == -1.0)
+    {
+        printf("Variorum get_domain_power_value failed!\n");
+    }
+
+    /*
+        // Get power data from GPU domain and specify device (GPU) ID as 2.
+        power_value = variorum_get_domain_power_value(GPU, 2);
+        printf("Power for the GPU ID 2 is %lf watts\n", power_value);
+
+        if (power_value == -1.0)
+        {
+            printf("Variorum get_domain_power_value failed!\n");
+        }
+    */
 
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
@@ -86,25 +99,40 @@ int main(int argc, char **argv)
     // Get power data from Node domain, deviceID is irrelevant and ignored here.
     power_value = variorum_get_domain_power_value(NODE, 0);
     printf("Power for the Node domain is %lf watts\n", power_value);
-
-    // Get power data from Socket domain and specify device (socket) ID as 1.
-    power_value = variorum_get_domain_power_value(SOCKET, 1);
-    printf("Power for Socket 1 is %lf watts\n", power_value);
-
-    // Get power data from Memory domain and specify device (memory DIMM) ID as 0.
-    power_value = variorum_get_domain_power_value(MEMORY, 0);
-    printf("Power for the Memory DIMM 0 is  %lf watts\n", power_value);
-
-    // Get power data from GPU domain and specify device (GPU) ID as 2.
-    power_value = variorum_get_domain_power_value(GPU, 2);
-    printf("Power for the GPU ID 2 is %lf watts\n", power_value);
-
     if (power_value == -1.0)
     {
         printf("Variorum get_domain_power_value failed!\n");
     }
+
+    // Get power data from Socket domain and specify device (socket) ID as 1.
+    power_value = variorum_get_domain_power_value(PROCESSOR, 1);
+    printf("Power for Socket 1 is %lf watts\n", power_value);
+    if (power_value == -1.0)
+    {
+        printf("Variorum get_domain_power_value failed!\n");
+    }
+
+    // Get power data from Memory domain and specify device (memory DIMM) ID as 0.
+    power_value = variorum_get_domain_power_value(MEMORY, 0);
+    printf("Power for the Memory from Socket 0 is  %lf watts\n", power_value);
+    if (power_value == -1.0)
+    {
+        printf("Variorum get_domain_power_value failed!\n");
+    }
+
+
+    /*
+        // Get power data from GPU domain and specify device (GPU) ID as 2.
+        power_value = variorum_get_domain_power_value(GPU, 2);
+        printf("Power for the GPU ID 2 is %lf watts\n", power_value);
+
+        if (power_value == -1.0)
+        {
+            printf("Variorum get_domain_power_value failed!\n");
+        }
+    */
 #endif
-*/
+
 
     return 0;
 }

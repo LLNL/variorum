@@ -1150,6 +1150,7 @@ char *variorum_get_current_version()
 double variorum_get_domain_power_value(int domain, int deviceID)
 {
     int err = 0;
+    double power_value = 0.0;
     int i;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
@@ -1165,16 +1166,12 @@ double variorum_get_domain_power_value(int domain, int deviceID)
                                    __FUNCTION__, __LINE__);
             return 0;
         }
-        err = g_platform[i].variorum_get_domain_power_value(domain, deviceID);
-        if (err)
-        {
-            return -1;
-        }
+        power_value = g_platform[i].variorum_get_domain_power_value(domain, deviceID);
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-    return err;
+    return power_value;
 }
