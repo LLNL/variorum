@@ -1105,8 +1105,7 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
     {
         return -1;
     }
-
-
+	return err;
 }
 
 
