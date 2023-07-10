@@ -35,6 +35,6 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit);
 
 void nvidia_gpu_get_thermal_json(int chipid, json_t *output);
 
-void nvidia_gpu_get_clocks_json(int chipd, json_t *output);
+void nvidia_gpu_get_clocks_json(int chipid, json_t *output);
 
 #endif

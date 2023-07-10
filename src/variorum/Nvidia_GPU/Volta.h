@@ -22,4 +22,6 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit);
 
 int volta_get_thermals_json(char **get_thermal_obj_str);
 
+int volta_get_clocks_json(char **get_clocks_obj_str);
+
 #endif

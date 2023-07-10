@@ -36,6 +36,8 @@ int main(int argc, char **argv)
     if (ret != 0)
     {
         printf("!\n");
+		free(s);
+		exit(-1);
     }
     puts(s);
     free(s);
