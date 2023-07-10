@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <config_architecture.h>
+#include <jansson.h>
 
 ///// @brief Structure containing data for IA32_CLOCK_MODULATION.
 /////
@@ -134,6 +135,14 @@ void get_available_frequencies_skx(FILE *writedest,
                                    off_t *msr_turbo_ratio_limit_cores,
                                    off_t *msr_config_tdp_l1,
                                    off_t *msr_config_tdp_l2);
+
+int get_clocks_data_json(json_t *output,
+                         off_t msr_aperf,
+                         off_t msr_mperf,
+                         off_t msr_tsc,
+                         off_t msr_perf_status,
+                         off_t msr_platform_info,
+                         enum ctl_domains_e control_domain);
 
 ///// @brief Print current p-state.
 /////

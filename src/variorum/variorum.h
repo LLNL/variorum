@@ -565,8 +565,21 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /// @work in progress for variorum_get_thermal_json
+/// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Nvidia Volta
 
 int variorum_get_thermals_json(char **get_thermal_obj_str);
+
+
+/// @work in progress for variorum_get_frequency_json
+int variorum_get_frequency_json(char **get_frequency_obj_str);
 
 /// @brief Returns Variorum version as a constant string.
 ///

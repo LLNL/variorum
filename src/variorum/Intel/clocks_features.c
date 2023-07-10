@@ -253,6 +253,113 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     return 0;
 }
 
+int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
+                         off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                         enum ctl_domains_e control_domains)
+{
+
+    static struct clocks_data *cd;
+    static struct perf_data *pd;
+    unsigned i, j, k;
+    int idx;
+    unsigned nsockets, ncores, nthreads;
+    char hostname[1024];
+    int max_non_turbo_ratio;
+    int err;
+
+    err = get_max_non_turbo_ratio(msr_platform_info, &max_non_turbo_ratio);
+    if (err)
+    {
+        variorum_error_handler("Error retrieving max non-turbo ratio",
+                               VARIORUM_ERROR_FUNCTION, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+    gethostname(hostname, 1024);
+
+    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
+    perf_storage(&pd, msr_perf_status);
+    read_batch(CLOCKS_DATA);
+    read_batch(PERF_DATA);
+
+    json_t *host_obj = json_object();
+    json_object_set_new(output, hostname, host_obj);
+
+    json_t *make_socket_obj(int socket_index)
+    {
+        char socket_name[12];
+        snprintf(socket_name, 12, "Socket_%d", socket_index);
+        json_t *socket_obj = json_object();
+        json_object_set_new(host_obj, socket_name, socket_obj);
+        return socket_obj;
+    }
+
+    json_t *make_core_obj(json_t *socket_obj, int core_index)
+    {
+        char core_name[12];
+        snprintf(core_name, 12, "Core_%d", core_index);
+        json_t *core_obj = json_object();
+        json_object_set_new(socket_obj, core_name, core_obj);
+        return core_obj;
+    }
+
+    json_t *make_thread_obj(json_t *core_obj, int thread_index)
+    {
+        char thread_name[10];
+        snprintf(thread_name, 10, "Thread_%d", thread_index);
+        json_t *thread_obj = json_object();
+        json_object_set_new(core_obj, thread_name, thread_obj);
+        return thread_obj;
+    }
+
+    switch (control_domains)
+    {
+        case SOCKET:
+            for (i = 0; i < nsockets; i++)
+            {
+                for (j = 0; j < ncores / nsockets; j += ncores / nsockets)
+                {
+                    for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                    }
+                }
+            }
+            break;
+        case CORE:
+            for (i = 0; i < nsockets; i++)
+            {
+                json_t *socket_obj = make_socket_obj(i);
+                for (j = 0; j < ncores / nsockets; j++)
+                {
+                    json_t *core_obj = make_core_obj(socket_obj, j);
+                    for (k = 0; k < nthreads / ncores; k++)
+                    {
+                        json_t *thread_obj = make_thread_obj(core_obj, k);
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        char logical_thread_name[18];
+                        snprintf(logical_thread_name, 18, "LogicalThread_%d", idx);
+                        json_object_set_new(thread_obj, logical_thread_name, json_integer(idx));
+                        json_object_set_new(thread_obj, "APERF", json_integer(*cd->aperf[idx]));
+                        json_object_set_new(thread_obj, "MPERF", json_integer(*cd->mperf[idx]));
+                        json_object_set_new(thread_obj, "TSC", json_integer(*cd->tsc[idx]));
+                        json_object_set_new(thread_obj, "CurrentFrequency",
+                                            json_integer(MASK_VAL(*pd->perf_status[i], 15, 8) * 100));
+                        json_object_set_new(thread_obj, "AverageFrequency",
+                                            json_real(max_non_turbo_ratio * (*cd->aperf[idx] / (double)(*cd->mperf[idx]))));
+                    }
+                }
+            }
+            break;
+        default:
+            fprintf(stderr, "Not a valid control domain.\n");
+            break;
+    }
+    return 0;
+}
+
 //void print_verbose_clocks_data_socket(FILE *writedest, off_t msr_aperf, off_t msr_mperf, off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info)
 //{
 //    static struct clocks_data *cd;

@@ -114,4 +114,6 @@ int intel_cpu_fm_06_55_get_frequencies(void);
 
 int intel_cpu_fm_06_55_get_thermals_json(char **get_thermal_obj_str);
 
+int intel_cpu_fm_06_55_get_clocks_json(char **get_clock_obj_str);
+
 #endif

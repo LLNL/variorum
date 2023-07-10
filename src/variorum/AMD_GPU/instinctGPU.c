@@ -121,6 +121,32 @@ int amd_gpu_instinct_get_clocks(int verbose)
     return 0;
 }
 
+int amd_gpu_instinct_get_clocks_json(char **get_clocks_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+
+    json_t *get_clocks_obj = json_object();
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        get_clocks_json(iter, nsockets, get_clocks_obj);
+    }
+
+    *get_clocks_obj_str = json_dumps(get_clocks_obj, JSON_INDENT(4));
+    json_decref(get_clocks_obj);
+
+    return 0;
+}
+
 int amd_gpu_instinct_get_gpu_utilization(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");

@@ -250,6 +250,9 @@ struct platform
     /// @return Error code.
     int (*variorum_get_thermals_json)(char **get_thermal_obj_str);
 
+    /// @brief Function pointer to get JSON object for frequency information
+    int (*variorum_get_frequency_json)(char **get_frequency_obj_str);
+
     /// @brief Function pointer to get list of available frequencies.
     ///
     /// @return Error code.
