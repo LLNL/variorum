@@ -487,7 +487,6 @@ double ibm_cpu_p9_get_domain_power_value(int domain, int deviceID)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    void *buf;
     int fd;
     double power_value = 0.0;
     int rc;
@@ -517,12 +516,8 @@ double ibm_cpu_p9_get_domain_power_value(int domain, int deviceID)
     // we use it to calculate the offsets here.
     lseek(fd, deviceID * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
-    buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
-    if (!buf)
-    {
-        printf("Failed to allocate\n");
-        return -1.0;
-    }
+    // Allocate static memory here for signal-safe implementation.
+    char buf[OCC_SENSOR_DATA_BLOCK_SIZE];
 
     for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
     {
@@ -537,13 +532,11 @@ double ibm_cpu_p9_get_domain_power_value(int domain, int deviceID)
     if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
     {
         printf("Failed to read data\n");
-        free(buf);
         return -1.0;
     }
 
     power_value = get_power_sensor_value(domain, deviceID, buf);
 
-    free(buf);
     close(fd);
 
     return power_value;
