@@ -35,8 +35,10 @@ void initNVML(void)
         }
     }
 
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     /* Collect number of packages and GPUs per package */
     variorum_get_topology(&m_num_package, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */
@@ -278,7 +280,6 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 {
     unsigned int powerlimit_mwatts = powerlimit * 1000;
     int d;
-    static int init_output = 0;
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;

@@ -28,8 +28,8 @@ set(VARIORUM_WITH_INTEL_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
-# path to e_smi_library install                                                    
-set(ESMI_DIR "/usr/workspace/msr/tioga_common_setup/esmi_install/e_smi" CACHE PATH "") 
+# path to e_smi_library install
+set(ESMI_DIR "/usr/workspace/msr/tioga_common_setup/esmi_install/e_smi" CACHE PATH "")
 
 #ROCm setup
 set(CMAKE_SHARED_LINKER_FLAGS "-L/opt/rocm-5.2.0/lib -lrocm_smi64" CACHE PATH "")

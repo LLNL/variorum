@@ -4,13 +4,13 @@
 # SPDX-License-Identifier: MIT
 
 # c compiler
-set(CMAKE_C_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.3.1/bin/gcc" CACHE PATH "")
+set(CMAKE_C_COMPILER "gcc" CACHE PATH "")
 
 # cpp compiler
-set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.3.1/bin/g++" CACHE PATH "")
+set(CMAKE_CXX_COMPILER "g++" CACHE PATH "")
 
 # fortran compiler
-set(CMAKE_Fortran_COMPILER "/usr/tce/packages/gcc-tce/gcc-10.3.1/bin/gfortran" CACHE PATH "")
+set(CMAKE_Fortran_COMPILER  "gfortran" CACHE PATH "")
 
 set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP OFF CACHE BOOL "")
@@ -18,15 +18,16 @@ set(ENABLE_OPENMP OFF CACHE BOOL "")
 set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
-set(VARIORUM_DEBUG OFF CACHE BOOL "")
-
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
-set(VARIORUM_WITH_AMD_GPU ON CACHE BOOL "")
+set(VARIORUM_WITH_AMD_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_ARM_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM_CPU OFF CACHE BOOL "")
-set(VARIORUM_WITH_INTEL_CPU OFF CACHE BOOL "")
+set(VARIORUM_WITH_INTEL_CPU ON CACHE BOOL "")
+set(VARIORUM_WITH_INTEL_GPU ON CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
-set(CMAKE_SHARED_LINKER_FLAGS "-L/opt/rocm-5.2.0/lib -lrocm_smi64" CACHE PATH "")
+# path to global hwloc install
+set(HWLOC_DIR "/usr/local/share/hwloc-1.11.7-install" CACHE PATH "")
 
-set(ROCM_DIR "/opt/rocm-5.2.0/" CACHE PATH "")
+# path to global jansson install
+set(JANSSON_DIR "/usr/local/share/jansson-2.6-install" CACHE PATH "")
