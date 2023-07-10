@@ -253,6 +253,8 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
     json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+    json_object_set_new(get_power_obj, "num_gpus",
+                        json_integer(m_total_unit_devices));
 
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (chipid = 0; chipid < nsockets; chipid++)
