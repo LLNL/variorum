@@ -19,7 +19,7 @@
 #define MEM_FILE "/proc/meminfo"
 #define CPU_FILE "/proc/stat" 
 
-uint64_t lastSum = 0, lastIdle = 0;
+uint64_t lastSum = 0, lastUserTime = 0, lastMemFree = 0, lastMemTotal = 0, lastSysTime = 0, lastIdle = 0;
 int state = 0;
 long prevTime = 0;
 long prevMem = 0;
@@ -1038,10 +1038,8 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
     int ru;
     char hostname[1024];
-    struct timeval tv, rutime;
-    struct rusage rusge;
+    struct timeval tv;
     uint64_t ts;
-    long mem, utime;
     json_t *get_util_obj = json_object();
 
     gethostname(hostname, 1024);
@@ -1050,57 +1048,86 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     json_object_set_new(get_util_obj, "host", json_string(hostname));
     json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
 
-    //ru = getrusage(RUSAGE_SELF, &rusge);
-    //if (ru < 0)
-    //{
-    //    printf("Failed to get utilizations\n");
-    //    return -1;
-    //}
     char str[100];
     const char d[2] = " ";
-    char* token;
-    int i = 0,times,lag;
-    uint64_t sum = 0, idle;
-    double idleFraction;
-    char *s;
+    char *token, *s, *p;
+    int i = 0;
+    uint64_t sum = 0, idle, userTime, niceTime, sumUserTime;
+    double cpuUtil, userUtil, sysUtil;
     int rc, j;
     char lbuf[256];
     char metric_name[256];
     uint64_t metric_value;
-    uint64_t memTotal;
+    uint64_t memTotal, sysTime;
     uint64_t memFree;
     int strcp;
     double memUtil;
-    char *p;
+    
     fp = fopen(CPU_FILE, "r");
-    i = 0;
-    fgets(str,100,fp);
-    fclose(fp);
-    token = strtok(str,d);
-    sum = 0;
-    while(token!=NULL)
+    if (fp == NULL) 
     {
-        token = strtok(NULL,d);
-        if(token!=NULL)
+        return -1;
+    }
+    fgets(str,100,fp);
+    if (str != NULL) 
+    {
+        token = strtok(str,d);
+        sum = 0;
+        while (token!=NULL)
         {
-            sum += strtol(token, &p, 10);
-            if(i==3)
+            token = strtok(NULL,d);
+            if (token!=NULL)
             {
-                idle = strtol(token, &p, 10);
-                break;
+                sum += strtol(token, &p, 10);
+                if (i==3)
+                {
+                    idle = strtol(token, &p, 10);
+                    //break;
+                }
+                if (i == 0)
+                {
+                    userTime = strtol(token, &p, 10); 
+                } 
+                if (i == 1)
+                {
+                    niceTime = strtol(token, &p, 10);
+                } 
+                if (i == 2)
+                {
+                    sysTime = strtol(token, &p, 10);
+                }
+                sumUserTime = userTime + niceTime;
+                i++;
             }
-            i++;
         }
     }
+
+    fclose(fp);
+    // make the utilization metrics 0 at the first sample
+    if (state)
+    {
+        userUtil = ((sumUserTime - lastUserTime)/(double)(sum-lastSum)) * 100;
+        sysUtil = ((sysTime - lastSysTime)/(double)(sum-lastSum)) * 100;
+        cpuUtil =(1 -  ((idle - lastIdle)/(double)(sum-lastSum))) * 100;
+   
+    } 
+    else
+    {
+        userUtil = 0.0;
+        sysUtil = 0.0;
+        cpuUtil = 0.0;
+    }
     
-    idleFraction = (1.0 -  (idle-lastIdle)/(double)(sum-lastSum)) * 100;
-    lastIdle = idle;
+    lastUserTime = sumUserTime; 
     lastSum = sum;
-    json_object_set_new(get_util_obj, "cpu util", json_real(idleFraction)); 
+    lastSysTime = sysTime;
+    lastIdle =idle;
+    json_object_set_new(get_util_obj, "cpu util", json_real(cpuUtil)); 
+    json_object_set_new(get_util_obj, "user util", json_real(userUtil));
+    json_object_set_new(get_util_obj, "system util", json_real(sysUtil));
     fp = fopen(MEM_FILE, "r");
     if (fp == NULL) 
     {
-        printf("no such file.");
         return -1;
     }
     fseek(fp, 0, SEEK_SET);
@@ -1117,7 +1144,9 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         /* Strip the colon from metric name if present */
         j = strlen(metric_name);
         if (i && metric_name[j-1] == ':')
+        {
             metric_name[j-1] = '\0';
+        }
         strcp = strcmp(metric_name, "MemTotal");
         if (strcp == 0)
         {
@@ -1128,24 +1157,12 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         {
             memFree = metric_value;
         }
-        memUtil = (1 - (double) memFree / memTotal) * 100;
     } while (s);
-    fclose(fp); 
-    //rutime = rusge.ru_utime;
-    //utime = ((rutime.tv_sec * 1000000) + rutime.tv_usec);
-    //mem = rusge.ru_maxrss;
-
-    //if (state)
-    //{
-    //    utime -= prevTime;
-    //    mem -= prevMem;
-    //}
-
-    //prevTime = utime;
-    //prevMem = mem;
+    
+    memUtil = (1 - (double) (memFree )/( memTotal )) * 100;
+    fclose(fp);
 
     json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
-    //json_object_set_new(get_util_obj, "ru time", json_integer(utime));
     *get_util_obj_str = json_dumps(get_util_obj, 0);
     json_decref(get_util_obj);
     state = 1;

@@ -539,14 +539,17 @@ int variorum_disable_turbo(void);
 /// check for NULL strings.
 int variorum_get_node_power_json(char **get_power_obj_str);
 
-///@brief Populate a string in JSON format with total node utilization.
+/// @brief Populate a string in JSON format with total CPU node utilization, user .
+/// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU 
+/// GPU utilization.
 ///
-/// @supparcg
+///  @supparcg
 /// - IBM
 ///
 /// @param [out] output String (passed by refrence) that contains node-level utilization information.
 /// returns 0 if successful, otherwise -1.
 int variorum_get_node_utilization_json(char **get_util_obj_str);
+
 /// @brief Populate a string in JSON format with measurable and controllable
 /// power domains, along with the ranges.
 ///
