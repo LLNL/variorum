@@ -1036,7 +1036,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         return -1;
     }
-    int ru;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
@@ -1052,14 +1051,13 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     const char d[2] = " ";
     char *token, *s, *p;
     int i = 0;
-    uint64_t sum = 0, idle, userTime, niceTime, sumUserTime;
-    double cpuUtil, userUtil, sysUtil;
+    uint64_t sum = 0, idle = 0, userTime = 0, niceTime = 0, sumUserTime = 0;
+    double cpuUtil = 0.0, userUtil = 0.0, sysUtil = 0.0, memUtil = 0.0;
     int rc, j;
     char lbuf[256];
     char metric_name[256];
     uint64_t metric_value;
-    uint64_t memTotal, sysTime;
-    uint64_t memFree;
+    uint64_t memTotal = 0, sysTimei = 0;
     int strcp;
     double memUtil;
     
@@ -1068,7 +1066,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         return -1;
     }
-    fgets(str,100,fp);
+    if (fgets(str, 100, fp) == NULL)
+    {
+        retrun 0;
+    }
     if (str != NULL) 
     {
         token = strtok(str,d);
