@@ -1057,9 +1057,8 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     char lbuf[256];
     char metric_name[256];
     uint64_t metric_value;
-    uint64_t memTotal = 0, sysTimei = 0;
+    uint64_t memTotal = 0, memFree = 0, sysTime = 0;
     int strcp;
-    double memUtil;
     
     fp = fopen(CPU_FILE, "r");
     if (fp == NULL) 
@@ -1068,7 +1067,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
     if (fgets(str, 100, fp) == NULL)
     {
-        retrun 0;
+        return -1;
     }
     if (str != NULL) 
     {
