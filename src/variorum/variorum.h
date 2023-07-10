@@ -540,7 +540,7 @@ int variorum_disable_turbo(void);
 int variorum_get_node_power_json(char **get_power_obj_str);
 
 /// @brief Populate a string in JSON format with total CPU node utilization, user .
-/// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU 
+/// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
 /// GPU utilization.
 ///
 ///  @supparcg

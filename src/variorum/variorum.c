@@ -17,15 +17,16 @@
 #include <sys/resource.h>
 
 #define MEM_FILE "/proc/meminfo"
-#define CPU_FILE "/proc/stat" 
+#define CPU_FILE "/proc/stat"
 
-uint64_t lastSum = 0, lastUserTime = 0, lastMemFree = 0, lastMemTotal = 0, lastSysTime = 0, lastIdle = 0;
+uint64_t lastSum = 0, lastUserTime = 0, lastMemFree = 0, lastMemTotal = 0,
+         lastSysTime = 0, lastIdle = 0;
 int state = 0;
 long prevTime = 0;
 long prevMem = 0;
 int g_socket;
 int g_core;
-FILE* fp = 0;
+FILE *fp = 0;
 static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
@@ -1059,9 +1060,9 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     uint64_t metric_value;
     uint64_t memTotal = 0, memFree = 0, sysTime = 0;
     int strcp;
-    
+
     fp = fopen(CPU_FILE, "r");
-    if (fp == NULL) 
+    if (fp == NULL)
     {
         return -1;
     }
@@ -1069,29 +1070,29 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         return -1;
     }
-    if (str != NULL) 
+    if (str != NULL)
     {
-        token = strtok(str,d);
+        token = strtok(str, d);
         sum = 0;
-        while (token!=NULL)
+        while (token != NULL)
         {
-            token = strtok(NULL,d);
-            if (token!=NULL)
+            token = strtok(NULL, d);
+            if (token != NULL)
             {
                 sum += strtol(token, &p, 10);
-                if (i==3)
+                if (i == 3)
                 {
                     idle = strtol(token, &p, 10);
                     //break;
                 }
                 if (i == 0)
                 {
-                    userTime = strtol(token, &p, 10); 
-                } 
+                    userTime = strtol(token, &p, 10);
+                }
                 if (i == 1)
                 {
                     niceTime = strtol(token, &p, 10);
-                } 
+                }
                 if (i == 2)
                 {
                     sysTime = strtol(token, &p, 10);
@@ -1106,32 +1107,32 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     // make the utilization metrics 0 at the first sample
     if (state)
     {
-        userUtil = ((sumUserTime - lastUserTime)/(double)(sum-lastSum)) * 100;
-        sysUtil = ((sysTime - lastSysTime)/(double)(sum-lastSum)) * 100;
-        cpuUtil =(1 -  ((idle - lastIdle)/(double)(sum-lastSum))) * 100;
-   
-    } 
+        userUtil = ((sumUserTime - lastUserTime) / (double)(sum - lastSum)) * 100;
+        sysUtil = ((sysTime - lastSysTime) / (double)(sum - lastSum)) * 100;
+        cpuUtil = (1 - ((idle - lastIdle) / (double)(sum - lastSum))) * 100;
+
+    }
     else
     {
         userUtil = 0.0;
         sysUtil = 0.0;
         cpuUtil = 0.0;
     }
-    
-    lastUserTime = sumUserTime; 
+
+    lastUserTime = sumUserTime;
     lastSum = sum;
     lastSysTime = sysTime;
-    lastIdle =idle;
-    json_object_set_new(get_util_obj, "cpu util", json_real(cpuUtil)); 
+    lastIdle = idle;
+    json_object_set_new(get_util_obj, "cpu util", json_real(cpuUtil));
     json_object_set_new(get_util_obj, "user util", json_real(userUtil));
     json_object_set_new(get_util_obj, "system util", json_real(sysUtil));
     fp = fopen(MEM_FILE, "r");
-    if (fp == NULL) 
+    if (fp == NULL)
     {
         return -1;
     }
     fseek(fp, 0, SEEK_SET);
-    do 
+    do
     {
         s = fgets(lbuf, sizeof(lbuf), fp);
         if (!s)
@@ -1143,9 +1144,9 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
 
         /* Strip the colon from metric name if present */
         j = strlen(metric_name);
-        if (i && metric_name[j-1] == ':')
+        if (i && metric_name[j - 1] == ':')
         {
-            metric_name[j-1] = '\0';
+            metric_name[j - 1] = '\0';
         }
         strcp = strcmp(metric_name, "MemTotal");
         if (strcp == 0)
@@ -1157,9 +1158,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         {
             memFree = metric_value;
         }
-    } while (s);
-    
-    memUtil = (1 - (double) (memFree )/( memTotal )) * 100;
+    }
+    while (s);
+
+    memUtil = (1 - (double)(memFree) / (memTotal)) * 100;
     fclose(fp);
 
     json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
