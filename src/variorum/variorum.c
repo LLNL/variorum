@@ -221,7 +221,7 @@ void variorum_print_topology(void)
         cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
         cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
                 g_platform[i].num_cores_per_socket);
-        cfprintf(stdout, " %-s : %-d\n", "Num Threads per Core",
+        cfprintf(stdout, "  %-s : %-d\n", "Num Threads per Core",
                 g_platform[i].num_threads_per_core);
         if (g_platform[i].num_threads_per_core == 1)
         {
