@@ -21,6 +21,7 @@ option(ENABLE_PYTHON             "Build Python support"                   ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
+option(ENABLE_CPRINTF            "Enable cprintf usage"                   ON)
 
 option(VARIORUM_WITH_AMD_CPU     "Support AMD CPU architectures"          OFF)
 option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
@@ -32,8 +33,11 @@ option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia GPU architectures"       OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
+
+
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
+set(CPRINTF_DIR "" CACHE PATH "path to cprintf installation")
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
@@ -57,6 +61,7 @@ endif()
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
 endif()
+
 
 include(CMake/VariorumBuildType.cmake)
 
