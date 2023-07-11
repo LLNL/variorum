@@ -11,6 +11,10 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
+#ifdef VARIORUM_HAVE_CPRINTF
+#include <cprintf.h>
+#endif
+
 int g_socket;
 int g_core;
 
