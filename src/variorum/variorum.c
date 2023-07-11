@@ -11,7 +11,7 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
-#ifdef VARIORUM_HAVE_CPRINTF
+#ifdef HAVE_CPRINTF
 #include <cprintf.h>
 #endif
 
@@ -22,17 +22,21 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
     unsigned i;
-    if (depth = 0) //First interation
-    {
-        // TODO:
-        // This is a work to print the variorum_print_topology header labels.
-        // cause doing this cprintf in variorum_print_topology and flushing there 
-        // will reset the tabulation (breaks justification). 
-        // Only flushing in here causes a seg fault (NEED TO DEBUG) and in general is a bad idea.
-        // THIS IS SUPER HACKY AND SHOULD BE FIXED, IT RELIES ON THE FACT
-        // print_children IS ONLY called by variorum_print_topology with depth 0
-        cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
-    }
+
+    #ifdef HAVE_CPRINTF
+        if (depth = 0) //First interation
+        {
+            // TODO:
+            // This is a work around to print the variorum_print_topology header labels.
+            // cause doing this cprintf in variorum_print_topology and flushing there 
+            // will reset the tabulation (breaks justification). 
+            // Only flushing in here causes a seg fault (NEED TO DEBUG) and in general is a bad idea.
+            // THIS IS SUPER HACKY AND SHOULD BE FIXED, IT RELIES ON THE ASSUMPTION
+            // print_children IS ONLY called by variorum_print_topology with depth 0
+            cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
+        }
+    #endif
+
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_SOCKET))
     {
         g_socket = obj->os_index;
@@ -43,19 +47,26 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
+        #ifdef HAVE_CPRINTF
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
                g_socket);
+        #else
+            printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
+            g_socket);
+        #endif
+
     }
     for (i = 0; i < obj->arity; i++)
     {
         //If this is the first iteration print the labels:
         print_children(topology, obj->children[i], depth + 1);
     }
-
-    if( i == obj->arity)
-    {
-        cflush();
-    }
+    #ifdef HAVE_CPRINTF
+        if( i == obj->arity)
+        {
+            cflush();
+        }
+    #endif
 }
 
 int variorum_tester(void)
@@ -218,31 +229,58 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
-        cfprintf(stdout, "=================\n");
-        cfprintf(stdout, "Platform Topology\n");
-        cfprintf(stdout, "=================\n");
-        cfprintf(stdout, "  %-s: %-s\n", "Hostname", g_platform[i].hostname);
-        cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
-        cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
-                g_platform[i].num_cores_per_socket);
-        cfprintf(stdout, "  %-s : %-d\n", "Num Threads per Core",
-                g_platform[i].num_threads_per_core);
-        if (g_platform[i].num_threads_per_core == 1)
-        {
-            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "No");
-        }
-        else
-        {
-            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "Yes");
-        }
-        
-        cfprintf(stdout, "\n");
-        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Cores", g_platform[i].total_cores);
-        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Threads", g_platform[i].total_threads);
-        cfprintf(stdout, "\n");
-        cfprintf(stdout, "Layout:\n");
-        cfprintf(stdout, "-------\n");
-        cflush();
+        #ifdef HAVE_CPRINTF
+            cfprintf(stdout, "=================\n");
+            cfprintf(stdout, "Platform Topology\n");
+            cfprintf(stdout, "=================\n");
+            cfprintf(stdout, "  %-s: %-s\n", "Hostname", g_platform[i].hostname);
+            cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
+            cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
+                    g_platform[i].num_cores_per_socket);
+            cfprintf(stdout, "  %-s : %-d\n", "Num Threads per Core",
+                    g_platform[i].num_threads_per_core);
+            if (g_platform[i].num_threads_per_core == 1)
+            {
+                cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "No");
+            }
+            else
+            {
+                cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "Yes");
+            }
+            
+            cfprintf(stdout, "\n");
+            cfprintf(stdout, "  %-s: %-d\n", "Total Num of Cores", g_platform[i].total_cores);
+            cfprintf(stdout, "  %-s: %-d\n", "Total Num of Threads", g_platform[i].total_threads);
+            cfprintf(stdout, "\n");
+            cfprintf(stdout, "Layout:\n");
+            cfprintf(stdout, "-------\n");
+            cflush();
+        #else
+            fprintf(stdout, "=================\n");
+            fprintf(stdout, "Platform Topology\n");
+            fprintf(stdout, "=================\n");
+            fprintf(stdout, "  Hostname            : %s\n", g_platform[i].hostname);
+            fprintf(stdout, "  Num Sockets         : %d\n", g_platform[i].num_sockets);
+            fprintf(stdout, "  Num Cores per Socket: %d\n",
+                    g_platform[i].num_cores_per_socket);
+            fprintf(stdout, "  Num Threads per Core: %d\n",
+                    g_platform[i].num_threads_per_core);
+            if (g_platform[i].num_threads_per_core == 1)
+            {
+                fprintf(stdout, "    Hyperthreading    : No\n");
+            }
+            else
+            {
+                fprintf(stdout, "    Hyperthreading    : Yes\n");
+            }
+            fprintf(stdout, "\n");
+            fprintf(stdout, "  Total Num of Cores  : %d\n", g_platform[i].total_cores);
+            fprintf(stdout, "  Total Num of Threads: %d\n", g_platform[i].total_threads);
+            fprintf(stdout, "\n");
+            fprintf(stdout, "Layout:\n");
+            fprintf(stdout, "-------\n");
+            fprintf(stdout, "Thread HWThread Core Socket\n");
+        #endif
 
         print_children(topo, hwloc_get_root_obj(topo), 0);
 
@@ -785,16 +823,30 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
-        if (hyperthreading == 1)
-        {
-            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
-            cfprintf(stdout, "  %-s %-d\n", "Num Thread Per Core: ",
-                    g_platform[i].num_threads_per_core);
-        }
-        else
-        {
-            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
-        }
+        #ifdef HAVE_CPRINTF
+            if (hyperthreading == 1)
+            {
+                cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
+                cfprintf(stdout, "  %-s %-d\n", "Num Thread Per Core: ",
+                        g_platform[i].num_threads_per_core);
+            }
+            else
+            {
+                cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
+            }
+        #else
+            if (hyperthreading == 1)
+            {
+                fprintf(stdout, "  Hyperthreading:       Enabled\n");
+                fprintf(stdout, "  Num Thread Per Core:  %d\n",
+                        g_platform[i].num_threads_per_core);
+            }
+            else
+            {
+                fprintf(stdout, "  Hyperthreading:       Disabled\n");
+            }
+        #endif
+
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     cflush(); //TODO, Create a silent version on err that still frees.
