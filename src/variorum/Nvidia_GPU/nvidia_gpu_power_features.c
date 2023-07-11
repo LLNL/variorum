@@ -123,12 +123,21 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
     double value = 0.0;
     int d;
     static int init_output = 0;
+    nvmlReturn_t result;
 
     /* Iterate over all GPU device handles populated at init and print GPU power limit */
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        nvmlDeviceGetPowerManagementLimit(m_unit_devices_file_desc[d], &power_limit);
+        result = nvmlDeviceGetEnforcedPowerLimit(m_unit_devices_file_desc[d],
+                 &power_limit);
+        if (result != NVML_SUCCESS)
+        {
+            variorum_error_handler("Could not query GPU power limit\n",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
         value = (double) power_limit * 0.001f;
 
         if (verbose)
