@@ -11,7 +11,7 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
-#ifdef HAVE_CPRINTF
+#ifdef CPRINTF_FOUND
 #include <cprintf.h>
 #endif
 
@@ -23,7 +23,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 {
     unsigned i;
 
-    #ifdef HAVE_CPRINTF
+    #ifdef CPRINTF_FOUND
         if (depth = 0) //First interation
         {
             // TODO:
@@ -47,7 +47,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
-        #ifdef HAVE_CPRINTF
+        #ifdef CPRINTF_FOUND
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
                g_socket);
         #else
@@ -61,7 +61,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
         //If this is the first iteration print the labels:
         print_children(topology, obj->children[i], depth + 1);
     }
-    #ifdef HAVE_CPRINTF
+    #ifdef CPRINTF_FOUND
         if( i == obj->arity)
         {
             cflush();
@@ -229,7 +229,7 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
-        #ifdef HAVE_CPRINTF
+        #ifdef CPRINTF_FOUND
             cfprintf(stdout, "=================\n");
             cfprintf(stdout, "Platform Topology\n");
             cfprintf(stdout, "=================\n");
@@ -823,7 +823,7 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
-        #ifdef HAVE_CPRINTF
+        #ifdef CPRINTF_FOUND
             if (hyperthreading == 1)
             {
                 cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
