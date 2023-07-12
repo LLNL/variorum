@@ -33,8 +33,6 @@ option(VARIORUM_WITH_NVIDIA_GPU  "Support Nvidia GPU architectures"       OFF)
 
 option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
-
-
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
 set(CPRINTF_DIR "" CACHE PATH "path to cprintf installation")
@@ -61,7 +59,6 @@ endif()
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
 endif()
-
 
 include(CMake/VariorumBuildType.cmake)
 
