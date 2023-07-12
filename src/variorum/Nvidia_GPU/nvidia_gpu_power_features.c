@@ -17,11 +17,17 @@ void initNVML(void)
     unsigned int d;
     unsigned m_num_package;
     /* Initialize GPU reading */
+    m_unit_devices_file_desc = NULL;
     nvmlReturn_t result = nvmlInit();
     nvmlDeviceGetCount(&m_total_unit_devices);
     m_unit_devices_file_desc = (nvmlDevice_t *) malloc(sizeof(
                                    nvmlDevice_t) * m_total_unit_devices);
-
+    if (m_unit_devices_file_desc == NULL)
+    {
+        variorum_error_handler("Could not allocate memory for device file descriptor",
+                               VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
     /* Populate handles to all devices. This assumes block-mapping
      * between packages and GPUs */
     for (d = 0; d < m_total_unit_devices; ++d)
@@ -47,6 +53,10 @@ void initNVML(void)
 
 void shutdownNVML(void)
 {
+    if (m_unit_devices_file_desc != NULL)
+    {
+        free(m_unit_devices_file_desc);
+    }
     nvmlShutdown();
 }
 
