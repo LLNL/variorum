@@ -21,7 +21,7 @@ option(ENABLE_PYTHON             "Build Python support"                   ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
-option(ENABLE_CPRINTF            "Enable cprintf usage"                   ON)
+option(ENABLE_CPRINTF            "Enable cprintf usage"                   OFF)
 
 option(VARIORUM_WITH_AMD_CPU     "Support AMD CPU architectures"          OFF)
 option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
