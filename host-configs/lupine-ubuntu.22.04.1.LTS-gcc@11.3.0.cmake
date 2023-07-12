@@ -9,12 +9,10 @@ set(CMAKE_C_COMPILER "/usr/bin/gcc" CACHE PATH "")
 # cpp compiler
 set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE PATH "")
 
-#fortran compiler
-set(CMAKE_Fortran_COMPILER  "/usr/bin/gfortran" CACHE PATH "")
-
+set(ENABLE_MPI OFF CACHE BOOL "")
+set(ENABLE_OPENMP OFF CACHE BOOL "")
 set(ENABLE_FORTRAN ON CACHE PATH "")
-set(ENABLE_MPI ON CACHE BOOL "")
-set(ENABLE_OPENMP ON CACHE BOOL "")
+set(CMAKE_Fortran_COMPILER  "/usr/bin/gfortran" CACHE PATH "")
 set(ENABLE_CPRINTF ON CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
