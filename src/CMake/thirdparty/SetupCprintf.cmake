@@ -7,8 +7,7 @@
 if(CPRINTF_DIR)
     message(STATUS "Looking for Cprintf using CPRINTF_DIR = ${CPRINTF_DIR}")
 
-    set(CPRINTF_FOUND TRUE CACHE INTERNAL "")
-    set(CPRINTF_DIR ${CPRINTF_DIR} CACHE PATH "" FORCE)
+
     find_path(CPRINTF_INCLUDE_DIRS
         NAMES cprintf.h
         HINTS ${CPRINTF_DIR}/include
@@ -36,6 +35,7 @@ if(CPRINTF_DIR)
 # If CPRINTF_DIR not specified, then try to automatically find the CPRINTF header
 # and library
 elseif(NOT CPRINTF_FOUND)
+    message(STATUS "Looking for Cprintf install on system")
     find_path(CPRINTF_INCLUDE_DIRS
         NAMES cprintf.h
     )
