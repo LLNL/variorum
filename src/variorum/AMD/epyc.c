@@ -17,6 +17,10 @@
 #include "msr_core.h"
 #include "amd_power_features.h"
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 int amd_cpu_epyc_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
@@ -41,8 +45,13 @@ int amd_cpu_epyc_get_power(int long_ver)
         gettimeofday(&start, NULL);
         if (long_ver == 0)
         {
-            fprintf(stdout,
+            #ifdef CPRINTF_FOUND
+                cfprintf(stdout, "%s %s %s %s %s\n",
+                         "_AMDPOWER", "Host", "Socket", "Power_W", "Timestamp_sec");
+            #else
+                fprintf(stdout,
                     "_AMDPOWER Host Socket Power_W Timestamp_sec\n");
+            #endif
         }
     }
 
@@ -65,21 +74,37 @@ int amd_cpu_epyc_get_power(int long_ver)
         {
             if (long_ver == 0)
             {
-                fprintf(stdout, "_AMDPOWER %s %d %f %lf\n",
-                        hostname, i, (double)current_power / 1000,
-                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                #ifdef CPRINTF_FOUND
+                    cfprintf(stdout, "%s %s %d %f %lf\n",
+                             "_AMDPOWER", hostname, i, (double)current_power / 1000,
+                             now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                #else
+                    fprintf(stdout, "_AMDPOWER %s %d %f %lf\n",
+                            hostname, i, (double)current_power / 1000,
+                            now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);\
+                #endif
                 /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
                             i, (double)current_power / 1000); */
             }
             else
             {
-                fprintf(stdout,
-                        "_AMDPOWER Host: %s, Socket: %d, Power: %f W, Timestamp: %lf sec\n",
-                        hostname, i, (double)current_power / 1000,
-                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                #ifdef CPRINTF_FOUND
+                    cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %lf\n",
+                            "_AMDPOWER Host", hostname, "Socket", i, "Power", 
+                            (double)current_power / 1000, "Timestamp",
+                            now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                #else
+                    fprintf(stdout,
+                            "_AMDPOWER Host: %s, Socket: %d, Power: %f W, Timestamp: %lf sec\n",
+                            hostname, i, (double)current_power / 1000,
+                            now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                #endif
             }
         }
     }
+#ifdef CPRINTF_FOUND
+    cflush()
+#endif
     return 0;
 }
 
@@ -146,25 +171,44 @@ int amd_cpu_epyc_get_power_limits(int long_ver)
         }
         if (long_ver == 0)
         {
-            fprintf(stdout, "_AMDPOWER %s %d %f %f %f %lf\n",
-                    hostname, i, (double)power / 1000, (double)pcap_current / 1000,
-                    (double)pcap_max / 1000,
-                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+                cfprintf(stdout, "%s %s %d %f %f %f %lf\n",
+                         "_AMDPOWER", hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                         (double)pcap_max / 1000,
+                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(stdout, "_AMDPOWER %s %d %f %f %f %lf\n",
+                        hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                        (double)pcap_max / 1000,
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
             /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
                         i, (double)current_power / 1000); */
         }
         else
         {
-            fprintf(stdout,
-                    "_AMDPOWER Host: %s, Socket: %d, Power: %f W, PowerCap: %f W, MaxPowerCap: %f W, Timestamp: %lf sec\n",
-                    hostname, i, (double)power / 1000, (double)pcap_current / 1000,
-                    (double)pcap_max / 1000,
-                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+                cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %f W, %s: %f W, %s: %lf\n",
+                         "_AMDPOWER Host", hostname, "Socket", i, "Power", (double)power / 1000,
+                         "PowerCap", (double)pcap_current / 1000, "MaxPowerCap", (double)pcap_max / 1000,
+                         "Timestamp",
+                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(stdout,
+                        "_AMDPOWER Host: %s, Socket: %d, Power: %f W, PowerCap: %f W, MaxPowerCap: %f W, Timestamp: %lf sec\n",
+                        hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                        (double)pcap_max / 1000,
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
         /* DELETE fprintf(stdout, "%6d | %14.03f  | %14.03f  | %14.03f     |\n",
                  i, (double)power / 1000, (double)pcap_current / 1000,
                  (double)pcap_max / 1000); */
     }
+
+    #ifdef CPRINTF_FOUND
+        cflush()
+    #endif
 
     return 0;
 }
@@ -263,7 +307,12 @@ int amd_cpu_epyc_set_socket_power_limit(int pcap_new)
      */
     pcap_new = pcap_new * 1000;
 
-    fprintf(stdout, "Socket |  Powercap(Watts)  |\n");
+    #ifdef CPRINTF_FOUND
+        cfprintf(stdout, "%s |  %s  |\n", "Socket", "Powercap(Watts)");
+    #else
+        fprintf(stdout, "Socket |  Powercap(Watts)  |\n");
+    #endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
@@ -292,10 +341,18 @@ int amd_cpu_epyc_set_socket_power_limit(int pcap_new)
         }
         else
         {
-            fprintf(stdout, "%6d | %14.03f    | successfully set\n",
-                    i, (double)pcap_new / 1000);
+            #ifdef CPRINTF_FOUND
+                cfprintf(stdout, "%d |  %.03f  | %s\n",
+                        i, (double)pcap_new / 1000, "successfully set");
+            #else
+                fprintf(stdout, "%6d | %14.03f    | successfully set\n",
+                        i, (double)pcap_new / 1000);
+            #endif
         }
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -319,9 +376,13 @@ int amd_cpu_epyc_print_energy()
     {
         int i;
         uint64_t energy;
-
         fprintf(stdout, "_SOCKET_ENERGY :\n");
-        fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+        #ifdef CPRINTF_FOUND
+            cfprintf(stdout, "%s |  %s |\n", "Socket", "Energy(uJoules)");
+        #else
+            fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+        #endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
@@ -336,12 +397,25 @@ int amd_cpu_epyc_print_energy()
             }
             else
             {
-                fprintf(stdout, "%6d  | %17.06f | \n",
-                        i, (double)energy / 1000000);
+                #ifdef CPRINTF_FOUND
+                    cfprintf(stdout, "%d |  %.06f |\n",
+                            i, (double)energy / 1000000);
+                #else
+                    fprintf(stdout, "%6d  | %17.06f | \n",
+                            i, (double)energy / 1000000);
+                #endif
             }
         }
-        printf("\n_CORE_ENERGY :\n");
-        fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+
+        #ifdef CPRINTF_FOUND
+            cflush();
+            printf("\n_CORE_ENERGY :\n");
+            cfprintf(stdout, "%s |  %s |\n", "Core", "Energy(uJoules)");
+        #else
+            printf("\n_CORE_ENERGY :\n");
+            fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+        #endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
 #endif
@@ -356,8 +430,13 @@ int amd_cpu_epyc_print_energy()
             }
             else
             {
-                fprintf(stdout, " %6d | %17.06f | \n",
-                        i, (double)energy / 1000000);
+                #if CPRINTF_FOUND
+                    cfprintf(stdout, "%d |  %.06f |\n",
+                            i, (double)energy / 1000000);
+                #else
+                    fprintf(stdout, " %6d | %17.06f | \n",
+                            i, (double)energy / 1000000);
+                #endif
             }
         }
         return 0;
@@ -380,7 +459,12 @@ int amd_cpu_epyc_print_boostlimit()
     int i, ret;
     uint32_t boostlimit;
 
-    fprintf(stdout, " Core   | Freq (MHz)  |\n");
+    #ifdef CPRINTF_FOUND
+        cfprintf(stdout, "%s |  %s  |\n", "Core", "Freq(MHz)");
+    #else
+        fprintf(stdout, " Core   | Freq (MHz)  |\n");
+    #endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
 #endif
@@ -394,10 +478,19 @@ int amd_cpu_epyc_print_boostlimit()
             return ret;
         }
         else
-        {
-            fprintf(stdout, "%6d  | %10u  |\n", i, boostlimit);
+        {   
+            #ifdef CPRINTF_FOUND
+                cfprintf(stdout, "%d |  %u  |\n", i, boostlimit);
+            #else
+                fprintf(stdout, "%6d  | %10u  |\n", i, boostlimit);
+            #endif
         }
     }
+    
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
+
     return 0;
 }
 
