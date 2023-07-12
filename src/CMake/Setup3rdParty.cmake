@@ -22,6 +22,10 @@ if(ENABLE_MPI)
     include(CMake/thirdparty/SetupRankstr.cmake)
 endif()
 
+if(ENABLE_CPRINTF)
+    include(CMake/thirdparty/SetupCprintf.cmake)
+endif()
+
 if(BUILD_DOCS)
     find_package(Doxygen)
     include(CMake/thirdparty/FindSphinx.cmake)
