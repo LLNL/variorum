@@ -402,6 +402,7 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
     {
+        json_decref(get_power_obj);
         printf("Failed to open occ_inband_sensors file\n");
         return -1;
     }
