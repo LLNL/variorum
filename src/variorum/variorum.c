@@ -1158,7 +1158,7 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
         return -1;
     }
 
-	json_t *get_thermal_obj = json_object();
+    json_t *get_thermal_obj = json_object();
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
@@ -1177,15 +1177,15 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
         }
     }
 
-	*get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
-	json_decref(get_thermal_obj);
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
+    json_decref(get_thermal_obj);
 
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
-	return err;
+    return err;
 }
 
 int variorum_print_available_frequencies(void)
