@@ -13,6 +13,10 @@
 #include <variorum_timers.h>
 #include <sys/time.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
     rsmi_status_t ret;
@@ -52,8 +56,14 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-            fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
+            #ifdef CPRINTF_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_AMD_GPU_POWER_USAGE", "Host", "Socket", "DeviceID",
+                     "Power", "Timestamp_sec");
+            #else
+                fprintf(output,
+                        "_AMD_GPU_POWER_USAGE Host Socket DeviceID Power Timestamp_sec\n");
+            #endif
         }
     }
 
@@ -78,20 +88,38 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-            fprintf(output,
-                    "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Power: %0.2lf W, Timestamp: %lf sec\n",
-                    hostname, chipid, i, pwr_val_flt,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+            cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %lf sec\n",
+                     "_AMD_GPU_POWER_USAGE", hostname, "Socket", chipid,
+                     "DeviceID", i, "Power", pwr_val_flt, "Timestamp",
+                     (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output,
+                        "_AMD_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d,"
+                        " Power: %0.2lf W, Timestamp: %lf sec\n",
+                        hostname, chipid, i, pwr_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
         else
         {
-            fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %0.2lf %lf\n",
-                    hostname, chipid, i, pwr_val_flt,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %0.2lf %lf\n",
+                        hostname, chipid, i, pwr_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %0.2lf %lf\n",
+                        hostname, chipid, i, pwr_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
 
     }
+
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
+
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -142,9 +170,16 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-            fprintf(output,
-                    "_AMD_GPU_POWER_CAP Host Socket DeviceID PowerCap_Current "
-                    "PowerCap_Min PowerCap_Max Timestamp_sec\n");
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s %s %s\n",
+                        "_AMD_GPU_POWER_CAP", "Host", "Socket", "DeviceID",
+                        "PowerCap_Current", "PowerCap_Min", "PowerCap_Max",
+                        "Timestamp_sec");
+            #else
+                fprintf(output,
+                        "_AMD_GPU_POWER_CAP Host Socket DeviceID PowerCap_Current "
+                        "PowerCap_Min PowerCap_Max Timestamp_sec\n");
+            #endif
         }
     }
 
@@ -179,22 +214,46 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         pwr_min = (pwr_min / (1000 * 1000)); // Convert to Watts.
 
         if (verbose == 1)
-        {
-            fprintf(output,
-                    "_AMD_GPU_POWER_CAP Host: %s, Socket: %d, DeviceID: %d,"
-                    " PowerCap_Current: %0.2lf W, PowerCap_Min: %ld W, PowerCap_Max: %ld W,"
-                    "Timestamp: %lf sec\n",
-                    hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+        { 
+            #ifdef CPRINTF_FOUND
+                cfprintf(output,
+                        "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %ld, %s: %ld, %s: %lf sec\n",
+                        "_AMD_GPU_POWER_CAP", hostname, 
+                        "Socket", chipid,
+                        "DeviceID", i, 
+                        "PowerCap_Current", pwr_val_flt, 
+                        "PowerCap_Min", pwr_min, 
+                        "PowerCap_Max", pwr_max,
+                        "Timestamp", (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output,
+                        "_AMD_GPU_POWER_CAP Host: %s, Socket: %d, DeviceID: %d,"
+                        " PowerCap_Current: %0.2lf W, PowerCap_Min: %ld W, PowerCap_Max: %ld W,"
+                        "Timestamp: %lf sec\n",
+                        hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
         else
-        {
-            fprintf(output, "_AMD_GPU_POWER_CAP %s %d %d %0.2lf %ld %ld %lf\n",
-                    hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+        {   
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %d %d %0.2lf %ld %ld %lf\n",
+                        "_AMD_GPU_POWER_CAP", hostname, chipid, i, pwr_val_flt,
+                        pwr_min, pwr_max,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output, "_AMD_GPU_POWER_CAP %s %d %d %0.2lf %ld %ld %lf\n",
+                        hostname, chipid, i, pwr_val_flt, pwr_min, pwr_max,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
 
     }
+
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
+    
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -244,8 +303,14 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-            fprintf(output,
-                    "_AMD_GPU_TEMPERATURE Host Socket DeviceID Temperature Timestamp_sec\n");
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s %s\n",
+                        "_AMD_GPU_TEMPERATURE", "Host", "Socket", "DeviceID",
+                        "Temperature", "Timestamp_sec");
+            #else
+                fprintf(output,
+                        "_AMD_GPU_TEMPERATURE Host Socket DeviceID Temperature Timestamp_sec\n");
+            #endif
         }
     }
 
@@ -271,20 +336,39 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-            fprintf(output,
-                    "_AMD_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Temperature: %0.2lf C, Timestamp: %lf sec\n",
-                    hostname, chipid, i, temp_val_flt,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND 
+                cfprintf(output,
+                        "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %lf sec\n",
+                        "_AMD_GPU_TEMPERATURE Host", hostname, 
+                        "Socket", chipid,
+                        "DeviceID", i, 
+                        "Temperature", temp_val_flt, 
+                        "Timestamp", (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output,
+                        "_AMD_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d,"
+                        " Temperature: %0.2lf C, Timestamp: %lf sec\n",
+                        hostname, chipid, i, temp_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
         else
         {
-            fprintf(output, "_AMD_GPU_TEMPERATURE %s %d %d %0.2lf %lf\n",
-                    hostname, chipid, i, temp_val_flt,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %d %d %0.2lf %lf\n",
+                        "_AMD_GPU_TEMPERATURE", hostname, chipid, i, temp_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output, "_AMD_GPU_TEMPERATURE %s %d %d %0.2lf %lf\n",
+                        hostname, chipid, i, temp_val_flt,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
 
     }
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -334,9 +418,15 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-            fprintf(output,
-                    "_AMD_GPU_CLOCKS Host Socket DeviceID SystemClock_MHz "
-                    "MemoryClock_MHz Timestamp_sec\n");
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s %s\n",
+                        "_AMD_GPU_CLOCKS", "Host", "Socket", "DeviceID",
+                        "SystemClock_MHz", "MemoryClock_MHz", "Timestamp_sec");
+            #else
+                fprintf(output,
+                        "_AMD_GPU_CLOCKS Host Socket DeviceID SystemClock_MHz "
+                        "MemoryClock_MHz Timestamp_sec\n");
+            #endif
         }
     }
 
@@ -371,11 +461,22 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-            fprintf(output,
-                    "_AMD_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d,"
-                    " SystemClock: %d MHz, MemoryClock: %d MHz, Timestamp: %lf sec\n",
-                    hostname, chipid, i, f_sys_val, f_mem_val,
-                    (now.tv_usec - start.tv_usec) / 1000000.0);
+            #ifdef CPRINTF_FOUND
+                cfprintf(output,
+                        "%s: %s, %s: %d, %s: %d, %s: %d MHz, %s: %d MHz, %s: %lf sec\n",
+                        "_AMD_GPU_CLOCKS", hostname, 
+                        "Socket", chipid,
+                        "DeviceID", i, 
+                        "SystemClock", f_sys_val, 
+                        "MemoryClock", f_mem_val,
+                        "Timestamp", (now.tv_usec - start.tv_usec) / 1000000.0);
+            #else
+                fprintf(output,
+                        "_AMD_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d,"
+                        " SystemClock: %d MHz, MemoryClock: %d MHz, Timestamp: %lf sec\n",
+                        hostname, chipid, i, f_sys_val, f_mem_val,
+                        (now.tv_usec - start.tv_usec) / 1000000.0);
+            #endif
         }
         else
         {
@@ -385,6 +486,9 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
         }
 
     }
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
@@ -435,8 +539,14 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-            fprintf(output,
-                    "_AMD_GPU_UTILIZATION Host Socket DeviceID Util\n");
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s\n",
+                        "_AMD_GPU_UTILIZATION", "Host", "Socket", "DeviceID",
+                        "Util");
+            #else
+                fprintf(output,
+                        "_AMD_GPU_UTILIZATION Host Socket DeviceID Util\n");
+            #endif
         }
     }
 
@@ -458,17 +568,34 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
 
         if (verbose == 1)
         {
-            fprintf(output,
-                    "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
-                    "Util: %d%%\n", hostname, chipid, i, utilpercent);
+            #ifdef CPRINTF_FOUND
+                cfprintf(output,
+                        "%s: %s, %s: %d, %s: %d, %s: %d%%\n", //TODO NOT SURE IF THIS WILL WORK
+                        "_AMD_GPU_UTILIZATION Host", hostname, 
+                        "Socket", chipid,
+                        "DeviceID", i, 
+                        "Util", utilpercent);
+            #else
+                fprintf(output,
+                        "_AMD_GPU_UTILIZATION Host: %s, Socket: %d, DeviceID: %d,"
+                        "Util: %d%%\n", hostname, chipid, i, utilpercent);
+            #endif
         }
         else
         {
-            fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %d\n",
-                    hostname, chipid, i, utilpercent);
+            #ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %d %d %d\n",
+                        "_AMD_GPU_UTILIZATION", hostname, chipid, i, utilpercent);
+            #else
+                fprintf(output, "_AMD_GPU_UTILIZATION %s %d %d %d\n",
+                        hostname, chipid, i, utilpercent);
+            #endif
         }
 
     }
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
     {
