@@ -112,6 +112,6 @@ int intel_cpu_fm_06_55_cap_frequency(int core_freq_mhz);
 
 int intel_cpu_fm_06_55_get_frequencies(void);
 
-int intel_cpu_fm_06_55_get_thermals_json(char **get_thermal_obj_str);
+int intel_cpu_fm_06_55_get_thermals_json(json_t *get_thermal_obj);
 
 #endif
