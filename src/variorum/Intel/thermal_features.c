@@ -392,26 +392,26 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     json_t *node_obj = json_object_get(get_thermal_object, hostname);
-	if(node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_thermal_object, hostname, node_obj);
-	}
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_thermal_object, hostname, node_obj);
+    }
 
     //json_object_set_new(host_obj, "Timestamp", json_integer(ts));
     for (i = 0; i < nsockets; i++)
     {
         char socket_id[12]; //up to 9999 sockets
         snprintf(socket_id, 12, "Socket_%d", i);
-		json_t *socket_obj = json_object_get(node_obj, socket_id);
-		if (socket_obj == NULL)
-		{
-				socket_obj = json_object();
-				json_object_set_new(node_obj, socket_id, socket_obj);
-		}
-		
-		json_t *cpu_obj = json_object();
-		json_object_set_new(socket_obj, "CPU", cpu_obj);
+        json_t *socket_obj = json_object_get(node_obj, socket_id);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(node_obj, socket_id, socket_obj);
+        }
+
+        json_t *cpu_obj = json_object();
+        json_object_set_new(socket_obj, "CPU", cpu_obj);
 
         pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
         json_object_set_new(cpu_obj, "PKG_Actual", json_integer(pkg_temp));

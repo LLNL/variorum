@@ -131,8 +131,8 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 {
     unsigned gpu_temp;
     int d;
-	
-	//try to find host object in passed in json_t object, set new object if not found
+
+    //try to find host object in passed in json_t object, set new object if not found
     json_t *node_obj = json_object_get(output, m_hostname);
     if (node_obj == NULL)
     {
@@ -143,15 +143,15 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
     char socket_id[12];
     snprintf(socket_id, 12, "Socket_%d", chipid);
 
-	//try to find socket object in node object, set new object if not found
-	json_t *socket_obj = json_object_get(node_obj, socket_id);
-	if(socket_obj == NULL)
-	{
-		socket_obj = json_object();
-		json_object_set_new(node_obj, socket_id, socket_obj);
-	}
+    //try to find socket object in node object, set new object if not found
+    json_t *socket_obj = json_object_get(node_obj, socket_id);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(node_obj, socket_id, socket_obj);
+    }
 
-	//create new json object for GPU
+    //create new json object for GPU
     json_t *gpu_obj = json_object();
 
     for (d = chipid * (int)m_gpus_per_socket;
@@ -161,13 +161,13 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
         nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU,
                                  &gpu_temp);
 
-		//set GPU device id and temperature in general GPU json object.
+        //set GPU device id and temperature in general GPU json object.
         char device_id[12];
         snprintf(device_id, 12, "Device_%d", d);
         json_object_set_new(gpu_obj, device_id, json_integer(gpu_temp));
     }
 
-	//set GPU general object in socket object
+    //set GPU general object in socket object
     json_object_set_new(socket_obj, "GPU", gpu_obj);
 }
 
