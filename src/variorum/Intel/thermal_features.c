@@ -414,7 +414,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-    json_t *node_obj = json_object_get(get_thermal_obj, hostname);
+    json_t *node_obj = json_object_get(get_thermal_object, hostname);
 	if(node_obj == NULL)
 	{
 		node_obj = json_object();
