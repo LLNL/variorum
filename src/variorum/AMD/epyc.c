@@ -90,9 +90,10 @@ int amd_cpu_epyc_get_power(int long_ver)
             {
                 #ifdef CPRINTF_FOUND
                     cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %lf\n",
-                            "_AMDPOWER Host", hostname, "Socket", i, "Power", 
-                            (double)current_power / 1000, "Timestamp",
-                            now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                            "_AMDPOWER Host", hostname, 
+                            "Socket", i, 
+                            "Power", (double)current_power / 1000, 
+                            "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
                 #else
                     fprintf(stdout,
                             "_AMDPOWER Host: %s, Socket: %d, Power: %f W, Timestamp: %lf sec\n",
@@ -189,10 +190,12 @@ int amd_cpu_epyc_get_power_limits(int long_ver)
         {
             #ifdef CPRINTF_FOUND
                 cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %f W, %s: %f W, %s: %lf\n",
-                         "_AMDPOWER Host", hostname, "Socket", i, "Power", (double)power / 1000,
-                         "PowerCap", (double)pcap_current / 1000, "MaxPowerCap", (double)pcap_max / 1000,
-                         "Timestamp",
-                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                        "_AMDPOWER Host", hostname, 
+                        "Socket", i, 
+                        "Power", (double)power / 1000,
+                        "PowerCap", (double)pcap_current / 1000, "MaxPowerCap", (double)pcap_max / 1000,
+                        "Timestamp",
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
             #else
                 fprintf(stdout,
                         "_AMDPOWER Host: %s, Socket: %d, Power: %f W, PowerCap: %f W, MaxPowerCap: %f W, Timestamp: %lf sec\n",
