@@ -24,7 +24,9 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
 
     if (!init)
     {
+#ifdef VARIORUM_WITH_INTEL_CPU
         variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
+#endif
         d.aperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.mperf = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
         d.tsc = (uint64_t **) malloc(nthreads * sizeof(uint64_t *));
@@ -47,7 +49,9 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_ctl,
     static struct perf_data d;
     unsigned nsockets, ncores, nthreads;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     if (!init)
     {
@@ -81,7 +85,9 @@ void perf_storage(struct perf_data **pd, off_t msr_perf_status)
 
     if (!nsockets)
     {
+#ifdef VARIORUM_WITH_INTEL_CPU
         variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
         d.perf_status = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(PERF_DATA, 2UL * nsockets);
         load_socket_batch(msr_perf_status, d.perf_status, PERF_DATA);
@@ -118,7 +124,9 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         return -1;
     }
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
     gethostname(hostname, 1024);
     if (!init)
     {
@@ -202,7 +210,9 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         return -1;
     }
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
     gethostname(hostname, 1024);
 
     clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
@@ -323,7 +333,9 @@ void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     static struct perf_data *pd;
     static int init = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         init = 1;

@@ -17,11 +17,17 @@ void initNVML(void)
     unsigned int d;
     unsigned m_num_package;
     /* Initialize GPU reading */
+    m_unit_devices_file_desc = NULL;
     nvmlReturn_t result = nvmlInit();
     nvmlDeviceGetCount(&m_total_unit_devices);
     m_unit_devices_file_desc = (nvmlDevice_t *) malloc(sizeof(
                                    nvmlDevice_t) * m_total_unit_devices);
-
+    if (m_unit_devices_file_desc == NULL)
+    {
+        variorum_error_handler("Could not allocate memory for device file descriptor",
+                               VARIORUM_ERROR_PLATFORM_ENV, getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
     /* Populate handles to all devices. This assumes block-mapping
      * between packages and GPUs */
     for (d = 0; d < m_total_unit_devices; ++d)
@@ -35,8 +41,10 @@ void initNVML(void)
         }
     }
 
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     /* Collect number of packages and GPUs per package */
     variorum_get_topology(&m_num_package, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
     m_gpus_per_socket = m_total_unit_devices / m_num_package;
 
     /* Save hostname */
@@ -45,6 +53,10 @@ void initNVML(void)
 
 void shutdownNVML(void)
 {
+    if (m_unit_devices_file_desc != NULL)
+    {
+        free(m_unit_devices_file_desc);
+    }
     nvmlShutdown();
 }
 
@@ -121,12 +133,21 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
     double value = 0.0;
     int d;
     static int init_output = 0;
+    nvmlReturn_t result;
 
     /* Iterate over all GPU device handles populated at init and print GPU power limit */
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        nvmlDeviceGetPowerManagementLimit(m_unit_devices_file_desc[d], &power_limit);
+        result = nvmlDeviceGetEnforcedPowerLimit(m_unit_devices_file_desc[d],
+                 &power_limit);
+        if (result != NVML_SUCCESS)
+        {
+            variorum_error_handler("Could not query GPU power limit\n",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
         value = (double) power_limit * 0.001f;
 
         if (verbose)
@@ -217,7 +238,6 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 {
     unsigned int powerlimit_mwatts = powerlimit * 1000;
     int d;
-    static int init_output = 0;
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
