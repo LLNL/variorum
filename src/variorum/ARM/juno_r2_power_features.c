@@ -338,7 +338,7 @@ int arm_cpu_juno_r2_get_frequencies(int chipid, FILE *output)
     }
     close(freq_fd);
 
-    //TODO: Spend a bit more time with this stuff. This is a bit wacky.
+    //TODO: CPRINTF Spend a bit more time with this stuff. This is a bit wacky.
     fprintf(output, "=== Available frequencies for %s CPU (ID: %d) in MHz ===\n",
             (chipid == 0) ? "Big" : "Little", chipid);
     for (int i = 0; i < arr_size; i++)
