@@ -12,6 +12,10 @@
 #include <ibm_power_features.h>
 #include <variorum_error.h>
 
+#ifdef CPRINTF_FOUND
+    #include <cprintf.h>
+#endif
+
 int ibm_cpu_p9_get_power(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
@@ -144,17 +148,34 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
 
     if (long_ver == 0)
     {
-        fprintf(stdout,
-                "_POWERCAP Host CurrentPower_W MaxPower_W MinPower_W PSR_CPU_to_GPU_0_%% PSR_CPU_to_GPU_8_%%\n");
-        fprintf(stdout, "_POWERCAP %s %d %d %d %d %d \n",
-                hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+        #ifdef CPRINTF_FOUND
+            cfprintf(stdout,
+                    "%s %s %s %s %s %s%% %s%%\n", "_POWERCAP", "Host", "CurrentPower_W", "MaxPower_W", "MinPower_W", "PSR_CPU_to_GPU_0_", "PSR_CPU_to_GPU_8_");
+            cfprintf(stdout,
+                    "%s %s %d %d %d %d %d\n", "_POWERCAP", hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+        #else
+            fprintf(stdout,
+                    "_POWERCAP Host CurrentPower_W MaxPower_W MinPower_W PSR_CPU_to_GPU_0_%% PSR_CPU_to_GPU_8_%%\n");
+            fprintf(stdout, "_POWERCAP %s %d %d %d %d %d \n",
+                    hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+        #endif
     }
     else
     {
-        fprintf(stdout,
-                "_POWERCAP Host: %s, CurrentPower: %d W, MaxPower: %d W, MinPower: %d W, PSR_CPU_to_GPU_0: %d%%, PSR_CPU_to_GPU_8: %d%%\n",
-                hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+        #ifdef CPRINTF_FOUND
+            cprintf(stdout,
+                    "%s: %s, %s: %d W, %s: %d W, %s: %d W, %s: %d%%, %s: %d%%\n", 
+                    "_POWERCAP Host:", hostname, "CurrentPower:", pcap_current, "MaxPower:", 
+                    pcap_max, "MinPower:", pcap_min, "PSR_CPU_to_GPU_0:", psr_1, "PSR_CPU_to_GPU_8:", psr_2);
+        #else
+            fprintf(stdout,
+                    "_POWERCAP Host: %s, CurrentPower: %d W, MaxPower: %d W, MinPower: %d W, PSR_CPU_to_GPU_0: %d%%, PSR_CPU_to_GPU_8: %d%%\n",
+                    hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+        #endif
     }
+    #ifdef CPRINTF_FOUND
+        cflush();
+    #endif
     return 0;
 }
 
