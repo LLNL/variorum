@@ -421,7 +421,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
         json_object_set_new(get_thermal_object, hostname, node_obj);
     }
 
-    //json_object_set_new(host_obj, "Timestamp", json_integer(ts));
     for (i = 0; i < nsockets; i++)
     {
         char socket_id[12]; //up to 9999 sockets
@@ -435,8 +434,9 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
         json_t *cpu_obj = json_object();
         json_object_set_new(socket_obj, "CPU", cpu_obj);
-
-        pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
+		json_object_set_new(cpu_obj, "Timestamp", json_integer(ts));
+        
+		pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
         json_object_set_new(cpu_obj, "PKG_Actual", json_integer(pkg_temp));
         for (j = 0; j < ncores / nsockets; j++)
         {
