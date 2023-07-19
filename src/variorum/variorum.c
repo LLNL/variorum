@@ -33,6 +33,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
             // Only flushing in here causes a seg fault (NEED TO DEBUG) and in general is a bad idea.
             // THIS IS SUPER HACKY AND SHOULD BE FIXED, IT RELIES ON THE ASSUMPTION
             // print_children IS ONLY called by variorum_print_topology with depth 0
+            fprintf(stdout  "USING LIBJUST");
             cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
         }
     #endif

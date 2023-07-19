@@ -18,10 +18,10 @@ if(CPRINTF_DIR)
 
     find_library(CPRINTF_LIBRARY
         NAMES libcprintf.so
-        HINTS ${CPRINTF_DIR}/lib
+        HINTS ${CPRINTF_DIR}/build/libjustify
     )
     if(NOT CPRINTF_LIBRARY)
-        MESSAGE(WARNING "Could not find libcprintf.so in ${CPRINTF_DIR}/lib")
+        MESSAGE(WARNING "Could not find libcprintf.so in ${CPRINTF_DIR}/build/libjustify")
     endif()
 
     set(CPRINTF_FOUND TRUE CACHE INTERNAL "")
