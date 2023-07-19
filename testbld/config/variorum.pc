@@ -1,6 +1,0 @@
-Name: variorum
-Description: Vendor-neutral library for exposing power and performance features across diverse architectures
-Version: 0.5.0
-prefix=/usr/local
-libdir=/usr/local/lib
-Libs: -L${libdir} -lvariorum
