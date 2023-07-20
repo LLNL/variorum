@@ -448,29 +448,29 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
 
 int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
 {
-	char *val = ("VARIORUM_LOG");
-	if (val != NULL && atoi(val) == 1)
-	{
-		printf("Running %s\n", __FUNCTION__);
-	}
-	
-	void *buf;
-	int fd;
-	int rc;
-	int bytes;
-	unsigned iter = 0;
-	unsigned nsockets;
-	char hostname[1024];
-	struct timeval tv;
-	uint64_t ts;
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int fd;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+    unsigned nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
 
 #ifdef VARIORUM_WITH_IBM_CPU
-	variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
 
-	gethostname(hostname, 1024);
-	gettimeofday(&tv, NULL);
-	ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -479,14 +479,14 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         return -1;
     }
 
-	json_t* node_obj = json_object_get(get_thermal_obj, hostname);
-	if (node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_thermal_obj, hostname, node_obj);
-	}
-    
-	for (iter = 0; iter < nsockets; iter++)
+    json_t *node_obj = json_object_get(get_thermal_obj, hostname);
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_thermal_obj, hostname, node_obj);
+    }
+
+    for (iter = 0; iter < nsockets; iter++)
     {
         lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
@@ -519,10 +519,10 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         free(buf);
     }
 
-	json_object_set_new(node_obj, "Timestamp_CPU", json_integer(ts));
-	
-	close(fd);
-	return 0;
+    json_object_set_new(node_obj, "Timestamp_CPU", json_integer(ts));
+
+    close(fd);
+    return 0;
 
 }
 
