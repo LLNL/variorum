@@ -1052,7 +1052,8 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     const char d[2] = " ";
     char *token, *s, *p;
     int i = 0;
-    uint64_t sum = 0, idle = 0, userTime = 0, niceTime = 0, sumUserTime = 0;
+    uint64_t sum = 0, idle = 0, userTime = 0, niceTime = 0, sumUserTime = 0,
+             iowait = 0;
     double cpuUtil = 0.0, userUtil = 0.0, sysUtil = 0.0, memUtil = 0.0;
     int rc, j;
     char lbuf[256];
@@ -1097,6 +1098,11 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
                 {
                     sysTime = strtol(token, &p, 10);
                 }
+                if (i == 4)
+                {
+                    iowait = strtol(token, &p, 10);
+                }
+                idle = idle + iowait;
                 sumUserTime = userTime + niceTime;
                 i++;
             }
@@ -1161,7 +1167,15 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
     while (s);
 
-    memUtil = (1 - (double)(memFree) / (memTotal)) * 100;
+    if (state)
+    {
+        memUtil = (1 - (double)(memFree) / (memTotal)) * 100;
+    }
+    else
+    {
+        memUtil = 0.0;
+    }
+
     fclose(fp);
 
     json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
