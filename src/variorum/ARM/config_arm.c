@@ -25,49 +25,55 @@ uint64_t *detect_arm_arch(void)
     uint64_t cpu0_id_val;
     uint64_t cpu1_id_val;
 
-    /* This logic reads the IDs for the first two cores on the system.
-     * On the ARM big.LITTLE system, the first two cores report the CPU IDs
-     * from the big and LITTLE clusters, respectively, on the SoC.
-     * On the Neoverse N1 system, the first two cores report identical
-     * CPU IDs. Variorum checks the combined CPU IDs returned by the system.
-     */
-    char *cpu0_id_reg_path =
-        "/sys/devices/system/cpu/cpu0/regs/identification/midr_el1";
-    char *cpu1_id_reg_path =
-        "/sys/devices/system/cpu/cpu1/regs/identification/midr_el1";
+    static unsigned long model_id = -1;
+
+    if (model_id == -1)
+    {
+        /* This logic reads the IDs for the first two cores on the system.
+         * On the ARM big.LITTLE system, the first two cores report the CPU IDs
+         * from the big and LITTLE clusters, respectively, on the SoC.
+         * On the Neoverse N1 system, the first two cores report identical
+         * CPU IDs. Variorum checks the combined CPU IDs returned by the system.
+         */
+        char *cpu0_id_reg_path =
+            "/sys/devices/system/cpu/cpu0/regs/identification/midr_el1";
+        char *cpu1_id_reg_path =
+            "/sys/devices/system/cpu/cpu1/regs/identification/midr_el1";
+
+        int cpu0_id_reg_fd = open(cpu0_id_reg_path, O_RDONLY);
+        int cpu1_id_reg_fd = open(cpu1_id_reg_path, O_RDONLY);
+
+        if (!cpu0_id_reg_fd || !cpu1_id_reg_fd)
+        {
+            variorum_error_handler("Error encountered in accessing CPU ID information",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return NULL;
+        }
+
+        int cpu0_id_bytes = read(cpu0_id_reg_fd, cpu0_id_str, CPU_ID_SIZE);
+        int cpu1_id_bytes = read(cpu1_id_reg_fd, cpu1_id_str, CPU_ID_SIZE);
+
+        if (!cpu0_id_bytes || !cpu1_id_bytes)
+        {
+            variorum_error_handler("Error encountered in accessing CPU ID information",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
+                                   __FILE__, __FUNCTION__, __LINE__);
+            return NULL;
+        }
+
+        cpu0_id_val = strtol(cpu0_id_str, NULL, 16);
+        cpu1_id_val = strtol(cpu1_id_str, NULL, 16);
+
+        model_id = (cpu0_id_val & 0x000000000000fff0) << 8;
+        model_id |= ((cpu1_id_val & 0x000000000000fff0) >> 4);
+
+        close(cpu0_id_reg_fd);
+        close(cpu1_id_reg_fd);
+    }
+
     unsigned long *model = (unsigned long *) malloc(sizeof(uint64_t));
-
-    int cpu0_id_reg_fd = open(cpu0_id_reg_path, O_RDONLY);
-    int cpu1_id_reg_fd = open(cpu1_id_reg_path, O_RDONLY);
-
-    if (!cpu0_id_reg_fd || !cpu1_id_reg_fd)
-    {
-        variorum_error_handler("Error encountered in accessing CPU ID information",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return NULL;
-    }
-
-    int cpu0_id_bytes = read(cpu0_id_reg_fd, cpu0_id_str, CPU_ID_SIZE);
-    int cpu1_id_bytes = read(cpu1_id_reg_fd, cpu1_id_str, CPU_ID_SIZE);
-
-    if (!cpu0_id_bytes || !cpu1_id_bytes)
-    {
-        variorum_error_handler("Error encountered in accessing CPU ID information",
-                               VARIORUM_ERROR_INVAL, getenv("HOSTNAME"),
-                               __FILE__, __FUNCTION__, __LINE__);
-        return NULL;
-    }
-
-    cpu0_id_val = strtol(cpu0_id_str, NULL, 16);
-    cpu1_id_val = strtol(cpu1_id_str, NULL, 16);
-
-    *model = (cpu0_id_val & 0x000000000000fff0) << 8;
-    *model |= ((cpu1_id_val & 0x000000000000fff0) >> 4);
-
-    close(cpu0_id_reg_fd);
-    close(cpu1_id_reg_fd);
-
+    *model = model_id;
     return model;
 }
 

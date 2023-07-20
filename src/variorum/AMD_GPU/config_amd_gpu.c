@@ -24,6 +24,7 @@ int set_amd_gpu_func_ptrs(int idx)
 {
     static int init_complete = 0;
     int err = 0;
+    rsmi_status_t ret;
 
     if (*g_platform[idx].arch_id == AMD_INSTINCT)
     {
