@@ -416,8 +416,8 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
         {
             sample = read_sensor(hb, offset, SENSOR_SAMPLE);
         }
-        
-		/* Ideally, we don't want to use strcmp and use offsets instead.
+
+        /* Ideally, we don't want to use strcmp and use offsets instead.
          * But this was not clear to us at the time of the implementation.
          * OCC_DATA_BLOCK contents are different because of master-slave design
          * across different processor sockets. So the same offset can refer to
@@ -458,34 +458,34 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
 
 void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
 {
-	struct occ_sensor_data_header *hb;
-	struct occ_sensor_name *md;
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
 
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-	char socketid[12];
-	snprintf(socketid, 12, "Socket_%d", chipid);
+    char socketid[12];
+    snprintf(socketid, 12, "Socket_%d", chipid);
 
-	json_t *socket_obj = json_object_get(node_obj, socketid);
-	if (socket_obj == NULL)
-	{
-		socket_obj = json_object();
-		json_object_set_new(node_obj, socketid, socket_obj);
-	}
-	
-	json_t *cpu_obj = json_object();
-	json_object_set_new(socket_obj, "CPU", cpu_obj);
+    json_t *socket_obj = json_object_get(node_obj, socketid);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(node_obj, socketid, socket_obj);
+    }
 
-	json_t *core_obj = json_object();
-	json_object_set_new(cpu_obj, "Core", core_obj);
+    json_t *cpu_obj = json_object();
+    json_object_set_new(socket_obj, "CPU", cpu_obj);
 
-	json_t *mem_obj = json_object();
-	json_object_set_new(cpu_obj, "Mem", mem_obj);
+    json_t *core_obj = json_object();
+    json_object_set_new(cpu_obj, "Core", core_obj);
 
-	for(int i = 0; i < be16toh(hb->nr_sensors); i++)
-	{
-		
+    json_t *mem_obj = json_object();
+    json_object_set_new(cpu_obj, "Mem", mem_obj);
+
+    for (int i = 0; i < be16toh(hb->nr_sensors); i++)
+    {
+
         uint32_t offset = be32toh(md[i].reading_offset);
         uint32_t scale = be32toh(md[i].scale_factor);
         uint64_t sample = 0;
@@ -494,17 +494,17 @@ void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
         {
             sample = read_sensor(hb, offset, SENSOR_SAMPLE);
         }
-		
-		if(strncmp(md[i].name, "TEMPPROCTHRMC", 13) == 0)
-		{
-			json_object_set_new(core_obj, md[i].name, json_integer(sample * TO_FP(scale)));
-		}
-		else if(strncmp(md[i].name, "TEMPDIMM", 8) == 0)
-		{
-			json_object_set_new(mem_obj, md[i].name, json_integer(sample * TO_FP(scale)));	
-		}
-	
-	}
+
+        if (strncmp(md[i].name, "TEMPPROCTHRMC", 13) == 0)
+        {
+            json_object_set_new(core_obj, md[i].name, json_integer(sample * TO_FP(scale)));
+        }
+        else if (strncmp(md[i].name, "TEMPDIMM", 8) == 0)
+        {
+            json_object_set_new(mem_obj, md[i].name, json_integer(sample * TO_FP(scale)));
+        }
+
+    }
 
 
 }

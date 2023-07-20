@@ -154,7 +154,7 @@ void json_get_power_sensors(int chipid,
                             const void *buf);
 
 void json_get_thermal_sensors(int chipid,
-								json_t *get_thermal_obj,
-								const void *buf);
+                              json_t *get_thermal_obj,
+                              const void *buf);
 
 #endif
