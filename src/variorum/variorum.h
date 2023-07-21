@@ -566,10 +566,10 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /// @brief Populate a string in nested JSON format for temperature readouts
 /// format: hostname { Socket_n { CPU { Core { Sensor Name : Temp in C }, Mem { Sensor Name : Temp in C } } }, GPU { Device : Temp in C }  }
-///	where n is the socket number
+/// where n is the socket number
 ///
 /// @supparch
-///	- Intel Sandy Bridge
+/// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
 /// - Intel Broadwell
@@ -577,13 +577,13 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// - Intel Kaby Lake
 /// - IBM Power9
 /// - AMD Instinct
-///	- Nvidia Volta
+/// - Nvidia Volta
 ///
-/// @param [out] output String (passed by reference) that contains node-level 
-///	thermal information
+/// @param [out] output String (passed by reference) that contains node-level
+/// thermal information
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
-///	returns a -1 for the JSON APIs so that users don't have to explicily
+/// returns a -1 for the JSON APIs so that users don't have to explicily
 /// check for NULL strings.
 int variorum_get_thermals_json(char **get_thermal_obj_str);
 
