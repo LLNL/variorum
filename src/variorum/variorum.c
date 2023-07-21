@@ -24,16 +24,8 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     unsigned i;
 
     #ifdef CPRINTF_FOUND
-        if (depth = 0) //First interation
+        if (depth == 0) //First interation
         {
-            // TODO:
-            // This is a work around to print the variorum_print_topology header labels.
-            // cause doing this cprintf in variorum_print_topology and flushing there 
-            // will reset the tabulation (breaks justification). 
-            // Only flushing in here causes a seg fault (NEED TO DEBUG) and in general is a bad idea.
-            // THIS IS SUPER HACKY AND SHOULD BE FIXED, IT RELIES ON THE ASSUMPTION
-            // print_children IS ONLY called by variorum_print_topology with depth 0
-            fprintf(stdout  "USING LIBJUST");
             cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
         }
     #endif
@@ -48,26 +40,19 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
-        #ifdef CPRINTF_FOUND
+#ifdef CPRINTF_FOUND
+        // no exit base case so cflush() is required in the calling process
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
-               g_socket);
-        #else
-            printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
+               g_socket, depth);         
+#else
+        printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
             g_socket);
-        #endif
-
+#endif
     }
     for (i = 0; i < obj->arity; i++)
     {
-        //If this is the first iteration print the labels:
         print_children(topology, obj->children[i], depth + 1);
     }
-    #ifdef CPRINTF_FOUND
-        if( i == obj->arity)
-        {
-            cflush();
-        }
-    #endif
 }
 
 int variorum_tester(void)
@@ -238,7 +223,7 @@ void variorum_print_topology(void)
             cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
             cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
                     g_platform[i].num_cores_per_socket);
-            cfprintf(stdout, "  %-s : %-d\n", "Num Threads per Core",
+            cfprintf(stdout, "  %-s: %-d\n", "Num Threads per Core",
                     g_platform[i].num_threads_per_core);
             if (g_platform[i].num_threads_per_core == 1)
             {
@@ -284,7 +269,9 @@ void variorum_print_topology(void)
         #endif
 
         print_children(topo, hwloc_get_root_obj(topo), 0);
-
+  #ifdef CPRINTF_FOUND
+        cflush();
+  #endif
         hwloc_topology_destroy(topo);
     }
 
@@ -850,7 +837,9 @@ int variorum_print_hyperthreading(void)
 
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+#ifdef CPRINTF_FOUND
     cflush(); //TODO, Create a silent version on err that still frees.
+#endif
     if (err)
     {
         return -1;
