@@ -17,6 +17,10 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif 
+
 static int translate(const unsigned socket, uint64_t *bits, double *units,
                      int type, off_t msr, int idx)
 {
@@ -425,15 +429,31 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
     get_rapl_power_unit(ru, msr);
-
-    fprintf(writedest,
-            "_RAPL_POWER_UNITS Offset Host Socket Bits PowerUnit_W EnergyUnit_J TimeUnit_sec\n");
+#ifdef CPRINTF_FOUND
+    cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+            "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W", "EnergyUnit_J", "TimeUnit_sec");
+#else
+    fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+            "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W", "EnergyUnit_J", "TimeUnit_sec");
+#endif
     for (socket = 0; socket < nsockets; socket++)
     {
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS", 
+                msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
+                1 / ru[socket].joules, 1 / ru[socket].seconds);
+
+#else
         fprintf(writedest, "_RAPL_POWER_UNITS 0x%lx %s %d 0x%lx %f %f %f\n", msr,
                 hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
+#endif
     }
+
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
+
     free(ru);
 }
 
@@ -454,11 +474,28 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 
     for (socket = 0; socket < nsockets; socket++)
     {
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest,
+                "%s: %#lx, %s: %s, %s: %d, %s: %#lx, %s: %f W, %s: %f J, %s: %f sec\n",
+                "_RAPL_POWER_UNITS Offset", msr,
+                "Host", hostname,
+                "Socket", socket,
+                "Bits", ru[socket].msr_rapl_power_unit,
+                "PowerUnit", ru[socket].watts,
+                "EnergyUnit", 1 / ru[socket].joules,
+                "TimeUnit", 1 / ru[socket].seconds);
+#else
         fprintf(writedest,
                 "_RAPL_POWER_UNITS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, PowerUnit: %f W, EnergyUnit: %f J, TimeUnit: %f sec\n",
                 msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
+#endif
     }
+
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
+
     free(ru);
 }
 
@@ -473,16 +510,33 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!init_print_package_power_info)
     {
         init_print_package_power_info = 1;
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_PACKAGE_POWER_INFO", "Offset", "Host", "Socket", "Bits",
+                "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
+
+#else
         fprintf(writedest,
                 "_PACKAGE_POWER_INFO Offset Host Socket Bits MaxPower_W MinPower_W MaxTimeWindow_sec ThermPower_W\n");
+#endif
     }
 
     if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
+                "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info, 
+                info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+#else
         fprintf(writedest, "_PACKAGE_POWER_INFO 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
                 msr, hostname, socket, info.msr_pkg_power_info, info.pkg_max_power,
                 info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+#endif
     }
+
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
