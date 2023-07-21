@@ -1070,8 +1070,6 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    static size_t sockID_len = 11; // large enough to avoid format truncation
-    char sockID[sockID_len + 1];
     unsigned i;
     double node_power = 0.0;
 
@@ -1089,26 +1087,23 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+	json_t *node_obj = json_object();
+	json_object_set_new(get_power_object, hostname, node_obj);
+
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
-        /* Defined here so as to reset the string for each socket
-         * and append correctly */
-        char cpu_str[36] = "power_cpu_watts_socket_";
-        char mem_str[36] = "power_mem_watts_socket_";
-        char gpu_str[36] = "power_gpu_watts_socket_";
+        char socketid[12]; 
+        snprintf(socketid, 12, "Socket_%d", i);
 
-        snprintf(sockID, sockID_len, "%d", i);
-        strcat(cpu_str, sockID);
-        strcat(mem_str, sockID);
-        strcat(gpu_str, sockID);
+		json_t *socket_obj = json_object();
+		json_object_set_new(node_obj, socketid, socket_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
-        json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
-        json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
+        json_object_set_new(socket_obj, "CPU_power_watts", json_real(rapl->pkg_watts[i]));
+        json_object_set_new(socket_obj, "Mem_power_watts", json_real(rapl->dram_watts[i]));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
@@ -1118,8 +1113,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
            TODO is to populate this through the NVIDIA NVML GPU power values
            when variorum is built with NVIDIA on Intel architectures. */
 
-        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
-
+        json_object_set_new(socket_obj, "GPU_power_watts", json_real(-1.0));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set power_sys as the sum of CPU and DRAM
@@ -1133,7 +1127,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
+    json_object_set_new(node_obj, "Node_power_watts", json_real(node_power));
 }
 
 
