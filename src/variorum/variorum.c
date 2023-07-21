@@ -41,7 +41,6 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
 #ifdef CPRINTF_FOUND
-        // no exit base case so cflush() is required in the calling process
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
                g_socket);       
 #else
@@ -56,7 +55,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
 //exit condition
 #ifdef CPRINTF_FOUND
-    if (obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE)) //g_platform[0].total_threads)
+    if (obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE))
     {
         cflush();
     }
