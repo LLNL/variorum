@@ -1088,7 +1088,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
 	json_t *node_obj = json_object();
-	json_object_set_new(get_power_object, hostname, node_obj);
+	json_object_set_new(get_power_obj, hostname, node_obj);
 
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
