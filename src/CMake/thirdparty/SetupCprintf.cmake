@@ -10,7 +10,7 @@ if(CPRINTF_DIR)
 
     find_path(CPRINTF_INCLUDE_DIRS
         NAMES cprintf.h
-        HINTS ${CPRINTF_DIR}/include
+        HINTS ${CPRINTF_DIR}/src/
     )
     if(NOT CPRINTF_INCLUDE_DIRS)
         MESSAGE(WARNING "Could not find cprintf.h in ${CPRINTF_DIR}/include")
