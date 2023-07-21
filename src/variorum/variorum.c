@@ -23,12 +23,12 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 {
     unsigned i;
 
-    #ifdef CPRINTF_FOUND
+#ifdef CPRINTF_FOUND
         if (depth == 0) //First interation
         {
             cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
         }
-    #endif
+#endif
 
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_SOCKET))
     {
@@ -43,16 +43,24 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 #ifdef CPRINTF_FOUND
         // no exit base case so cflush() is required in the calling process
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
-               g_socket, depth);         
+               g_socket);       
 #else
         printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
             g_socket);
 #endif
     }
+
     for (i = 0; i < obj->arity; i++)
-    {
+    {    
         print_children(topology, obj->children[i], depth + 1);
     }
+//exit condition
+#ifdef CPRINTF_FOUND
+    if (obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE)) //g_platform[0].total_threads)
+    {
+        cflush();
+    }
+#endif
 }
 
 int variorum_tester(void)
@@ -269,9 +277,6 @@ void variorum_print_topology(void)
         #endif
 
         print_children(topo, hwloc_get_root_obj(topo), 0);
-  #ifdef CPRINTF_FOUND
-        cflush();
-  #endif
         hwloc_topology_destroy(topo);
     }
 
