@@ -11,7 +11,7 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <variorum_timers.h>
-
+#include <jansson.h>
 void initNVML(void)
 {
     unsigned int d;
@@ -210,6 +210,36 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
             fprintf(output, "_NVIDIA_GPU_UTILIZATION %s %d %d %d %d\n",
                     m_hostname, chipid, d, util.gpu, util.memory);
         }
+    }
+}
+
+void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
+{
+    nvmlUtilization_t util;
+    int d;
+    static int init_output = 0;
+    char socket_id[12];
+    snprintf(socket_id, 12, "Socket_%d", chipid);
+
+    //create new json object for GPU
+    //json_t *gpu_obj = json_object();
+
+    /* Iterate over all GPU device handles and print GPU SM and memory utilization */
+    for (d = chipid * (int)m_gpus_per_socket;
+         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+    {
+        nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
+        char device_id[12];
+        snprintf(device_id, 12, "GPU%d_util%", d);
+        printf("%s = %d\n", device_id, util.gpu);
+        json_object_set_new(get_gpu_util_obj, device_id, json_integer(util.gpu));
+
+        //fprintf(output,
+        //        "_NVIDIA_GPU_UTILIZATION Host Socket DeviceID SMUtil_%% MemUtil_%%\n");
+        //init_output = 1;
+        //fprintf(output, "_NVIDIA_GPU_UTILIZATION %s %d %d %d %d\n",
+        //        m_hostname, chipid, d, util.gpu, util.memory);
+
     }
 }
 

@@ -550,6 +550,10 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// returns 0 if successful, otherwise -1.
 int variorum_get_node_utilization_json(char **get_util_obj_str);
 
+/// @work in progress for variorum_get_gpu_utilization_json
+int variorum_get_gpu_utilization_json(json_t
+                                      *get_gpu_util_obj);//char **get_gpu_util_obj_str);
+
 /// @brief Populate a string in JSON format with measurable and controllable
 /// power domains, along with the ranges.
 ///

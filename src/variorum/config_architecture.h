@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <variorum_config.h>
+#include <jansson.h>
 
 /// @brief Create a mask from bit m to n (63 >= m >= n >= 0).
 ///
@@ -234,6 +235,11 @@ struct platform
     ///
     /// @return Error code.
     int (*variorum_print_gpu_utilization)(int long_ver);
+
+    /// @brief Function pointer to get JSON object for GPU utilization
+    ///
+    /// @return Error code.
+    int (*variorum_get_gpu_utilization_json)(json_t *get_gpu_util_obj);
 
     /// @brief Function pointer to get JSON object for node power data.
     ///

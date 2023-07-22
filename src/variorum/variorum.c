@@ -1179,12 +1179,68 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     fclose(fp);
 
     json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
-    *get_util_obj_str = json_dumps(get_util_obj, 0);
+    variorum_get_gpu_utilization_json(get_util_obj);
+    //variorum_get_gpu_utilization_json(get_util_obj);
+    *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
     json_decref(get_util_obj);
     state = 1;
     return 0;
 
 }
+
+int variorum_get_gpu_utilization_json(json_t
+                                      *get_gpu_util_obj)//char** get_gpu_util_obj_str)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    //json_t *get_gpu_util_obj = json_object();
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+#ifdef VARIORUM_WITH_INTEL_GPU
+        i = P_INTEL_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+        i = P_NVIDIA_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+        i = P_AMD_GPU_IDX;
+        break;
+#endif
+    }
+
+    if (g_platform[i].variorum_get_gpu_utilization_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+    }
+    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj);
+    if (err)
+    {
+        return -1;
+    }
+
+
+    //*get_gpu_util_obj_str = json_dumps(get_gpu_util_obj, JSON_INDENT(4));
+    //json_decref(get_gpu_util_obj);
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 // The variorum_get_node_power_domain_info_json is a node-level API, and cannot
 // be implemented at a per-component (eg CPU, GPU) level. This can only be available
 // on what we define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,

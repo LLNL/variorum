@@ -30,6 +30,8 @@ int set_amd_gpu_func_ptrs(int idx)
         g_platform[idx].variorum_print_power           = amd_gpu_instinct_get_power;
         g_platform[idx].variorum_print_thermals        = amd_gpu_instinct_get_thermals;
         g_platform[idx].variorum_print_frequency       = amd_gpu_instinct_get_clocks;
+        g_platform[idx].variorum_get_gpu_utilization_json   =
+            amd_gpu_instinct_get_gpu_utilization_json;
         g_platform[idx].variorum_print_power_limit     =
             amd_gpu_instinct_get_power_limit;
         g_platform[idx].variorum_print_gpu_utilization =

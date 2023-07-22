@@ -479,6 +479,82 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     }
 }
 
+void get_gpu_utilization_data_json(int chipid, int total_sockets,
+                                   json_t *get_thermal_obj)
+
+{
+    rsmi_status_t ret;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    char hostname[1024];
+    static int init = 0;
+    static struct timeval start;
+    struct timeval now;
+
+    gethostname(hostname, 1024);
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+        if (verbose == 0)
+        {
+            fprintf(output,
+                    "_AMD_GPU_UTILIZATION Host Socket DeviceID Util\n");
+        }
+    }
+
+    gettimeofday(&now, NULL);
+
+    for (int i = chipid * gpus_per_socket;
+         i < (chipid + 1) * gpus_per_socket; i++)
+    {
+        uint32_t utilpercent; // Percentage of time the GPU was busy
+
+        ret = rsmi_dev_busy_percent_get(i, &utilpercent);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("RSMI API was not successful",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
+
+        char device_id[12];
+        snprintf(device_id, 12, "GPU%d_util%", i);
+        json_object_set_new(get_gpu_util_obj, device_id, json_integer(utilpercent));
+
+    }
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+}
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
                               unsigned int powerlimit)
 {
