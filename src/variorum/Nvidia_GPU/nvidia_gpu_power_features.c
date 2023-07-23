@@ -231,7 +231,6 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
         nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
         char device_id[12];
         snprintf(device_id, 12, "GPU%d_util%", d);
-        printf("%s = %d\n", device_id, util.gpu);
         json_object_set_new(get_gpu_util_obj, device_id, json_integer(util.gpu));
 
         //fprintf(output,
