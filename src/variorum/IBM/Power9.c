@@ -396,8 +396,10 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+	
+	json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -435,12 +437,12 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
             return -1;
         }
 
-        json_get_power_sensors(iter, get_power_obj, buf);
+        json_get_power_sensors(iter, node_obj, buf);
         free(buf);
     }
 
     // Export JSON object as a string for returning.
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
     json_decref(get_power_obj);
     close(fd);
     return 0;

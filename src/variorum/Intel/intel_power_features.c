@@ -1134,7 +1134,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     // Set the node power key with pwrnode value.
 	char node_power_string[8];
 	snprintf(node_power_string, 8, "%.3f", node_power);
-    json_object_set_new(node_obj, "Node_power_watts", json_string(node_power_string) );
+    json_object_set_new(node_obj, "power_node_watts", json_string(node_power_string) );
 }
 
 
