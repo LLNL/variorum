@@ -1107,8 +1107,8 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 		char dram_power[8];
 		snprintf(dram_power, 8, "%.3f", rapl->dram_watts[i]);
 
-        json_object_set_new(socket_obj, "CPU_power_watts", json_string(pkg_power) );
-        json_object_set_new(socket_obj, "Mem_power_watts", json_string(dram_power) );
+        json_object_set_new(socket_obj, "power_cpu_watts", json_string(pkg_power) );
+        json_object_set_new(socket_obj, "power_mem_watts", json_string(dram_power) );
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
@@ -1118,7 +1118,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
            TODO is to populate this through the NVIDIA NVML GPU power values
            when variorum is built with NVIDIA on Intel architectures. */
 
-        json_object_set_new(socket_obj, "GPU_power_watts", json_real(-1.0));
+        json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set power_sys as the sum of CPU and DRAM

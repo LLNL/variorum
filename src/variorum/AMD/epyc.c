@@ -552,21 +552,18 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+
+	json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
     {
-        char cpu_str[36] = "power_cpu_watts_socket_";
-        char mem_str[36] = "power_mem_watts_socket_";
-        char gpu_str[36] = "power_gpu_watts_socket_";
-
-        snprintf(sockID, sockID_len, "%d", i);
-        strcat(cpu_str, sockID);
-        strcat(mem_str, sockID);
-        strcat(gpu_str, sockID);
+        snprintf(sockID, sockID_len, "Socket_%d", i);
+		json_t *socket_obj = json_object();
+		json_object_set_new(node_obj, sockID, socket_obj);
 
         current_power = 0;
         ret = esmi_socket_power_get(i, &current_power);
@@ -578,25 +575,26 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
         }
         else
         {
-            json_object_set_new(get_power_obj, cpu_str,
+            json_object_set_new(socket_obj, "power_cpu_watts",
                                 json_real((double)current_power / 1000));
         }
 
         // GPU power set to -1.0 for vendor neutrality and first cut, as we
         // don't have a way to measure this yet.
-        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
+        json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
 
         // Memory power set to -1.0 as this platform does not expose
         // memory power yet.
-        json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
+        json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
 
         node_power += ((double)current_power / 1000);
     }
 
-    // Set the node power key with pwrnode value.
-    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    // Set the node power key with pwrnode value.
+    json_object_set_new(node_obj, "power_node_watts", json_real(node_power));
+
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INCREMENT(4));
     json_decref(get_power_obj);
 
     return 0;
