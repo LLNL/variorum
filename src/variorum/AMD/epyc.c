@@ -594,7 +594,7 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
     // Set the node power key with pwrnode value.
     json_object_set_new(node_obj, "power_node_watts", json_real(node_power));
 
-    *get_power_obj_str = json_dumps(get_power_obj, JSON_INCREMENT(4));
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
     json_decref(get_power_obj);
 
     return 0;
