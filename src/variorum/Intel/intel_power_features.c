@@ -1087,28 +1087,28 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-	json_t *node_obj = json_object();
-	json_object_set_new(get_power_obj, hostname, node_obj);
+    json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
 
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
-        char socketid[12]; 
+        char socketid[12];
         snprintf(socketid, 12, "Socket_%d", i);
 
-		json_t *socket_obj = json_object();
-		json_object_set_new(node_obj, socketid, socket_obj);
+        json_t *socket_obj = json_object();
+        json_object_set_new(node_obj, socketid, socket_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
-		char pkg_power[8];
-		snprintf(pkg_power, 8, "%.3f", rapl->pkg_watts[i]);
-		char dram_power[8];
-		snprintf(dram_power, 8, "%.3f", rapl->dram_watts[i]);
+        char pkg_power[8];
+        snprintf(pkg_power, 8, "%.3f", rapl->pkg_watts[i]);
+        char dram_power[8];
+        snprintf(dram_power, 8, "%.3f", rapl->dram_watts[i]);
 
-        json_object_set_new(socket_obj, "power_cpu_watts", json_string(pkg_power) );
-        json_object_set_new(socket_obj, "power_mem_watts", json_string(dram_power) );
+        json_object_set_new(socket_obj, "power_cpu_watts", json_string(pkg_power));
+        json_object_set_new(socket_obj, "power_mem_watts", json_string(dram_power));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
@@ -1132,9 +1132,10 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-	char node_power_string[8];
-	snprintf(node_power_string, 8, "%.3f", node_power);
-    json_object_set_new(node_obj, "power_node_watts", json_string(node_power_string) );
+    char node_power_string[8];
+    snprintf(node_power_string, 8, "%.3f", node_power);
+    json_object_set_new(node_obj, "power_node_watts",
+                        json_string(node_power_string));
 }
 
 
@@ -1162,40 +1163,42 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
+    json_t *node_obj = json_object();
 
     json_object_set_new(get_domain_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-	json_t *control_obj = json_object();
-	json_object_set_new(node_obj, "control", control_obj);
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
 
-	json_t *control_cpu_obj = json_object();
-	json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
-	json_object_set_new(control_cpu_obj, "min", json_real(pkg_info.pkg_min_power));
-	json_object_set_new(control_cpu_obj, "max", json_real(pkg_info.pkg_max_power));
-	json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
+    json_t *control_cpu_obj = json_object();
+    json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+    json_object_set_new(control_cpu_obj, "min", json_real(pkg_info.pkg_min_power));
+    json_object_set_new(control_cpu_obj, "max", json_real(pkg_info.pkg_max_power));
+    json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
 
-	json_t *control_mem_obj = json_object();
-	json_object_set_new(control_obj, "power_mem", control_mem_obj);
-	json_object_set_new(control_mem_obj, "min", json_real(dram_info.dram_min_power));
-	json_object_set_new(control_mem_obj, "max", json_real(dram_info.dram_max_power));
-	json_object_set_new(control_mem_obj, "units", json_string("Watts"));
+    json_t *control_mem_obj = json_object();
+    json_object_set_new(control_obj, "power_mem", control_mem_obj);
+    json_object_set_new(control_mem_obj, "min",
+                        json_real(dram_info.dram_min_power));
+    json_object_set_new(control_mem_obj, "max",
+                        json_real(dram_info.dram_max_power));
+    json_object_set_new(control_mem_obj, "units", json_string("Watts"));
 
-	json_t *unsupported_features = json_array();
-	json_object_set_new(node_obj, "unsupported", unsupported_features);
-	json_array_append(unsupported_features, json_string("power_node"));
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_array_append(unsupported_features, json_string("power_node"));
 
-	json_t *measurement_obj = json_object();
-	json_object_set_new(node_obj, "measurement", measurement_obj);
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
 
-	json_t *measure_cpu_obj = json_object();
-	json_object_set_new(measurement_obj, "power_cpu", measure_cpu_obj);
-	json_object_set_new(measure_cpu_obj, "units", json_string("Watts"));
+    json_t *measure_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measure_cpu_obj);
+    json_object_set_new(measure_cpu_obj, "units", json_string("Watts"));
 
-	json_t *measure_mem_obj = json_object();
-	json_object_set_new(measurement_obj, "power_mem", measure_mem_obj);
-	json_object_set_new(measure_mem_obj, "units", json_string("Watts"));
+    json_t *measure_mem_obj = json_object();
+    json_object_set_new(measurement_obj, "power_mem", measure_mem_obj);
+    json_object_set_new(measure_mem_obj, "units", json_string("Watts"));
 
     // Need to figure out a way to specify capping limits by reading MSRs.
     // If we have an NVIDIA + Intel build, the GPU info should be updated.

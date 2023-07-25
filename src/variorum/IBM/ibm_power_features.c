@@ -360,8 +360,8 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
         json_object_set_new(node_obj, "power_node_watts", json_real(pwrsys));
     }
 
-	json_t *socket_obj = json_object();
-	json_object_set_new(node_obj, socketID, socket_obj);
+    json_t *socket_obj = json_object();
+    json_object_set_new(node_obj, socketID, socket_obj);
 
     json_object_set_new(socket_obj, "power_cpu_watts", json_real(pwrproc));
     json_object_set_new(socket_obj, "power_mem_watts", json_real(pwrmem));

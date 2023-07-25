@@ -553,7 +553,7 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
+    json_t *node_obj = json_object();
     json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
@@ -562,8 +562,8 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
 #endif
     {
         snprintf(sockID, sockID_len, "Socket_%d", i);
-		json_t *socket_obj = json_object();
-		json_object_set_new(node_obj, sockID, socket_obj);
+        json_t *socket_obj = json_object();
+        json_object_set_new(node_obj, sockID, socket_obj);
 
         current_power = 0;
         ret = esmi_socket_power_get(i, &current_power);
@@ -632,31 +632,31 @@ int amd_cpu_epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
-	
-	json_object_set_new(get_domain_obj, hostname, node_obj);
-	json_object_set_new(node_obj, "timestamp", json_integer(ts));
+    json_t *node_obj = json_object();
 
-	json_t *control_obj = json_object();
-	json_object_set_new(node_obj, "control", control_obj);
+    json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-	json_t *control_cpu_obj = json_object();
-	json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
-	json_object_set_new(control_cpu_obj, "min", json_integer(50));
-	json_object_set_new(control_cpu_obj, "max", json_integer(max_power));
-	json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
 
-	json_t *unsupported_features = json_array();
-	json_object_set_new(node_obj, "unsupported", unsupported_features);
-	json_array_append(unsupported_features, json_string("power_node"));
-	json_array_append(unsupported_features, json_string("power_mem"));
+    json_t *control_cpu_obj = json_object();
+    json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+    json_object_set_new(control_cpu_obj, "min", json_integer(50));
+    json_object_set_new(control_cpu_obj, "max", json_integer(max_power));
+    json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
 
-	json_t *measurement_obj = json_object();
-	json_object_set_new(node_obj, "measurement", measurement_obj);
-	
-	json_t *measurement_cpu_obj = json_object();
-	json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
-	json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_array_append(unsupported_features, json_string("power_node"));
+    json_array_append(unsupported_features, json_string("power_mem"));
+
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
+
+    json_t *measurement_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
 
     *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);

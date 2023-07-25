@@ -396,8 +396,8 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-	
-	json_t *node_obj = json_object();
+
+    json_t *node_obj = json_object();
     json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
@@ -465,49 +465,49 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
+    json_t *node_obj = json_object();
 
-	json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(get_domain_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-	json_t *control_obj = json_object();
-	json_object_set_new(node_obj, "control", control_obj);
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
 
-	json_t *control_node_obj = json_object();
-	json_object_set_new(control_obj, "power_node", control_node_obj);
-	json_object_set_new(control_node_obj, "min", json_integer(500));
-	json_object_set_new(control_node_obj, "max", json_integer(3050));
-	json_object_set_new(control_node_obj, "units", json_string("Watts"));
+    json_t *control_node_obj = json_object();
+    json_object_set_new(control_obj, "power_node", control_node_obj);
+    json_object_set_new(control_node_obj, "min", json_integer(500));
+    json_object_set_new(control_node_obj, "max", json_integer(3050));
+    json_object_set_new(control_node_obj, "units", json_string("Watts"));
 
-	json_t *control_gpu_obj = json_object();
-	json_object_set_new(control_obj, "power_gpu", control_gpu_obj);
-	json_object_set_new(control_gpu_obj, "min", json_integer(0));
-	json_object_set_new(control_gpu_obj, "max", json_integer(100));
-	json_object_set_new(control_gpu_obj, "units", json_string("Percentage"));
+    json_t *control_gpu_obj = json_object();
+    json_object_set_new(control_obj, "power_gpu", control_gpu_obj);
+    json_object_set_new(control_gpu_obj, "min", json_integer(0));
+    json_object_set_new(control_gpu_obj, "max", json_integer(100));
+    json_object_set_new(control_gpu_obj, "units", json_string("Percentage"));
 
-	json_t *unsupported_features = json_array();
-	json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
 
-	json_t *measurement_obj = json_object();
-	json_object_set_new(node_obj, "measurement", measurement_obj);
-	
-	json_t *measurement_node_obj = json_object();
-	json_object_set_new(measurement_obj, "power_node", measurement_node_obj);
-	json_object_set_new(measurement_node_obj, "units", json_string("Watts"));
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
 
-	json_t *measurement_cpu_obj = json_object();
-	json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
-	json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
-	
-	json_t *measurement_mem_obj = json_object();
-	json_object_set_new(measurement_obj, "power_mem", measurement_mem_obj);
+    json_t *measurement_node_obj = json_object();
+    json_object_set_new(measurement_obj, "power_node", measurement_node_obj);
+    json_object_set_new(measurement_node_obj, "units", json_string("Watts"));
+
+    json_t *measurement_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
+
+    json_t *measurement_mem_obj = json_object();
+    json_object_set_new(measurement_obj, "power_mem", measurement_mem_obj);
     json_object_set_new(measurement_mem_obj, "units", json_string("Watts"));
-	
-	json_t *measurement_gpu_obj = json_object();
-	json_object_set_new(measurement_obj, "power_gpu", measurement_gpu_obj);
-	json_object_set_new(measurement_gpu_obj, "units", json_string("Watts"));
-	
-	// Export JSON object as a string for returning.
+
+    json_t *measurement_gpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_gpu", measurement_gpu_obj);
+    json_object_set_new(measurement_gpu_obj, "units", json_string("Watts"));
+
+    // Export JSON object as a string for returning.
     *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
