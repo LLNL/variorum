@@ -301,9 +301,6 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
 		json_object_set_new(output, hostname, node_obj);
 	}
 
-	json_t *cpu_obj = json_object();
-	json_object_set_new(node_obj, "CPU", cpu_obj);
-
     json_t *make_socket_obj(int socket_index)
     {
         char socket_name[12];
@@ -333,18 +330,6 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
 
     switch (control_domains)
     {
-        case SOCKET:
-            for (i = 0; i < nsockets; i++)
-            {
-                for (j = 0; j < ncores / nsockets; j += ncores / nsockets)
-                {
-                    for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
-                    {
-                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                    }
-                }
-            }
-            break;
         case CORE:
             for (i = 0; i < nsockets; i++)
             {
