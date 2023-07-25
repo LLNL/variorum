@@ -1170,17 +1170,17 @@ void json_get_power_domain_info(json_t *get_domain_obj,
 	json_t *control_obj = json_object();
 	json_object_set_new(node_obj, "control", control_obj);
 
-	json_t *cpu_obj = json_object();
-	json_object_set_new(control_obj, "power_cpu", cpu_obj);
-	json_object_set_new(cpu_obj, "min", json_real(pkg_info.pkg_min_power));
-	json_object_set_new(cpu_obj, "max", json_real(pkg_info.pkg_max_power));
-	json_object_set_new(cpu_obj, "units", json_string("Watts"));
+	json_t *control_cpu_obj = json_object();
+	json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+	json_object_set_new(control_cpu_obj, "min", json_real(pkg_info.pkg_min_power));
+	json_object_set_new(control_cpu_obj, "max", json_real(pkg_info.pkg_max_power));
+	json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
 
-	json_t *mem_obj = json_object();
-	json_object_set_new(control_obj, "power_mem", mem_obj);
-	json_object_set_new(mem_obj, "min", json_real(dram_info.dram_min_power));
-	json_object_set_new(mem_obj, "max", json_real(dram_info.dram_max_power));
-	json_object_set_new(mem_obj, "units", json_string("Watts"));
+	json_t *control_mem_obj = json_object();
+	json_object_set_new(control_obj, "power_mem", control_mem_obj);
+	json_object_set_new(control_mem_obj, "min", json_real(dram_info.dram_min_power));
+	json_object_set_new(control_mem_obj, "max", json_real(dram_info.dram_max_power));
+	json_object_set_new(control_mem_obj, "units", json_string("Watts"));
 
 	json_t *unsupported_features = json_array();
 	json_object_set_new(node_obj, "unsupported", unsupported_features);
