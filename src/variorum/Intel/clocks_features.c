@@ -294,8 +294,15 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
     read_batch(CLOCKS_DATA);
     read_batch(PERF_DATA);
 
-    json_t *host_obj = json_object();
-    json_object_set_new(output, hostname, host_obj);
+    json_t *node_obj = json_object_get(output, hostname);
+	if(node_obj == NULL)
+	{
+		node_obj = json_object();
+		json_object_set_new(output, hostname, node_obj);
+	}
+
+	json_t *cpu_obj = json_object();
+	json_object_set_new(node_obj, "CPU", cpu_obj);
 
     json_t *make_socket_obj(int socket_index)
     {

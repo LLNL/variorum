@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <hwloc.h>
+#include <jansson.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -1118,6 +1119,10 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
     {
         return -1;
     }
+
+	json_t *get_frequency_obj = json_object();
+
+
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         if (g_platform[i].variorum_get_frequency_json == NULL)
@@ -1128,12 +1133,16 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
                                    __FUNCTION__, __LINE__);
             continue;
         }
-        err = g_platform[i].variorum_get_frequency_json(get_frequency_obj_str);
+        err = g_platform[i].variorum_get_frequency_json(get_frequency_obj);
         if (err)
         {
             return -1;
         }
     }
+
+	*get_frequency_obj_str = json_dumps(get_frequency_obj, JSON_INDENT(4));
+	json_decref(get_frequency_obj);
+
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
