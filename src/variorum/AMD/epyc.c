@@ -655,8 +655,8 @@ int amd_cpu_epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
 	json_object_set_new(node_obj, "measurement", measurement_obj);
 	
 	json_t *measurement_cpu_obj = json_object();
-	json_object_set_new(measurement_cpu_obj, "power_cpu", measurement_cpu_obj);
-	json_object_set_new(measure_cpu_obj, "units", json_string("Watts"));
+	json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+	json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
 
     *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
