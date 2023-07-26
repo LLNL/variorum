@@ -1103,9 +1103,9 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
         json_object_set_new(socket_obj, "power_cpu_watts",
-                            json_real(rapl->pkg_watts[i]) );
+                            json_real(rapl->pkg_watts[i]));
         json_object_set_new(socket_obj, "power_mem_watts",
-                            json_real(rapl->dram_watts[i]) );
+                            json_real(rapl->dram_watts[i]));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
@@ -1130,7 +1130,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 
     // Set the node power key with pwrnode value.
     json_object_set_new(node_obj, "power_node_watts",
-                        json_real(node_power) );
+                        json_real(node_power));
 }
 
 

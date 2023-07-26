@@ -442,7 +442,8 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     }
 
     // Export JSON object as a string for returning.
-    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4) + JSON_REAL_PRECISION(3));
+    *get_power_obj_str = json_dumps(get_power_obj,
+                                    JSON_INDENT(4) + JSON_REAL_PRECISION(3));
     json_decref(get_power_obj);
     close(fd);
     return 0;
