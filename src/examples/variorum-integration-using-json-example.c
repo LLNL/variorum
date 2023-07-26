@@ -14,7 +14,7 @@
 #ifdef SECOND_RUN
 static inline double do_work(int input)
 {
-    unsigned short i;
+    int i;
     double result = (double)input;
 
     for (i = 0; i < 100000; i++)
@@ -28,7 +28,7 @@ static inline double do_work(int input)
 
 void parse_json_obj(char *s, int num_sockets, char *hostname)
 {
-	int i;
+	unsigned short i;
 	char socketID[12];
 	double power_node, power_cpu, power_gpu, power_mem;
 	
