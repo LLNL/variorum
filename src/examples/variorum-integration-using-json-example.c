@@ -29,7 +29,7 @@ static inline double do_work(int input)
 void parse_json_obj(char *s, int num_sockets, char *hostname)
 {
 	unsigned short i;
-	char socketID[12];
+	char socketID[20];
 	double power_node, power_cpu, power_gpu, power_mem;
 	
 	/* load power object from string then load node object from power object with the hostname*/
@@ -51,7 +51,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 	for(i = 0; i < num_sockets; ++i)
 	{
 		/* extract socket object from node object with "Socket_#" */
-		snprintf(socketID, "Socket_%u",i);
+		snprintf(socketID, "Socket_%d",i);
 		json_t *socket_obj = json_object_get(node_obj, socketID);
 		if(socket_obj == NULL)
 		{
