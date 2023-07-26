@@ -51,7 +51,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 	for(i = 0; i < num_sockets; ++i)
 	{
 		/* extract socket object from node object with "Socket_#" */
-		snprintf(socketID, 12, "Socket_%d", i);
+		sprintf(socketID, "Socket_%d", i);
 		json_t *socket_obj = json_object_get(node_obj, socketID);
 		if(socket_obj == NULL)
 		{
