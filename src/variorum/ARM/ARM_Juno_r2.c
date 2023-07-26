@@ -129,7 +129,7 @@ int arm_juno_r2_get_power_json(char **get_power_obj_str)
 
     ret = arm_cpu_juno_r2_json_get_power_data(get_power_obj);
 
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
     json_decref(get_power_obj);
 
     return ret;
@@ -149,7 +149,7 @@ int arm_juno_r2_get_power_domain_info_json(char **get_domain_obj_str)
 
     ret = arm_cpu_juno_r2_json_get_power_domain_info(get_domain_obj);
 
-    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
     return ret;
