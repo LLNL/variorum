@@ -16,32 +16,5 @@ stages:
     forward:
       pipeline_variables: true
 
-#build-quartz-format:
-# tags:
-#   - shell
-#   - quartz
-# stage: format
-# script:
-#   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
-#   - tar -xf astyle_3.1_linux.tar.gz
-#   - cd astyle/build/gcc && make
-#   - export PATH="${PWD}/bin:${PATH}"
-#   - cd -
-#   - echo -e "PWD:" ${PWD}
-#   - ./scripts/.ci-check-code-format.sh
-#   - err=$?
-#   - if [ $err -eq 0 ]; then exit 0; else echo -e "Astyle formatting needed!"; exit 1; fi
-#
-#build-quartz-format-rst:
-# tags:
-#   - shell
-#   - quartz
-# stage: format
-# script:
-#   - wget https://sourceforge.net/projects/astyle/files/astyle/astyle%203.1/astyle_3.1_linux.tar.gz
-#   - ./scripts/.ci-check-rst-format.sh
-
 include:
   - local: .gitlab/subscribed-pipelines.yml
-
-
