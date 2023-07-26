@@ -28,7 +28,7 @@ static inline double do_work(int input)
 
 void parse_json_obj(char *s, int num_sockets, char *hostname)
 {
-	unsigned short i;
+	int i;
 	char socketID[20];
 	double power_node, power_cpu, power_gpu, power_mem;
 	
