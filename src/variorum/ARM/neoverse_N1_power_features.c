@@ -256,7 +256,7 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
+    json_t *node_obj = json_object();
     json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
@@ -299,17 +299,17 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
 
     for (i = 0; i < (int)m_num_package; i++)
     {
-		char socketID[12];
-		snprintf(socketID, 12, "Socket_%d", i);
+        char socketID[12];
+        snprintf(socketID, 12, "Socket_%d", i);
 
-		json_t *socket_obj = json_object();
-		json_object_set_new(node_obj, socketID, socket_obj);
+        json_t *socket_obj = json_object();
+        json_object_set_new(node_obj, socketID, socket_obj);
 
         json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
-		if(i != 0)
-		{
-			json_object_set_new(get_power_obj, "power_gpu_watts", json_real(-1.0));
-		}
+        if (i != 0)
+        {
+            json_object_set_new(get_power_obj, "power_gpu_watts", json_real(-1.0));
+        }
     }
 
     /* The power telemetry obtained from the power registers is in
@@ -317,7 +317,7 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
-	json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
+    json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
 
     json_object_set_new(socket_0_obj, "power_cpu_watts",
                         json_real((double)(cpu_power_val) / 1000000.0f));
@@ -344,24 +344,24 @@ int arm_cpu_neoverse_n1_json_get_power_domain_info(json_t *get_domain_obj)
 
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
-	json_object_set_new(get_domain_obj, hostname, node_obj);
-	json_object_set_new(node_obj, "timestamp", json_integer(ts));
+    json_t *node_obj = json_object();
+    json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-	json_t *control_obj = json_object();
-	json_object_set_new(node_obj, "control", control_obj);
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
 
-	json_t *measurement_obj = json_object();
-	json_object_set_new(node_obj, "measurement", measurement_obj);
-	
-	json_t *measurement_cpu_obj = json_object();
-	json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
-	json_object_set_new(measurement_cpu_obj, "units", "Watts");
- 
-	json_t *unsupported_features = json_array();
-	json_object_set_new(node_obj, "unsupported", unsupported_features);
-	json_array_append(unsupported_features, json_string("power_node"));
-	json_array_append(unsupported_features, json_string("power_mem"));
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
+
+    json_t *measurement_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+    json_object_set_new(measurement_cpu_obj, "units", "Watts");
+
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_array_append(unsupported_features, json_string("power_node"));
+    json_array_append(unsupported_features, json_string("power_mem"));
 
     return 0;
 }
