@@ -1222,6 +1222,7 @@ int variorum_get_gpu_utilization_json(json_t
                                VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                getenv("HOSTNAME"), __FILE__,
                                __FUNCTION__, __LINE__);
+        return -1;
     }
     err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj);
     if (err)
