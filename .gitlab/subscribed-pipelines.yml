@@ -4,11 +4,6 @@ quartz-build-and-test:
     CI_MACHINE: "quartz"
   extends: [.build]
 
-catalyst-build-and-test:
-  variables:
-    CI_MACHINE: "catalyst"
-  extends: [.build]
-
 corona-build-and-test:
   variables:
     CI_MACHINE: "corona"
