@@ -6,6 +6,7 @@
 #include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <variorum.h>
 #include <variorum_topology.h>
@@ -25,7 +26,7 @@ static inline double do_work(int input)
 }
 #endif
 
-void parse_json_obj(char *s, int num_sockets)
+void old_parse_json_obj(char *s, int num_sockets)
 {
     int i, j;
 
@@ -95,8 +96,49 @@ void parse_json_obj(char *s, int num_sockets)
     json_decref(power_obj);
 }
 
+void parse_json_obj(char *s, int num_sockets, char *hostname)
+{
+	int i;
+	char socketID[12];
+	double power_node, power_cpu, power_gpu, power_mem;
+
+	json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+	json_t *node_obj = json_object_get(power_obj, hostname);
+
+	if(node_obj == NULL)
+	{
+		printf("host object not found");
+	}
+	
+	power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
+
+	printf("\nExtracted power values at node and socket level are:");
+	printf("\n\nNode Power: %lf Watts\n\n", power_node);
+
+	for(i = 0; i < num_sockets; ++i)
+	{
+		snprintf(socketID, 12, "Socket_%d", i);
+		json_t *socket_obj = json_object_get(node_obj, socketID);
+		if(socket_obj == NULL)
+		{
+			printf("Socket object not found!\n");
+		}
+		power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+		power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
+		power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+
+		printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
+		printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
+		printf("Socket %d, Mem Power: %lf Watts\n\n", i, power_mem);
+	}
+
+	json_decref(power_obj);
+}
+
+
 int main(void)
 {
+	char hostname[1024];
     int ret;
     int num_sockets = 0;
     char *s = NULL;
@@ -108,6 +150,9 @@ int main(void)
 
     /* Determine number of sockets */
     num_sockets = variorum_get_num_sockets();
+
+	/* get the host name */
+	gethostname(hostname, 1024);
 
     if (num_sockets <= 0)
     {
@@ -126,7 +171,7 @@ int main(void)
     /* Print the entire JSON object and then the parsed JSON object */
     printf("\n*****JSON object received from first run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets);
+    parse_json_obj(s, num_sockets, hostname);
 
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
@@ -145,7 +190,7 @@ int main(void)
 
     printf("\n*****JSON object received from second run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets);
+    parse_json_obj(s, num_sockets, hostname);
 #endif
 
     /* Deallocate the string */
