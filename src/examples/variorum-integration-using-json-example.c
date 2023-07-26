@@ -14,7 +14,7 @@
 #ifdef SECOND_RUN
 static inline double do_work(int input)
 {
-    int i;
+    unsigned short i;
     double result = (double)input;
 
     for (i = 0; i < 100000; i++)
@@ -51,7 +51,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 	for(i = 0; i < num_sockets; ++i)
 	{
 		/* extract socket object from node object with "Socket_#" */
-		snprintf(socketID, "Socket_%d", (unsigned_short)i);
+		snprintf(socketID, "Socket_%hu",i);
 		json_t *socket_obj = json_object_get(node_obj, socketID);
 		if(socket_obj == NULL)
 		{
