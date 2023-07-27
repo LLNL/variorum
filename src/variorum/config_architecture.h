@@ -7,6 +7,7 @@
 #define CONFIG_ARCHIECTURE_H_INCLUDE
 
 #include <stdint.h>
+#include <jansson.h>
 
 #include <variorum_config.h>
 
@@ -251,7 +252,7 @@ struct platform
     int (*variorum_get_thermals_json)(char **get_thermal_obj_str);
 
     /// @brief Function pointer to get JSON object for frequency information
-    int (*variorum_get_frequency_json)(char **get_frequency_obj_str);
+    int (*variorum_get_frequency_json)(json_t *get_clock_obj_json);
 
     /// @brief Function pointer to get list of available frequencies.
     ///

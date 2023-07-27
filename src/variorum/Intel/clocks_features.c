@@ -295,22 +295,22 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
     read_batch(PERF_DATA);
 
     json_t *node_obj = json_object_get(output, hostname);
-	if(node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(output, hostname, node_obj);
-	}
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(output, hostname, node_obj);
+    }
 
     json_t *make_socket_obj(json_t *node_obj, int socket_index)
     {
         char socket_name[16];
         snprintf(socket_name, 16, "Socket_%d", socket_index);
         json_t *socket_obj = json_object_get(node_obj, socket_name);
-		if(node_obj == NULL)
-		{
-			socket_obj = json_object();	
-			json_object_set_new(node_obj, socket_name, socket_obj);
-		}
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(node_obj, socket_name, socket_obj);
+        }
         return socket_obj;
     }
 
@@ -338,8 +338,8 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
             for (i = 0; i < nsockets; i++)
             {
                 json_t *socket_obj = make_socket_obj(node_obj, i);
-				json_t *cpu_obj = json_object();
-				json_object_set_new(socket_obj, "CPU", cpu_obj);
+                json_t *cpu_obj = json_object();
+                json_object_set_new(socket_obj, "CPU", cpu_obj);
                 for (j = 0; j < ncores / nsockets; j++)
                 {
                     json_t *core_obj = make_core_obj(cpu_obj, j);
