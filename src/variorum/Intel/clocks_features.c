@@ -301,28 +301,32 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
 		json_object_set_new(output, hostname, node_obj);
 	}
 
-    json_t *make_socket_obj(int socket_index)
+    json_t *make_socket_obj(json_t *node_obj, int socket_index)
     {
-        char socket_name[12];
-        snprintf(socket_name, 12, "Socket_%d", socket_index);
-        json_t *socket_obj = json_object();
-        json_object_set_new(host_obj, socket_name, socket_obj);
+        char socket_name[16];
+        snprintf(socket_name, 16, "Socket_%d", socket_index);
+        json_t *socket_obj = json_object_get(node_obj, socket_name);
+		if(node_obj == NULL)
+		{
+			socket_obj = json_object();	
+			json_object_set_new(node_obj, socket_name, socket_obj);
+		}
         return socket_obj;
     }
 
-    json_t *make_core_obj(json_t *socket_obj, int core_index)
+    json_t *make_core_obj(json_t *cpu_obj, int core_index)
     {
-        char core_name[12];
-        snprintf(core_name, 12, "Core_%d", core_index);
+        char core_name[16];
+        snprintf(core_name, 16, "Core_%d", core_index);
         json_t *core_obj = json_object();
-        json_object_set_new(socket_obj, core_name, core_obj);
+        json_object_set_new(cpu_obj, core_name, core_obj);
         return core_obj;
     }
 
     json_t *make_thread_obj(json_t *core_obj, int thread_index)
     {
-        char thread_name[10];
-        snprintf(thread_name, 10, "Thread_%d", thread_index);
+        char thread_name[16];
+        snprintf(thread_name, 16, "Thread_%d", thread_index);
         json_t *thread_obj = json_object();
         json_object_set_new(core_obj, thread_name, thread_obj);
         return thread_obj;
@@ -333,16 +337,18 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
         case CORE:
             for (i = 0; i < nsockets; i++)
             {
-                json_t *socket_obj = make_socket_obj(i);
+                json_t *socket_obj = make_socket_obj(node_obj, i);
+				json_t *cpu_obj = json_object();
+				json_object_set_new(socket_obj, "CPU", cpu_obj);
                 for (j = 0; j < ncores / nsockets; j++)
                 {
-                    json_t *core_obj = make_core_obj(socket_obj, j);
+                    json_t *core_obj = make_core_obj(cpu_obj, j);
                     for (k = 0; k < nthreads / ncores; k++)
                     {
                         json_t *thread_obj = make_thread_obj(core_obj, k);
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                        char logical_thread_name[18];
-                        snprintf(logical_thread_name, 18, "LogicalThread_%d", idx);
+                        char logical_thread_name[24];
+                        snprintf(logical_thread_name, 24, "LogicalThread_%d", idx);
                         json_object_set_new(thread_obj, logical_thread_name, json_integer(idx));
                         json_object_set_new(thread_obj, "APERF", json_integer(*cd->aperf[idx]));
                         json_object_set_new(thread_obj, "MPERF", json_integer(*cd->mperf[idx]));
