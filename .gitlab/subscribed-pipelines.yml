@@ -4,9 +4,9 @@ quartz-build-and-test:
     CI_MACHINE: "quartz"
   extends: [.build]
 
-corona-build-and-test:
+corona-gpu-build-and-test:
   variables:
-    CI_MACHINE: "corona"
+    CI_MACHINE: "corona-gpu"
   extends: [.build]
 
 lassen-gpu-build-and-test:
