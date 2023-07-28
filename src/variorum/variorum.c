@@ -1122,7 +1122,6 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
 
     json_t *get_frequency_obj = json_object();
 
-
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         if (g_platform[i].variorum_get_frequency_json == NULL)

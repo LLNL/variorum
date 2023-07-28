@@ -96,7 +96,7 @@ int volta_get_clocks(int long_ver)
     return 0;
 }
 
-int volta_get_clocks_json(char **get_clocks_obj_str)
+int volta_get_clocks_json(json_t *get_clock_obj_json)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -109,14 +109,11 @@ int volta_get_clocks_json(char **get_clocks_obj_str)
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
-    json_t *get_clocks_obj = json_object();
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        nvidia_gpu_get_clocks_json(iter, get_clocks_obj);
+        nvidia_gpu_get_clocks_json(iter, get_clock_obj_json);
     }
-    *get_clocks_obj_str = json_dumps(get_clocks_obj, JSON_INDENT(4));
-    json_decref(get_clocks_obj);
     return 0;
 }
 
