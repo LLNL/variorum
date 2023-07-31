@@ -42,5 +42,5 @@ nested JSON object. An example is provided below.
     }
 }
 
-The names  and numbers of sensors  will vary from system to system and the
+The names and numbers of sensors  will vary from system to system and the
 number of sockets will depend on the node.
