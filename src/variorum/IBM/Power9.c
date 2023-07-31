@@ -554,7 +554,6 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
             free(buf);
             return -1;
         }
-
         json_get_frequency_sensors(iter, node_obj, buf);
         free(buf);
     }
