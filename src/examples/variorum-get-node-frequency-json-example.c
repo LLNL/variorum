@@ -31,16 +31,16 @@ int main(int argc, char **argv)
         }
     }
 
-    char *s;
+    char *s = NULL;
     ret = variorum_get_frequency_json(&s);
     if (ret != 0)
     {
-        printf("!\n");
-        free(s);
-        exit(-1);
+        printf("Variorum get frequency json failure!\n");
+		free(s);
+		exit(-1);
     }
     puts(s);
-    free(s);
-
-    return ret;
+	free(s);
+    
+	return ret;
 }
