@@ -495,8 +495,10 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
     static int init = 0;
     static struct timeval start;
     struct timeval now;
+	char socketID[16];
 
     gethostname(hostname, 1024);
+	snprintf(socketID, 16, "Socket_%d", chipid);
 
     ret = rsmi_init(0);
     if (ret != RSMI_STATUS_SUCCESS)
@@ -527,14 +529,23 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
 
     gettimeofday(&now, NULL);
 
-    json_t *socket_obj = json_object_get(output, hostname);
-    if (socket_obj == NULL)
+    json_t *node_obj = json_object_get(output, hostname);
+    if (node_obj == NULL)
     {
-        socket_obj = json_object();
-        json_object_set_new(output, hostname, socket_obj);
+        node_obj = json_object();
+        json_object_set_new(output, hostname, node_obj);
     }
 
+	json_t* socket_obj = json_object_get(node_obj, socketID);
+	if (socket_obj == NULL)
+	{
+		socket_obj = json_object();
+		json_object_set_new(node_obj, socketID, socket_obj);
+	}
+
     json_t *gpu_obj = json_object();
+	json_object_set_new(socket_obj, "GPU", gpu_obj);
+
     json_object_set_new(gpu_obj, "Timestamp",
                         json_real((now.tv_usec - start.tv_usec) / 1000000.0));
 
@@ -572,9 +583,6 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
         json_object_set_new(gpu_info_obj, "MemoryClock", json_integer(f_mem_val));
         json_object_set_new(gpu_obj, device_id, gpu_info_obj);
     }
-    char socket_id[12];
-    snprintf(socket_id, 12, "Socket_%d", chipid);
-    json_object_set_new(socket_obj, socket_id, gpu_obj);
 
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
