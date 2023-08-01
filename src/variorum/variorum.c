@@ -1134,9 +1134,9 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
         }
         err = g_platform[i].variorum_get_frequency_json(get_frequency_obj);
         if (err)
-		{
-			printf("Error with variorum get frequency json platform %d", i);
-			json_decref(get_frequency_obj);
+        {
+            printf("Error with variorum get frequency json platform %d", i);
+            json_decref(get_frequency_obj);
             return -1;
         }
     }

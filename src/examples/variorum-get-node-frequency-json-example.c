@@ -36,11 +36,11 @@ int main(int argc, char **argv)
     if (ret != 0)
     {
         printf("Variorum get frequency json failure!\n");
-		free(s);
-		exit(-1);
+        free(s);
+        exit(-1);
     }
     puts(s);
-	free(s);
-    
-	return ret;
+    free(s);
+
+    return ret;
 }

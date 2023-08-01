@@ -248,15 +248,15 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     char socket_id[16];
     snprintf(socket_id, 16, "Socket_%d", chipid);
 
-	json_t *socket_obj = json_object_get(output, socket_id);
-	if(socket_obj == NULL)
-	{	
-		socket_obj = json_object();
-		json_object_set_new(node_obj, socket_id, socket_obj);
-	}
+    json_t *socket_obj = json_object_get(output, socket_id);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(node_obj, socket_id, socket_obj);
+    }
 
     json_t *gpu_obj = json_object();
-	json_object_set_new(socket_obj, "GPU", gpu_obj);
+    json_object_set_new(socket_obj, "GPU", gpu_obj);
 
     /* Iterate over all GPU device handles and print GPU clock */
     for (d = chipid * (int)m_gpus_per_socket;

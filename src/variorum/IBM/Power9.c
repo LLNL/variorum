@@ -518,13 +518,13 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
         printf("Failed to open occ_inband_sensors file\n");
         return -1;
     }
-	
-	json_t *node_obj = json_object_get(get_frequency_obj_json, hostname);
-	if (node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_frequency_obj_json, hostname, node_obj);
-	}
+
+    json_t *node_obj = json_object_get(get_frequency_obj_json, hostname);
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_frequency_obj_json, hostname, node_obj);
+    }
 
     for (iter = 0; iter < nsockets; iter++)
     {

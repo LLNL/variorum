@@ -374,27 +374,27 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
 
 void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
 {
-	struct occ_sensor_data_header *hb;
-	struct occ_sensor_name *md;
-	int i = 0;
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
+    int i = 0;
 
-	hb = (struct occ_sensor_data_header *)(uint64_t)buf;
-	md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
+    hb = (struct occ_sensor_data_header *)(uint64_t)buf;
+    md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-	char socketID[12];
-	snprintf(socketID, 12, "Socket_%d", chipid);
+    char socketID[12];
+    snprintf(socketID, 12, "Socket_%d", chipid);
 
-	json_t *socket_obj = json_object_get(node_obj, socketID);
-	if (socket_obj == NULL)
-	{
-		socket_obj = json_object();
-		json_object_set_new(node_obj, socketID, socket_obj);
-	}
+    json_t *socket_obj = json_object_get(node_obj, socketID);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(node_obj, socketID, socket_obj);
+    }
 
-	json_t *cpu_obj = json_object();
-	json_object_set_new(socket_obj, "CPU", cpu_obj);
+    json_t *cpu_obj = json_object();
+    json_object_set_new(socket_obj, "CPU", cpu_obj);
 
-	for(i = 0; i < be16toh(hb->nr_sensors); i++)	
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
         uint32_t offset = be32toh(md[i].reading_offset);
         uint32_t scale = be32toh(md[i].scale_factor);
@@ -405,10 +405,10 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
             sample = read_sensor(hb, offset, SENSOR_SAMPLE);
         }
 
-		if (strncmp(md[i].name, "FREQAC", 6) == 0)
-		{
-			json_object_set_new(cpu_obj, md[i].name, json_integer(sample));
-		}
+        if (strncmp(md[i].name, "FREQAC", 6) == 0)
+        {
+            json_object_set_new(cpu_obj, md[i].name, json_integer(sample));
+        }
     }
 
 
