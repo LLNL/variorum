@@ -400,8 +400,6 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
         uint32_t scale = be32toh(md[i].scale_factor);
         uint64_t sample = 0;
 
-		printf("sensor name %s, sensor value: %ld\n", md[i].name, json_integer(sample * TO_FP(scale)));
-
         if (md[i].structure_type == OCC_SENSOR_READING_FULL)
         {
             sample = read_sensor(hb, offset, SENSOR_SAMPLE);
