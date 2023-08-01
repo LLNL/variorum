@@ -248,7 +248,7 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     char socket_id[16];
     snprintf(socket_id, 16, "Socket_%d", chipid);
 
-    json_t *socket_obj = json_object_get(output, socket_id);
+    json_t *socket_obj = json_object_get(node_obj, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
