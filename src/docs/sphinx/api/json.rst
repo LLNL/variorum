@@ -12,7 +12,7 @@ Obtaining Thermal Information
 =============================
 
 The API to obtain node thermal has the following format. It takes a string
-(``char**``) by reference as input, and populates this strong with a nested 
+(``char**``) by reference as input, and populates this string with a nested 
 JSON object with hostname, followed by socket_{number}, followed by CPU and 
 or GPU (depending on the platform, may contain only one or both), followed 
 by Core and Mem for CPU. 
