@@ -506,14 +506,14 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
     char socket_id[12];
     snprintf(socket_id, 12, "Socket_%d", chipid);
 
-    json_t * gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
+    json_t *gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
     if (gpu_obj == NULL)
     {
         gpu_obj = json_object();
         json_object_set_new(get_gpu_util_obj, "GPU", gpu_obj);
     }
 
-    json_t * socket_obj = json_object_get(gpu_obj, socket_id);
+    json_t *socket_obj = json_object_get(gpu_obj, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();

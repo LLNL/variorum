@@ -220,20 +220,20 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
     static int init_output = 0;
     char socket_id[12];
     snprintf(socket_id, 12, "Socket_%d", chipid);
-    json_t * gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
+    json_t *gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
     if (gpu_obj == NULL)
     {
         gpu_obj = json_object();
         json_object_set_new(get_gpu_util_obj, "GPU", gpu_obj);
     }
 
-    json_t * socket_obj = json_object_get(gpu_obj, socket_id);
+    json_t *socket_obj = json_object_get(gpu_obj, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
         json_object_set_new(gpu_obj, socket_id, socket_obj);
     }
-    
+
     /* Iterate over all GPU device handles and print GPU SM and memory utilization */
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)

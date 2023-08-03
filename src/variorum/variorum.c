@@ -1067,14 +1067,14 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         get_cpu_util_obj = json_object();
         json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
     }
-    
+
     json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
     if (cpu_util_obj == NULL)
     {
         cpu_util_obj = json_object();
         json_object_set_new(get_cpu_util_obj, "CPU", cpu_util_obj);
     }
-    
+
     fp = fopen(CPU_FILE, "r");
     if (fp == NULL)
     {
