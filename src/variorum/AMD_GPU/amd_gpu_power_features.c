@@ -480,7 +480,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
 }
 
 void get_gpu_utilization_data_json(int chipid, int total_sockets,
-                                   json_t *get_thermal_obj)
+                                   json_t *get_gpu_util_obj)
 
 {
     rsmi_status_t ret;
@@ -501,6 +501,23 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
+    }
+
+    char socket_id[12];
+    snprintf(socket_id, 12, "Socket_%d", chipid);
+
+    json_t * gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
+    if (gpu_obj == NULL)
+    {
+        gpu_obj = json_object();
+        json_object_set_new(get_gpu_util_obj, "GPU", gpu_obj);
+    }
+
+    json_t * socket_obj = json_object_get(gpu_obj, socket_id);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(gpu_obj, socket_id, socket_obj);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -543,7 +560,8 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
 
         char device_id[12];
         snprintf(device_id, 12, "GPU%d_util%", i);
-        json_object_set_new(get_gpu_util_obj, device_id, json_integer(utilpercent));
+        //json_object_set_new(get_gpu_util_obj, device_id, json_integer(utilpercent));
+        json_object_set_new(socket_obj, device_id, json_integer(util.gpu));
 
     }
     ret = rsmi_shut_down();

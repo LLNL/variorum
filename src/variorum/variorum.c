@@ -1045,15 +1045,15 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_util_obj, "host", json_string(hostname));
-    json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
+    //json_object_set_new(get_util_obj, "host", json_string(hostname));
+    //json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
 
     char str[100];
     const char d[2] = " ";
     char *token, *s, *p;
     int i = 0;
     uint64_t sum = 0, idle = 0, userTime = 0, niceTime = 0, sumUserTime = 0,
-             iowait = 0;
+             iowait = 0, sumIdle = 0;
     double cpuUtil = 0.0, userUtil = 0.0, sysUtil = 0.0, memUtil = 0.0;
     int rc, j;
     char lbuf[256];
@@ -1061,7 +1061,20 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     uint64_t metric_value;
     uint64_t memTotal = 0, memFree = 0, sysTime = 0;
     int strcp;
-
+    json_t *get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+    if (get_cpu_util_obj == NULL)
+    {
+        get_cpu_util_obj = json_object();
+        json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
+    }
+    
+    json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
+    if (cpu_util_obj == NULL)
+    {
+        cpu_util_obj = json_object();
+        json_object_set_new(get_cpu_util_obj, "CPU", cpu_util_obj);
+    }
+    
     fp = fopen(CPU_FILE, "r");
     if (fp == NULL)
     {
@@ -1102,7 +1115,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
                 {
                     iowait = strtol(token, &p, 10);
                 }
-                idle = idle + iowait;
+                sumIdle = idle + iowait;
                 sumUserTime = userTime + niceTime;
                 i++;
             }
@@ -1115,7 +1128,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         userUtil = ((sumUserTime - lastUserTime) / (double)(sum - lastSum)) * 100;
         sysUtil = ((sysTime - lastSysTime) / (double)(sum - lastSum)) * 100;
-        cpuUtil = (1 - ((idle - lastIdle) / (double)(sum - lastSum))) * 100;
+        cpuUtil = (1 - ((sumIdle - lastIdle) / (double)(sum - lastSum))) * 100;
 
     }
     else
@@ -1128,10 +1141,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     lastUserTime = sumUserTime;
     lastSum = sum;
     lastSysTime = sysTime;
-    lastIdle = idle;
-    json_object_set_new(get_util_obj, "cpu util", json_real(cpuUtil));
-    json_object_set_new(get_util_obj, "user util", json_real(userUtil));
-    json_object_set_new(get_util_obj, "system util", json_real(sysUtil));
+    lastIdle = sumIdle;
+    json_object_set_new(cpu_util_obj, "total_util%", json_real(cpuUtil));
+    json_object_set_new(cpu_util_obj, "user_util%", json_real(userUtil));
+    json_object_set_new(cpu_util_obj, "system_util%", json_real(sysUtil));
     fp = fopen(MEM_FILE, "r");
     if (fp == NULL)
     {
@@ -1177,9 +1190,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
 
     fclose(fp);
-
-    json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
-    variorum_get_gpu_utilization_json(get_util_obj);
+    json_object_set_new(get_cpu_util_obj, "memory_util%", json_real(memUtil));
+    json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
+    //json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
+    variorum_get_gpu_utilization_json(get_cpu_util_obj);
     //variorum_get_gpu_utilization_json(get_util_obj);
     *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
     json_decref(get_util_obj);
