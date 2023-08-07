@@ -22,7 +22,6 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
                               FILE *output);
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
                               unsigned int powerlimit);
-void get_thermals_json(int chipid, int total_sockets, json_t *output);
 void get_clocks_json(int chipid, int total_sockets, json_t *output);
 
 #endif

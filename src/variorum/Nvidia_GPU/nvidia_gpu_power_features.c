@@ -127,36 +127,6 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
     /*!@todo: Print GPU memory temperature */
 }
 
-void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
-{
-    unsigned gpu_temp;
-    int d;
-
-    json_t *socket_obj = json_object_get(output, m_hostname);
-    if (socket_obj == NULL)
-    {
-        socket_obj = json_object();
-        json_object_set_new(output, m_hostname, socket_obj);
-    }
-
-    char socket_id[12];
-    snprintf(socket_id, 12, "Socket_%d", chipid);
-
-    json_t *gpu_obj = json_object();
-    for (d = chipid * (int)m_gpus_per_socket;
-         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
-    {
-
-        nvmlDeviceGetTemperature(m_unit_devices_file_desc[d], NVML_TEMPERATURE_GPU,
-                                 &gpu_temp);
-        char device_id[12];
-        snprintf(device_id, 12, "Device_%d", d);
-        json_object_set_new(gpu_obj, device_id, json_integer(gpu_temp));
-    }
-
-    json_object_set_new(socket_obj, socket_id, gpu_obj);
-}
-
 void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 {
     unsigned int power_limit;
@@ -258,7 +228,6 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     json_t *gpu_obj = json_object();
     json_object_set_new(socket_obj, "GPU", gpu_obj);
 
-    /* Iterate over all GPU device handles and print GPU clock */
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {

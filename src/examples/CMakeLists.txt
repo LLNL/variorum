@@ -41,7 +41,6 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-gpu-utilization-example
     variorum-print-verbose-power-limit-example
     variorum-print-verbose-power-example
-    variorum-print-verbose-thermals-example
     variorum-print-energy-example
 )
 
