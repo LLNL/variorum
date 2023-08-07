@@ -248,8 +248,8 @@ struct platform
 
     /// @brief Function pointer to get JSON object for frequency information
     ///
-	/// @return Error code.
-	int (*variorum_get_frequency_json)(json_t *get_clock_obj_json);
+    /// @return Error code.
+    int (*variorum_get_frequency_json)(json_t *get_clock_obj_json);
 
     /// @brief Function pointer to get list of available frequencies.
     ///
