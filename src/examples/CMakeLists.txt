@@ -18,7 +18,6 @@ set(BASIC_EXAMPLES
     variorum-enable-turbo-example
     variorum-get-node-power-json-example
     variorum-get-node-power-domain-info-json-example
-	variorum-get-node-thermal-json-example
 	variorum-get-node-frequency-json-example
     variorum-integration-using-json-example
     variorum-get-topology-info-example
