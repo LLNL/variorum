@@ -9,6 +9,7 @@
 
 #include <variorum.h>
 
+
 int main(int argc, char **argv)
 {
     int ret;
@@ -30,7 +31,6 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
-
     char *s = NULL;
     ret = variorum_get_frequency_json(&s);
     if (ret != 0)
