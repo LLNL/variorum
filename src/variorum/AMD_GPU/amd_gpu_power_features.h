@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <jansson.h>
+
 
 #include <rocm_smi/rocm_smi.h>
 

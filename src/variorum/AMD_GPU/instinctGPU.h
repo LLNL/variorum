@@ -6,6 +6,8 @@
 #ifndef INSTINCTGPU_H_INCLUDE
 #define INSTINCTGPU_H_INCLUDE
 
+#include <jansson.h>
+
 int amd_gpu_instinct_get_power(int verbose);
 int amd_gpu_instinct_get_power_limit(int verbose);
 int amd_gpu_instinct_get_thermals(int verbose);

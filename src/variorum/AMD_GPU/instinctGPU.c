@@ -113,7 +113,7 @@ int amd_gpu_instinct_get_gpu_utilization(int verbose)
     return 0;
 }
 
-int amd_gpu_instinct_get_gpu_utilizationi_json(json_t *get_thermal_obj)
+int amd_gpu_instinct_get_gpu_utilization_json(json_t *get_thermal_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
