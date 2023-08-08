@@ -219,6 +219,7 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
     int d;
     static int init_output = 0;
     char socket_id[12];
+    char device_id[12];
     snprintf(socket_id, 12, "Socket_%d", chipid);
     json_t *gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
     if (gpu_obj == NULL)
@@ -235,12 +236,11 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
     }
 
     /* Iterate over all GPU device handles and print GPU SM and memory utilization */
-    for (d = chipid * (int)m_gpus_per_socket;
-         d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+    for (d = 0;
+         d < (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
-        char device_id[12];
-        snprintf(device_id, 12, "GPU%d_util%", d);
+        snprintf(device_id, 12, "GPU%d%d_util%", chipid, d);
         json_object_set_new(socket_obj, device_id, json_integer(util.gpu));
     }
 }
