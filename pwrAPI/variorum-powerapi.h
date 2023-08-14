@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "pwrtypes.h"
 #include <jansson.h>
 #include "../src/variorum/variorum.h"
@@ -10,53 +11,18 @@
 #include <time.h>
 #include <string.h>
 
-//extract min or max watt values from control range 
-double parse(const char* minmax, const char* input) {
-    int i = 0;
-    int first, last;
-    if(strcmp(minmax, "min") == 0) {
-        while(input[i] != '\0') {
-            if(input[i] == ',') {
-                last = i-1;
-                break;
-            } else if (input[i] == 'i') {
-                first = i+4;
-            }
-            i++;
-        }
-    } else {
-        while(input[i] != '\0') {
-            if(input[i] == '}') {
-                last = i-1;
-                break;
-            } else if (input[i] == 'a') {
-                first = i+4;
-            }
-            i++;
-        }
-    }
-    int len = last-first+2;
-    char value[len];
-    memset(value, '\0', len);
-    
-    char *valuestr;
-    for(int i = 0, j = first; i < len && j <= last; ++i, ++j) {
-        value[i] = input[j];
-    }
 
-    return strtod(value, &valuestr);
-}
-
+//General object struct
 typedef struct {
 	PWR_ObjType type;
-	int misc;
-	char option[4];
+	int misc; // use misc for object type specific info such as socket number or core number or dram slot number
+	char option[4]; //use option to differentiate between different usecases of the same time. eg Object Type = Core, option = "CPU" or "GPU";
+	double value;
 } Object;
 
 typedef struct {
 	Object* root;
 } Cntxt;
-
 
 int PWR_CntxtInit(PWR_Cntxt type, PWR_Role role, const char* name, PWR_Cntxt* ctx) {
 
@@ -82,137 +48,151 @@ int PWR_CntxtGetEntryPoint(PWR_Cntxt ctx, PWR_Obj* obj) {
 }
 
 int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
-
 {
-
 	//get object type and misc value
 	//currently using misc value to represent socket #
 	PWR_ObjType obj_type = ((Object *)obj)->type;
 	int misc = ((Object *)obj)->misc;
-	
-	char* s = NULL;
-	int num_sockets;
-	int ret = variorum_get_node_power_json(&s);
-	json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
-	
-	num_sockets = variorum_get_num_sockets();
+	char *option = ((Object *)obj)->option;
+	char* node_power  = NULL;
+	char* node_domain  = NULL;
+	int power_ret = variorum_get_node_power_json(&node_power);
+	int domain_ret = variorum_get_node_power_domain_info_json(&node_domain);
+	char hostname[1024];
 
-	char* domain = NULL;
-	int domain_ret = variorum_get_node_power_domain_info_json(&domain);
-	json_t *domain_obj = json_loads(domain, JSON_DECODE_ANY, NULL);
-	json_t*  ranges = json_object_get(domain_obj, "control_range");
-	const char* range = json_string_value(ranges);
-	
-	double min_power = parse("min", range);
-	double max_power = parse("max", range);
+	gethostname(hostname, 1024);
 
-
-	//printf("minimum power is %lf, maximum power is %lf\n", min_power, max_power);
-		
-    	if (num_sockets <= 0)
-    	{
-            printf("HWLOC returned an invalid number of sockets. Exiting.\n");
-            exit(-1);
-    	}
-	
-
-	if (ret != 0)
+	if (power_ret != 0)
 	{
-		fprintf(stdout, "Unable to obtain power details.");
+		fprintf(stdout, "Unable to obtain power details!\n");
 		exit(-1);
 	}
-
-	if (domain_ret != 0) 
-
+	if (domain_ret != 0)
 	{
-		fprintf(stdout, "Unable to obtain domain details.");
+		fprintf(stdout, "Unable to obtain domain details!\n");
 		exit(-1);
 	}
+	json_t *power_obj = json_loads(node_power, JSON_DECODE_ANY, NULL);
+	json_t *domain_obj = json_loads(node_domain, JSON_DECODE_ANY, NULL);
 
-
-	switch(obj_type) {
+	switch(obj_type) 	
+	{
 		case PWR_OBJ_NODE:
-			if(type == PWR_ATTR_POWER) {
-				*( (double *)ptr ) = json_real_value(json_object_get(power_obj, "power_node_watts")); 
-			}
-
-			else if (type == PWR_ATTR_POWER_LIMIT_MIN) {
-				*( (double *)ptr ) = min_power;
-			}
-
-			else if (type == PWR_ATTR_POWER_LIMIT_MAX) {
-				*( (double *)ptr ) = max_power;
-			}
-			else {
-				printf("Attribute not supported!\n");
+			if (type == PWR_ATTR_POWER)
+			{
+				json_t *node_obj = json_object_get(power_obj, hostname);
+				*( (double *)ptr ) = json_real_value(json_object_get(node_obj, "power_node_watts") );
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else if (type == PWR_ATTR_POWER_LIMIT_MIN)
+			{
+				json_t *node_obj = json_object_get(domain_obj, hostname);
+				json_t *control_obj = json_object_get(node_obj, "control");
+				json_t *node_power_obj = json_object_get(control_obj, "power_node");
+				*( (double *)ptr ) = json_number_value(json_object_get(node_power_obj, "min") );
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else if (type == PWR_ATTR_POWER_LIMIT_MAX)
+			{	
+				json_t *node_obj = json_object_get(domain_obj, hostname);
+				json_t *control_obj = json_object_get(node_obj, "control");
+				json_t *node_power_obj = json_object_get(control_obj, "power_node");
+				*( (double *)ptr ) = json_number_value(json_object_get(node_power_obj, "max") );
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else 
+			{
+				printf("Attribute type %d not supported!\n", type);
+				return PWR_RET_FAILURE;
 			}
 			break;
 
 		case PWR_OBJ_MEM:
-		    	if(type == PWR_ATTR_POWER) {
-				double mem_power = 0;
-				char mem_name[25];
-				strcpy(mem_name, "power_mem_watts_socket_");
-				for(int i = 0; i < num_sockets; ++i){
-					mem_name[23] = i + '0';
-					mem_name[24] = '\0';
-					//printf("%s\n", mem_name);
-					mem_power += json_real_value(json_object_get(power_obj, mem_name));
+			if (type == PWR_ATTR_POWER)
+			{ 
+				json_t *node_obj = json_object_get(power_obj, hostname);
+				void *iter = json_object_iter(node_obj);
+				double mem_power_val = 0.0;
+				while(iter != NULL){
+					if(strncmp(json_object_iter_key(iter), "Socket", 6) == 0)
+					{
+						json_t *socket_obj = json_object_iter_value(iter);
+						mem_power_val += json_number_value(json_object_get(socket_obj, "power_mem_watts"));
+					}
+					iter = json_object_iter_next(node_obj, iter);
 				}
-
-				*( (double*)ptr ) = mem_power;			
-		    	}
-			else {
-				printf("Attribute not supported!\n");
+				*( (double *)ptr ) = mem_power_val;
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else 
+			{
+				printf("Attribute type %d not supported!\n", type);
+				return PWR_RET_FAILURE;
 			}
-		   	break;
+			break;
 
 		case PWR_OBJ_SOCKET:
-			if(type == PWR_ATTR_POWER) {
-				if(misc >= num_sockets) {
+			if (type == PWR_ATTR_POWER)
+			{
+				json_t *node_obj = json_object_get(power_obj, hostname);
+				char socketID[16];
+				snprintf(socketID, 16, "Socket_%d", misc);
+				json_t *socket_obj = json_object_get(node_obj, socketID);
+				if (socket_obj == NULL)
+				{
+					printf("Error: %s not found in json object!\n", socketID);
 					return PWR_RET_FAILURE;
-				} else {
-					double socket_power = 0;
-					char socket_cpu[25];
-					char socket_gpu[25];
-					char socket_mem[25];
-					strcpy(socket_cpu, "power_cpu_watts_socket_");
-					strcpy(socket_gpu, "power_gpu_watts_socket_");
-					strcpy(socket_mem, "power_mem_watts_socket_");
-					socket_cpu[23] = misc + '0';
-					socket_gpu[23] = misc + '0';
-					socket_mem[23] = misc + '0';
-					socket_cpu[24] = '\0';
-					socket_gpu[24] = '\0';
-					socket_mem[24] = '\0';
-					double _cpu_power = json_real_value(json_object_get(power_obj, socket_cpu) );
-					double _gpu_power = json_real_value(json_object_get(power_obj, socket_gpu) );
-					double _mem_power = json_real_value(json_object_get(power_obj, socket_mem) );
-
-					socket_power += _cpu_power < 0? 0 : _cpu_power;
-					socket_power += _gpu_power < 0? 0 : _gpu_power;
-					socket_power += _mem_power < 0? 0 : _mem_power;
-					//printf("socket power is %lf\n", socket_power);
-					*( (double*)ptr ) = socket_power;
-
 				}
+				double socket_pwr_value = 0.0;
+				void *iter = json_object_iter(socket_obj);
+				while(iter != NULL)
+				{
+					socket_pwr_value += json_number_value(json_object_iter_value(iter));
+					iter = json_object_iter_next(socket_obj, iter);
+				}
+				*( (double *)ptr ) = socket_pwr_value;
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else 
+			{
+				printf("Attribute type %d not supported!\n", type);
+				return PWR_RET_FAILURE;
 			}
-			else {
-				printf("Attribute not supported!\n");
+
+			break;
+	
+		case PWR_OBJ_CORE:
+			if (type == PWR_ATTR_POWER)
+			{
+				json_t *node_obj = json_object_get(power_obj, hostname);
+				char socketID[16];
+				snprintf(socketID, 16, "Socket_%d", misc);
+				json_t *socket_obj = json_object_get(node_obj, socketID);
+				if (socket_obj == NULL)
+				{
+					printf("Error: %s not found in json object!\n", socketID);
+					return PWR_RET_FAILURE;
+				}
+				if (strcmp(option, "CPU") == 0)
+				{
+					*( (double *)ptr ) = json_number_value(json_object_get(socket_obj, "power_cpu_watts"));
+				} else if (strcmp(option, "GPU") == 0)
+				{
+					*( (double *)ptr ) = json_number_value(json_object_get(socket_obj, "power_gpu_watts"));
+				}
+				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
+			} else 
+			{
+				printf("Attribute type %d not supported!\n", type);
+				return PWR_RET_FAILURE;
 			}
+
 			break;
 
 		default:
-			printf("type not supported!\n");
-			break;
+			printf("object type %d not supported!\n", type);
+			break;	
 	}
 
-	//set time stamp for PWR_Time
-	*ts = json_integer_value(json_object_get(power_obj, "timestamp"));
-	
 	json_decref(power_obj);
-	free(s);
-
+	json_decref(domain_obj);
+	free(node_power);
+	free(node_domain);
 
 	return PWR_RET_SUCCESS;			
 }

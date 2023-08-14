@@ -12,7 +12,7 @@ int main() {
 	int ret = PWR_ObjAttrGetValue(&obj, type, &value, &now);
 	printf("The node power is %lf Watts and the time is %ld\n", value, now);
 
-    	Object mem;
+ 	Object mem;
 	mem.type = PWR_OBJ_MEM;
 	PWR_Time now2;
 	double value2 = 0;
@@ -38,14 +38,14 @@ int main() {
 	}
 
 	Object socket1;
-    	socket1.type = PWR_OBJ_SOCKET;
-    	socket1.misc = 1;
+	socket1.type = PWR_OBJ_SOCKET;
+	socket1.misc = 1;
 	PWR_Time now4;
 	double value4 = 0;
-    	ret = PWR_ObjAttrGetValue(&socket1, type, &value4, &now4 );
+	ret = PWR_ObjAttrGetValue(&socket1, type, &value4, &now4 );
 	if(ret == PWR_RET_SUCCESS) {
 		  printf("Socket 1 power is  %lf watts and the time is %ld\n", value4, now4);
-    	}
+	}
 
 
 	Object node_min_power;
@@ -68,6 +68,30 @@ int main() {
 	ret = PWR_ObjAttrGetValue(&node_max_power, type, &value6, &now6);
 	if(ret == PWR_RET_SUCCESS) {
 		printf("Node maximum power is %lf watts and the time is %ld\n", value6, now6);
+	}
+
+	Object cpu_power;
+	cpu_power.type = PWR_OBJ_CORE;
+	strcpy(cpu_power.option, "CPU");
+	cpu_power.misc = 0;
+	PWR_Time now7;
+	double value7;
+	type = PWR_ATTR_POWER;
+	ret = PWR_ObjAttrGetValue(&cpu_power, type, &value7, &now7);
+	if(ret == PWR_RET_SUCCESS) {
+		printf("CPU power is %lf watts and time is %ld\n", value7, now7);
+	}
+
+	Object gpu_power;
+	cpu_power.type = PWR_OBJ_CORE;
+	strcpy(gpu_power.option, "GPU");
+	cpu_power.misc = 0;
+	PWR_Time now8;
+	double value8;
+	type = PWR_ATTR_POWER;
+	ret = PWR_ObjAttrGetValue(&cpu_power, type, &value8, &now8);
+	if(ret == PWR_RET_SUCCESS) {
+		printf("GPU power is %lf watts and time is %ld\n", value8, now8);
 	}
 
 	return 0;
