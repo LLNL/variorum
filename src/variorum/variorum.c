@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <hwloc.h>
+#include <jansson.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -1066,6 +1067,46 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     {
         return -1;
     }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_get_thermals_json(char **get_thermal_obj_str)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    json_t *get_thermal_obj = json_object();
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_thermals_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_thermals_json(get_thermal_obj);
+        if (err)
+        {
+            return -1;
+        }
+    }
+
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
+    json_decref(get_thermal_obj);
+
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {

@@ -10,30 +10,11 @@
 #include <variorum.h>
 #include <variorum_topology.h>
 
-#ifdef SECOND_RUN
-static inline double do_work(int input)
-{
-    int i;
-    double result = (double)input;
-
-    for (i = 0; i < 100000; i++)
-    {
-        result += i * result;
-    }
-
-    return result;
-}
-#endif
 
 int main(int argc, char **argv)
 {
     int ret;
     char *s = NULL;
-#ifdef SECOND_RUN
-    int i;
-    int size = 1E4;
-    volatile double x = 0.0;
-#endif
 
     const char *usage = "Usage: %s [-h] [-v]\n";
     int opt;
@@ -53,36 +34,16 @@ int main(int argc, char **argv)
         }
     }
 
-    ret = variorum_get_node_power_json(&s);
-
+    ret = variorum_get_thermals_json(&s);
     if (ret != 0)
     {
-        printf("First run: JSON get node power failed!\n");
+        printf("First run: JSON get thermals failed!\n");
         free(s);
         exit(-1);
     }
 
     /* Print the entire JSON object */
     puts(s);
-
-
-#ifdef SECOND_RUN
-    for (i = 0; i < size; i++)
-    {
-        x += do_work(i);
-    }
-    printf("Final result: %f\n", x);
-    ret = variorum_get_node_power_json(&s);
-    if (ret != 0)
-    {
-        printf("Second run: JSON get node power failed!\n");
-        free(s);
-        exit(-1);
-    }
-
-    /* Print the entire JSON object */
-    puts(s);
-#endif
 
     /* Deallocate the string */
     free(s);

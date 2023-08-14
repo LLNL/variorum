@@ -449,6 +449,86 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
+int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
+{
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int fd;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+    unsigned nsockets;
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+
+#ifdef VARIORUM_WITH_IBM_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+        return -1;
+    }
+
+    json_t *node_obj = json_object_get(get_thermal_obj, hostname);
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_thermal_obj, hostname, node_obj);
+    }
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+        buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+
+        if (!buf)
+        {
+            printf("Failed to allocate\n");
+            return -1;
+        }
+
+        for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+        {
+            rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+
+            if (!rc || rc < 0)
+            {
+                break;
+            }
+        }
+
+        if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+        {
+            printf("Failed to read data\n");
+            free(buf);
+            return -1;
+        }
+
+        json_get_thermal_sensors(iter, node_obj, buf);
+        free(buf);
+    }
+
+    json_object_set_new(node_obj, "Timestamp_CPU", json_integer(ts));
+
+    close(fd);
+    return 0;
+
+}
+
 int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = ("VARIORUM_LOG");

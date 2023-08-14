@@ -10,6 +10,8 @@
 
 #include <variorum_config.h>
 
+#include <jansson.h>
+
 /// @brief Create a mask from bit m to n (63 >= m >= n >= 0).
 ///
 /// Example: MASK_RANGE(4,2) --> (((1<<((4)-(2)+1))-1)<<(2))
@@ -244,6 +246,11 @@ struct platform
     ///
     /// @return Error code.
     int (*variorum_get_node_power_domain_info_json)(char **get_domain_obj_str);
+
+    /// @brief Function pointer to get JSON object for thermal information
+    ///
+    /// @return Error code.
+    int (*variorum_get_thermals_json)(json_t *get_thermal_obj);
 
     /// @brief Function pointer to get list of available frequencies.
     ///
