@@ -114,8 +114,9 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 					if(strncmp(json_object_iter_key(iter), "Socket", 6) == 0)
 					{
 						json_t *socket_obj = json_object_iter_value(iter);
-						mem_power_val += json_number_value(json_object_get(socket_obj, "power_mem_watts"));
-					}
+						double mem_power_temp = json_number_value(json_object_get(socket_obj, "power_mem_watts"));
+						mem_power_val += mem_power_temp > 0.0 ? mem_power_temp : 0.0;
+						}
 					iter = json_object_iter_next(node_obj, iter);
 				}
 				*( (double *)ptr ) = mem_power_val;
@@ -143,7 +144,8 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 				void *iter = json_object_iter(socket_obj);
 				while(iter != NULL)
 				{
-					socket_pwr_value += json_number_value(json_object_iter_value(iter));
+					double socket_power_temp = json_number_value(json_object_iter_value(iter));
+					socket_pwr_value += socket_power_temp > 0.0 ? socket_power_temp : 0.0;
 					iter = json_object_iter_next(socket_obj, iter);
 				}
 				*( (double *)ptr ) = socket_pwr_value;
@@ -170,10 +172,11 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 				}
 				if (strcmp(option, "CPU") == 0)
 				{
-					*( (double *)ptr ) = json_number_value(json_object_get(socket_obj, "power_cpu_watts"));
-				} else if (strcmp(option, "GPU") == 0)
+					*( (double *)ptr ) = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+				} 
+				else if (strcmp(option, "GPU") == 0)
 				{
-					*( (double *)ptr ) = json_number_value(json_object_get(socket_obj, "power_gpu_watts"));
+					*( (double *)ptr ) = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
 				}
 				*ts = json_integer_value(json_object_get(node_obj, "timestamp"));
 			} else 
@@ -188,7 +191,6 @@ int PWR_ObjAttrGetValue(PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts 
 			printf("object type %d not supported!\n", type);
 			break;	
 	}
-
 	json_decref(power_obj);
 	json_decref(domain_obj);
 	free(node_power);

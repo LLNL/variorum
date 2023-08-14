@@ -21,7 +21,7 @@ int main() {
 
 	Object limit;
 	limit.type = PWR_OBJ_NODE;
-	int limit_value = 2500;
+	int limit_value = 3050;
 	ret = PWR_ObjAttrSetValue(&limit, type, &limit_value);
 	if(ret == PWR_RET_SUCCESS) {
 		printf("Power Limit Set Success!\n");
@@ -83,13 +83,13 @@ int main() {
 	}
 
 	Object gpu_power;
-	cpu_power.type = PWR_OBJ_CORE;
+	gpu_power.type = PWR_OBJ_CORE;
 	strcpy(gpu_power.option, "GPU");
-	cpu_power.misc = 0;
+	gpu_power.misc = 0;
 	PWR_Time now8;
 	double value8;
 	type = PWR_ATTR_POWER;
-	ret = PWR_ObjAttrGetValue(&cpu_power, type, &value8, &now8);
+	ret = PWR_ObjAttrGetValue(&gpu_power, type, &value8, &now8);
 	if(ret == PWR_RET_SUCCESS) {
 		printf("GPU power is %lf watts and time is %ld\n", value8, now8);
 	}
