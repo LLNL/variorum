@@ -144,7 +144,7 @@ int volta_get_gpu_power_json(char **get_power_obj_str)
 
     nvidia_gpu_get_json_power_data(get_power_obj);
 
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
     json_decref(get_power_obj);
 
     return 0;

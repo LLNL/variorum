@@ -245,20 +245,30 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     struct timeval tv;
     uint64_t ts;
     unsigned nsockets;
-    static size_t devIDlen = 12; // Long enough to avoid format truncation.
+    static size_t devIDlen = 24; // Long enough to avoid format truncation.
     char devID[devIDlen];
+	char socketID[24];
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
-    json_object_set_new(get_power_obj, "num_gpus",
+
+	json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+    json_object_set_new(node_obj, "num_gpus",
                         json_integer(m_total_unit_devices));
 
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (chipid = 0; chipid < nsockets; chipid++)
     {
+		snprintf(socketID, 24, "Socket_%d", chipid);
+		json_t *socket_obj = json_object();
+		json_object_set_new(node_obj, socketID, socket_obj);
+		json_t *gpu_obj = json_object();
+		json_object_set_new(socket_obj, "GPU", gpu_obj);
+		json_object_set_new(gpu_obj, "units", json_string("Watts") );
+
         //Iterate over all GPU device handles for this socket and update object
         for (d = chipid * (int)m_gpus_per_socket;
              d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
@@ -266,10 +276,8 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
             nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
             value = (double)power * 0.001f;
 
-            char gpu_str[36] = "power_gpu_watts_device_";
-            snprintf(devID, devIDlen, "%d", d);
-            strcat(gpu_str, devID);
-            json_object_set_new(get_power_obj, gpu_str, json_real(value));
+            snprintf(devID, devIDlen, "Device_%d", d);
+            json_object_set_new(gpu_obj, devID, json_real(value));
         }
     }
 }
