@@ -55,7 +55,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
         json_t *socket_obj = json_object_get(node_obj, socketID);
         if (socket_obj == NULL)
         {
-            printf("Socket object not found!\n");
+            printf("Socket  %d object not found!\n", i);
         }
 
         /* extract cpu, gpu, mem power values from json */

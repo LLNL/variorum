@@ -85,7 +85,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
         json_t *socket_obj = json_object_get(node_obj, socketID);
         if (socket_obj == NULL)
         {
-            printf("Socket %d not found!\n", socketID);
+            printf("Socket %d object not found!\n", i);
         }
 
         /* extract cpu, gpu, mem values from json */
@@ -128,7 +128,7 @@ void take_measurement(bool measure_all)
         int ret;
         int num_sockets = 0;
         char *s = NULL;
-        char hostname[1024]
+        char hostname[1024];
 
         gethostname(hostname, 1024);
         num_sockets = variorum_get_num_sockets();
