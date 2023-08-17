@@ -27,7 +27,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 {
     int i, j;
     static bool write_header = true;
-	char socketID[20];
+    char socketID[20];
 
     /* Create a Jansson based JSON structure */
     json_t *power_obj = NULL;
@@ -37,14 +37,14 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
     /* Load the string as a JSON object using Jansson */
     power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
 
-	/* Load node object */
-	json_t *node_obj = json_object_get(power_obj, hostname);
+    /* Load node object */
+    json_t *node_obj = json_object_get(power_obj, hostname);
 
-	/* check if hostname is in the power object */
-	if (node_obj == NULL)
-	{
-		printf("host %s not found!\n", hostname);
-	}
+    /* check if hostname is in the power object */
+    if (node_obj == NULL)
+    {
+        printf("host %s not found!\n", hostname);
+    }
 
     /* Extract and print values from JSON object */
     power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
@@ -80,18 +80,18 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 
     for (i = 0; i < num_sockets; i++)
     {
-		/* extract socket object from node object with "Socket_#" */
-		sprintf(socketID, 20, "Socket_%d", i);
-		json_t *socket_obj = json_object_get(node_obj, socketID);
-		if (socket_obj == NULL)
-		{
-			printf("Socket %d not found!\n", socketID);
-		}
+        /* extract socket object from node object with "Socket_#" */
+        sprintf(socketID, 20, "Socket_%d", i);
+        json_t *socket_obj = json_object_get(node_obj, socketID);
+        if (socket_obj == NULL)
+        {
+            printf("Socket %d not found!\n", socketID);
+        }
 
-		/* extract cpu, gpu, mem values from json */
-		power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
-		power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
-		power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+        /* extract cpu, gpu, mem values from json */
+        power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+        power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
+        power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
 
         if ((i + 1) == num_sockets)
         {
@@ -128,9 +128,9 @@ void take_measurement(bool measure_all)
         int ret;
         int num_sockets = 0;
         char *s = NULL;
-		char hostname[1024]
+        char hostname[1024]
 
-		gethostname(hostname, 1024);
+        gethostname(hostname, 1024);
         num_sockets = variorum_get_num_sockets();
 
         if (num_sockets <= 0)
