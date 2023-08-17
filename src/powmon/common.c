@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include <variorum.h>
 #include <variorum_topology.h>
@@ -22,49 +23,31 @@ int init_data(void)
     return 0;
 }
 
-void parse_json_obj(char *s, int num_sockets)
+void parse_json_obj(char *s, int num_sockets, char *hostname)
 {
     int i, j;
     static bool write_header = true;
+	char socketID[20];
 
     /* Create a Jansson based JSON structure */
     json_t *power_obj = NULL;
 
     double power_node, power_cpu, power_gpu, power_mem;
-    static char **json_metric_names = NULL;
-
-    /* List of socket-level JSON object metrics */
-    static const char *metrics[] = {"power_cpu_watts_socket_",
-                                    "power_gpu_watts_socket_",
-                                    "power_mem_watts_socket_"
-                                   };
-
-    /* Allocate space for metric names */
-    json_metric_names = malloc(3 * num_sockets * sizeof(char *));
-    for (i = 0; i < (3 * num_sockets); i++)
-    {
-        json_metric_names[i] = malloc(40);
-    }
-
-    for (i = 0; i < num_sockets; i++)
-    {
-        /* Create a metric name list for querying json object later on */
-        for (j = 0; j < 3; j++)
-        {
-            char current_metric[40];
-            char current_socket[16];
-            strcpy(current_metric, metrics[j]);
-            sprintf(current_socket, "%d", i);
-            strcat(current_metric, current_socket);
-            strcpy(json_metric_names[(num_sockets * j) + i], current_metric);
-        }
-    }
 
     /* Load the string as a JSON object using Jansson */
     power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
 
+	/* Load node object */
+	json_t *node_obj = json_object_get(power_obj, hostname);
+
+	/* check if hostname is in the power object */
+	if (node_obj == NULL)
+	{
+		printf("host %s not found!\n", hostname);
+	}
+
     /* Extract and print values from JSON object */
-    power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
+    power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
 
     if (write_header == true)
     {
@@ -97,11 +80,18 @@ void parse_json_obj(char *s, int num_sockets)
 
     for (i = 0; i < num_sockets; i++)
     {
-        power_cpu = json_real_value(json_object_get(power_obj, json_metric_names[i]));
-        power_gpu = json_real_value(json_object_get(power_obj,
-                                    json_metric_names[num_sockets + i]));
-        power_mem = json_real_value(json_object_get(power_obj,
-                                    json_metric_names[(num_sockets * 2) + i]));
+		/* extract socket object from node object with "Socket_#" */
+		sprintf(socketID, 20, "Socket_%d", i);
+		json_t *socket_obj = json_object_get(node_obj, socketID);
+		if (socket_obj == NULL)
+		{
+			printf("Socket %d not found!\n", socketID);
+		}
+
+		/* extract cpu, gpu, mem values from json */
+		power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+		power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
+		power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
 
         if ((i + 1) == num_sockets)
         {
@@ -115,13 +105,6 @@ void parse_json_obj(char *s, int num_sockets)
             fprintf(logfile, "%lf, %lf, %lf,", power_cpu, power_gpu, power_mem);
         }
     }
-
-    /* Deallocate metric array */
-    for (i = 0; i < num_sockets * 3; i++)
-    {
-        free(json_metric_names[i]);
-    }
-    free(json_metric_names);
 
     /*Deallocate JSON object*/
     json_decref(power_obj);
@@ -145,7 +128,9 @@ void take_measurement(bool measure_all)
         int ret;
         int num_sockets = 0;
         char *s = NULL;
+		char hostname[1024]
 
+		gethostname(hostname, 1024);
         num_sockets = variorum_get_num_sockets();
 
         if (num_sockets <= 0)
@@ -163,7 +148,7 @@ void take_measurement(bool measure_all)
         }
 
         // Write out to logfile
-        parse_json_obj(s, num_sockets);
+        parse_json_obj(s, num_sockets, hostname);
     }
 
     // Verbose output with all sensors/registers

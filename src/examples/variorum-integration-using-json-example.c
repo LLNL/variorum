@@ -39,7 +39,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
     /* check if hostname is in the power object */
     if (node_obj == NULL)
     {
-        printf("host object not found");
+        printf("host %s not found\n", hostname);;
     }
 
     /* extract node power value from node object */
