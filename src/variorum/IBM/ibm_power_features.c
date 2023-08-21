@@ -405,7 +405,7 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
             sample = read_sensor(hb, offset, SENSOR_SAMPLE);
         }
 
-        if (strncmp(md[i].name, "FREQAC", 6) == 0)
+        if (strcmp(md[i].name, "FREQA") == 0)
         {
             json_object_set_new(cpu_obj, md[i].name, json_integer(sample));
         }
