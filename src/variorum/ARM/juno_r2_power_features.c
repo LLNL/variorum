@@ -312,9 +312,13 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-    json_t *node_obj = json_object();
+    json_t *node_obj = json_object_get(get_power_obj, hostname);
+	if (node_obj == NULL)
+	{
+		node_obj = json_object();
+		json_object_set_new(get_power_obj, hostname, node_obj);
+	}
 
-    json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
@@ -364,16 +368,25 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 
     for (i = 0; i < (int)m_num_package; i++)
     {
-        char socketID[12];
-        snprintf(socketID, 12, "Socket_%d", i);
+        char socketID[16];
+        snprintf(socketID, 16, "Socket_%d", i);
 
-        json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, socketID, socket_obj);
+        json_t *socket_obj = json_object_get(node_obj, socketID);
+		if (socket_obj == NULL)
+		{
+			socket_obj = json_object();
+			json_object_set_new(socket_obj, socketID, socket_obj);
+		}
+		
+		json_t *cpu_obj = json_object();
+		json_object_set_new(socket_obj, "CPU", cpu_obj);
 
-        json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
+        json_object_set_new(cpu_obj, "power_mem_watts", json_real(-1.0));
         if (i != 0)
         {
-            json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
+			json_t *gpu_object = json_object();
+			json_object_set_new(socket_obj, "GPU", gpu_object);
+            json_object_set_new(gpu_obj, "power_gpu_watts", json_real(-1.0));
         }
     }
 
@@ -391,13 +404,19 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
     json_t *socket_1_obj = json_object_get(node_obj, "Socket_1");
 
+	json_t *socket_0_cpu_obj = json_object_get(socket_0_obj, "CPU");
+	json_t *socket_1_cpu_obj = json_object_get(socket_1_obj, "CPU");
+
+	json_t *socket_0_gpu_obj = json_object();
+	json_object_set_new(socket_0_obj, "GPU", socket_0_gpu_obj);
+
     json_object_set_new(node_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
-    json_object_set_new(socket_0_obj, "power_cpu_watts",
+    json_object_set_new(socket_0_cpu_obj, "power_cpu_watts",
                         json_real((double)(big_power_val) / 1000000.0f));
-    json_object_set_new(socket_1_obj, "power_cpu_watts",
+    json_object_set_new(socket_1_cpu_obj, "power_cpu_watts",
                         json_real((double)(little_power_val) / 1000000.0f));
-    json_object_set_new(socket_0_obj, "power_gpu_watts",
+    json_object_set_new(socket_0_gpu_obj, "power_gpu_watts",
                         json_real((double)(gpu_power_val) / 1000000.0f));
     return 0;
 }

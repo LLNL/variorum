@@ -16,7 +16,7 @@ int arm_neoverse_n1_get_clocks(int long_ver);
 
 int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq);
 
-int arm_neoverse_n1_get_power_json(char **get_power_obj_str);
+int arm_neoverse_n1_get_power_json(json_t *get_power_obj);
 
 int arm_neoverse_n1_get_power_domain_info_json(char **get_domain_obj_str);
 
