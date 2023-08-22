@@ -58,43 +58,44 @@ void get_power_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-            #ifdef CPRINTF_FOUND
-                cfprintf(output,
-                        "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
-                        "_INTEL_GPU_POWER Host", m_hostname,
-                        "Socket", chipid,
-                        "DeviceID", d,
-                        "Power", value);
-            #else
-                fprintf(output,
-                        "_INTEL_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
-                        m_hostname, chipid, d, value);
-            #endif
+#ifdef CPRINTF_FOUND
+            cfprintf(output,
+                     "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
+                     "_INTEL_GPU_POWER Host", m_hostname,
+                     "Socket", chipid,
+                     "DeviceID", d,
+                     "Power", value);
+#else
+            fprintf(output,
+                    "_INTEL_GPU_POWER_USAGE Host: %s, Socket: %d, DeviceID: %d, Power: %lf W\n",
+                    m_hostname, chipid, d, value);
+#endif
         }
         else
         {
             if (!init_output)
             {
-                #ifdef CPRINTF_FOUND
-                    cfprintf(output,
-                            "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID", "Power_W");
-                #else
-                    fprintf(output, "_INTEL_GPU_POWER_USAGE Host Socket DeviceID Power_W\n");
-                #endif
+#ifdef CPRINTF_FOUND
+                cfprintf(output,
+                         "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID", "Power_W");
+#else
+                fprintf(output,
+                        "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID", "Power_W");
+#endif
                 init_output = 1;
             }
-            #ifdef CPRINTF_FOUND
-                cfprintf(output,
-                        "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
-            #else
-                fprintf(output, "_INTEL_GPU_POWER_USAGE %s %d %d %lf\n",
-                        m_hostname, chipid, d, value);
-            #endif
+#ifdef CPRINTF_FOUND
+            cfprintf(output,
+                     "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
+#else
+            fprintf(output,
+                     "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
+#endif
         }
     }
-    #ifdef CPRINTF_FOUND
-        cflush();
-    #endif
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void get_thermal_data(int chipid, int verbose, FILE *output)
@@ -113,43 +114,45 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-            #ifdef CPRINTF_FOUND
-                cfprintf(output,
-                        "%s: %s, %s: %d, %s: %d, %s: %lf C\n",
-                        "_INTEL_GPU_TEMPERATURE Host", m_hostname,
-                        "Socket", chipid,
-                        "DeviceID", d,
-                        "Temperature", temp_C);
-            #else
-                fprintf(output,
-                        "_INTLE_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %.1lf C\n",
-                        m_hostname, chipid, d, temp_C);
-            #endif
+#ifdef CPRINTF_FOUND
+            cfprintf(output,
+                    "%s: %s, %s: %d, %s: %d, %s: %lf C\n",
+                    "_INTEL_GPU_TEMPERATURE Host", m_hostname,
+                    "Socket", chipid,
+                    "DeviceID", d,
+                    "Temperature", temp_C);
+#else
+            fprintf(output,
+                    "_INTLE_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %.1lf C\n",
+                    m_hostname, chipid, d, temp_C);
+#endif
         }
         else
         {
             if (!init_output)
             {
-                #ifdef CPRINTF_FOUND
-                    cfprintf(output,
-                            "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID", "Temperature_C");
-                #else
-                    fprintf(output, "_INTEL_GPU_TEMPERATURE Host Socket DeviceID Temperature_C\n");
-                #endif
+#ifdef CPRINTF_FOUND
+                cfprintf(output,
+                         "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID", "Temperature_C");
+#else
+                fprintf(output,
+                        "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID", "Temperature_C");
+
+#endif
                 init_output = 1;
             }
-            #ifdef CPRINTF_FOUND
-                cfprintf(output,
-                        "%s %s %d %d %.1lf\n", "_INTEL_GPU_TEMPERATURE", m_hostname, chipid, d, temp_C);
-            #else
-                fprintf(output, "_INTEL_GPU_TEMPERATURE %s %d %d %.1lf\n",
-                        m_hostname, chipid, d, temp_C);
-            #endif
+#ifdef CPRINTF_FOUND
+            cfprintf(output,
+                     "%s %s %d %d %.1lf\n", "_INTEL_GPU_TEMPERATURE", m_hostname, chipid, d, temp_C);
+#else
+            fprintf(output, "_INTEL_GPU_TEMPERATURE %s %d %d %.1lf\n",
+                    m_hostname, chipid, d, temp_C);
+#endif
         }
     }
-    #ifdef CPRINTF_FOUND
-        cflush();
-    #endif
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void get_clocks_data(int chipid, int verbose, FILE *output)
@@ -168,21 +171,38 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-            fprintf(output,
-                    "_INTEL_GPU_CLOCKS Host: %s, Socket: %d, DeviceID: %d, GPU_Clock: %d MHz\n",
-                    m_hostname, chipid, d, (int)freq_MHz);
+#ifdef CPRINTF_FOUND
+            cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n"
+                    "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d, "GPU_Clock", (int)freq_MHz, "MHz");
+#else
+            fprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n"
+                    "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d, "GPU_Clock", (int)freq_MHz, "MHz");
+#endif
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output, "_INTEL_GPU_CLOCKS Host Socket DeviceID GPU_Clock_MHz\n");
+#ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket", "DeviceID", "GPU_Clock_MHz");
+#else
+
+                fprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket", "DeviceID", "GPU_Clock_MHz");
+#endif
                 init_output = 1;
             }
-            fprintf(output, "_INTEL_GPU_CLOCKS %s %d %d %d\n",
-                    m_hostname, chipid, d, (int)freq_MHz);
+#ifdef CPRINTF_FOUND
+            cfprintf(output, "%s %s %d %d %d\n",
+                    "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
+#else
+            fprintf(output, "%s %s %d %d %d\n",
+                    "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
+#endif
         }
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
@@ -225,20 +245,40 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
+#ifdef CPRINTF_FOUND
+            cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n",
+                    "_INTEL_GPU_POWER_LIMIT Host", m_hostname, "Socket", chipid, 
+                    "DeviceID", d, "GPU_Power_limit", current_powerlimit_mwatts, "mW");
+#else
             fprintf(output,
                     "_INTEL_GPU_POWER_LIMIT Host: %s, Socket: %d, DeviceID: %d, GPU_Power_limit: %d mW\n",
                     m_hostname, chipid, d, current_powerlimit_mwatts);
+#endif
+
         }
         else
         {
             if (!init_output)
             {
-                fprintf(output,
-                        "_INTEL_GPU_POWER_LIMIT Host Socket DeviceID GPU_Power_limit_mW\n");
+#ifdef CPRINTF_FOUND
+                cfprintf(output, "%s %s %s %s %s",
+                        "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");
+#else
+                fprintf(output, "%s %s %s %s %s",
+                        "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");
+#endif
                 init_output = 1;
             }
-            fprintf(output, "_INTEL_GPU_POWER_LIMIT %s %d %d %d\n",
-                    m_hostname, chipid, d, current_powerlimit_mwatts);
+#ifdef CPRINTF_FOUND
+            cprintf(output, "%s %s %d %d %d\n",
+                    "_INTEL_GPU_POWER_LIMIT", m_hostname, chipid, d, current_powerlimit_mwatts);
+#else
+            fprintf(output, "%s %s %d %d %d\n",
+                    "_INTEL_GPU_POWER_LIMIT", m_hostname, chipid, d, current_powerlimit_mwatts);
+#endif
         }
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
