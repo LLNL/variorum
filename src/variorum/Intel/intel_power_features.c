@@ -1109,7 +1109,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 		}
 
 		json_t *cpu_obj = json_object();
-		json_object_set_new(socket_obj, "CPU", gpu_obj);
+		json_object_set_new(socket_obj, "CPU", cpu_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
