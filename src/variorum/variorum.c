@@ -222,7 +222,7 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
-        #ifdef CPRINTF_FOUND
+#ifdef CPRINTF_FOUND
             cfprintf(stdout, "=================\n");
             cfprintf(stdout, "Platform Topology\n");
             cfprintf(stdout, "=================\n");
@@ -248,7 +248,7 @@ void variorum_print_topology(void)
             cfprintf(stdout, "Layout:\n");
             cfprintf(stdout, "-------\n");
             cflush();
-        #else
+#else
             fprintf(stdout, "=================\n");
             fprintf(stdout, "Platform Topology\n");
             fprintf(stdout, "=================\n");
@@ -273,7 +273,7 @@ void variorum_print_topology(void)
             fprintf(stdout, "Layout:\n");
             fprintf(stdout, "-------\n");
             fprintf(stdout, "Thread HWThread Core Socket\n");
-        #endif
+#endif
 
         print_children(topo, hwloc_get_root_obj(topo), 0);
         hwloc_topology_destroy(topo);
@@ -815,7 +815,7 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
-        #ifdef CPRINTF_FOUND
+#ifdef CPRINTF_FOUND
             if (hyperthreading == 1)
             {
                 cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
@@ -826,7 +826,7 @@ int variorum_print_hyperthreading(void)
             {
                 cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
             }
-        #else
+#else
             if (hyperthreading == 1)
             {
                 fprintf(stdout, "  Hyperthreading:       Enabled\n");
@@ -837,13 +837,15 @@ int variorum_print_hyperthreading(void)
             {
                 fprintf(stdout, "  Hyperthreading:       Disabled\n");
             }
-        #endif
+#endif
 
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+
 #ifdef CPRINTF_FOUND
-    cflush(); //TODO, Create a silent version on err that still frees.
+    cflush(); //TODO: Create a silent version on err that still frees.
 #endif
+
     if (err)
     {
         return -1;
