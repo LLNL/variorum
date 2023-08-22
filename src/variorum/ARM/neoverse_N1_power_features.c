@@ -257,11 +257,11 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     json_t *node_obj = json_object_get(get_power_obj, hostname);
-	if (node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_power_obj, hostname, node_obj);
-	}
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_power_obj, hostname, node_obj);
+    }
 
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
@@ -308,20 +308,20 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
         snprintf(socketID, 16, "Socket_%d", i);
 
         json_t *socket_obj = json_object_get(node_obj, socketID);
-		if (socket_obj == NULL)
-		{
-			socket_obj = json_object();
-			json_object_set_new(node_obj, socketID, socket_obj);
-		}
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(node_obj, socketID, socket_obj);
+        }
 
-		json_t *cpu_obj = json_object();
-		json_object_set_new(socket_obj, "CPU", cpu_obj);
+        json_t *cpu_obj = json_object();
+        json_object_set_new(socket_obj, "CPU", cpu_obj);
 
         json_object_set_new(cpu_obj, "power_mem_watts", json_real(-1.0));
         if (i != 0)
         {
-			json_t *gpu_obj = json_object();
-			json_object_set_new(socket_obj, "GPU", gpu_obj);
+            json_t *gpu_obj = json_object();
+            json_object_set_new(socket_obj, "GPU", gpu_obj);
             json_object_set_new(gpu_obj, "power_gpu_watts", json_real(-1.0));
         }
     }
@@ -332,10 +332,10 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
        and Socket 1 is little. */
 
     json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
-	json_t *socket_0_cpu_obj = json_object_get(socket_0_obj, "CPU");
+    json_t *socket_0_cpu_obj = json_object_get(socket_0_obj, "CPU");
 
-	json_t *socket_0_gpu_obj = json_object();
-	json_object_set_new(socket_0_obj, "GPU", socket_0_gpu_obj);
+    json_t *socket_0_gpu_obj = json_object();
+    json_object_set_new(socket_0_obj, "GPU", socket_0_gpu_obj);
 
     json_object_set_new(socket_0_cpu_obj, "power_cpu_watts",
                         json_real((double)(cpu_power_val) / 1000000.0f));

@@ -396,11 +396,11 @@ int ibm_cpu_p9_get_node_power_json(json_t *get_power_obj)
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     json_t *node_obj = json_object_get(get_power_obj, hostname);
-	if (node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_power_obj, hostname, node_obj);
-	}
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_power_obj, hostname, node_obj);
+    }
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);

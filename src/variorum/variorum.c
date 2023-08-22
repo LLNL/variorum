@@ -967,36 +967,36 @@ int variorum_get_node_power_json(char **get_power_obj_str)
         return -1;
     }
 
-	json_t *get_power_obj = json_object();
+    json_t *get_power_obj = json_object();
 
-	for(i = 0; i < P_NUM_PLATFORMS; ++i)
-	{
-		if (g_platform[i].variorum_get_node_power_json == NULL)
-		{
-			variorum_error_handler("Feature not yet implemented or is not supported",
-							   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-							   getenv("HOSTNAME"), __FILE__,
-							   __FUNCTION__, __LINE__);
-			continue;
-		}
+    for (i = 0; i < P_NUM_PLATFORMS; ++i)
+    {
+        if (g_platform[i].variorum_get_node_power_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
 
-		err = g_platform[i].variorum_get_node_power_json(get_power_obj);
-		if (err)
-		{
-			return -1;
-		}
-	}
+        err = g_platform[i].variorum_get_node_power_json(get_power_obj);
+        if (err)
+        {
+            return -1;
+        }
+    }
 
-	*get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
-	json_decref(get_power_obj);
-    
-	err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-	if (err)
-	{
-		return -1;
-	}
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
+    json_decref(get_power_obj);
 
-	return err;
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    return err;
 }
 
 // The variorum_get_node_power_domain_info_json is a node-level API, and cannot

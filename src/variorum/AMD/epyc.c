@@ -554,11 +554,11 @@ int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj)
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     json_t *node_obj = json_object_get(get_power_obj, hostname);
-	if (node_obj == NULL)
-	{
-		node_obj = json_object();
-		json_object_set_new(get_power_obj, hostname, node_obj);
-	}
+    if (node_obj == NULL)
+    {
+        node_obj = json_object();
+        json_object_set_new(get_power_obj, hostname, node_obj);
+    }
 
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
@@ -568,13 +568,13 @@ int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj)
     {
         snprintf(sockID, sockID_len, "Socket_%d", i);
         json_t *socket_obj = json_object_get(node_obj, sockID);
-		if (socket_obj == NULL)
-		{
-			socket_obj = json_object();
-			json_object_set_new(node_obj, sockID, socket_obj);
-		}
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(node_obj, sockID, socket_obj);
+        }
 
-		json_t *cpu_obj = json_object();
+        json_t *cpu_obj = json_object();
         json_object_set_new(socket_obj, "CPU", cpu_obj);
 
         current_power = 0;
