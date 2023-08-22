@@ -26,7 +26,7 @@ int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit);
 
 int amd_cpu_epyc_set_socket_boostlimit(int socket, int boostlimit);
 
-int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str);
+int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj);
 
 int amd_cpu_epyc_get_node_power_domain_info_json(char **get_domain_obj_str);
 
