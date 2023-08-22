@@ -307,7 +307,7 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
     uint64_t pwrproc = 0;
     uint64_t pwrmem = 0;
     uint64_t pwrgpu = 0;
-    char socketID[12];
+    char socketID[16];
 
     sprintf(socketID, "Socket_%d", chipid);
 
@@ -360,10 +360,17 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
         json_object_set_new(node_obj, "power_node_watts", json_real(pwrsys));
     }
 
-    json_t *socket_obj = json_object();
-    json_object_set_new(node_obj, socketID, socket_obj);
+    json_t *socket_obj = json_object_get(node_obj, socketID);
+	if (socket_obj == NULL)
+	{
+		socket_obj = json_object();
+		json_object_set_new(node_obj, socketID, socket_obj);
+	}
 
-    json_object_set_new(socket_obj, "power_cpu_watts", json_real(pwrproc));
-    json_object_set_new(socket_obj, "power_mem_watts", json_real(pwrmem));
-    json_object_set_new(socket_obj, "power_gpu_watts", json_real(pwrgpu));
+	json_t *cpu_obj = json_object();
+	json_object_set_new(socket_obj, "CPU", cpu_obj);
+
+    json_object_set_new(cpu_obj, "power_cpu_watts", json_real(pwrproc));
+    json_object_set_new(cpu_obj, "power_mem_watts", json_real(pwrmem));
+    json_object_set_new(cpu_obj, "power_gpu_watts", json_real(pwrgpu));
 }

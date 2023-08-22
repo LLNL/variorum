@@ -373,23 +373,16 @@ int intel_cpu_fm_06_55_monitoring(FILE *output)
     return 0;
 }
 
-int intel_cpu_fm_06_55_get_node_power_json(char **get_power_obj_str)
+int intel_cpu_fm_06_55_get_node_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-
-    json_t *get_power_obj = json_object();
-
     json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
-
-    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
-    json_decref(get_power_obj);
-
     return 0;
 }
 

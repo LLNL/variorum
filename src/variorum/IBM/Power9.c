@@ -369,7 +369,7 @@ int ibm_cpu_p9_cap_socket_power_limit(int long_ver)
     return 0;
 }
 
-int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
+int ibm_cpu_p9_get_node_power_json(json_t *get_power_obj)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -387,8 +387,6 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     struct timeval tv;
     uint64_t ts;
 
-    json_t *get_power_obj = json_object();
-
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
@@ -397,8 +395,12 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-    json_t *node_obj = json_object();
-    json_object_set_new(get_power_obj, hostname, node_obj);
+    json_t *node_obj = json_object_get(get_power_obj, hostname);
+	if (node_obj == NULL)
+	{
+		node_obj = json_object();
+		json_object_set_new(get_power_obj, hostname, node_obj);
+	}
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
@@ -441,10 +443,6 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
         free(buf);
     }
 
-    // Export JSON object as a string for returning.
-    *get_power_obj_str = json_dumps(get_power_obj,
-                                    JSON_INDENT(4) + JSON_REAL_PRECISION(3));
-    json_decref(get_power_obj);
     close(fd);
     return 0;
 }

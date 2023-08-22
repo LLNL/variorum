@@ -1087,24 +1087,35 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_t *node_obj = json_object();
-    json_object_set_new(get_power_obj, hostname, node_obj);
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+    json_t *node_obj = json_object_get(get_power_obj, hostname);
+	if (node_obj == NULL)
+	{
+		node_obj = json_object();
+		json_object_set_new(get_power_obj, hostname, node_obj);
+	}
+    
+	json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
-        char socketid[12];
-        snprintf(socketid, 12, "Socket_%d", i);
+        char socketID[16];
+        snprintf(socketID, 16, "Socket_%d", i);
 
-        json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, socketid, socket_obj);
+        json_t *socket_obj = json_object_get(node_obj, socketID);
+		if (socket_obj == NULL)
+		{
+			socket_obj = json_object();
+			json_object_set_new(node_obj, socketID, socket_obj);
+		}
+
+		json_t *cpu_obj = json_object();
+		json_object_set_new(socket_obj, "CPU", gpu_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
-        json_object_set_new(socket_obj, "power_cpu_watts",
+        json_object_set_new(cpu_obj, "power_cpu_watts",
                             json_real(rapl->pkg_watts[i]));
-        json_object_set_new(socket_obj, "power_mem_watts",
+        json_object_set_new(cpu_obj, "power_mem_watts",
                             json_real(rapl->dram_watts[i]));
 
         /* To ensure vendor-neutrality of the JSON power object across various
@@ -1115,7 +1126,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
            TODO is to populate this through the NVIDIA NVML GPU power values
            when variorum is built with NVIDIA on Intel architectures. */
 
-        json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
+        json_object_set_new(cpu_obj, "power_gpu_watts", json_real(-1.0));
 
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set power_sys as the sum of CPU and DRAM

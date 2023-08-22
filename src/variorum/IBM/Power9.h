@@ -20,7 +20,7 @@ int ibm_cpu_p9_cap_gpu_power_ratio(int gpu_power_ratio);
 
 int ibm_cpu_p9_monitoring(FILE *output);
 
-int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str);
+int ibm_cpu_p9_get_node_power_json(json_t *get_power_obj);
 
 int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str);
 

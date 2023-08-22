@@ -58,10 +58,12 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
             printf("Socket  %d object not found!\n", i);
         }
 
+		json_t *cpu_obj = json_object_get(socket_obj, "CPU");
+
         /* extract cpu, gpu, mem power values from json */
-        power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
-        power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
-        power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+        power_cpu = json_real_value(json_object_get(cpu_obj, "power_cpu_watts"));
+        power_gpu = json_real_value(json_object_get(cpu_obj, "power_gpu_watts"));
+        power_mem = json_real_value(json_object_get(cpu_obj, "power_mem_watts"));
 
         printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
         printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
