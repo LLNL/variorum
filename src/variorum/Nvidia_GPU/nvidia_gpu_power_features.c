@@ -198,8 +198,9 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 
     //create new json object for GPU
     json_t *gpu_obj = json_object();
-
-    for (d = chipid * (int)m_gpus_per_socket;
+	json_object_set_new(socket_obj, "GPU", gpu_obj);
+    
+	for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
 
@@ -212,8 +213,6 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
         json_object_set_new(gpu_obj, device_id, json_integer(gpu_temp));
     }
 
-    //set GPU general object in socket object
-    json_object_set_new(socket_obj, "GPU", gpu_obj);
 }
 
 void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
