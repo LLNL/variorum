@@ -441,7 +441,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
         json_object_set_new(cpu_obj, "PKG_Actual", json_integer(pkg_temp));
 
 		json_t *core_obj = json_object();
-		json_object_set_new(cpu_obj, "Core", core_obj)
+		json_object_set_new(cpu_obj, "Core", core_obj);
 
         for (j = 0; j < ncores / nsockets; j++)
         {
