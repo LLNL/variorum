@@ -497,22 +497,22 @@ void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
 
         if (strncmp(md[i].name, "TEMPPROCTHRMC", 13) == 0)
         {
-			char core_temp[32];
-			char core_temp_value[5];
-			strncpy(core_temp_value, md[i].name+13, 5);
-			int core_temp_int = atoi(core_temp_value);
-			snprintf(core_temp, 32, "temp_celsius_core_%d", core_temp_int);
+            char core_temp[32];
+            char core_temp_value[5];
+            strncpy(core_temp_value, md[i].name + 13, 5);
+            int core_temp_int = atoi(core_temp_value);
+            snprintf(core_temp, 32, "temp_celsius_core_%d", core_temp_int);
 
             json_object_set_new(core_obj, core_temp, json_integer(sample * TO_FP(scale)));
         }
         else if (strncmp(md[i].name, "TEMPDIMM", 8) == 0)
         {
-			char mem_temp[32];
-			char mem_temp_value[5];
-			strncpy(mem_temp_value, md[i].name+8, 5);
-			int mem_temp_int = atoi(mem_temp_value);
-			snprintf(mem_temp, 32, "temp_celsius_dimm_%d", mem_temp_int);
-			
+            char mem_temp[32];
+            char mem_temp_value[5];
+            strncpy(mem_temp_value, md[i].name + 8, 5);
+            int mem_temp_int = atoi(mem_temp_value);
+            snprintf(mem_temp, 32, "temp_celsius_dimm_%d", mem_temp_int);
+
             json_object_set_new(mem_obj, mem_temp, json_integer(sample * TO_FP(scale)));
         }
 

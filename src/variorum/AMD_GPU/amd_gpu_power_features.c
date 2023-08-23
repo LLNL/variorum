@@ -442,9 +442,9 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
     //gerneral gpu object
     json_t *gpu_obj = json_object();
-	json_object_set_new(socket_obj, "GPU", gpu_obj);
-    
-	for (int i = chipid * gpus_per_socket;
+    json_object_set_new(socket_obj, "GPU", gpu_obj);
+
+    for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
         int64_t temp_val = -1;
@@ -468,10 +468,10 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
         json_object_set_new(gpu_obj, gpuid, json_real(temp_val_flt));
 
     }
-    
-	ret = rsmi_shut_down();
-    
-	if (ret != RSMI_STATUS_SUCCESS)
+
+    ret = rsmi_shut_down();
+
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
