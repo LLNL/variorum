@@ -439,6 +439,10 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
         pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
         json_object_set_new(cpu_obj, "PKG_Actual", json_integer(pkg_temp));
+
+		json_t *core_obj = json_object();
+		json_object_set_new(cpu_obj, "Core", core_obj)
+
         for (j = 0; j < ncores / nsockets; j++)
         {
             char core[32];
@@ -451,7 +455,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
                 core_temp += (int)t_target[i].temp_target - t_stat[idx].readout;
             }
             core_temp /= (nthreads / ncores);
-            json_object_set_new(cpu_obj, core, json_real(core_temp));
+            json_object_set_new(core_obj, core, json_real(core_temp));
         }
     }
 

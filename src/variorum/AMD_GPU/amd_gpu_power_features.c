@@ -430,7 +430,7 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
     }
 
     char socketid[12];
-    snprintf(socketid, 12, "Socket_%d", chipid);
+    snprintf(socketid, 12, "socket_%d", chipid);
 
     //check if socket object is in node object
     json_t *socket_obj = json_object_get(node_obj, socketid);
@@ -462,14 +462,14 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
         temp_val_flt = (double)(temp_val / (1000)); // Convert to Celcius.
 
         //gpu entry
-        char gpuid[12];
-        snprintf(gpuid, 12, "Device_%d", i);
+        char gpuid[32];
+        snprintf(gpuid, 32, "temp_celsius_gpu_%d", i);
         json_object_set_new(gpu_obj, gpuid, json_real(temp_val_flt));
 
     }
     //set timestamp for gpu call and add general gpu object to socket object
     json_object_set_new(socket_obj, "GPU", gpu_obj);
-    json_object_set_new(gpu_obj, "Timestamp",
+    json_object_set_new(gpu_obj, "timestamp",
                         json_real((now.tv_usec - json_start.tv_usec) / 1000000.0));
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)

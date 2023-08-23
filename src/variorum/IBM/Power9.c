@@ -511,7 +511,9 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         json_object_set_new(get_thermal_obj, hostname, node_obj);
     }
 
-    for (iter = 0; iter < nsockets; iter++)
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+    
+	for (iter = 0; iter < nsockets; iter++)
     {
         lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
@@ -543,8 +545,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         json_get_thermal_sensors(iter, node_obj, buf);
         free(buf);
     }
-
-    json_object_set_new(node_obj, "Timestamp_CPU", json_integer(ts));
 
     close(fd);
     return 0;
