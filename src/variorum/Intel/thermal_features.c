@@ -412,17 +412,17 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
+    json_object_set_new(get_thermal_object, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
         char socket_id[12]; //up to 9999 sockets
         snprintf(socket_id, 12, "socket_%d", i);
-        json_t *socket_obj = json_object_get(get_thermal_obj, socket_id);
+        json_t *socket_obj = json_object_get(get_thermal_object, socket_id);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(get_thermal_obj, socket_id, socket_obj);
+            json_object_set_new(get_thermal_object, socket_id, socket_obj);
         }
 
         json_t *cpu_obj = json_object();

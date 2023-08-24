@@ -1159,12 +1159,12 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
         return -1;
     }
 
-	char hostname[1024];
-	gethostname(hostname, 1024);
+    char hostname[1024];
+    gethostname(hostname, 1024);
 
     json_t *get_thermal_obj = json_object();
-	json_t *node_obj = json_object();
-	json_object_set_new(get_thermal_obj, hostname, node_obj);
+    json_t *node_obj = json_object();
+    json_object_set_new(get_thermal_obj, hostname, node_obj);
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
