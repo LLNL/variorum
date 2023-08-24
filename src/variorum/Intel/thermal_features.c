@@ -412,18 +412,7 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-<<<<<<< HEAD
-    json_t *node_obj = json_object_get(get_thermal_object, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_thermal_object, hostname, node_obj);
-    }
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
-=======
 	json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
->>>>>>> ba67e0b (moved node object to variorum.h to save json function calls)
 
     for (i = 0; i < nsockets; i++)
     {
