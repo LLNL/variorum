@@ -185,7 +185,7 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(node_obj, socket_id, socket_obj);
+        json_object_set_new(output, socket_id, socket_obj);
     }
 
     //create new json object for GPU
