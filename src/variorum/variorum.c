@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <hwloc.h>
 #include <jansson.h>
+#include <unitstd.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -1158,7 +1159,12 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
         return -1;
     }
 
+	char hostname[1024];
+	gethostname(hostname, 1024);
+
     json_t *get_thermal_obj = json_object();
+	json_t *node_obj = json_object();
+	json_object_set_new(get_thermal_obj, hostname, node_obj);
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
@@ -1170,7 +1176,7 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
                                    __FUNCTION__, __LINE__);
             continue;
         }
-        err = g_platform[i].variorum_get_thermals_json(get_thermal_obj);
+        err = g_platform[i].variorum_get_thermals_json(node_obj);
         if (err)
         {
             return -1;

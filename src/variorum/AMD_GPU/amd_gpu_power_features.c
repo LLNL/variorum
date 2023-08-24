@@ -421,23 +421,15 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
     gettimeofday(&now, NULL);
 
-    //check if node object is in passed in json_t object
-    json_t *node_obj = json_object_get(output, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(output, hostname, node_obj);
-    }
-
     char socketid[12];
     snprintf(socketid, 12, "socket_%d", chipid);
 
     //check if socket object is in node object
-    json_t *socket_obj = json_object_get(node_obj, socketid);
+    json_t *socket_obj = json_object_get(output, socketid);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(node_obj, socketid, socket_obj);
+        json_object_set_new(output, socketid, socket_obj);
     }
 
     //gerneral gpu object

@@ -485,7 +485,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     int bytes;
     unsigned iter = 0;
     unsigned nsockets;
-    char hostname[1024];
     struct timeval tv;
     uint64_t ts;
 
@@ -493,7 +492,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
 
-    gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
@@ -504,6 +502,7 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         return -1;
     }
 
+<<<<<<< HEAD
     json_t *node_obj = json_object_get(get_thermal_obj, hostname);
     if (node_obj == NULL)
     {
@@ -514,6 +513,11 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (iter = 0; iter < nsockets; iter++)
+=======
+    json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
+    
+	for (iter = 0; iter < nsockets; iter++)
+>>>>>>> ba67e0b (moved node object to variorum.h to save json function calls)
     {
         lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
@@ -542,7 +546,7 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
             return -1;
         }
 
-        json_get_thermal_sensors(iter, node_obj, buf);
+        json_get_thermal_sensors(iter, get_thermal_obj, buf);
         free(buf);
     }
 

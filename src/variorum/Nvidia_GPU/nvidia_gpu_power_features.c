@@ -177,19 +177,11 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
     unsigned gpu_temp;
     int d;
 
-    //try to find host object in passed in json_t object, set new object if not found
-    json_t *node_obj = json_object_get(output, m_hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(output, m_hostname, node_obj);
-    }
-
     char socket_id[12];
     snprintf(socket_id, 12, "socket_%d", chipid);
 
     //try to find socket object in node object, set new object if not found
-    json_t *socket_obj = json_object_get(node_obj, socket_id);
+    json_t *socket_obj = json_object_get(output, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();

@@ -393,7 +393,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     unsigned idx;
     float core_temp;
     int pkg_temp;
-    char hostname[1024];
     struct timeval tv;
     uint64_t ts;
 
@@ -410,10 +409,10 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
 
-    gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
+<<<<<<< HEAD
     json_t *node_obj = json_object_get(get_thermal_object, hostname);
     if (node_obj == NULL)
     {
@@ -422,16 +421,19 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     }
 
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
+=======
+	json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
+>>>>>>> ba67e0b (moved node object to variorum.h to save json function calls)
 
     for (i = 0; i < nsockets; i++)
     {
         char socket_id[12]; //up to 9999 sockets
         snprintf(socket_id, 12, "socket_%d", i);
-        json_t *socket_obj = json_object_get(node_obj, socket_id);
+        json_t *socket_obj = json_object_get(get_thermal_obj, socket_id);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(node_obj, socket_id, socket_obj);
+            json_object_set_new(get_thermal_obj, socket_id, socket_obj);
         }
 
         json_t *cpu_obj = json_object();
