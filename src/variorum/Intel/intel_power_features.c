@@ -1128,32 +1128,62 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     if (!init)
     {
         gettimeofday(&start, NULL);
-        fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J Power_W Elapsed_sec Timestamp_sec\n");
+
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec" "Timestamp_sec");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec" "Timestamp_sec");
+#endif
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_PACKAGE_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
-                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
+                "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
                 rapl->pkg_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
+        fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
+                "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                rapl->pkg_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
     }
 
     if (!init)
     {
-        fprintf(writedest,
-                "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy_J Power_W Elapsed_sec Timestamp_sec\n");
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec" "Timestamp_sec");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec" "Timestamp_sec");
+#endif
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_DRAM_ENERGY_STATUS 0x%lx %s %d 0x%lx %lf %lf %lf %lf\n",
-                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
+                "_DRAM_ENERGY_STATUS", msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
                 rapl->dram_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
+        fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
+                "_DRAM_ENERGY_STATUS", msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                rapl->dram_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
     }
+
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
