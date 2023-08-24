@@ -8,6 +8,7 @@
 #include <hwloc.h>
 #include <jansson.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -1153,6 +1154,7 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
 {
     int err = 0;
     int i;
+    uint64_t ts;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1162,9 +1164,15 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
     char hostname[1024];
     gethostname(hostname, 1024);
 
+    struct timeval tv;
+
     json_t *get_thermal_obj = json_object();
     json_t *node_obj = json_object();
     json_object_set_new(get_thermal_obj, hostname, node_obj);
+
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {

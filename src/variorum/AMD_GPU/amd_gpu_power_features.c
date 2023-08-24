@@ -386,9 +386,6 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
     uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
-    static int json_init = 0;
-    static struct timeval json_start;
-    struct timeval now;
 
     gethostname(hostname, 1024);
 
@@ -412,14 +409,6 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
     }
 
     gpus_per_socket = num_devices / total_sockets;
-
-    if (!json_init)
-    {
-        json_init = 1;
-        gettimeofday(&json_start, NULL);
-    }
-
-    gettimeofday(&now, NULL);
 
     char socketid[12];
     snprintf(socketid, 12, "socket_%d", chipid);

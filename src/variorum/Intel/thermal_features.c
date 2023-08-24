@@ -393,8 +393,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     unsigned idx;
     float core_temp;
     int pkg_temp;
-    struct timeval tv;
-    uint64_t ts;
 
 	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
@@ -408,11 +406,6 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
 
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
-
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_object_set_new(get_thermal_object, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {

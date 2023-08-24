@@ -485,15 +485,10 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     int bytes;
     unsigned iter = 0;
     unsigned nsockets;
-    struct timeval tv;
-    uint64_t ts;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
-
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -501,8 +496,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         printf("Failed to open occ_inband_sensors file\n");
         return -1;
     }
-
-    json_object_set_new(get_thermal_obj, "timestamp", json_integer(ts));
 
     for (iter = 0; iter < nsockets; iter++)
     {
