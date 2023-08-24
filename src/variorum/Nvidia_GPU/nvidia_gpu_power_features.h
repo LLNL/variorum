@@ -11,10 +11,10 @@
 
 #include <nvml.h>
 
-unsigned m_total_unit_devices;
-nvmlDevice_t *m_unit_devices_file_desc;
-unsigned m_gpus_per_socket;
-char m_hostname[1024];
+extern unsigned m_total_unit_devices;
+extern nvmlDevice_t *m_unit_devices_file_desc;
+extern unsigned m_gpus_per_socket;
+extern char m_hostname[1024];
 
 void initNVML(void);
 
