@@ -239,8 +239,8 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
             cfprintf(output, "%s %s %d %d %lf\n",
                      "_NVIDIA_GPU_POWER_LIMIT", m_hostname, chipid, d, value);
 #else
-            fprintf(output, "_NVIDIA_GPU_POWER_LIMIT %s %d %d %0.3lf\n",
-                    m_hostname, chipid, d, value);
+            fprintf(output, "%s %s %d %d %0.3lf\n",
+                    "_NVIDIA_GPU_POWER_LIMIT", m_hostname, chipid, d, value);
 #endif
         }
     }
@@ -295,8 +295,8 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
           cfprintf(output, "%s %s %d %d %d\n",
                    "_NVIDIA_GPU_CLOCKS", m_hostname, chipid, d, gpu_clock);
 #else
-          fprintf(output, "_NVIDIA_GPU_CLOCKS %s %d %d %d\n",
-                  m_hostname, chipid, d, gpu_clock);
+          fprintf(output, "%s %s %d %d %d\n",
+                  "_NVIDIA_GPU_CLOCKS", m_hostname, chipid, d, gpu_clock);
 #endif
         }
     }
@@ -348,8 +348,8 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
             cfprintf(output, "%s %s %d %d %d %d\n",
                      "_NVIDIA_GPU_UTILIZATION", m_hostname, chipid, d, util.gpu, util.memory);
 #else
-            fprintf(output, "_NVIDIA_GPU_UTILIZATION %s %d %d %d %d\n",
-                    m_hostname, chipid, d, util.gpu, util.memory);
+            fprintf(output, "%s %s %d %d %d %d\n",
+                   "_NVIDIA_GPU_UTILIZATION",  m_hostname, chipid, d, util.gpu, util.memory);
 #endif
         }
     }
