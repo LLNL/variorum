@@ -255,8 +255,13 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 
     if (!init)
     {
-        fprintf(writedest,
-                "_FIXED_COUNTERS Host Thread InstRet UnhaltClkCycles UnhaltRefCycles\n");
+#ifdef CPRINTF_FOUND
+        cprintf(writedest, "%s %s %s %s %s %s\n",
+                "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles", "UnhaltRefCycles");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s\n",
+                "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles", "UnhaltRefCycles");
+#endif
         init = 1;
     }
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -271,6 +276,9 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
         fprintf(writedest, "_FIXED_COUNTERS %s %d %lu %lu %lu\n", hostname, i,
                 *c0->value[i], *c1->value[i], *c2->value[i]);
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#else
 }
 
 void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
@@ -291,40 +299,95 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 
     if (p == NULL && !init)
     {
+#ifdef CPRINTF_FOUND
         switch (avail)
         {
             case 8:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6 PMC7\n");
+                cfprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5", "PMC6", "PMC7");
                 break;
             case 7:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5 PMC6\n");
+                cfprintf(writedest, "%s %s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5", "PMC6");
                 break;
             case 6:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4 PMC5\n");
+                cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5");
                 break;
             case 5:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3 PMC4\n");
+                cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4");
                 break;
             case 4:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2 PMC3\n");
+                cfprintf(writedest, "%s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3");
                 break;
             case 3:
-                fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1 PMC2\n");
+                cfprintf(writedest, "%s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2");
                 break;
             case 2:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0 PMC1\n");
+                cfprintf(writedest, "%s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1");
                 break;
             case 1:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS Host Thread PMC0\n");
+                cfprintf(writedest, "%s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0");
                 break;
         }
-
+#else
+        switch (avail)
+        {
+            case 8:
+                fprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5", "PMC6", "PMC7");
+                break;
+            case 7:
+                fprintf(writedest, "%s %s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5", "PMC6");
+                break;
+            case 6:
+                fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4", "PMC5");
+                break;
+            case 5:
+                fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3", "PMC4");
+                break;
+            case 4:
+                fprintf(writedest, "%s %s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2", "PMC3");
+                break;
+            case 3:
+                fprintf(writedest, "%s %s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1", "PMC2");
+                break;
+            case 2:
+                fprintf(writedest, "%s %s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0", "PMC1");
+                break;
+            case 1:
+                fprintf(writedest, "%s %s %s %s\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", "Host", "Thread", 
+                        "PMC0");
+                break;
+        }
+#endif
         set_all_pmc_ctrl(0x0, 0x67, 0x00, 0xC4, 1, msrs_perfevtsel_ctrs);
         set_all_pmc_ctrl(0x0, 0x67, 0x00, 0xC4, 2, msrs_perfevtsel_ctrs);
         enable_pmc(msrs_perfevtsel_ctrs, msrs_perfmon_ctrs);
@@ -335,49 +398,98 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
     read_batch(COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
+#ifdef CPRINTF_FOUND
+        switch (avail)
+        {
+            case 8:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
+                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
+                        *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
+                break;
+            case 7:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
+                break;
+            case 6:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i],
+                       *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
+                break;
+            case 5:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+                break;
+            case 4:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], 
+                       *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+                break;
+            case 3:
+                cfprintf(writedest, "%s %s %d %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+                break;
+            case 2:
+                cfprintf(writedest, "%s %s %d %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i]);
+                break;
+            case 1:
+                cfprintf(writedest, "%s %s %d %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i]);
+                break;
+        }
+#else
         switch (avail)
         {
             case 8:
                 fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
+                        "%s %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
+                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
                         *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
                 break;
             case 7:
                 fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
-                        *p->pmc5[i], *p->pmc6[i]);
+                        "%s %s %d %lu %lu %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i]);
                 break;
             case 6:
                 fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
-                        *p->pmc5[i]);
+                        "%s %s %d %lu %lu %lu %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i],
+                       *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i]);
                 break;
             case 5:
                 fprintf(writedest,
-                        "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+                        "%s %s %d %lu %lu %lu %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
+                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
                 break;
             case 4:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+                fprintf(writedest, "%s %s %d %lu %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], 
+                       *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
                 break;
             case 3:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+                fprintf(writedest, "%s %s %d %lu %lu %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
                 break;
             case 2:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu %lu\n",
-                        hostname, i, *p->pmc0[i], *p->pmc1[i]);
+                fprintf(writedest, "%s %s %d %lu %lu\n",
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i]);
                 break;
             case 1:
-                fprintf(writedest, "_PERFORMANCE_MONITORING_COUNTERS %s %d %lu\n",
-                        hostname, i, *p->pmc0[i]);
+                fprintf(writedest, "%s %s %d %lu\n",
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i]);
                 break;
         }
+#endif
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void print_verbose_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
@@ -1099,16 +1211,27 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
     unc_counters_storage(&uc, msrs_pcu_pmon_ctrs);
     if (!init)
     {
-        fprintf(writedest, "_UNCORE_COUNTERS Host Socket c0 c1 c2 c3\n");
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %s %s %s %s %s\n", "_UNCORE_COUNTERS", "Host", "Socket", "c0", "c1", "c2", "c3");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s %s\n", "_UNCORE_COUNTERS", "Host", "Socket", "c0", "c1", "c2", "c3");
+#endif
         enable_pcu(msrs_pcu_pmon_evtsel, msrs_pcu_pmon_ctrs);
         init = 1;
     }
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, "_UNCORE_COUNTERS %s %d 0x%lx 0x%lx 0x%lx 0x%lx\n", hostname,
-                i,
-                *uc->c0[i], *uc->c1[i], *uc->c2[i], *uc->c3[i]);
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %d %#lx %#lx %#lx %#lx\n", 
+                 "_UNCORE_COUNTERS", hostname, i, *uc->c0[i], *uc->c1[i], *uc->c2[i], *uc->c3[i]);
+#else 
+        fprintf(writedest, "%s %s %d %#lx %#lx %#lx %#lx\n", 
+                "_UNCORE_COUNTERS", hostname, i, *uc->c0[i], *uc->c1[i], *uc->c2[i], *uc->c3[i]);
+#endif
     }
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
 
 void print_verbose_unc_counter_data(FILE *writedest,
@@ -1225,16 +1348,32 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     fprintf(writedest, "_POWMON %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
+                rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
+                rlim[rlim_idx + 2].watts);
+#else
         fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
+#endif
         rlim_idx += 3;
     }
 
     for (i = 0; i < nthreads; i++)
     {
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, " %lu %lu %lu %lu %lu %lu", *c0->value[i], *c1->value[i],
+                *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
+#else
         fprintf(writedest, " %lu %lu %lu %lu %lu %lu", *c0->value[i], *c1->value[i],
                 *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
+#endif
     }
     fprintf(writedest, "\n");
-}
+
+#ifdef CPRINTF_FOUND
+    cfprintf(writedest, "\n");
+    cflush();
+#endif
+};
