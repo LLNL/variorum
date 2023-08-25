@@ -15,6 +15,10 @@
 #include <variorum_cpuid.h>
 #include <variorum_error.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
                     off_t msr_tsc)
 {
@@ -134,13 +138,25 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         perf_storage(&pd, msr_perf_status);
         if (control_domains == SOCKET)
         {
-            fprintf(writedest,
-                    "_CLOCKS_DATA Host Socket APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
+#ifdef CPRINTF_FOUND
+            cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#else
+            fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#endif
         }
         else if (control_domains == CORE)
         {
-            fprintf(writedest,
-                    "_CLOCKS_DATA Host Socket Core PhysicalThread LogicalThread APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
+#ifdef CPRINTF_FOUND
+            cfprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "Core", "PhysicalThread", "LogicalThread",
+                    "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#else
+            fprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "Core", "PhysicalThread", "LogicalThread",
+                    "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#endif
         }
         init = 1;
     }
@@ -157,10 +173,17 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                        fprintf(writedest, "_CLOCKS_DATA %s %d %lu %lu %lu %lu %f\n",
-                                hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+#ifdef CPRINTF_FOUND
+                        cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#else
+                        fprintf(writedest, "%s %s %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));                        
+#endif
                     }
                 }
             }
@@ -173,10 +196,17 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     for (k = 0; k < nthreads / ncores; k++)
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                        fprintf(writedest, "_CLOCKS_DATA %s %d %d %d %d %lu %lu %lu %lu %f\n",
-                                hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+#ifdef CPRINTF_FOUND
+                        cfprintf(writedest, "%s %s %d %d %d %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#else
+                        fprintf(writedest, "%s %s %d %d %d %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#endif
                     }
                 }
             }
@@ -185,6 +215,9 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
             fprintf(stderr, "Not a valid control domain.\n");
             break;
     }
+#ifdef CPRINTF_FOUND
+    cflush()
+#endif
     return 0;
 }
 
