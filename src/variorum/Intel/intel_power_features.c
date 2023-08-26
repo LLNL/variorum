@@ -444,8 +444,8 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
 
 #else
-        fprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS", msr,
-                hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
+        fprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS", 
+                msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
 #endif
     }
@@ -1495,12 +1495,16 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 
         rapl_storage(&rapl);
 
-        fprintf(writedest, "_POWMON time");
+#ifdef CPRINTF_FOUND
+        fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+#endif
+
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest,
-                    " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
-                    i, i, i, i, i);
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx + 1]),
                                    msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx + 2]), msr_dram_power_limit,
@@ -1518,18 +1522,27 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
             //get_package_rapl_limit(1, &(rlim[2]), &(rlim[3]), msr_pkg_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(0, &(rlim[4]), msr_dram_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
+            
         }
-        fprintf(writedest, "\n");
     }
 
     rlim_idx = 0;
     fprintf(writedest, "_POWMON %ld", now_ms());
     for (i = 0; i < nsockets; i++)
     {
-        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %ld %d %lf %lf %lf %lf %lf\n", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
+#else
+        fprintf(writedest, "%s %ld %d %lf %lf %lf %lf %lf\n", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
+                rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
+                rlim[rlim_idx + 2].watts);
+#endif
         rlim_idx += 3;
     }
-    fprintf(writedest, "\n");
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
 }
+
