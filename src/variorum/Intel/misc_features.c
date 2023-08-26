@@ -11,6 +11,10 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
  * I am currently batching the read of the turbo ratio limit, which is per
@@ -178,18 +182,25 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
+#ifdef CPRINTF_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
         core += 1;
         if (core > ncores)
         {
             break;
         }
     }
-
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
-
 
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
@@ -213,7 +224,9 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+        allocate_b#ifdef CPRINTF_FOUND
+    cflush();
+#endifatch(TURBO_RATIO_LIMIT, nsockets);
         allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
         load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
         load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
@@ -235,8 +248,13 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
+#ifdef CPRINTF_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
         core += 1;
         if (core > ncores)
         {
@@ -245,15 +263,22 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     }
     for (nbits = 0; nbits < 64; nbits += 8)
     {
+#ifdef CPRINTF_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+                                              nbits)) * 100);
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
                                               nbits)) * 100);
+#endif
         core += 1;
         if (core >= ncores)
         {
             break;
         }
     }
-
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -300,10 +325,17 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
         {
             break;
         }
+#ifdef CPRINTF_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
     }
-
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -345,13 +377,23 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     }
     if (nlevels == 2)
     {
+#ifdef CPRINTF_FOUND
+        cprintf("%s  = %d MHz\n", "AVX512" level * 100);
+#else
         printf("AVX512  = %d MHz\n", level * 100);
+#endif
     }
     else if (nlevels == 1)
     {
+#ifdef CPRINTF_FOUND
+        cprintf("%s  = %d MHz\n", "AVX", level * 100);
+#else
         printf("AVX     = %d MHz\n", level * 100);
+#endif
     }
-
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -423,10 +465,16 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
         err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
         if (!err)
         {
+#ifdef CPRINTF_FOUND
+            cprintf("%s = %d MHz\n", "Non-AVX", max_non_turbo_ratio);
+#else
             printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
+#endif
         }
     }
-
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
