@@ -19,6 +19,10 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 int cpuid_num_pmc(void)
 {
     /* See Manual Vol 3B, Section 18.2.5 for details. */
@@ -273,12 +277,17 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     read_batch(FIXED_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
-        fprintf(writedest, "_FIXED_COUNTERS %s %d %lu %lu %lu\n", hostname, i,
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "%s %s %d %lu %lu %lu\n", "_FIXED_COUNTERS", hostname, i,
                 *c0->value[i], *c1->value[i], *c2->value[i]);
+#else
+        fprintf(writedest, "%s %s %d %lu %lu %lu\n", "_FIXED_COUNTERS", hostname, i,
+                *c0->value[i], *c1->value[i], *c2->value[i]);
+#endif
     }
 #ifdef CPRINTF_FOUND
     cflush();
-#else
+#endif
 }
 
 void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
@@ -403,9 +412,8 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
         {
             case 8:
                 cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
-                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
-                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
-                        *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
                 break;
             case 7:
                 cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu %lu %lu\n",
@@ -419,16 +427,18 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
                 break;
             case 5:
                 cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %lu\n",
-                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
                 break;
             case 4:
                 cfprintf(writedest, "%s %s %d %lu %lu %lu %lu\n",
-                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], 
-                       *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                       *p->pmc2[i], *p->pmc3[i]);
                 break;
             case 3:
                 cfprintf(writedest, "%s %s %d %lu %lu %lu\n",
-                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                       *p->pmc2[i]);
                 break;
             case 2:
                 cfprintf(writedest, "%s %s %d %lu %lu\n",
@@ -445,9 +455,8 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
             case 8:
                 fprintf(writedest,
                         "%s %s %d %lu %lu %lu %lu %lu %lu %lu %lu\n",
-                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
-                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i],
-                        *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i], *p->pmc5[i], *p->pmc6[i], *p->pmc7[i]);
                 break;
             case 7:
                 fprintf(writedest,
@@ -464,17 +473,18 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
             case 5:
                 fprintf(writedest,
                         "%s %s %d %lu %lu %lu %lu %lu\n",
-                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], 
-                        *p->pmc1[i], *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
+                        "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                        *p->pmc2[i], *p->pmc3[i], *p->pmc4[i]);
                 break;
             case 4:
                 fprintf(writedest, "%s %s %d %lu %lu %lu %lu\n",
-                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], 
-                       *p->pmc1[i], *p->pmc2[i], *p->pmc3[i]);
+                       "_PERFORMANCE_MONITORING_COUNTERS",  hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                       *p->pmc2[i], *p->pmc3[i]);
                 break;
             case 3:
                 fprintf(writedest, "%s %s %d %lu %lu %lu\n",
-                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], *p->pmc2[i]);
+                       "_PERFORMANCE_MONITORING_COUNTERS", hostname, i, *p->pmc0[i], *p->pmc1[i], 
+                       *p->pmc2[i]);
                 break;
             case 2:
                 fprintf(writedest, "%s %s %d %lu %lu\n",
@@ -1298,13 +1308,46 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         enable_fixed_counters(msrs_fixed_ctrs, msr_perf_global_ctrl,
                               msr_fixed_counter_ctrl);
         clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
+#ifdef CPRINTF_FOUND
+        int pkglabels = 5;
+        int threadlabels = 6;
+        int max_str_len = 128;
+        char pkg_strs[nsockets][pkglabels][128];
+        char thread_strs[nthreads][threadlabels][128];
+
+        for (i = 0; i < nsockets; i++) {
+            snprintf(pkg_strs[i][0], max_str_len, "pkg%d_joules", i);
+            snprintf(pkg_strs[i][1], max_str_len, "pkg%d_limwatts", i);
+            snprintf(pkg_strs[i][2], max_str_len, "pkg%d_lim2watts", i);
+            snprintf(pkg_strs[i][3], max_str_len, "dram%d_joules", i);
+            snprintf(pkg_strs[i][4], max_str_len, "dram%d_limwatts", i);
+        }
+        for (i = 0; i < nthreads; i++) {
+            snprintf(thread_strs[i][0], max_str_len, "InstRet%d", i);
+            snprintf(thread_strs[i][1], max_str_len, "UnhaltClkCycles%d", i);
+            snprintf(thread_strs[i][2], max_str_len, "UnhaltRefCycles%d", i);
+            snprintf(thread_strs[i][3], max_str_len, "APERF%d", i);
+            snprintf(thread_strs[i][4], max_str_len, "MPERF%d", i);
+            snprintf(thread_strs[i][4], max_str_len, "TSC%d", i);
+        }
+
+        cfprintf(writedest, "%-s %s ", "_POWMON", "time");
+#else
 
         fprintf(writedest, "_POWMON time");
+#endif
+
         for (i = 0; i < nsockets; i++)
         {
-            fprintf(writedest,
-                    " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
-                    i, i, i, i, i);
+#ifdef CPRINTF_FOUND
+            cfprintf(writedest, "%s %s %s %s %s ", 
+                     strings[i][0], strings[i][1], 
+                     strings[i][2], strings[i][3], 
+                     strings[i][4]);
+#else
+            fprintf(writedest, " %s %s %s %s %s %s %s %s",
+                    "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+#endif
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx + 1]),
                                    msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx + 2]), msr_dram_power_limit,
@@ -1323,13 +1366,23 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
             //get_dram_rapl_limit(0, &(rlim[4]), msr_dram_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
         }
+#ifdef CPRINTF_FOUND
+            cfprintf(writedest, "%s %s %s %s %s ", 
+                     thread_strs[i][0], thread_strs[i][1], 
+                     thread_strs[i][2], thread_strs[i][3], 
+                     thread_strs[i][4], thread_strs[i][5]);
+#else
         for (i = 0; i < nthreads; i++)
         {
             fprintf(writedest,
                     " InstRet%d UnhaltClkCycles%d UnhaltRefCycles%d APERF%d MPERF%d TSC%d", i, i, i,
                     i, i, i);
         }
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "\n");
+#else
         fprintf(writedest, "\n");
+#endif
     }
 
     read_batch(FIXED_COUNTERS_DATA);
@@ -1345,11 +1398,17 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     }
 
     rlim_idx = 0;
-    fprintf(writedest, "_POWMON %ld", now_ms());
+
+#ifdef CPRINTF_FOUND
+    cfprintf(writedest, "%s %ld ", "_POWMON", now_ms());
+#else
+    fprintf(writedest, "%s %ld", "_POWMON", now_ms());
+#endif
+
     for (i = 0; i < nsockets; i++)
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
+        cfprintf(writedest, "%lf %lf %lf %lf %lf ", rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
 #else
@@ -1363,17 +1422,17 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     for (i = 0; i < nthreads; i++)
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest, " %lu %lu %lu %lu %lu %lu", *c0->value[i], *c1->value[i],
+        cfprintf(writedest, "%lu %lu %lu %lu %lu %lu ", *c0->value[i], *c1->value[i],
                 *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
 #else
         fprintf(writedest, " %lu %lu %lu %lu %lu %lu", *c0->value[i], *c1->value[i],
                 *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
 #endif
     }
-    fprintf(writedest, "\n");
-
 #ifdef CPRINTF_FOUND
     cfprintf(writedest, "\n");
     cflush();
+#else
+    fprintf(writedest, "\n");
 #endif
 };
