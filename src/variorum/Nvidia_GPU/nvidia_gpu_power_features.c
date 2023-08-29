@@ -227,7 +227,7 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
         nvmlDeviceGetClock(m_unit_devices_file_desc[d], NVML_CLOCK_SM,
                            NVML_CLOCK_ID_CURRENT, &gpu_clock);
         char device_id[32];
-        snprintf(device_id, 32, "gpu_%d_frequency", d);
+        snprintf(device_id, 32, "gpu_%d_freq_mhz", d);
         json_object_set_new(gpu_obj, device_id, json_integer(gpu_clock));
     }
 

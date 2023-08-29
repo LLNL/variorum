@@ -382,7 +382,7 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
     char socketID[12];
-    snprintf(socketID, 12, "Socket_%d", chipid);
+    snprintf(socketID, 12, "socket_%d", chipid);
 
     json_t *socket_obj = json_object_get(node_obj, socketID);
     if (socket_obj == NULL)
