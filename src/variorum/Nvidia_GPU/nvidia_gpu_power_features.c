@@ -208,21 +208,14 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     unsigned int gpu_clock;
     int d;
 
-    json_t *node_obj = json_object_get(output, m_hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(output, m_hostname, node_obj);
-    }
-
     char socket_id[16];
-    snprintf(socket_id, 16, "Socket_%d", chipid);
+    snprintf(socket_id, 16, "socket_%d", chipid);
 
-    json_t *socket_obj = json_object_get(node_obj, socket_id);
+    json_t *socket_obj = json_object_get(output, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(node_obj, socket_id, socket_obj);
+        json_object_set_new(output, socket_id, socket_obj);
     }
 
     json_t *gpu_obj = json_object();
@@ -233,8 +226,8 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     {
         nvmlDeviceGetClock(m_unit_devices_file_desc[d], NVML_CLOCK_SM,
                            NVML_CLOCK_ID_CURRENT, &gpu_clock);
-        char device_id[12];
-        snprintf(device_id, 12, "Device_%d", d);
+        char device_id[32];
+        snprintf(device_id, 32, "gpu_%d_frequency", d);
         json_object_set_new(gpu_obj, device_id, json_integer(gpu_clock));
     }
 

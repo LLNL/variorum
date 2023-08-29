@@ -307,15 +307,6 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
         return socket_obj;
     }
 
-    json_t *make_core_obj(json_t *cpu_obj, int core_index)
-    {
-        char core_name[16];
-        snprintf(core_name, 16, "core_%d", core_index);
-        json_t *core_obj = json_object();
-        json_object_set_new(cpu_obj, core_name, core_obj);
-        return core_obj;
-    }
-
     //use array to store core frequencies;
     double core_frequencies[ncores];
     memset(core_frequencies, 0.0, ncores * sizeof(double));
@@ -329,10 +320,12 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
                 json_t *socket_obj = make_socket_obj(output, i);
                 json_t *cpu_obj = json_object();
                 json_object_set_new(socket_obj, "CPU", cpu_obj);
+                json_t *core_obj = json_object();
+                json_object_set_new(cpu_obj, "core", core_obj);
+
                 for (j = 0; j < ncores / nsockets; j++)
                 {
                     int core_freq_index = i * (ncores / nsockets) + j;
-                    json_t *core_obj = make_core_obj(cpu_obj, j);
                     for (k = 0; k < nthreads / ncores; k++)
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
@@ -343,11 +336,14 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
                     core_frequencies[core_freq_index] /= 2;
                     socket_average_freq += core_frequencies[core_freq_index];
 
-                    json_object_set_new(core_obj, "core_avg_freq_mhz",
+                    char core_avg_string[24];
+                    snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", j);
+
+                    json_object_set_new(core_obj, core_avg_string,
                                         json_real(core_frequencies[core_freq_index]));
                 }
                 socket_average_freq /= (ncores / nsockets);
-                json_object_set_new(cpu_obj, "socket_avg_freq_mhz",
+                json_object_set_new(cpu_obj, "cpu_avg_freq_mhz",
                                     json_real(socket_average_freq));
             }
             break;
