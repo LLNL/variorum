@@ -401,14 +401,9 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
     rsmi_status_t ret;
     uint32_t num_devices;
     int gpus_per_socket;
-    char hostname[1024];
-    static int init = 0;
-    static struct timeval start;
-    struct timeval now;
     char socketID[16];
 
-    gethostname(hostname, 1024);
-    snprintf(socketID, 16, "Socket_%d", chipid);
+    snprintf(socketID, 16, "socket_%d", chipid);
 
     ret = rsmi_init(0);
     if (ret != RSMI_STATUS_SUCCESS)
@@ -431,33 +426,15 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
 
     gpus_per_socket = num_devices / total_sockets;
 
-    if (!init)
-    {
-        init = 1;
-        gettimeofday(&start, NULL);
-    }
-
-    gettimeofday(&now, NULL);
-
-    json_t *node_obj = json_object_get(output, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(output, hostname, node_obj);
-    }
-
-    json_t *socket_obj = json_object_get(node_obj, socketID);
+    json_t *socket_obj = json_object_get(output, socketID);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(node_obj, socketID, socket_obj);
+        json_object_set_new(output, socketID, socket_obj);
     }
 
     json_t *gpu_obj = json_object();
     json_object_set_new(socket_obj, "GPU", gpu_obj);
-
-    json_object_set_new(gpu_obj, "Timestamp",
-                        json_real((now.tv_usec - start.tv_usec) / 1000000.0));
 
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
@@ -486,12 +463,14 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
         f_sys_val = f_sys.frequency[f_sys.current] / (1000 * 1000); // Convert to MHz
         f_mem_val = f_mem.frequency[f_mem.current] / (1000 * 1000); // Convert to MHz
 
-        char device_id[12];
-        snprintf(device_id, 12, "Device_%d", i);
-        json_t *gpu_info_obj = json_object();
-        json_object_set_new(gpu_info_obj, "SystemClock", json_integer(f_sys_val));
-        json_object_set_new(gpu_info_obj, "MemoryClock", json_integer(f_mem_val));
-        json_object_set_new(gpu_obj, device_id, gpu_info_obj);
+        char gpu_clock_string[32];
+        snprintf(gpu_clock_string, 32, "gpu_%d_freq_mhz", i);
+
+        char gpu_mem_clock_string[32];
+        snprintf(gpu_clock_string, 32, "gpu_%d_mem_freq_mhz", i);
+
+        json_object_set_new(gpu_obj, gpu_clock_string, json_integer(f_sys_val));
+        json_object_set_new(gpu_obj, gpu_mem_clock_string, json_integer(f_mem_val));
     }
 
     ret = rsmi_shut_down();
