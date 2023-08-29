@@ -206,7 +206,7 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
 {
 
     unsigned int gpu_clock;
-    unsigned int mem_clock
+    unsigned int mem_clock;
     int d;
 
     char socket_id[16];
