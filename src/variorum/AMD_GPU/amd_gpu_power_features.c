@@ -467,7 +467,7 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
         snprintf(gpu_clock_string, 32, "gpu_%d_freq_mhz", i);
 
         char gpu_mem_clock_string[32];
-        snprintf(gpu_clock_string, 32, "gpu_%d_mem_freq_mhz", i);
+        snprintf(gpu_mem_clock_string, 32, "gpu_%d_mem_freq_mhz", i);
 
         json_object_set_new(gpu_obj, gpu_clock_string, json_integer(f_sys_val));
         json_object_set_new(gpu_obj, gpu_mem_clock_string, json_integer(f_mem_val));
