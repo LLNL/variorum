@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <hwloc.h>
 #include <jansson.h>
+#include <unistd.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -1079,6 +1080,9 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
 {
     int err = 0;
     int i;
+    char hostname[1024];
+    gethostname(hostname, 1024);
+
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1086,6 +1090,8 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
     }
 
     json_t *get_frequency_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_frequency_obj, hostname, node_obj);
 
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
@@ -1097,7 +1103,7 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
                                    __FUNCTION__, __LINE__);
             continue;
         }
-        err = g_platform[i].variorum_get_frequency_json(get_frequency_obj);
+        err = g_platform[i].variorum_get_frequency_json(node_obj);
         if (err)
         {
             printf("Error with variorum get frequency json platform %d\n", i);
