@@ -500,17 +500,10 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
     int bytes;
     unsigned iter = 0;
     unsigned nsockets;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -519,12 +512,6 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
         return -1;
     }
 
-    json_t *node_obj = json_object_get(get_frequency_obj_json, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_frequency_obj_json, hostname, node_obj);
-    }
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -554,7 +541,7 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
             free(buf);
             return -1;
         }
-        json_get_frequency_sensors(iter, node_obj, buf);
+        json_get_frequency_sensors(iter, get_frequency_obj_json, buf);
         free(buf);
     }
 

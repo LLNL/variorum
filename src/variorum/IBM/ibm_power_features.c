@@ -407,7 +407,7 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
 
         if (strcmp(md[i].name, "FREQA") == 0)
         {
-            json_object_set_new(cpu_obj, md[i].name, json_integer(sample));
+            json_object_set_new(cpu_obj, "socket_avg_freq_mhz", json_integer(sample));
         }
     }
 
