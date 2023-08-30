@@ -114,4 +114,5 @@ int intel_cpu_fm_06_3e_cap_best_effort_node_power_limit(int node_power_limit);
 
 int intel_cpu_fm_06_3e_get_frequencies(void);
 
+int intel_cpu_fm_06_3e_get_clocks_json(json_t *get_clock_obj_json);
 #endif

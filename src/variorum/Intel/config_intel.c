@@ -95,6 +95,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_2a_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_2a_get_frequencies;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_2a_get_clocks_json;
     }
     else if (*g_platform[idx].arch_id == FM_06_2D)
     {
@@ -122,6 +124,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_2d_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_2d_get_frequencies;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_2d_get_clocks_json;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform[idx].arch_id == FM_06_3E)
@@ -150,6 +154,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_3e_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_3e_get_frequencies;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_3e_get_clocks_json;
     }
     // Haswell 06_3F
     else if (*g_platform[idx].arch_id == FM_06_3F)
@@ -178,6 +184,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_3f_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_3f_get_frequencies;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_3f_get_clocks_json;
     }
     // Broadwell 06_4F
     else if (*g_platform[idx].arch_id == FM_06_4F)
