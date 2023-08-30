@@ -24,23 +24,25 @@ nested JSON object. An example is provided below.
     "hostname": {
         "Socket_0": {
             "CPU":  {
-                "CORE": {
-                    "CoreSensor1":  (Integer),
-                    "CoreSensori":  (Integer),
+                "Core": {
+                    "temp_celsius_core_0":  (Integer),
+					 ...
+                    "temp_celsius_core_i":  (Integer),
                 },
                 "Mem":  {
-                    "DimmSensor1":  (Integer),
-                    :DimmSensori":  (Integer),
+                    "temp_celsius_dimm_0":  (Integer),
+					 ...
+                    :temp_celsius_dimm_i":  (Integer),
                  },
             },
             "GPU":  {
-                "Device1":  (Integer),
-                "Device2":  (Integer),
+                "temp_celsius_gpu_0":  (Integer),
+				 ...
+                "temp_celsius_gpu_i":  (Integer),
             }
         },
-        "Timestamp_CPU" : (Integer)
+        "timestamp" : (Integer)
     }
 }
 
-The names and numbers of sensors  will vary from system to system and the
-number of sockets will depend on the node.
+* where i is the index of the core/gpu. 0 <= i < num_cores/gpus.
