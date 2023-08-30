@@ -1076,7 +1076,7 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     return err;
 }
 
-int variorum_get_frequency_json(char **get_frequency_obj_str)
+int variorum_get_node_frequency_json(char **get_frequency_obj_str)
 {
     int err = 0;
     int i;

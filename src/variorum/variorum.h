@@ -567,13 +567,16 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// @brief Populate a string in JSON format with node level frequency information
 ///
 /// @supparch
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
 /// - Intel Broadwell
 /// - Intel Skylake
 /// - Intel Kabylake
 /// - AMD Instinct
 /// - Nvidia Volta
 /// - IBM Power9
-int variorum_get_frequency_json(char **get_frequency_obj_str);
+int variorum_get_node_frequency_json(char **get_frequency_obj_str);
 
 /// @brief Returns Variorum version as a constant string.
 ///
