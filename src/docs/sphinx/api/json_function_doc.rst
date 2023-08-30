@@ -20,10 +20,12 @@ in the following format.
         "timestamp": (integer value),
         "power_node_watts": (real value),
         "Socket_0": {
-            "power_cpu_watts": (real value),
-            "power_gpu_watts": (real value),
-            "power_mem_watts": (real value),"
-        },
+		    "CPU" : {
+    			"power_cpu_watts": (real value),
+				"power_gpu_watts": (real value),
+				"power_mem_watts": (real value),"
+				}
+		},
         "Socket_n": {
             ...
         }
