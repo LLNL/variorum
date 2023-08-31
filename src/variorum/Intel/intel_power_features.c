@@ -1067,19 +1067,12 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     static struct rapl_data *rapl = NULL;
     struct rapl_limit l1, l2;
     unsigned nsockets = 0;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
     unsigned i;
     double node_power = 0.0;
 
-    gethostname(hostname, 1024);
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 #endif
-
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
     if (!init)
@@ -1087,25 +1080,16 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_t *node_obj = json_object_get(get_power_obj, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_power_obj, hostname, node_obj);
-    }
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
-
     for (i = 0; i < nsockets; i++)
     {
         char socketID[16];
-        snprintf(socketID, 16, "Socket_%d", i);
+        snprintf(socketID, 16, "socket_%d", i);
 
-        json_t *socket_obj = json_object_get(node_obj, socketID);
+        json_t *socket_obj = json_object_get(get_power_obj, socketID);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(node_obj, socketID, socket_obj);
+            json_object_set_new(get_power_obj, socketID, socket_obj);
         }
 
         json_t *cpu_obj = json_object();
@@ -1140,7 +1124,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(node_obj, "power_node_watts",
+    json_object_set_new(get_power_obj, "power_node_watts",
                         json_real(node_power));
 }
 

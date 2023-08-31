@@ -298,28 +298,12 @@ int arm_cpu_juno_r2_cap_socket_frequency(int socketid, int new_freq)
 
 int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 {
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
 
     uint64_t sys_power_val;
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
     int i;
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object_get(get_power_obj, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_power_obj, hostname, node_obj);
-    }
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
@@ -369,13 +353,13 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     for (i = 0; i < (int)m_num_package; i++)
     {
         char socketID[16];
-        snprintf(socketID, 16, "Socket_%d", i);
+        snprintf(socketID, 16, "socket_%d", i);
 
-        json_t *socket_obj = json_object_get(node_obj, socketID);
+        json_t *socket_obj = json_object_get(get_power_obj, socketID);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(socket_obj, socketID, socket_obj);
+            json_object_set_new(get_power_obj, socketID, socket_obj);
         }
 
         json_t *cpu_obj = json_object();
@@ -401,8 +385,8 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
         exit(-1);
     }
 
-    json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
-    json_t *socket_1_obj = json_object_get(node_obj, "Socket_1");
+    json_t *socket_0_obj = json_object_get(node_obj, "socket_0");
+    json_t *socket_1_obj = json_object_get(node_obj, "socket_1");
 
     json_t *socket_0_cpu_obj = json_object_get(socket_0_obj, "CPU");
     json_t *socket_1_cpu_obj = json_object_get(socket_1_obj, "CPU");

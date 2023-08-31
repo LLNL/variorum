@@ -383,25 +383,10 @@ int ibm_cpu_p9_get_node_power_json(json_t *get_power_obj)
     int bytes;
     unsigned iter = 0;
     unsigned nsockets;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object_get(get_power_obj, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_power_obj, hostname, node_obj);
-    }
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -439,7 +424,7 @@ int ibm_cpu_p9_get_node_power_json(json_t *get_power_obj)
             return -1;
         }
 
-        json_get_power_sensors(iter, node_obj, buf);
+        json_get_power_sensors(iter, get_power_obj, buf);
         free(buf);
     }
 

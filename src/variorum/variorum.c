@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <hwloc.h>
 #include <jansson.h>
+#include <unistd.h>
+#include <sys/time.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
@@ -961,6 +963,12 @@ int variorum_get_node_power_json(char **get_power_obj_str)
 {
     int err = 0;
     int i;
+    char hostname[1024];
+    uint64_t ts;
+    struct timeval tv;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -968,6 +976,11 @@ int variorum_get_node_power_json(char **get_power_obj_str)
     }
 
     json_t *get_power_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
+
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < P_NUM_PLATFORMS; ++i)
     {
@@ -980,7 +993,7 @@ int variorum_get_node_power_json(char **get_power_obj_str)
             continue;
         }
 
-        err = g_platform[i].variorum_get_node_power_json(get_power_obj);
+        err = g_platform[i].variorum_get_node_power_json(node_obj);
         if (err)
         {
             return -1;

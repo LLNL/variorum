@@ -309,7 +309,7 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
     uint64_t pwrgpu = 0;
     char socketID[16];
 
-    sprintf(socketID, "Socket_%d", chipid);
+    sprintf(socketID, "socket_%d", chipid);
 
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));

@@ -537,9 +537,6 @@ int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
@@ -547,31 +544,17 @@ int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj)
     int i, ret = 0;
     int sockID_len = 12;
     char sockID[sockID_len];
-    json_t *get_power_obj = json_object();
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object_get(get_power_obj, hostname);
-    if (node_obj == NULL)
-    {
-        node_obj = json_object();
-        json_object_set_new(get_power_obj, hostname, node_obj);
-    }
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
     {
-        snprintf(sockID, sockID_len, "Socket_%d", i);
-        json_t *socket_obj = json_object_get(node_obj, sockID);
+        snprintf(sockID, sockID_len, "socket_%d", i);
+        json_t *socket_obj = json_object_get(get_power_obj, sockID);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(node_obj, sockID, socket_obj);
+            json_object_set_new(get_power_obj, sockID, socket_obj);
         }
 
         json_t *cpu_obj = json_object();
@@ -604,7 +587,7 @@ int amd_cpu_epyc_get_node_power_json(json_t *get_power_obj)
 
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(node_obj, "power_node_watts", json_real(node_power));
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 
     return 0;
 }
