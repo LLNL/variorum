@@ -580,7 +580,7 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
         cfprintf(writedest, "%-s = %d MHz\n", "Min Operating Ratio", 
                 min_oper_ratio);
 #else
-        fprintf(writedest, "Min Operating Ratio  = %d MHz\n",
+        fprintf(writedest, "%s  = %d MHz\n", "Min Operating Ratio", 
                 min_oper_ratio);
 #endif
     }

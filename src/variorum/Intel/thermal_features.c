@@ -12,6 +12,10 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
+#ifdef CPRINTF_FOUND
+#include <cprintf.h>
+#endif
+
 void get_temp_target(struct msr_temp_target *s, off_t msr)
 {
     unsigned nsockets;

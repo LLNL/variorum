@@ -1494,17 +1494,36 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
         }
 
         rapl_storage(&rapl);
-
 #ifdef CPRINTF_FOUND
-        fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
-                "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+        int pkglabels = 5;
+        int max_str_len = 128;
+        char pkg_strs[nsockets][pkglabels][max_str_len];
+        //TODO: Rewrite regular printf outputs to use string array
+        for (i = 0; i < nsockets; i++) {
+            snprintf(pkg_strs[i][0], max_str_len, "pkg%d_joules", i);
+            snprintf(pkg_strs[i][1], max_str_len, "pkg%d_limwatts", i);
+            snprintf(pkg_strs[i][2], max_str_len, "pkg%d_lim2watts", i);
+            snprintf(pkg_strs[i][3], max_str_len, "dram%d_joules", i);
+            snprintf(pkg_strs[i][4], max_str_len, "dram%d_limwatts", i);
+        }
+
+        cfprintf(writedest, "%-s %s ", "_POWMON", "time");
 #else
-        fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
-                "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+        fprintf(writedest, "_POWMON time");
 #endif
 
         for (i = 0; i < nsockets; i++)
         {
+#ifdef CPRINTF_FOUND
+            cfprintf(writedest, "%s %s %s %s %s ", 
+                     pkg_strings[i][0], pkg_strings[i][1], 
+                     pkg_strings[i][2], pkg_strings[i][3], 
+                     pkg_strings[i][4]);
+#else
+            fprintf(writedest,
+                    " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
+                    i, i, i, i, i);
+#endif
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx + 1]),
                                    msr_pkg_power_limit, msr_rapl_unit);
             get_dram_rapl_limit(i, &(rlim[rlim_idx + 2]), msr_dram_power_limit,
@@ -1524,25 +1543,37 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
             
         }
+#ifdef CPRINTF_FOUND
+        cfprintf(writedest, "\n");
+#else 
+        fprintf(writedest, "\n");
+#endif
     }
 
     rlim_idx = 0;
-    fprintf(writedest, "_POWMON %ld", now_ms());
+#ifdef CPRINTF_FOUND
+    cfprintf(writedest, "%s %ld ", "_POWMON", now_ms());
+#else
+    fprintf(writedest, "%s %ld", "_POWMON", now_ms());
+#endif
     for (i = 0; i < nsockets; i++)
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest, "%s %ld %d %lf %lf %lf %lf %lf\n", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
+        cfprintf(writedest, "%s %ld %d %lf %lf %lf %lf %lf ", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
 #else
-        fprintf(writedest, "%s %ld %d %lf %lf %lf %lf %lf\n", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
+        fprintf(writedest, " %s %ld %d %lf %lf %lf %lf %lf", "_POWMON", now_ms(), i, rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
 #endif
         rlim_idx += 3;
     }
 #ifdef CPRINTF_FOUND
+    cfprintf(writedest, "\n");
     cflush();
+#else
+    fprintf(writedest, "\n");
 #endif
 }
 

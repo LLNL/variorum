@@ -1312,8 +1312,8 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         int pkglabels = 5;
         int threadlabels = 6;
         int max_str_len = 128;
-        char pkg_strs[nsockets][pkglabels][128];
-        char thread_strs[nthreads][threadlabels][128];
+        char pkg_strs[nsockets][pkglabels][max_str_len];
+        char thread_strs[nthreads][threadlabels][max_str_len];
 
         for (i = 0; i < nsockets; i++) {
             snprintf(pkg_strs[i][0], max_str_len, "pkg%d_joules", i);
@@ -1341,12 +1341,13 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         {
 #ifdef CPRINTF_FOUND
             cfprintf(writedest, "%s %s %s %s %s ", 
-                     strings[i][0], strings[i][1], 
-                     strings[i][2], strings[i][3], 
-                     strings[i][4]);
+                     pkg_strings[i][0], pkg_strings[i][1], 
+                     pkg_strings[i][2], pkg_strings[i][3], 
+                     pkg_strings[i][4]);
 #else
-            fprintf(writedest, " %s %s %s %s %s %s %s %s",
-                    "_POWMON", "time", "pkg_id", "pkg_joules", "pkg_lim1watts", "pkg_lim2watts", "dram_joules", "dram_limwatts");
+            fprintf(writedest,
+                    " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
+                    i, i, i, i, i);
 #endif
             get_package_rapl_limit(i, &(rlim[rlim_idx]), &(rlim[rlim_idx + 1]),
                                    msr_pkg_power_limit, msr_rapl_unit);
@@ -1400,7 +1401,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     rlim_idx = 0;
 
 #ifdef CPRINTF_FOUND
-    cfprintf(writedest, "%s %ld ", "_POWMON", now_ms());
+    cfprintf(writedest, "%-s %ld ", "_POWMON", now_ms());
 #else
     fprintf(writedest, "%s %ld", "_POWMON", now_ms());
 #endif
