@@ -224,9 +224,10 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
-        allocate_b#ifdef CPRINTF_FOUND
+        allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+#ifdef CPRINTF_FOUND
     cflush();
-#endifatch(TURBO_RATIO_LIMIT, nsockets);
+#endif  
         allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
         load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
         load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
@@ -249,7 +250,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     for (nbits = 0; nbits < 64; nbits += 8)
     {
 #ifdef CPRINTF_FOUND
-        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+        cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
 #else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
@@ -264,10 +265,10 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     for (nbits = 0; nbits < 64; nbits += 8)
     {
 #ifdef CPRINTF_FOUND
-        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+        cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
                                               nbits)) * 100);
 #else
-        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+        printf("%2d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
                                               nbits)) * 100);
 #endif
         core += 1;
@@ -378,7 +379,7 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     if (nlevels == 2)
     {
 #ifdef CPRINTF_FOUND
-        cprintf("%s  = %d MHz\n", "AVX512" level * 100);
+        cprintf("%s  = %d MHz\n", "AVX512", level * 100);
 #else
         printf("AVX512  = %d MHz\n", level * 100);
 #endif

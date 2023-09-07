@@ -260,7 +260,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     if (!init)
     {
 #ifdef CPRINTF_FOUND
-        cprintf(writedest, "%s %s %s %s %s %s\n",
+        cfprintf(writedest, "%s %s %s %s %s %s\n",
                 "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles", "UnhaltRefCycles");
 #else
         fprintf(writedest, "%s %s %s %s %s %s\n",
@@ -1341,9 +1341,9 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         {
 #ifdef CPRINTF_FOUND
             cfprintf(writedest, "%s %s %s %s %s ", 
-                     pkg_strings[i][0], pkg_strings[i][1], 
-                     pkg_strings[i][2], pkg_strings[i][3], 
-                     pkg_strings[i][4]);
+                     pkg_strs[i][0], pkg_strs[i][1], 
+                     pkg_strs[i][2], pkg_strs[i][3], 
+                     pkg_strs[i][4]);
 #else
             fprintf(writedest,
                     " pkg%d_joules pkg%d_lim1watts pkg%d_lim2watts dram%d_joules dram%d_limwatts",
@@ -1367,17 +1367,19 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
             //get_dram_rapl_limit(0, &(rlim[4]), msr_dram_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
         }
+
+        for (i = 0; i < nthreads; i++)
+        {
 #ifdef CPRINTF_FOUND
             cfprintf(writedest, "%s %s %s %s %s ", 
                      thread_strs[i][0], thread_strs[i][1], 
                      thread_strs[i][2], thread_strs[i][3], 
                      thread_strs[i][4], thread_strs[i][5]);
 #else
-        for (i = 0; i < nthreads; i++)
-        {
             fprintf(writedest,
                     " InstRet%d UnhaltClkCycles%d UnhaltRefCycles%d APERF%d MPERF%d TSC%d", i, i, i,
                     i, i, i);
+#endif
         }
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "\n");
