@@ -1495,17 +1495,6 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 
         rapl_storage(&rapl);
 #ifdef CPRINTF_FOUND
-        //int pkglabels = 5;
-        //int max_str_len = 128;
-        //char pkg_strs[nsockets][pkglabels][max_str_len];
-        //TODO: Rewrite regular printf outputs to use string array
-        /*for (i = 0; i < nsockets; i++) {
-            snprintf(pkg_strs[i][0], max_str_len, "pkg%d_joules", i);
-            snprintf(pkg_strs[i][1], max_str_len, "pkg%d_limwatts", i);
-            snprintf(pkg_strs[i][2], max_str_len, "pkg%d_lim2watts", i);
-            snprintf(pkg_strs[i][3], max_str_len, "dram%d_joules", i);
-            snprintf(pkg_strs[i][4], max_str_len, "dram%d_limwatts", i);
-        }*/
         cfprintf(writedest, "%s %s ", "_POWMON", "time");
         int pkglabels = 5;
         int max_str_len = 128;
