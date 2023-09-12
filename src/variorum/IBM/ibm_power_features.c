@@ -215,13 +215,13 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
     else
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(output "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+        cfprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
                  "_IBMPOWER Host", hostname, "Socket", chipid,
                  "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
                  "PWRGPU", pwrgpu,
                  "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
-            fprintf(output "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+            fprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
                     "_IBMPOWER Host", hostname, "Socket", chipid,
                     "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
                     "PWRGPU", pwrgpu,

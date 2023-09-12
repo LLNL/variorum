@@ -163,7 +163,7 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
     else
     {
 #ifdef CPRINTF_FOUND
-        cprintf(stdout,
+        cfprintf(stdout,
                 "%s: %s, %s: %d W, %s: %d W, %s: %d W, %s: %d%%, %s: %d%%\n", 
                 "_POWERCAP Host:", hostname, "CurrentPower:", pcap_current, "MaxPower:", 
                 pcap_max, "MinPower:", pcap_min, "PSR_CPU_to_GPU_0:", psr_1, "PSR_CPU_to_GPU_8:", psr_2);
