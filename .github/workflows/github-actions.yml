@@ -288,7 +288,7 @@ jobs:
           ls -l /dev/cpu/*/msr_safe
           MSR_SAFE_VERSION=`cat /sys/module/msr_safe/version`
           echo -e "MSR_SAFE_VERSION:" ${MSR_SAFE_VERSION}
-          AL=$(printf 'al_%.2x_%x\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
+          AL=$(printf 'al_%.2x_%X\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
           echo -e "AL:" ${AL}
           cut -c 3- allowlists/${AL} > allowlists/${AL}_mod
           cat allowlists/${AL}_mod > /dev/cpu/msr_allowlist
