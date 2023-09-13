@@ -86,17 +86,11 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
-            cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
-                     "_NVIDIA_GPU_POWER_USAGE Host", m_hostname, 
-                     "Socket", chipid, 
-                     "DeviceID", d, "Power", value);
-#else
+
             fprintf(output, "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
                      "_NVIDIA_GPU_POWER_USAGE Host", m_hostname, 
                      "Socket", chipid, 
                      "DeviceID", d, "Power", value);
-#endif
         }
         else
         {
@@ -104,11 +98,11 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
-                         "_NVIDIA_GPU_POWER_USAGE", "Host" 
+                         "_NVIDIA_GPU_POWER_USAGE", "Host", 
                          "Socket", "DeviceID", "Power");
 #else
                 fprintf(output, "%s %s %s %s %s\n",
-                        "_NVIDIA_GPU_POWER_USAGE", "Host" 
+                        "_NVIDIA_GPU_POWER_USAGE", "Host", 
                         "Socket", "DeviceID", "Power");
 #endif
                 init_output = 1;
@@ -123,9 +117,6 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
-    cflush();
-#endif
 }
 
 void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
@@ -160,17 +151,17 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
-                         "_NVIDIA_GPU_TEMPERATURE", "Host" 
+                         "_NVIDIA_GPU_TEMPERATURE", "Host",
                          "Socket", "DeviceID", "Temperature_C");
 #else
                 fprintf(output, "%s %s %s %s %s\n",
-                        "_NVIDIA_GPU_TEMPERATURE", "Host" 
+                        "_NVIDIA_GPU_TEMPERATURE", "Host",
                         "Socket", "DeviceID", "Temperature_C");
 #endif
                 init_output = 1;
             }
 #ifdef CPRINTF_FOUND
-            cprintf(output, "%s %s %d %d %d\n",
+            cfprintf(output, "%s %s %d %d %d\n",
                     "_NVIDIA_GPU_TEMPERATURE", m_hostname, chipid, d, gpu_temp);
 #else
             fprintf(output, "%s %s %d %d %d\n",
@@ -178,9 +169,6 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
-    cflush();
-#endif
     /*!@todo: Print GPU memory temperature */
 }
 
@@ -282,11 +270,11 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
-                         "_NVIDIA_GPU_CLOCKS", "Host" 
+                         "_NVIDIA_GPU_CLOCKS", "Host", 
                          "Socket", "DeviceID", "GPU_Clock_MHz");
 #else
                 fprintf(output, "%s %s %s %s %s\n",
-                         "_NVIDIA_GPU_CLOCKS", "Host" 
+                         "_NVIDIA_GPU_CLOCKS", "Host",
                          "Socket", "DeviceID", "GPU_Clock_MHz");
 #endif
                 init_output = 1;
@@ -300,9 +288,6 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
-    cflush();
-#endif
 }
 
 void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
@@ -335,8 +320,8 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
             if (!init_output)
             {
 #ifdef CPRINTF_FOUND 
-                cfprintf(output, "%s %s %s %s %s %s %s\n",
-                         "_NVIDIA_GPU_UTILIZATION", "Host" 
+                cfprintf(output, "%s %s %s %s %s %s\n",
+                         "_NVIDIA_GPU_UTILIZATION", "Host",
                          "Socket", "DeviceID", "SM_Util_%%", "Memory_Util_%%");
 #else
                 fprintf(output,
