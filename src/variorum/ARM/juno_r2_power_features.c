@@ -117,7 +117,7 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
             init_output = 1;
         }
         #ifdef CPRINTF_FOUND
-            cfrintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+            cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                     "_ARM_POWER", m_hostname,
                     (double)(sys_power_val) / 1000.0f,
                     (double)(big_power_val) / 1000.0f,
@@ -207,34 +207,34 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-            #ifdef CPRINTF_FOUND
-                cfprintf(output, "%s %s %s %s %s %s\n",
+#ifdef CPRINTF_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
                          "_ARM_TEMPERATURE", "Host", "Sys_C", "Big_C", "Little_C", "GPU_C");
-            #else
-                fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
-            #endif
+#else
+            fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
+#endif
             init_output = 1;
         }
 
-        #ifdef CPRINTF_FOUND
-            cprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
-                    "_ARM_TEMPERATURE", m_hostname,
-                    (double)(sys_therm_val) / 1000.0f,
-                    (double)(big_therm_val) / 1000.0f,
-                    (double)(little_therm_val) / 1000.0f,
-                    (double)(gpu_therm_val) / 1000.0f);
-        #else
-            fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
-                    m_hostname,
-                    (double)(sys_therm_val) / 1000.0f,
-                    (double)(big_therm_val) / 1000.0f,
-                    (double)(little_therm_val) / 1000.0f,
-                    (double)(gpu_therm_val) / 1000.0f);
-        #endif
+#ifdef CPRINTF_FOUND
+        cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                "_ARM_TEMPERATURE", m_hostname,
+                (double)(sys_therm_val) / 1000.0f,
+                (double)(big_therm_val) / 1000.0f,
+                (double)(little_therm_val) / 1000.0f,
+                (double)(gpu_therm_val) / 1000.0f);
+#else
+        fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                m_hostname,
+                (double)(sys_therm_val) / 1000.0f,
+                (double)(big_therm_val) / 1000.0f,
+                (double)(little_therm_val) / 1000.0f,
+                (double)(gpu_therm_val) / 1000.0f);
+#endif
     }
-    #ifdef CPRINTF_FOUND
-        cflush();
-    #endif
+#ifdef CPRINTF_FOUND
+    cflush();
+#endif
     return 0;
 }
 
