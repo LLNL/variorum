@@ -214,11 +214,11 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
-                         "_NVIDIA_GPU_POWER_LIMIT", "Host" 
+                         "_NVIDIA_GPU_POWER_LIMIT", "Host",
                          "Socket", "DeviceID", "PowerLimit_W");
 #else
                 fprintf(output, "%s %s %s %s %s\n",
-                        "_NVIDIA_GPU_POWER_LIMIT", "Host" 
+                        "_NVIDIA_GPU_POWER_LIMIT", "Host",
                         "Socket", "DeviceID", "PowerLimit_W");
 #endif
                 init_output = 1;
