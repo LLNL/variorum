@@ -292,7 +292,6 @@ jobs:
           echo -e "AL:" ${AL}
           sed -i -e 1,9d allowlists/${AL}
           cut -c 3- allowlists/${AL} > allowlists/${AL}_mod
-          head -n 10 allowlists/${AL}_mod > allowlists/${AL}_mod
           cat allowlists/${AL}_mod
           cat allowlists/${AL}_mod > /dev/cpu/msr_allowlist
           head -n 5 /dev/cpu/msr_allowlist
