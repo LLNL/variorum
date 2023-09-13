@@ -91,8 +91,8 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
         if (!init_output)
         {
             #ifdef CPRINTF_FOUND
-                cfprintf(output, "%s %s %s\n",
-                         "_ARM_POWER", "Host", "CPU_mW I/O_mW");
+                cfprintf(output, "%s %s %s %s\n",
+                         "_ARM_POWER", "Host", "CPU_mW", "I/O_mW");
             #else
                 fprintf(output, "_ARM_POWER Host CPU_mW I/O_mW\n");
             #endif
