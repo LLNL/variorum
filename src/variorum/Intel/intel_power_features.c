@@ -1561,7 +1561,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
 #else
-        fprintf(writedest, " %lf %lf %lf %lf %lf", "_POWMON", rapl->pkg_delta_joules[i],
+        fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                 rlim[rlim_idx + 2].watts);
 #endif

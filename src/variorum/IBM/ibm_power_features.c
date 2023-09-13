@@ -11,9 +11,8 @@
 #include <ibm_power_features.h>
 
 #ifdef CPRINTF_FOUND
-    #include <cprintf.h>
-#endif
-
+#include <cprintf.h>
+#endif 
 
 unsigned long read_counter(const struct occ_sensor_data_header *hb,
                            uint32_t offset)
@@ -139,7 +138,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         if (long_ver == 0)
         {
 #ifdef CPRINTF_FOUND
-            cfprintf(output, "%s %s %s %s %s %s %s %s\n",
+            intf(output "%s %s %s %s %s %s %s %s\n",
                      "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
                      "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
 #else
@@ -221,11 +220,11 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
                  "PWRGPU", pwrgpu,
                  "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
-            fprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
-                    "_IBMPOWER Host", hostname, "Socket", chipid,
-                    "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
-                    "PWRGPU", pwrgpu,
-                    "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        fprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+                "_IBMPOWER Host", hostname, "Socket", chipid,
+                "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
+                "PWRGPU", pwrgpu,
+                "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
     }
 #ifdef CPRINTF_FOUND
