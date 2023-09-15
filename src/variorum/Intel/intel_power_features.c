@@ -1162,7 +1162,7 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     json_object_set_new(node_obj, "control", control_obj);
 
     json_t *control_cpu_obj = json_object();
-    json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+    json_object_set_new(control_obj, "power_node", control_cpu_obj);
     json_object_set_new(control_cpu_obj, "min", json_real(pkg_info.pkg_min_power));
     json_object_set_new(control_cpu_obj, "max", json_real(pkg_info.pkg_max_power));
     json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
