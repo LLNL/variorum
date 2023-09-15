@@ -633,7 +633,7 @@ int amd_cpu_epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
     json_object_set_new(node_obj, "control", control_obj);
 
     json_t *control_cpu_obj = json_object();
-    json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+    json_object_set_new(control_obj, "power_node", control_cpu_obj);
     json_object_set_new(control_cpu_obj, "min", json_integer(50));
     json_object_set_new(control_cpu_obj, "max", json_integer(max_power));
     json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
