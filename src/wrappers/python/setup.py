@@ -7,7 +7,7 @@ from setuptools import setup
 
 setup(
     name="pyVariorum",
-    version="0.6",
+    version="0.7",
     description="A python wrapper for Variorum library.",
     url="https://variorum.readthedocs.io/",
     author="Stephanie Brink, Aniruddha Marathe, Tapasya Patki, Barry Rountree",

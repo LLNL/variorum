@@ -12,6 +12,11 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
+unsigned m_total_unit_devices;
+nvmlDevice_t *m_unit_devices_file_desc;
+unsigned m_gpus_per_socket;
+char m_hostname[1024];
+
 void initNVML(void)
 {
     unsigned int d;
