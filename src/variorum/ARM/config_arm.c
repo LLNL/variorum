@@ -10,8 +10,10 @@
 #include <config_architecture.h>
 #include "juno_r2_power_features.h"
 #include "neoverse_N1_power_features.h"
+#include "cortex_a72_power_features.h"
 #include <ARM_Juno_r2.h>
 #include <ARM_Neoverse_N1.h>
+#include <cortex_a72.h>
 #include <variorum_error.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -75,7 +77,27 @@ int set_arm_func_ptrs(int idx)
 {
     int err = 0;
 
-    if (*g_platform[idx].arch_id == ((ARM_CORTEX_A53 << 12) | ARM_CORTEX_A72))
+    /* System with only Cortex A-72 present */
+    if (*g_platform[idx].arch_id == ((ARM_CORTEX_A72 << 12) | ARM_CORTEX_A72))
+    {
+        /* Initialize interfaces */
+        g_platform[idx].variorum_print_power                     =
+            arm_cortex_a72_get_power;
+        g_platform[idx].variorum_print_thermals                  =
+            arm_cortex_a72_get_thermals;
+        g_platform[idx].variorum_print_frequency                 =
+            arm_cortex_a72_get_clocks;
+        g_platform[idx].variorum_print_available_frequencies     =
+            arm_cortex_a72_get_frequencies;
+        g_platform[idx].variorum_cap_socket_frequency_limit      =
+            arm_cortex_a72_cap_socket_frequency;
+        g_platform[idx].variorum_get_node_power_json             =
+            arm_cortex_a72_get_power_json;
+        g_platform[idx].variorum_get_node_power_domain_info_json =
+            arm_cortex_a72_get_power_domain_info_json;
+    }
+    /* System with Cortex A-53 and Cortex A-72 */
+    else if (*g_platform[idx].arch_id == ((ARM_CORTEX_A53 << 12) | ARM_CORTEX_A72))
     {
         /* Initialize interfaces */
         g_platform[idx].variorum_print_power                     =
