@@ -37,4 +37,4 @@ set(HWLOC_DIR "/usr/include/hwloc/" CACHE PATH "")
 set(JANSSON_DIR "/usr/include/" CACHE PATH "")
 
 # Path to cprintf install
-set(CPRINTF_DIR "/home/$ENV{USER}/libjustify/" CACHE PATH "")
+set(CPRINTF_DIR "/usr/local/share/libjustify-install/" CACHE PATH "")

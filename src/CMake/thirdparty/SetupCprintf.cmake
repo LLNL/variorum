@@ -10,7 +10,7 @@ if(CPRINTF_DIR)
 
     find_path(CPRINTF_INCLUDE_DIRS
         NAMES cprintf.h
-        HINTS ${CPRINTF_DIR}/src/
+        HINTS ${CPRINTF_DIR}/include/
     )
     if(NOT CPRINTF_INCLUDE_DIRS)
         MESSAGE(WARNING "Could not find cprintf.h in ${CPRINTF_DIR}/include")
@@ -18,10 +18,10 @@ if(CPRINTF_DIR)
 
     find_library(CPRINTF_LIBRARY
         NAMES libcprintf.so
-        HINTS ${CPRINTF_DIR}/build/libjustify
+        HINTS ${CPRINTF_DIR}/lib/
     )
     if(NOT CPRINTF_LIBRARY)
-        MESSAGE(WARNING "Could not find libcprintf.so in ${CPRINTF_DIR}/build/libjustify")
+        MESSAGE(WARNING "Could not find libcprintf.so in ${CPRINTF_DIR}/lib/")
     endif()
 
     set(CPRINTF_FOUND TRUE CACHE INTERNAL "")
@@ -32,6 +32,7 @@ if(CPRINTF_DIR)
     message(STATUS " [*] CPRINTF_DIR = ${CPRINTF_DIR}")
     message(STATUS " [*] CPRINTF_INCLUDE_DIRS = ${CPRINTF_INCLUDE_DIRS}")
     message(STATUS " [*] CPRINTF_LIBRARY = ${CPRINTF_LIBRARY}")
+
 # If CPRINTF_DIR not specified, then try to automatically find the CPRINTF header
 # and library
 elseif(NOT CPRINTF_FOUND)
@@ -52,6 +53,7 @@ elseif(NOT CPRINTF_FOUND)
         include_directories(${CPRINTF_INCLUDE_DIRS})
 
         message(STATUS "FOUND cprintf using find_library()")
+        message(STATUS " [*] CPRINTF_FOUND = TRUE")
         message(STATUS " [*] CPRINTF_INCLUDE_DIRS = ${CPRINTF_INCLUDE_DIRS}")
         message(STATUS " [*] CPRINTF_LIBRARY = ${CPRINTF_LIBRARY}")
     endif()
