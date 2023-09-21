@@ -142,3 +142,21 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
     }
     return 0;
 }
+
+int amd_gpu_instinct_get_power_json(char **get_power_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    json_t *get_power_obj = json_object();
+
+    amd_gpu_get_json_power_data(get_power_obj);
+
+    *get_power_obj_str = json_dumps(get_power_obj, 0);
+    json_decref(get_power_obj);
+
+    return 0;
+}
