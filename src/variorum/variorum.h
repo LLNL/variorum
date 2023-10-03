@@ -539,13 +539,17 @@ int variorum_disable_turbo(void);
 /// check for NULL strings.
 int variorum_get_node_power_json(char **get_power_obj_str);
 
-/// @brief Populate a string in JSON format with total CPU node utilization, user .
+/// @brief Populate a string in JSON format with total CPU node utilization, user 
 /// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
 /// utilization.
+/// Format: { hostname: { "CPU": { "total_util%": total_CPU_utilization, "user_util%": user_utilization,
+/// "user_util%": CPU_user_utilization }, { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization }, 
+/// "memory_util%": total_memory_utilization, "timestamp" : timestampe }
+/// where n is the socket number and m is the GPU id.   
 ///
-///  @supparcg
-///  - AMD Radeon Instinct GPUs (MI50 onwards)
-///  - NVIDIA Volta
+/// @supparcg
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
+/// - NVIDIA Volta
 ///
 /// @unsupported
 /// - AMD EPYC Milan
@@ -561,7 +565,10 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Cooper Lake
 ///
 /// @param [out] output String (passed by refrence) that contains node-level utilization information.
-/// returns 0 if successful, otherwise -1.
+/// returns 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// check for NULL strings.
+//
 int variorum_get_node_utilization_json(char **get_util_obj_str);
 
 /// @work in progress for variorum_get_gpu_utilization_json
