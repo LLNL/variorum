@@ -7,7 +7,6 @@
 if(CPRINTF_DIR)
     message(STATUS "Looking for Cprintf using CPRINTF_DIR = ${CPRINTF_DIR}")
 
-
     find_path(CPRINTF_INCLUDE_DIRS
         NAMES cprintf.h
         HINTS ${CPRINTF_DIR}/include/

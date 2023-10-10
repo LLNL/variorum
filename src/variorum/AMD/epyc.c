@@ -380,6 +380,7 @@ int amd_cpu_epyc_print_energy()
     {
         int i;
         uint64_t energy;
+
         fprintf(stdout, "_SOCKET_ENERGY :\n");
 #ifdef CPRINTF_FOUND
         cfprintf(stdout, "%s |  %s |\n", "Socket", "Energy(uJoules)");
