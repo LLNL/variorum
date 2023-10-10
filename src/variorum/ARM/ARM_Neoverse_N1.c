@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -57,7 +57,9 @@ int arm_neoverse_n1_get_clocks(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = arm_cpu_neoverse_n1_get_clocks_data(iter, long_ver, stdout);
@@ -77,7 +79,9 @@ int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");

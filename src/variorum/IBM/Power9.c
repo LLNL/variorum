@@ -27,7 +27,9 @@ int ibm_cpu_p9_get_power(int long_ver)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -298,7 +300,9 @@ int ibm_cpu_p9_monitoring(FILE *output)
     unsigned nsockets;
     static unsigned count = 0;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -385,7 +389,9 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
 
     json_t *get_power_obj = json_object();
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
