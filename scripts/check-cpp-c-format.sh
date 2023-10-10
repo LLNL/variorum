@@ -26,7 +26,7 @@ astyle --errors-to-stdout \
        --unpad-paren \
        --align-pointer=name \
        --align-reference=name \
-       --break-closing-braces \
+       --break-closing-brackets \
        --keep-one-line-blocks \
        --keep-one-line-statements \
        --max-code-length=80 \
