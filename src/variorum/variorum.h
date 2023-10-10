@@ -539,13 +539,13 @@ int variorum_disable_turbo(void);
 /// check for NULL strings.
 int variorum_get_node_power_json(char **get_power_obj_str);
 
-/// @brief Populate a string in JSON format with total CPU node utilization, user 
+/// @brief Populate a string in JSON format with total CPU node utilization, user
 /// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
 /// utilization.
 /// Format: { hostname: { "CPU": { "total_util%": total_CPU_utilization, "user_util%": user_utilization,
-/// "user_util%": CPU_user_utilization }, { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization }, 
+/// "user_util%": CPU_user_utilization }, { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization },
 /// "memory_util%": total_memory_utilization, "timestamp" : timestampe }
-/// where n is the socket number and m is the GPU id.   
+/// where n is the socket number and m is the GPU id.
 ///
 /// @supparcg
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
