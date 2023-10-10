@@ -77,10 +77,12 @@ void get_power_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output,
-                         "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID", "Power_W");
+                         "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID",
+                         "Power_W");
 #else
                 fprintf(output,
-                        "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID", "Power_W");
+                        "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID",
+                        "Power_W");
 #endif
                 init_output = 1;
             }
@@ -89,7 +91,7 @@ void get_power_data(int chipid, int verbose, FILE *output)
                      "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
 #else
             fprintf(output,
-                     "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
+                    "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
 #endif
         }
     }
@@ -111,16 +113,15 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
         int ti = 0; // only report the first temp sensor now
         apmidg_readtemp(d, ti, &temp_C);
 
-
         if (verbose)
         {
 #ifdef CPRINTF_FOUND
             cfprintf(output,
-                    "%s: %s, %s: %d, %s: %d, %s: %lf C\n",
-                    "_INTEL_GPU_TEMPERATURE Host", m_hostname,
-                    "Socket", chipid,
-                    "DeviceID", d,
-                    "Temperature", temp_C);
+                     "%s: %s, %s: %d, %s: %d, %s: %lf C\n",
+                     "_INTEL_GPU_TEMPERATURE Host", m_hostname,
+                     "Socket", chipid,
+                     "DeviceID", d,
+                     "Temperature", temp_C);
 #else
             fprintf(output,
                     "_INTLE_GPU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d, Temperature: %.1lf C\n",
@@ -133,10 +134,12 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output,
-                         "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID", "Temperature_C");
+                         "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID",
+                         "Temperature_C");
 #else
                 fprintf(output,
-                        "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID", "Temperature_C");
+                        "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID",
+                        "Temperature_C");
 
 #endif
                 init_output = 1;
@@ -173,10 +176,12 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
         {
 #ifdef CPRINTF_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n"
-                    "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d, "GPU_Clock", (int)freq_MHz, "MHz");
+                     "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d,
+                     "GPU_Clock", (int)freq_MHz, "MHz");
 #else
             fprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n"
-                    "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d, "GPU_Clock", (int)freq_MHz, "MHz");
+                    "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d,
+                    "GPU_Clock", (int)freq_MHz, "MHz");
 #endif
         }
         else
@@ -184,16 +189,18 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
             if (!init_output)
             {
 #ifdef CPRINTF_FOUND
-                cfprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket", "DeviceID", "GPU_Clock_MHz");
+                cfprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket",
+                         "DeviceID", "GPU_Clock_MHz");
 #else
 
-                fprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket", "DeviceID", "GPU_Clock_MHz");
+                fprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket",
+                        "DeviceID", "GPU_Clock_MHz");
 #endif
                 init_output = 1;
             }
 #ifdef CPRINTF_FOUND
             cfprintf(output, "%s %s %d %d %d\n",
-                    "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
+                     "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
 #else
             fprintf(output, "%s %s %d %d %d\n",
                     "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
@@ -218,7 +225,6 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
         int current_powerlimit_mwatts = 0;
         apmidg_setpwrlim(d, pi, powerlimit_mwatts);
         apmidg_getpwrlim(d, pi, &current_powerlimit_mwatts);
-
 
         if (powerlimit_mwatts != current_powerlimit_mwatts)
         {
@@ -247,8 +253,8 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
         {
 #ifdef CPRINTF_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n",
-                    "_INTEL_GPU_POWER_LIMIT Host", m_hostname, "Socket", chipid, 
-                    "DeviceID", d, "GPU_Power_limit", current_powerlimit_mwatts, "mW");
+                     "_INTEL_GPU_POWER_LIMIT Host", m_hostname, "Socket", chipid,
+                     "DeviceID", d, "GPU_Power_limit", current_powerlimit_mwatts, "mW");
 #else
             fprintf(output,
                     "_INTEL_GPU_POWER_LIMIT Host: %s, Socket: %d, DeviceID: %d, GPU_Power_limit: %d mW\n",
@@ -262,7 +268,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
             {
 #ifdef CPRINTF_FOUND
                 cfprintf(output, "%s %s %s %s %s",
-                        "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");
+                         "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");
 #else
                 fprintf(output, "%s %s %s %s %s",
                         "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");

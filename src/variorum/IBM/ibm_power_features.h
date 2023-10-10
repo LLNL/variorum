@@ -129,7 +129,6 @@ struct occ_sensor_counter
     uint8_t  pad[5];
 } __attribute__((__packed__));
 
-
 void print_power_sensors(int chipid,
                          int long_ver,
                          FILE *output,

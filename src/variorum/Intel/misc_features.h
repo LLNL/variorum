@@ -75,7 +75,6 @@ int print_turbo_status(FILE *writedest,
                        off_t msr_misc_enable,
                        unsigned int turbo_mode_disable_bit);
 
-
 ///// These per core functions seemingly only for Intel Signatures 06_57H (KNL) and
 ///// 06_85H (future Xeon Phi), at the moment.
 ///// Intel Vol. 4 2-287 Documentation

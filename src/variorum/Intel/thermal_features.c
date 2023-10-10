@@ -332,15 +332,15 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     get_therm_stat(t_stat, msr_therm_stat);
 #ifdef CPRINTF_FOUND
     cfprintf(writedest,
-            "%s %s %s %s %s %s %s %s %s %s\n", 
-            "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C", 
-            "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C", 
-            "Thread_DigitalReadingValid");
-#else 
+             "%s %s %s %s %s %s %s %s %s %s\n",
+             "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C",
+             "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C",
+             "Thread_DigitalReadingValid");
+#else
     fprintf(writedest,
-            "%s %s %s %s %s %s %s %s %s %s\n", 
-            "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C", 
-            "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C", 
+            "%s %s %s %s %s %s %s %s %s %s\n",
+            "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C",
+            "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C",
             "Thread_DigitalReadingValid");
 #endif
     for (i = 0; i < nsockets; i++)
@@ -356,7 +356,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
                          pkg_stat[i].readout, (int)t_target[i].temp_target - pkg_stat[i].readout,
                          t_stat[idx].readout, (int)t_target[i].temp_target - t_stat[idx].readout,
                          t_stat[idx].readout_valid);
-#else 
+#else
                 fprintf(writedest, "%s %d %d %d %d %d %d %d %d %d\n",
                         "_THERMALS", i, j, idx, (int)t_target[i].temp_target,
                         pkg_stat[i].readout, (int)t_target[i].temp_target - pkg_stat[i].readout,
@@ -376,7 +376,6 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     free(t_target);
     return 0;
 }
-
 
 ///// @brief Initialize storage for IA32_THERM_INTERRUPT.
 /////

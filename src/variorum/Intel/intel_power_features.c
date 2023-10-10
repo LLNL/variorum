@@ -19,7 +19,7 @@
 
 #ifdef CPRINTF_FOUND
 #include <cprintf.h>
-#endif 
+#endif
 
 static int translate(const unsigned socket, uint64_t *bits, double *units,
                      int type, off_t msr, int idx)
@@ -431,28 +431,30 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
     get_rapl_power_unit(ru, msr);
 #ifdef CPRINTF_FOUND
     cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
-            "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W", "EnergyUnit_J", "TimeUnit_sec");
+             "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W",
+             "EnergyUnit_J", "TimeUnit_sec");
 #else
     fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
-            "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W", "EnergyUnit_J", "TimeUnit_sec");
+            "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W",
+            "EnergyUnit_J", "TimeUnit_sec");
 #endif
     for (socket = 0; socket < nsockets; socket++)
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS", 
-                msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
-                1 / ru[socket].joules, 1 / ru[socket].seconds);
+        cfprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS",
+                 msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
+                 1 / ru[socket].joules, 1 / ru[socket].seconds);
 
 #else
-        fprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS", 
+        fprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS",
                 msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                 1 / ru[socket].joules, 1 / ru[socket].seconds);
 #endif
     }
 
-//#ifdef CPRINTF_FOUND
-//    cflush();
-//#endif
+    //#ifdef CPRINTF_FOUND
+    //    cflush();
+    //#endif
 
     free(ru);
 }
@@ -476,14 +478,14 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest,
-                "%s: %#lx, %s: %s, %s: %d, %s: %#lx, %s: %f W, %s: %f J, %s: %f sec\n",
-                "_RAPL_POWER_UNITS Offset", msr,
-                "Host", hostname,
-                "Socket", socket,
-                "Bits", ru[socket].msr_rapl_power_unit,
-                "PowerUnit", ru[socket].watts,
-                "EnergyUnit", 1 / ru[socket].joules,
-                "TimeUnit", 1 / ru[socket].seconds);
+                 "%s: %#lx, %s: %s, %s: %d, %s: %#lx, %s: %f W, %s: %f J, %s: %f sec\n",
+                 "_RAPL_POWER_UNITS Offset", msr,
+                 "Host", hostname,
+                 "Socket", socket,
+                 "Bits", ru[socket].msr_rapl_power_unit,
+                 "PowerUnit", ru[socket].watts,
+                 "EnergyUnit", 1 / ru[socket].joules,
+                 "TimeUnit", 1 / ru[socket].seconds);
 #else
         fprintf(writedest,
                 "_RAPL_POWER_UNITS Offset: %#lx, Host: %s, Socket: %d, Bits: %#lx, PowerUnit: %f W, EnergyUnit: %f J, TimeUnit: %f sec\n",
@@ -512,8 +514,8 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
         init_print_package_power_info = 1;
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_PACKAGE_POWER_INFO", "Offset", "Host", "Socket", "Bits",
-                "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
+                 "_PACKAGE_POWER_INFO", "Offset", "Host", "Socket", "Bits",
+                 "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
 
 #else
         fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
@@ -526,18 +528,20 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info, 
-                info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+                 "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info,
+                 info.pkg_max_power, info.pkg_min_power, info.pkg_max_window,
+                 info.pkg_therm_power);
 #else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info, 
-                info.pkg_max_power, info.pkg_min_power, info.pkg_max_window, info.pkg_therm_power);
+                "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info,
+                info.pkg_max_power, info.pkg_min_power, info.pkg_max_window,
+                info.pkg_therm_power);
 #endif
     }
 
-//#ifdef CPRINTF_FOUND
-//    cflush();
-//#endif
+    //#ifdef CPRINTF_FOUND
+    //    cflush();
+    //#endif
 }
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
@@ -568,11 +572,13 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
     {
         init_print_dram_power_info = 1;
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest,"%s %s %s %s %s %s %s %s %s\n",
-                "_DRAM_POWER_INFO", "Offset", "Host", "Socket", "Bits", "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
-#else 
-        fprintf(writedest,"%s %s %s %s %s %s %s %s %s\n",
-                "_DRAM_POWER_INFO", "Offset", "Host", "Socket", "Bits", "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
+        cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                 "_DRAM_POWER_INFO", "Offset", "Host", "Socket", "Bits", "MaxPower_W",
+                 "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
+#else
+        fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
+                "_DRAM_POWER_INFO", "Offset", "Host", "Socket", "Bits", "MaxPower_W",
+                "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
 #endif
     }
 
@@ -580,17 +586,19 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_DRAM_POWER_INFO", msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
-                info.dram_min_power, info.dram_max_window, info.dram_therm_power);
-#else 
+                 "_DRAM_POWER_INFO", msr, hostname, socket, info.msr_dram_power_info,
+                 info.dram_max_power,
+                 info.dram_min_power, info.dram_max_window, info.dram_therm_power);
+#else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_DRAM_POWER_INFO", msr, hostname, socket, info.msr_dram_power_info, info.dram_max_power,
+                "_DRAM_POWER_INFO", msr, hostname, socket, info.msr_dram_power_info,
+                info.dram_max_power,
                 info.dram_min_power, info.dram_max_window, info.dram_therm_power);
 #endif
     }
-//#ifdef CPRINTF_FOUND
-//    cflush();
-//#endif
+    //#ifdef CPRINTF_FOUND
+    //    cflush();
+    //#endif
 }
 
 void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
@@ -608,7 +616,6 @@ void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
                 info.dram_min_power, info.dram_max_window, info.dram_therm_power);
     }
 }
-
 
 void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                                off_t msr_rapl_unit, int socket)
@@ -628,10 +635,12 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
         init_print_package_power_limit = 1;
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_PACKAGE_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit1_W", "TimeWindow1_sec", "PowerLimit2_W", "TimeWindow2_sec");
+                 "_PACKAGE_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit1_W",
+                 "TimeWindow1_sec", "PowerLimit2_W", "TimeWindow2_sec");
 #else
         fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_PACKAGE_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit1_W", "TimeWindow1_sec", "PowerLimit2_W", "TimeWindow2_sec");
+                "_PACKAGE_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit1_W",
+                "TimeWindow1_sec", "PowerLimit2_W", "TimeWindow2_sec");
 #endif
     }
 
@@ -639,17 +648,19 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
-                l2.seconds);
+                 "_PACKAGE_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
+                 l1.seconds, l2.watts,
+                 l2.seconds);
 #else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds, l2.watts,
+                "_PACKAGE_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
+                l1.seconds, l2.watts,
                 l2.seconds);
 #endif
     }
-//#ifdef CPRINTF_FOUND
-//    cflush();
-//#endif
+    //#ifdef CPRINTF_FOUND
+    //    cflush();
+    //#endif
 }
 
 void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
@@ -670,10 +681,12 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
         init_print_dram_power_limit = 1;
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s\n",
-                "_DRAM_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit_W", "TimeWindow_sec");
+                 "_DRAM_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit_W",
+                 "TimeWindow_sec");
 #else
         fprintf(writedest, "%s %s %s %s %s %s %s\n",
-                "_DRAM_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit_W", "TimeWindow_sec");
+                "_DRAM_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit_W",
+                "TimeWindow_sec");
 #endif
     }
 
@@ -681,15 +694,17 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf\n",
-                "_DRAM_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+                 "_DRAM_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
+                 l1.seconds);
 #else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf\n",
-                "_DRAM_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts, l1.seconds);
+                "_DRAM_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
+                l1.seconds);
 #endif
     }
-//#ifdef CPRINTF_FOUND
-//    cflush();
-//#endif
+    //#ifdef CPRINTF_FOUND
+    //    cflush();
+    //#endif
 }
 
 void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit,
@@ -1010,7 +1025,7 @@ int delta_rapl_data(off_t msr_rapl_unit)
     for (i = 0; i < nsockets; i++)
     {
         /* Check to see if there was wraparound and use corresponding translation. */
-        if ((double)*rapl->pkg_bits[i] - (double)rapl->old_pkg_bits[i] < 0)
+        if ((double) * rapl->pkg_bits[i] - (double)rapl->old_pkg_bits[i] < 0)
         {
             rapl->pkg_delta_bits[i] = (uint64_t)((*rapl->pkg_bits[i] +
                                                   (uint64_t)max_joules) - rapl->old_pkg_bits[i]);
@@ -1131,10 +1146,12 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
 
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec", "Timestamp_sec");
+                 "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
+                 "Power_W", "Elapsed_sec", "Timestamp_sec");
 #else
         fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec", "Timestamp_sec");
+                "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
+                "Power_W", "Elapsed_sec", "Timestamp_sec");
 #endif
         rapl_storage(&rapl);
     }
@@ -1143,12 +1160,14 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     {
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, &hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
-                rapl->pkg_watts[i], rapl->elapsed,
-                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                 "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, &hostname, i,
+                 *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                 rapl->pkg_watts[i], rapl->elapsed,
+                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, hostname, i,
+                *rapl->pkg_bits[i], rapl->pkg_joules[i],
                 rapl->pkg_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
@@ -1159,10 +1178,12 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "\n");
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec", "Timestamp_sec");
+                 "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
+                 "Power_W", "Elapsed_sec", "Timestamp_sec");
 #else
         fprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
-                "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J", "Power_W", "Elapsed_sec", "Timestamp_sec");
+                "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
+                "Power_W", "Elapsed_sec", "Timestamp_sec");
 #endif
         init = 1;
     }
@@ -1171,12 +1192,14 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
 
 #ifdef CPRINTF_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_DRAM_ENERGY_STATUS", msr_dram_energy_status, &hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
-                rapl->dram_watts[i], rapl->elapsed,
-                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                 "_DRAM_ENERGY_STATUS", msr_dram_energy_status, &hostname, i,
+                 *rapl->dram_bits[i], rapl->dram_joules[i],
+                 rapl->dram_watts[i], rapl->elapsed,
+                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
         fprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
-                "_DRAM_ENERGY_STATUS", msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                "_DRAM_ENERGY_STATUS", msr_dram_energy_status, hostname, i, *rapl->dram_bits[i],
+                rapl->dram_joules[i],
                 rapl->dram_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
@@ -1246,7 +1269,6 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 
         json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
 
-
         /* To ensure vendor-neutrality of the JSON power object across various
            platforms, such as IBM, we set power_sys as the sum of CPU and DRAM
            power values. This is estimated node power, and is not total power on
@@ -1261,7 +1283,6 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     // Set the node power key with pwrnode value.
     json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 }
-
 
 void json_get_power_domain_info(json_t *get_domain_obj,
                                 off_t msr_pkg_power_info, off_t
@@ -1512,9 +1533,9 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
             snprintf(pkg_strs[i][3], max_str_len, "dram%d_joules", i);
             snprintf(pkg_strs[i][4], max_str_len, "dram%d_limwatts", i);
 
-            cfprintf(writedest, "%s %s %s %s %s ", 
-                     pkg_strs[i][0], pkg_strs[i][1], 
-                     pkg_strs[i][2], pkg_strs[i][3], 
+            cfprintf(writedest, "%s %s %s %s %s ",
+                     pkg_strs[i][0], pkg_strs[i][1],
+                     pkg_strs[i][2], pkg_strs[i][3],
                      pkg_strs[i][4]);
 #else
             fprintf(writedest,
@@ -1538,14 +1559,14 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
             //get_package_rapl_limit(1, &(rlim[2]), &(rlim[3]), msr_pkg_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(0, &(rlim[4]), msr_dram_power_limit, msr_rapl_unit);
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
-            
+
         }
 #ifdef CPRINTF_FOUND
         //cfprintf(writedest, "\n");
         cfprintf(writedest, "\n");
         cfprintf(writedest, "%s %lf ", "_POWMON", now_ms());
         //cflush();
-#else 
+#else
         fprintf(writedest, "\n");
         fprintf(writedest, "%s %lf", "_POWMON", now_ms());
 
@@ -1557,9 +1578,9 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     for (i = 0; i < nsockets; i++)
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(writedest, "%lf %lf %lf %lf %lf ",rapl->pkg_delta_joules[i],
-                rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
-                rlim[rlim_idx + 2].watts);
+        cfprintf(writedest, "%lf %lf %lf %lf %lf ", rapl->pkg_delta_joules[i],
+                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
+                 rlim[rlim_idx + 2].watts);
 #else
         fprintf(writedest, " %lf %lf %lf %lf %lf", rapl->pkg_delta_joules[i],
                 rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
@@ -1575,4 +1596,3 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     fprintf(writedest, "\n");
 #endif
 }
-

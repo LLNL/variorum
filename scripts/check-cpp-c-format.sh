@@ -20,13 +20,12 @@ astyle --errors-to-stdout \
        --attach-extern-c \
        --indent-col1-comments \
        --min-conditional-indent=0 \
-       --max-instatement-indent=40 \
        --pad-oper \
        --pad-header \
        --unpad-paren \
        --align-pointer=name \
        --align-reference=name \
-       --break-closing-brackets \
+       --break-closing-braces \
        --keep-one-line-blocks \
        --keep-one-line-statements \
        --max-code-length=80 \

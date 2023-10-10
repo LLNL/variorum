@@ -105,7 +105,6 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
     return 0;
 }
 
-
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
  * I am currently batching the read of the turbo ratio limit, which is per
@@ -226,8 +225,8 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(TURBO_RATIO_LIMIT, nsockets);
 #ifdef CPRINTF_FOUND
-    cflush();
-#endif  
+        cflush();
+#endif
         allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
         load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
         load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
@@ -251,7 +250,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     {
 #ifdef CPRINTF_FOUND
         cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
-                                              nbits)) * 100);
+                                               nbits)) * 100);
 #else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
@@ -266,10 +265,10 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     {
 #ifdef CPRINTF_FOUND
         cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
-                                              nbits)) * 100);
+                                               nbits)) * 100);
 #else
         printf("%2d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
-                                              nbits)) * 100);
+                                               nbits)) * 100);
 #endif
         core += 1;
         if (core >= ncores)

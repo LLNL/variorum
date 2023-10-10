@@ -12,7 +12,7 @@
 
 #ifdef CPRINTF_FOUND
 #include <cprintf.h>
-#endif 
+#endif
 
 unsigned long read_counter(const struct occ_sensor_data_header *hb,
                            uint32_t offset)
@@ -139,12 +139,12 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         {
 #ifdef CPRINTF_FOUND
             intf(output "%s %s %s %s %s %s %s %s\n",
-                     "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
-                     "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
+                 "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
+                 "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
 #else
             fprintf(output, "%s %s %s %s %s %s %s %s\n",
-                     "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
-                     "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
+                    "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
+                    "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
 #endif
         }
     }
@@ -198,33 +198,37 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
     if (long_ver == 0)
     {
 #ifdef CPRINTF_FOUND
-          cfprintf(output,
-                   "%s %s %d %lu %lu %lu %lu %lf\n",
-                   "_IBMPOWER", hostname, chipid,
-                   pwrsys, pwrproc, pwrmem, pwrgpu,
-                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        cfprintf(output,
+                 "%s %s %d %lu %lu %lu %lu %lf\n",
+                 "_IBMPOWER", hostname, chipid,
+                 pwrsys, pwrproc, pwrmem, pwrgpu,
+                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
-          fprintf(output,
-                   "%s %s %d %lu %lu %lu %lu %lf\n",
-                   "_IBMPOWER", hostname, chipid,
-                   pwrsys, pwrproc, pwrmem, pwrgpu,
-                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        fprintf(output,
+                "%s %s %d %lu %lu %lu %lu %lf\n",
+                "_IBMPOWER", hostname, chipid,
+                pwrsys, pwrproc, pwrmem, pwrgpu,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
     }
     else
     {
 #ifdef CPRINTF_FOUND
-        cfprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+        cfprintf(output,
+                 "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
                  "_IBMPOWER Host", hostname, "Socket", chipid,
                  "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
                  "PWRGPU", pwrgpu,
-                 "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                 "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                 1000000.0);
 #else
-        fprintf(output, "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+        fprintf(output,
+                "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
                 "_IBMPOWER Host", hostname, "Socket", chipid,
                 "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
                 "PWRGPU", pwrgpu,
-                "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                1000000.0);
 #endif
     }
 #ifdef CPRINTF_FOUND
@@ -232,8 +236,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
 #endif
 }
 
-
-// TODO: Every place where there is no space before a conversion specifer needs to be fixed 
+// TODO: Every place where there is no space before a conversion specifer needs to be fixed
 // this isn't currently supported
 void print_all_sensors_header(int chipid, FILE *output, const void *buf)
 {
@@ -258,7 +261,8 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
         if (be16toh(md[i].type) == OCC_SENSOR_TYPE_POWER)
         {
 #ifdef CPRINTF_FOUND //TODO: EVALUATE THIS, I don't think this will behave as intended
-            cfprintf(output, " %s %s %s %s %s", md[i].name, "_Scale_", md[i].units, md[i].name, "_Energy_J");
+            cfprintf(output, " %s %s %s %s %s", md[i].name, "_Scale_", md[i].units,
+                     md[i].name, "_Energy_J");
 #else
             fprintf(output, " %s_Scale_%s %s_Energy_J", md[i].name, md[i].units,
                     md[i].name);
@@ -274,10 +278,10 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
         }
     }
 #ifdef CPRINTF_FOUND
-        cfprintf(output, "\n"); // Add end of line.
-        cflush();
+    cfprintf(output, "\n"); // Add end of line.
+    cflush();
 #else
-        fprintf(output, "\n"); // Add end of line.
+    fprintf(output, "\n"); // Add end of line.
 #endif
 }
 
@@ -311,13 +315,15 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
 #ifdef CPRINTF_FOUND //TODO: EVALUATE
-      char lbl[50];
-      sprintf(lbl, "_IBMPOWER%d", chipid);
-      cfprintf(output, "%s %lf %s %d", lbl, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname, chipid);
+    char lbl[50];
+    sprintf(lbl, "_IBMPOWER%d", chipid);
+    cfprintf(output, "%s %lf %s %d", lbl,
+             now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname,
+             chipid);
 #else
-      fprintf(output, "_IBMPOWER%d %lf %s %d", chipid,
-              now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname,
-              chipid);
+    fprintf(output, "_IBMPOWER%d %lf %s %d", chipid,
+            now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname,
+            chipid);
 #endif
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
@@ -349,10 +355,10 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
             // is the one from the beginning of the loop.
 #ifdef CPRINTF_FOUND
             cfprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)),
-                    (uint64_t)(energy / TO_FP(freq)));
+                     (uint64_t)(energy / TO_FP(freq)));
 #else
             fprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)),
-                   (uint64_t)(energy / TO_FP(freq)));
+                    (uint64_t)(energy / TO_FP(freq)));
 #endif
         }
         else

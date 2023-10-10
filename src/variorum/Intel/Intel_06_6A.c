@@ -149,7 +149,7 @@ int intel_cpu_fm_06_6a_get_node_power_json(char **get_power_obj_str)
 }
 
 int intel_cpu_fm_06_6a_get_node_power_domain_info_json(char
-        **get_domain_obj_str)
+    **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -168,4 +168,3 @@ int intel_cpu_fm_06_6a_get_node_power_domain_info_json(char
 
     return 0;
 }
-
