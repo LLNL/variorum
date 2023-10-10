@@ -461,7 +461,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
             return 0;
         }
         err = g_platform[i].variorum_cap_socket_frequency_limit(socketid,
-              socket_freq_mhz);
+                socket_freq_mhz);
         if (err)
         {
             return -1;

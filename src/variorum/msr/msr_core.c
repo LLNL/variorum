@@ -200,7 +200,7 @@ static int do_batch_op(int batchnum, int type)
 
     /* If current flag is the opposite type, switch the flags. */
     if ((type == BATCH_WRITE && batch->ops[0].isrdmsr) || (type == BATCH_READ &&
-        !batch->ops[0].isrdmsr))
+            !batch->ops[0].isrdmsr))
     {
         __u8 readflag = (__u8)(type == BATCH_READ ? 1 : 0);
         for (j = 0; j < (int)batch->numops; j++)

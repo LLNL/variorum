@@ -20,6 +20,7 @@ astyle --errors-to-stdout \
        --attach-extern-c \
        --indent-col1-comments \
        --min-conditional-indent=0 \
+       --max-instatement-indent=40 \
        --pad-oper \
        --pad-header \
        --unpad-paren \

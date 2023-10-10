@@ -107,7 +107,7 @@ int intel_cpu_fm_06_2d_monitoring(FILE *output);
 int intel_cpu_fm_06_2d_get_node_power_json(char **get_power_obj_str);
 
 int intel_cpu_fm_06_2d_get_node_power_domain_info_json(char
-    **get_domain_obj_str);
+        **get_domain_obj_str);
 
 int intel_cpu_fm_06_2d_cap_best_effort_node_power_limit(int node_power_limit);
 
