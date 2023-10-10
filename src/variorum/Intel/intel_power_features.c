@@ -1568,7 +1568,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
         //cflush();
 #else
         fprintf(writedest, "\n");
-        fprintf(writedest, "%s %lf", "_POWMON", now_ms());
+        fprintf(writedest, "%s %ld", "_POWMON", now_ms());
 
 #endif
     }
