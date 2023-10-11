@@ -42,7 +42,7 @@ jobs:
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: ON
             CMAKE_BUILD_TYPE: RelWithDebInfo
-            ENABLE_CPRINTF: OFF
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: ON
             ENABLE_MPI: ON
             ENABLE_OPENMP: ON
@@ -53,7 +53,7 @@ jobs:
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
-            ENABLE_CPRINTF: OFF
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -63,7 +63,7 @@ jobs:
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
-            ENABLE_CPRINTF: OFF
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -73,7 +73,7 @@ jobs:
             BUILD_SHARED_LIBS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
-            ENABLE_CPRINTF: OFF
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -83,17 +83,17 @@ jobs:
             BUILD_SHARED_LIBS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
-            ENABLE_CPRINTF: OFF
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
 
-          - config: shared_release_cprintf
+          - config: shared_release_libjustify
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Release
-            ENABLE_CPRINTF: ON
+            ENABLE_LIBJUSTIFY: ON
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -121,7 +121,7 @@ jobs:
           # install
           sudo make -j install
 
-      - name: Build and install cprintf dependency
+      - name: Build and install libjustify dependency
         run: |
           git clone https://github.com/llnl/libjustify.git
           cd libjustify
@@ -142,7 +142,7 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_C_COMPILER=gcc-${{matrix.cc-version}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{matrix.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{matrix.CMAKE_BUILD_TYPE}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_CPRINTF=${{matrix.ENABLE_CPRINTF}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{matrix.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{matrix.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{matrix.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{matrix.ENABLE_OPENMP}}"
@@ -176,7 +176,7 @@ jobs:
           BUILD_SHARED_LIBS: ON
           BUILD_TESTS: OFF
           CMAKE_BUILD_TYPE: Release
-          ENABLE_CPRINTF: OFF
+          ENABLE_LIBJUSTIFY: OFF
           ENABLE_FORTRAN: ON
           ENABLE_MPI: OFF
           ENABLE_OPENMP: OFF
@@ -190,7 +190,7 @@ jobs:
           export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_CPRINTF=${{env.ENABLE_CPRINTF}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{env.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{env.ENABLE_OPENMP}}"
