@@ -126,7 +126,7 @@ jobs:
           git clone https://github.com/llnl/libjustify.git
           cd libjustify
           mkdir build && cd build
-          cmake ..
+          cmake ../src
           # build
           VERBOSE=1 make -j
           # install
