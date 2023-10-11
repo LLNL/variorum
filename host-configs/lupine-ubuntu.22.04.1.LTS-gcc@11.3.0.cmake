@@ -13,7 +13,7 @@ set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP OFF CACHE BOOL "")
 set(ENABLE_FORTRAN ON CACHE PATH "")
 set(CMAKE_Fortran_COMPILER  "/usr/bin/gfortran" CACHE PATH "")
-set(ENABLE_CPRINTF ON CACHE BOOL "")
+set(ENABLE_LIBJUSTIFY ON CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_AMD_GPU OFF CACHE BOOL "")
@@ -37,4 +37,4 @@ set(HWLOC_DIR "/usr/include/hwloc/" CACHE PATH "")
 set(JANSSON_DIR "/usr/include/" CACHE PATH "")
 
 # Path to cprintf install
-set(CPRINTF_DIR "/usr/local/share/libjustify-install/" CACHE PATH "")
+set(LIBJUSTIFY_DIR "/usr/local/share/libjustify-install/" CACHE PATH "")

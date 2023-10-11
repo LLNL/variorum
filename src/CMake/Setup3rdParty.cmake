@@ -22,8 +22,8 @@ if(ENABLE_MPI)
     include(CMake/thirdparty/SetupRankstr.cmake)
 endif()
 
-if(ENABLE_CPRINTF)
-    include(CMake/thirdparty/SetupCprintf.cmake)
+if(ENABLE_LIBJUSTIFY)
+    include(CMake/thirdparty/SetupLibjustify.cmake)
 endif()
 
 if(BUILD_DOCS)

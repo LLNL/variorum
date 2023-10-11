@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE PATH "")
 
 set(BUILD_TESTS OFF CACHE BOOL "")
 
-set(ENABLE_CPRINTF ON CACHE BOOL "")
+set(ENABLE_LIBJUSTIFY ON CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_AMD_GPU OFF CACHE BOOL "")
@@ -29,4 +29,4 @@ set(HWLOC_DIR "/usr/local" CACHE PATH "")
 set(NVML_DIR "/opt/nvidia/hpc_sdk/Linux_aarch64/22.1/cuda/11.5/targets/sbsa-linux/" CACHE PATH "")
 
 # Path to cprintf install
-set(CPRINTF_DIR "/plhome/$ENV{USER}/libjustify/" CACHE PATH "")
+set(LIBJUSTIFY_DIR "/plhome/$ENV{USER}/libjustify/" CACHE PATH "")
