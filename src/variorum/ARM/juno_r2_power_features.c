@@ -17,7 +17,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -86,7 +86,7 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
     if (verbose)
     {
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output,
                  "%s: %s, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW\n",
                  "_ARM_POWER Host", m_hostname,
@@ -109,7 +109,7 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_ARM_POWER", "Host", "Sys_mW", "Big_mW", "Little_mW", "GPU_mW");
 #else
@@ -117,7 +117,7 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 #endif
             init_output = 1;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                  "_ARM_POWER", m_hostname,
                  (double)(sys_power_val) / 1000.0f,
@@ -133,7 +133,7 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
                 (double)(gpu_power_val) / 1000.0f);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -185,7 +185,7 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
 
     if (verbose)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output,
                  "%s: %s, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C\n",
                  "_ARM_TEMPERATURE Host", m_hostname,
@@ -208,7 +208,7 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_ARM_TEMPERATURE", "Host", "Sys_C", "Big_C", "Little_C", "GPU_C");
 #else
@@ -217,7 +217,7 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
             init_output = 1;
         }
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                  "_ARM_TEMPERATURE", m_hostname,
                  (double)(sys_therm_val) / 1000.0f,
@@ -233,7 +233,7 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
                 (double)(gpu_therm_val) / 1000.0f);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -271,7 +271,7 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
      */
     if (verbose)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s: %s, %s: %s, %s: %d, %s: %llu MHz\n",
                  "_ARM_CLOCKS Host", m_hostname,
                  "CPU", (chipid == 0) ? "Big" : "Little",
@@ -287,7 +287,7 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_ARM_CLOCKS", "Host", "CPU", "Socket", "Clock_MHz");
 #else
@@ -296,7 +296,7 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
 
             init_output = 1;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %s %d %llu\n",
                  "_ARM_CLOCKS", m_hostname, (chipid == 0) ? "Big" : "Little", chipid,
                  freq_val / 1000);
@@ -305,7 +305,7 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -340,7 +340,7 @@ int arm_cpu_juno_r2_get_frequencies(int chipid, FILE *output)
     }
     close(freq_fd);
 
-    //TODO: CPRINTF Spend a bit more time with this stuff. This is a bit wacky.
+    //TODO: LIBJUSTIFY Spend a bit more time with this stuff. This is a bit wacky.
     fprintf(output, "=== Available frequencies for %s CPU (ID: %d) in MHz ===\n",
             (chipid == 0) ? "Big" : "Little", chipid);
     for (int i = 0; i < arr_size; i++)

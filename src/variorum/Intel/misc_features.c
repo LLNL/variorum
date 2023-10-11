@@ -11,7 +11,7 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -181,7 +181,7 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
 
@@ -195,7 +195,7 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
             break;
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -224,7 +224,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(TURBO_RATIO_LIMIT, nsockets);
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cflush();
 #endif
         allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
@@ -248,7 +248,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                                nbits)) * 100);
 #else
@@ -263,7 +263,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     }
     for (nbits = 0; nbits < 64; nbits += 8)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
                                                nbits)) * 100);
 #else
@@ -276,7 +276,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
             break;
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -325,7 +325,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
         {
             break;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
 #else
@@ -333,7 +333,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
                                               nbits)) * 100);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -377,7 +377,7 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     }
     if (nlevels == 2)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%s  = %d MHz\n", "AVX512", level * 100);
 #else
         printf("AVX512  = %d MHz\n", level * 100);
@@ -385,13 +385,13 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     }
     else if (nlevels == 1)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cprintf("%s  = %d MHz\n", "AVX", level * 100);
 #else
         printf("AVX     = %d MHz\n", level * 100);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -465,14 +465,14 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
         err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
         if (!err)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cprintf("%s = %d MHz\n", "Non-AVX", max_non_turbo_ratio);
 #else
             printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;

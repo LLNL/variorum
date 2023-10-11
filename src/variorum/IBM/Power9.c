@@ -12,7 +12,7 @@
 #include <ibm_power_features.h>
 #include <variorum_error.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -148,7 +148,7 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
 
     if (long_ver == 0)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(stdout,
                  "%s %s %s %s %s %s%% %s%%\n", "_POWERCAP", "Host", "CurrentPower_W",
                  "MaxPower_W", "MinPower_W", "PSR_CPU_to_GPU_0_", "PSR_CPU_to_GPU_8_");
@@ -164,7 +164,7 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
     }
     else
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(stdout,
                  "%s: %s, %s: %d W, %s: %d W, %s: %d W, %s: %d%%, %s: %d%%\n",
                  "_POWERCAP Host:", hostname, "CurrentPower:", pcap_current, "MaxPower:",
@@ -176,7 +176,7 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
                 hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;

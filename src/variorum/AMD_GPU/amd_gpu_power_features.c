@@ -13,7 +13,7 @@
 #include <variorum_timers.h>
 #include <sys/time.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -56,7 +56,7 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_AMD_GPU_POWER_USAGE", "Host", "Socket", "DeviceID",
                      "Power", "Timestamp_sec");
@@ -88,7 +88,7 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %lf sec\n",
                      "_AMD_GPU_POWER_USAGE", hostname, "Socket", chipid,
                      "DeviceID", i, "Power", pwr_val_flt, "Timestamp",
@@ -103,7 +103,7 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "_AMD_GPU_POWER_USAGE %s %d %d %0.2lf %lf\n",
                      hostname, chipid, i, pwr_val_flt,
                      (now.tv_usec - start.tv_usec) / 1000000.0);
@@ -116,7 +116,7 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     }
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 
@@ -170,7 +170,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s %s\n",
                      "_AMD_GPU_POWER_CAP", "Host", "Socket", "DeviceID",
                      "PowerCap_Current", "PowerCap_Min", "PowerCap_Max",
@@ -215,7 +215,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
 
         if (verbose == 1)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %ld, %s: %ld, %s: %lf sec\n",
                      "_AMD_GPU_POWER_CAP", hostname,
@@ -236,7 +236,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %0.2lf %ld %ld %lf\n",
                      "_AMD_GPU_POWER_CAP", hostname, chipid, i, pwr_val_flt,
                      pwr_min, pwr_max,
@@ -250,7 +250,7 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
 
     }
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 
@@ -303,7 +303,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_AMD_GPU_TEMPERATURE", "Host", "Socket", "DeviceID",
                      "Temperature", "Timestamp_sec");
@@ -336,7 +336,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %lf sec\n",
                      "_AMD_GPU_TEMPERATURE Host", hostname,
@@ -354,7 +354,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %0.2lf %lf\n",
                      "_AMD_GPU_TEMPERATURE", hostname, chipid, i, temp_val_flt,
                      (now.tv_usec - start.tv_usec) / 1000000.0);
@@ -366,7 +366,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         }
 
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     ret = rsmi_shut_down();
@@ -418,7 +418,7 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s\n",
                      "_AMD_GPU_CLOCKS", "Host", "Socket", "DeviceID",
                      "SystemClock_MHz", "MemoryClock_MHz", "Timestamp_sec");
@@ -461,7 +461,7 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
 
         if (verbose == 1)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %d MHz, %s: %d MHz, %s: %lf sec\n",
                      "_AMD_GPU_CLOCKS", hostname,
@@ -486,7 +486,7 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
         }
 
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     ret = rsmi_shut_down();
@@ -539,7 +539,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         gettimeofday(&start, NULL);
         if (verbose == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s\n",
                      "_AMD_GPU_UTILIZATION", "Host", "Socket", "DeviceID",
                      "Util");
@@ -568,7 +568,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
 
         if (verbose == 1)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %d%%\n", //TODO NOT SURE IF THIS WILL WORK
                      "_AMD_GPU_UTILIZATION Host", hostname,
@@ -583,7 +583,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %d\n",
                      "_AMD_GPU_UTILIZATION", hostname, chipid, i, utilpercent);
 #else
@@ -593,7 +593,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
         }
 
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     ret = rsmi_shut_down();

@@ -19,7 +19,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -259,7 +259,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 
     if (!init)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s\n",
                  "_FIXED_COUNTERS", "Host", "Thread", "InstRet", "UnhaltClkCycles",
                  "UnhaltRefCycles");
@@ -279,7 +279,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
     read_batch(FIXED_COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %d %lu %lu %lu\n", "_FIXED_COUNTERS", hostname, i,
                  *c0->value[i], *c1->value[i], *c2->value[i]);
 #else
@@ -287,7 +287,7 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
                 *c0->value[i], *c1->value[i], *c2->value[i]);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -310,7 +310,7 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 
     if (p == NULL && !init)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         switch (avail)
         {
             case 8:
@@ -409,7 +409,7 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
     read_batch(COUNTERS_DATA);
     for (i = 0; i < nthreads; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         switch (avail)
         {
             case 8:
@@ -499,7 +499,7 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
         }
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -1223,7 +1223,7 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
     unc_counters_storage(&uc, msrs_pcu_pmon_ctrs);
     if (!init)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s\n", "_UNCORE_COUNTERS", "Host",
                  "Socket", "c0", "c1", "c2", "c3");
 #else
@@ -1235,7 +1235,7 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
     }
     for (i = 0; i < nsockets; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %d %#lx %#lx %#lx %#lx\n",
                  "_UNCORE_COUNTERS", hostname, i, *uc->c0[i], *uc->c1[i], *uc->c2[i],
                  *uc->c3[i]);
@@ -1245,7 +1245,7 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
                 *uc->c3[i]);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -1314,7 +1314,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
         enable_fixed_counters(msrs_fixed_ctrs, msr_perf_global_ctrl,
                               msr_fixed_counter_ctrl);
         clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         int pkglabels = 5;
         int threadlabels = 6;
         int max_str_len = 128;
@@ -1347,7 +1347,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
 
         for (i = 0; i < nsockets; i++)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(writedest, "%s %s %s %s %s ",
                      pkg_strs[i][0], pkg_strs[i][1],
                      pkg_strs[i][2], pkg_strs[i][3],
@@ -1378,7 +1378,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
 
         for (i = 0; i < nthreads; i++)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(writedest, "%s %s %s %s %s ",
                      thread_strs[i][0], thread_strs[i][1],
                      thread_strs[i][2], thread_strs[i][3],
@@ -1389,7 +1389,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
                     i, i, i);
 #endif
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "\n");
 #else
         fprintf(writedest, "\n");
@@ -1410,7 +1410,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
 
     rlim_idx = 0;
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "%-s %ld ", "_POWMON", now_ms());
 #else
     fprintf(writedest, "%s %ld", "_POWMON", now_ms());
@@ -1418,7 +1418,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
 
     for (i = 0; i < nsockets; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%lf %lf %lf %lf %lf ", rapl->pkg_delta_joules[i],
                  rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                  rlim[rlim_idx + 2].watts);
@@ -1432,7 +1432,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
 
     for (i = 0; i < nthreads; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%lu %lu %lu %lu %lu %lu ", *c0->value[i], *c1->value[i],
                  *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
 #else
@@ -1440,7 +1440,7 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
                 *c2->value[i], *cd->aperf[i], *cd->mperf[i], *cd->tsc[i]);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "\n");
     cflush();
 #else

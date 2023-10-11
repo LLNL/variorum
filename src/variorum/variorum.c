@@ -11,7 +11,7 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -23,7 +23,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 {
     unsigned i;
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     if (depth == 0) //First interation
     {
         cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
@@ -40,7 +40,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
                  g_socket);
 #else
@@ -54,7 +54,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
         print_children(topology, obj->children[i], depth + 1);
     }
     //exit condition
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     if (obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE))
     {
         cflush();
@@ -222,7 +222,7 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(stdout, "=================\n");
         cfprintf(stdout, "Platform Topology\n");
         cfprintf(stdout, "=================\n");
@@ -817,7 +817,7 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         if (hyperthreading == 1)
         {
             cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
@@ -844,7 +844,7 @@ int variorum_print_hyperthreading(void)
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush(); //TODO: Create a silent version on err that still frees.
 #endif
 

@@ -17,7 +17,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -429,7 +429,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 
     ru = (struct rapl_units *) malloc(nsockets * sizeof(struct rapl_units));
     get_rapl_power_unit(ru, msr);
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
              "_RAPL_POWER_UNITS", "Offset", "Host", "Socket", "Bits", "PowerUnit_W",
              "EnergyUnit_J", "TimeUnit_sec");
@@ -440,7 +440,7 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 #endif
     for (socket = 0; socket < nsockets; socket++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %f %f %f\n", "_RAPL_POWER_UNITS",
                  msr, hostname, socket, ru[socket].msr_rapl_power_unit, ru[socket].watts,
                  1 / ru[socket].joules, 1 / ru[socket].seconds);
@@ -452,9 +452,9 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 #endif
     }
 
-    //#ifdef CPRINTF_FOUND
+//#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-    //#endif
+//#endif
 
     free(ru);
 }
@@ -476,7 +476,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 
     for (socket = 0; socket < nsockets; socket++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest,
                  "%s: %#lx, %s: %s, %s: %d, %s: %#lx, %s: %f W, %s: %f J, %s: %f sec\n",
                  "_RAPL_POWER_UNITS Offset", msr,
@@ -494,7 +494,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
 #endif
     }
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 
@@ -512,7 +512,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
     if (!init_print_package_power_info)
     {
         init_print_package_power_info = 1;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
                  "_PACKAGE_POWER_INFO", "Offset", "Host", "Socket", "Bits",
                  "MaxPower_W", "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
@@ -526,7 +526,7 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 
     if (!get_rapl_pkg_power_info(socket, &info, msr))
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
                  "_PACKAGE_POWER_INFO", msr, hostname, socket, info.msr_pkg_power_info,
                  info.pkg_max_power, info.pkg_min_power, info.pkg_max_window,
@@ -539,9 +539,9 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 #endif
     }
 
-    //#ifdef CPRINTF_FOUND
+//#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-    //#endif
+//#endif
 }
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
@@ -571,7 +571,7 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
     if (!init_print_dram_power_info)
     {
         init_print_dram_power_info = 1;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
                  "_DRAM_POWER_INFO", "Offset", "Host", "Socket", "Bits", "MaxPower_W",
                  "MinPower_W", "MaxTimeWindow_sec", "ThermPower_W");
@@ -584,7 +584,7 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
 
     if (!get_rapl_dram_power_info(socket, &info, msr))
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
                  "_DRAM_POWER_INFO", msr, hostname, socket, info.msr_dram_power_info,
                  info.dram_max_power,
@@ -596,9 +596,9 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
                 info.dram_min_power, info.dram_max_window, info.dram_therm_power);
 #endif
     }
-    //#ifdef CPRINTF_FOUND
+//#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-    //#endif
+//#endif
 }
 
 void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
@@ -633,7 +633,7 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
     if (!init_print_package_power_limit)
     {
         init_print_package_power_limit = 1;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
                  "_PACKAGE_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit1_W",
                  "TimeWindow1_sec", "PowerLimit2_W", "TimeWindow2_sec");
@@ -646,7 +646,7 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
 
     if (!get_package_rapl_limit(socket, &l1, &l2, msr_power_limit, msr_rapl_unit))
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
                  "_PACKAGE_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
                  l1.seconds, l2.watts,
@@ -658,9 +658,9 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                 l2.seconds);
 #endif
     }
-    //#ifdef CPRINTF_FOUND
+//#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-    //#endif
+//#endif
 }
 
 void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
@@ -679,7 +679,7 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
     if (!init_print_dram_power_limit)
     {
         init_print_dram_power_limit = 1;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s\n",
                  "_DRAM_POWER_LIMIT", "Offset", "Host", "Socket", "Bits", "PowerLimit_W",
                  "TimeWindow_sec");
@@ -692,7 +692,7 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
 
     if (!get_dram_rapl_limit(socket, &l1, msr_power_limit, msr_rapl_unit))
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf\n",
                  "_DRAM_POWER_LIMIT", msr_power_limit, hostname, socket, l1.bits, l1.watts,
                  l1.seconds);
@@ -702,9 +702,9 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
                 l1.seconds);
 #endif
     }
-    //#ifdef CPRINTF_FOUND
+//#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-    //#endif
+//#endif
 }
 
 void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit,
@@ -1144,7 +1144,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     {
         gettimeofday(&start, NULL);
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
                  "_PACKAGE_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
                  "Power_W", "Elapsed_sec", "Timestamp_sec");
@@ -1158,7 +1158,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     gettimeofday(&now, NULL);
     for (i = 0; i < nsockets; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
                  "_PACKAGE_ENERGY_STATUS", msr_pkg_energy_status, &hostname, i,
                  *rapl->pkg_bits[i], rapl->pkg_joules[i],
@@ -1175,7 +1175,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
 
     if (!init)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "\n");
         cfprintf(writedest, "%s %s %s %s %s %s %s %s %s\n",
                  "_DRAM_ENERGY_STATUS", "Offset", "Host", "Socket", "Bits", "Energy_J",
@@ -1190,7 +1190,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
     for (i = 0; i < nsockets; i++)
     {
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %#lx %s %d %#lx %lf %lf %lf %lf\n",
                  "_DRAM_ENERGY_STATUS", msr_dram_energy_status, &hostname, i,
                  *rapl->dram_bits[i], rapl->dram_joules[i],
@@ -1204,7 +1204,7 @@ void print_power_data(FILE *writedest, off_t msr_rapl_unit,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "\n");
 #endif
 }
@@ -1515,7 +1515,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
         }
 
         rapl_storage(&rapl);
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%s %s ", "_POWMON", "time");
         int pkglabels = 5;
         int max_str_len = 128;
@@ -1526,7 +1526,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 
         for (i = 0; i < nsockets; i++)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             snprintf(pkg_strs[i][0], max_str_len, "pkg%d_joules", i);
             snprintf(pkg_strs[i][1], max_str_len, "pkg%d_limwatts", i);
             snprintf(pkg_strs[i][2], max_str_len, "pkg%d_lim2watts", i);
@@ -1561,7 +1561,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
             //get_dram_rapl_limit(1, &(rlim[5]), msr_dram_power_limit, msr_rapl_unit);
 
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         //cfprintf(writedest, "\n");
         cfprintf(writedest, "\n");
         cfprintf(writedest, "%s %lf ", "_POWMON", now_ms());
@@ -1577,7 +1577,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 
     for (i = 0; i < nsockets; i++)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(writedest, "%lf %lf %lf %lf %lf ", rapl->pkg_delta_joules[i],
                  rlim[rlim_idx].watts, rlim[rlim_idx + 1].watts, rapl->dram_delta_joules[i],
                  rlim[rlim_idx + 2].watts);
@@ -1588,7 +1588,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 #endif
         rlim_idx += 3;
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "\n");
     cfprintf(writedest, "%s %lf ", "_POWMON", now_ms());
     //cflush();

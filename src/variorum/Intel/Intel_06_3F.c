@@ -14,7 +14,7 @@
 #include <intel_power_features.h>
 #include <thermal_features.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 

@@ -12,7 +12,7 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -330,7 +330,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest,
              "%s %s %s %s %s %s %s %s %s %s\n",
              "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C",
@@ -350,7 +350,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
             for (k = 0; k < nthreads / ncores; k++)
             {
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(writedest, "%s %d %d %d %d %d %d %d %d %d\n",
                          "_THERMALS", i, j, idx, (int)t_target[i].temp_target,
                          pkg_stat[i].readout, (int)t_target[i].temp_target - pkg_stat[i].readout,
@@ -367,7 +367,7 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
         }
     }
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 

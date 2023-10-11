@@ -13,7 +13,7 @@
 #include <variorum_timers.h>
 #include <libapmidg.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -58,7 +58,7 @@ void get_power_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
                      "_INTEL_GPU_POWER Host", m_hostname,
@@ -75,7 +75,7 @@ void get_power_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output,
                          "%s %s %s %s %s\n", "_INTEL_GPU_POWER_USAGE", "Host", "Socket", "DeviceID",
                          "Power_W");
@@ -86,7 +86,7 @@ void get_power_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s %s %d %d %lf\n", "_INTEL_GPU_POWER_USAGE", m_hostname, chipid, d, value);
 #else
@@ -95,7 +95,7 @@ void get_power_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -115,7 +115,7 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s: %s, %s: %d, %s: %d, %s: %lf C\n",
                      "_INTEL_GPU_TEMPERATURE Host", m_hostname,
@@ -132,7 +132,7 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output,
                          "%s %s %s %s %s\n", "_INTEL_GPU_TEMPERATURE", "Host", "Socket", "DeviceID",
                          "Temperature_C");
@@ -144,7 +144,7 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output,
                      "%s %s %d %d %.1lf\n", "_INTEL_GPU_TEMPERATURE", m_hostname, chipid, d, temp_C);
 #else
@@ -153,7 +153,7 @@ void get_thermal_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -174,7 +174,7 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n"
                      "_INTEL_GPU_CLOCKS Host", m_hostname, "Socket", chipid, "DeviceID", d,
                      "GPU_Clock", (int)freq_MHz, "MHz");
@@ -188,7 +188,7 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n", "_INTEL_GPU_CLOCKS", "Host", "Socket",
                          "DeviceID", "GPU_Clock_MHz");
 #else
@@ -198,7 +198,7 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %d\n",
                      "_INTEL_GPU_CLOCKS", m_hostname, chipid, d, (int)freq_MHz);
 #else
@@ -207,7 +207,7 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -251,7 +251,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d %s\n",
                      "_INTEL_GPU_POWER_LIMIT Host", m_hostname, "Socket", chipid,
                      "DeviceID", d, "GPU_Power_limit", current_powerlimit_mwatts, "mW");
@@ -266,7 +266,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s",
                          "_INTEL_GPU_POWER_LIMIT", "Host", "Socket", "DeviceID", "GPU_Power_limit_mW");
 #else
@@ -275,7 +275,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cprintf(output, "%s %s %d %d %d\n",
                     "_INTEL_GPU_POWER_LIMIT", m_hostname, chipid, d, current_powerlimit_mwatts);
 #else
@@ -284,7 +284,7 @@ void get_power_limit_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }

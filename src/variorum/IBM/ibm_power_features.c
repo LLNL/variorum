@@ -10,7 +10,7 @@
 
 #include <ibm_power_features.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -137,7 +137,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         gettimeofday(&start, NULL);
         if (long_ver == 0)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             intf(output "%s %s %s %s %s %s %s %s\n",
                  "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
                  "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
@@ -197,7 +197,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
 
     if (long_ver == 0)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output,
                  "%s %s %d %lu %lu %lu %lu %lf\n",
                  "_IBMPOWER", hostname, chipid,
@@ -213,7 +213,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
     }
     else
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output,
                  "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
                  "_IBMPOWER Host", hostname, "Socket", chipid,
@@ -231,7 +231,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
                 1000000.0);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
@@ -247,7 +247,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-#ifdef CPRINTF_FOUND //TODO: EVALUATE THIS AS WELL
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE THIS AS WELL
     char lbl[50];
     sprintf(lbl, "_IBMPOWER %d", chipid);
 
@@ -260,7 +260,7 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     {
         if (be16toh(md[i].type) == OCC_SENSOR_TYPE_POWER)
         {
-#ifdef CPRINTF_FOUND //TODO: EVALUATE THIS, I don't think this will behave as intended
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE THIS, I don't think this will behave as intended
             cfprintf(output, " %s %s %s %s %s", md[i].name, "_Scale_", md[i].units,
                      md[i].name, "_Energy_J");
 #else
@@ -270,14 +270,14 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, " %s_%s", md[i].name, md[i].units);
 #else
             fprintf(output, " %s_%s", md[i].name, md[i].units);
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(output, "\n"); // Add end of line.
     cflush();
 #else
@@ -314,7 +314,7 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
-#ifdef CPRINTF_FOUND //TODO: EVALUATE
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE
     char lbl[50];
     sprintf(lbl, "_IBMPOWER%d", chipid);
     cfprintf(output, "%s %lf %s %d", lbl,
@@ -353,7 +353,7 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
 
             // Note that we're not capturing timestamp here, the common timestamp printed
             // is the one from the beginning of the loop.
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)),
                      (uint64_t)(energy / TO_FP(freq)));
 #else
@@ -363,14 +363,14 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
         }
         else
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, " %lu", (uint64_t)(sample * TO_FP(scale)));
 #else
             fprintf(output, " %lu", (uint64_t)(sample * TO_FP(scale)));
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cfprintf(output, "\n"); // Add end of line.
     cflush();
 #else

@@ -17,7 +17,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -72,7 +72,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
 
     if (verbose)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s: %s, %s: %0.2lf mW, %s: %0.2lf mW\n",
                  "_ARM_POWER Host:", m_hostname,
                  "CPU", (double)(cpu_power_val) / 1000.0f,
@@ -89,7 +89,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s\n",
                      "_ARM_POWER", "Host", "CPU_mW", "I/O_mW");
 #else
@@ -97,7 +97,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
 #endif
             init_output = 1;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %0.2lf %0.2lf\n",
                  "_ARM_POWER", m_hostname,
                  (double)(cpu_power_val) / 1000.0f,
@@ -109,7 +109,7 @@ int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output)
                 (double)(io_power_val) / 1000.0f);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -151,7 +151,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
 
     if (verbose)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output,
                  "%s: %s, %s: %0.2lf C, %s: %0.2lf C\n",
                  "_ARM_TEMPERATURE Host", m_hostname,
@@ -169,7 +169,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s\n",
                      "_ARM_TEMPERATURE", "Host", "EthCtr1", "SoC");
 #else
@@ -177,7 +177,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
 #endif
             init_output = 1;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %0.2lf %0.2lf\n",
                  "_ARM_TEMPERATURE", m_hostname,
                  (double)(loc1_therm_val) / 1000.0f,
@@ -189,7 +189,7 @@ int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output)
                 (double)(soc_therm_val) / 1000.0f);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;
@@ -235,7 +235,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
     freq_val = aggregate_freq / NUM_CORES;
     if (verbose)
     {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s: %s, %s: %d, %s: %llu MHz\n",
                  "_ARM_CLOCKS Host", m_hostname,
                  "Socket", chipid,
@@ -250,7 +250,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
     {
         if (!init_output)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s\n",
                      "_ARM_CLOCKS", "Host", "Socket", "Clock_MHz");
 #else
@@ -258,7 +258,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
             init_output = 1;
         }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
         cfprintf(output, "%s %s %d %llu\n",
                  "_ARM_CLOCKS", m_hostname, chipid, freq_val);
 #else
@@ -266,7 +266,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
                 m_hostname, chipid, freq_val);
 #endif
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     return 0;

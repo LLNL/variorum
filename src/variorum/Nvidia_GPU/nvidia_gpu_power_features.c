@@ -12,7 +12,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>
 #endif
 
@@ -69,7 +69,7 @@ void shutdownNVML(void)
     nvmlShutdown();
 }
 
-//TODO REALLY TEST THIS ONE FOR CPRINTF
+//TODO REALLY TEST THIS ONE FOR LIBJUSTIFY
 void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 {
     unsigned int power;
@@ -96,7 +96,7 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
                          "_NVIDIA_GPU_POWER_USAGE", "Host",
                          "Socket", "DeviceID", "Power");
@@ -107,7 +107,7 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %lf\n",
                      "_NVIDIA_GPU_POWER_USAGE", m_hostname, chipid, d, value);
 #else
@@ -133,7 +133,7 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
                                  &gpu_temp);
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %u C\n",
                      "_NVIDIA_GPU_TEMPERATURE Host", m_hostname,
                      "Socket", chipid,
@@ -149,7 +149,7 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
                          "_NVIDIA_GPU_TEMPERATURE", "Host",
                          "Socket", "DeviceID", "Temperature_C");
@@ -160,7 +160,7 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %d\n",
                      "_NVIDIA_GPU_TEMPERATURE", m_hostname, chipid, d, gpu_temp);
 #else
@@ -197,7 +197,7 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
                      "_NVIDIA_GPU_POWER_LIMIT Host", m_hostname,
                      "Socket", chipid,
@@ -212,7 +212,7 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
                          "_NVIDIA_GPU_POWER_LIMIT", "Host",
                          "Socket", "DeviceID", "PowerLimit_W");
@@ -223,7 +223,7 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %lf\n",
                      "_NVIDIA_GPU_POWER_LIMIT", m_hostname, chipid, d, value);
 #else
@@ -232,7 +232,7 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
     /*!@todo: Seperate interface for default power limits? */
@@ -253,7 +253,7 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d MHz\n",
                      "_NVIDIA_GPU_CLOCKS Host", m_hostname,
                      "Socket", chipid,
@@ -268,7 +268,7 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
                          "_NVIDIA_GPU_CLOCKS", "Host",
                          "Socket", "DeviceID", "GPU_Clock_MHz");
@@ -279,7 +279,7 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %d\n",
                      "_NVIDIA_GPU_CLOCKS", m_hostname, chipid, d, gpu_clock);
 #else
@@ -304,7 +304,7 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
 
         if (verbose)
         {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s: %s, %s: %d, %s: %d, %s: %d%%, %s: %d%%\n",
                      "_NVIDIA_GPU_UTILIZATION Host", m_hostname,
                      "Socket", chipid,
@@ -319,7 +319,7 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
         {
             if (!init_output)
             {
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s %s\n",
                          "_NVIDIA_GPU_UTILIZATION", "Host",
                          "Socket", "DeviceID", "SM_Util_%%", "Memory_Util_%%");
@@ -329,7 +329,7 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
 #endif
                 init_output = 1;
             }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %d %d %d %d\n",
                      "_NVIDIA_GPU_UTILIZATION", m_hostname, chipid, d, util.gpu, util.memory);
 #else
@@ -338,7 +338,7 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output)
 #endif
         }
     }
-#ifdef CPRINTF_FOUND
+#ifdef LIBJUSTIFY_FOUND
     cflush();
 #endif
 }
