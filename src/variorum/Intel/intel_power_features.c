@@ -452,9 +452,9 @@ void print_rapl_power_unit(FILE *writedest, off_t msr)
 #endif
     }
 
-//#ifdef LIBJUSTIFY_FOUND
+    //#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-//#endif
+    //#endif
 
     free(ru);
 }
@@ -539,9 +539,9 @@ void print_package_power_info(FILE *writedest, off_t msr, int socket)
 #endif
     }
 
-//#ifdef LIBJUSTIFY_FOUND
+    //#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-//#endif
+    //#endif
 }
 
 void print_verbose_package_power_info(FILE *writedest, off_t msr, int socket)
@@ -596,9 +596,9 @@ void print_dram_power_info(FILE *writedest, off_t msr, int socket)
                 info.dram_min_power, info.dram_max_window, info.dram_therm_power);
 #endif
     }
-//#ifdef LIBJUSTIFY_FOUND
+    //#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-//#endif
+    //#endif
 }
 
 void print_verbose_dram_power_info(FILE *writedest, off_t msr, int socket)
@@ -658,9 +658,9 @@ void print_package_power_limit(FILE *writedest, off_t msr_power_limit,
                 l2.seconds);
 #endif
     }
-//#ifdef LIBJUSTIFY_FOUND
+    //#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-//#endif
+    //#endif
 }
 
 void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
@@ -702,9 +702,9 @@ void print_dram_power_limit(FILE *writedest, off_t msr_power_limit,
                 l1.seconds);
 #endif
     }
-//#ifdef LIBJUSTIFY_FOUND
+    //#ifdef LIBJUSTIFY_FOUND
     //    cflush();
-//#endif
+    //#endif
 }
 
 void print_verbose_package_power_limit(FILE *writedest, off_t msr_power_limit,
