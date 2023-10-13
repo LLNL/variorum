@@ -1041,7 +1041,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     struct timeval tv;
     uint64_t ts;
     char *gpu_util_str = NULL;
-    int ret;
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
