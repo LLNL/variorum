@@ -268,7 +268,7 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    unsigned nsockets;
+    int nsockets;
     static size_t devIDlen = 24; // Long enough to avoid format truncation.
     char devID[devIDlen];
 	char socketID[24];
@@ -286,7 +286,7 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (chipid = 0; chipid < nsockets; chipid++)
     {
-		snprintf(socketID, 24, "Socket_%d", chipid);
+		snprintf(socketID, devIDlen, "Socket_%d", chipid);
 		json_t *socket_obj = json_object();
 		json_object_set_new(node_obj, socketID, socket_obj);
 		json_t *gpu_obj = json_object();
