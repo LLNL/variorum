@@ -21,5 +21,6 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
                               FILE *output);
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
                               unsigned int powerlimit);
+void get_json_power_data(json_t *get_power_obj);
 
 #endif
