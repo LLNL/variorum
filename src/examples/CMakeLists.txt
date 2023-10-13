@@ -17,6 +17,7 @@ set(BASIC_EXAMPLES
     variorum-disable-turbo-example
     variorum-enable-turbo-example
     variorum-get-node-power-json-example
+    variorum-get-gpu-power-json-example
     variorum-get-node-power-domain-info-json-example
     variorum-integration-using-json-example
     variorum-get-topology-info-example

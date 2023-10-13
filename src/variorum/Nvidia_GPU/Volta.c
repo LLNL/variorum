@@ -10,6 +10,7 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <nvidia_gpu_power_features.h>
+#include <jansson.h>
 
 int volta_get_power(int long_ver)
 {
@@ -128,5 +129,23 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
     {
         cap_each_gpu_power_limit(iter, powerlimit);
     }
+    return 0;
+}
+
+int volta_get_gpu_power_json(char **get_power_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    json_t *get_power_obj = json_object();
+
+    nvidia_gpu_get_json_power_data(get_power_obj);
+
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
+    json_decref(get_power_obj);
+
     return 0;
 }

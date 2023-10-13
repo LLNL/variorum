@@ -1074,6 +1074,66 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     return err;
 }
 
+int variorum_get_gpu_power_json(char **get_power_obj_str)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    // Obtain the index corresponding to the primary platform.
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+        i = P_NVIDIA_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+        i = P_AMD_GPU_IDX;
+        break;
+#endif
+        // Deal with this later
+        /*
+        #ifdef VARIORUM_WITH_INTEL_GPU
+                i = P_INTEL_GPU_IDX;
+                break;
+        #endif
+        // Juno board is an exception, where we don't have a special GPU platform IDX.
+        #ifdef VARIORUM_WITH_ARM_CPU
+                i = P_ARM_CPU_IDX;
+                break;
+        #endif
+        */
+    }
+
+    if (g_platform[i].variorum_get_gpu_power_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
+    }
+
+    err = g_platform[i].variorum_get_gpu_power_json(get_power_obj_str);
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+
 int variorum_print_available_frequencies(void)
 {
     int err = 0;
