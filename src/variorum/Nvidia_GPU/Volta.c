@@ -112,7 +112,7 @@ int volta_get_gpu_utilization(int long_ver)
     return 0;
 }
 
-int volta_get_gpu_utilizationi_json(json_t *get_gpu_util_obj)
+int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -120,13 +120,16 @@ int volta_get_gpu_utilizationi_json(json_t *get_gpu_util_obj)
         printf("Running %s\n", __FUNCTION__);
     }
 
+    json_t *get_util_obj = json_object();
     unsigned iter = 0;
     unsigned nsockets;
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (iter = 0; iter < nsockets; iter++)
     {
-        nvidia_get_gpu_utilization_json(iter, get_gpu_util_obj);
+        nvidia_get_gpu_utilization_json(iter, get_util_obj);
     }
+    *get_gpu_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
+    json_decref(get_util_obj);
     return 0;
 }
 

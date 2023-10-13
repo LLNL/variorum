@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <nvidia_gpu_power_features.h>
 #include <config_architecture.h>
@@ -247,14 +248,33 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
     static int init_output = 0;
     char socket_id[12];
     char device_id[12];
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_t *get_host_util_obj = json_object_get(get_gpu_util_obj, hostname);
+    if (get_host_util_obj == NULL)
+    {
+        get_host_util_obj = json_object();
+        json_object_set_new(get_gpu_util_obj, hostname, get_host_util_obj);
+    }
+
+    json_t *timestamp_obj = json_object_get(get_host_util_obj, "timestamp");
+    if (timestamp_obj == NULL)
+    {
+        json_object_set_new(get_host_util_obj, "timestamp", json_integer(ts));
+    }
     snprintf(socket_id, 12, "Socket_%d", chipid);
-    json_t *gpu_obj = json_object_get(get_gpu_util_obj, "GPU");
+    json_t *gpu_obj = json_object_get(get_host_util_obj, "GPU");
     if (gpu_obj == NULL)
     {
         gpu_obj = json_object();
-        json_object_set_new(get_gpu_util_obj, "GPU", gpu_obj);
+        json_object_set_new(get_host_util_obj, "GPU", gpu_obj);
     }
-
+    snprintf(socket_id, 12, "Socket_%d", chipid);
     json_t *socket_obj = json_object_get(gpu_obj, socket_id);
     if (socket_obj == NULL)
     {

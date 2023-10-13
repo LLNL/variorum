@@ -239,7 +239,7 @@ struct platform
     /// @brief Function pointer to get JSON object for GPU utilization
     ///
     /// @return Error code.
-    int (*variorum_get_gpu_utilization_json)(json_t *get_gpu_util_obj);
+    int (*variorum_get_gpu_utilization_json)(char **get_gpu_util_obj_str);
 
     /// @brief Function pointer to get JSON object for node power data.
     ///

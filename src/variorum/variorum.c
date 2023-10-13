@@ -1040,13 +1040,11 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    json_t *get_util_obj = json_object();
-
+    char *gpu_util_str = NULL;
+    int ret;
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    //json_object_set_new(get_util_obj, "host", json_string(hostname));
-    //json_object_set_new(get_util_obj, "timestamp", json_integer(ts));
 
     char str[100];
     const char d[2] = " ";
@@ -1061,11 +1059,22 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     uint64_t metric_value;
     uint64_t memTotal = 0, memFree = 0, sysTime = 0;
     int strcp;
+    // get gpu utilization
+    ret = variorum_get_gpu_utilization_json(&gpu_util_str);
+    /* Load the string as a JSON object using Jansson */
+    json_t *get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+
     json_t *get_cpu_util_obj = json_object_get(get_util_obj, hostname);
     if (get_cpu_util_obj == NULL)
     {
         get_cpu_util_obj = json_object();
         json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
+    }
+
+    json_t *get_timestamp_obj = json_object_get(get_util_obj, "timestamp");
+    if (get_timestamp_obj == NULL)
+    {
+        json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
     }
 
     json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
@@ -1191,10 +1200,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
 
     fclose(fp);
     json_object_set_new(get_cpu_util_obj, "memory_util%", json_real(memUtil));
-    json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
-    //json_object_set_new(get_util_obj, "memory util", json_real(memUtil));
-    variorum_get_gpu_utilization_json(get_cpu_util_obj);
-    //variorum_get_gpu_utilization_json(get_util_obj);
     *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
     json_decref(get_util_obj);
     state = 1;
@@ -1202,8 +1207,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
 
 }
 
-int variorum_get_gpu_utilization_json(json_t
-                                      *get_gpu_util_obj)//char** get_gpu_util_obj_str)
+int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
 {
     int err = 0;
     int i;
@@ -1238,12 +1242,12 @@ int variorum_get_gpu_utilization_json(json_t
                                __FUNCTION__, __LINE__);
         return -1;
     }
-    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj);
+    err = g_platform[i].variorum_get_gpu_utilization_json(
+              get_gpu_util_obj_str);//get_gpu_util_obj);
     if (err)
     {
         return -1;
     }
-
 
     //*get_gpu_util_obj_str = json_dumps(get_gpu_util_obj, JSON_INDENT(4));
     //json_decref(get_gpu_util_obj);

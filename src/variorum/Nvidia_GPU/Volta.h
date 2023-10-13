@@ -20,5 +20,6 @@ int volta_get_gpu_utilization(int long_ver);
 
 int volta_cap_each_gpu_power_limit(unsigned int powerlimit);
 
-int volta_get_gpu_utilizationi_json(json_t *get_gpu_util_obj);
+//int volta_get_gpu_utilizationi_json(json_t *get_gpu_util_obj);
+int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str);
 #endif
