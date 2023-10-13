@@ -1044,7 +1044,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
+    int ret;
     char str[100];
     const char d[2] = " ";
     char *token, *s, *p;
