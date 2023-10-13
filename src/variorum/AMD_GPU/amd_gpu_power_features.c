@@ -487,6 +487,7 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
     uint32_t num_devices;
     int gpus_per_socket;
     int d;
+    char socket_id[12];
     char hostname[1024];
     char device_id[12];
     static int init = 0;
@@ -599,8 +600,8 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
         snprintf(device_id, 12, "GPU%d%d_util%", chipid, d);
         json_object_set_new(socket_obj, device_id, json_integer(utilpercent));
     }
-    *get_gpu_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
-    json_decref(get_util_obj);
+    //*get_gpu_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
+    //json_decref(get_util_obj);
 
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)

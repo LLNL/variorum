@@ -41,6 +41,7 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-power-example
     variorum-print-verbose-thermals-example
     variorum-print-energy-example
+    variorum-get-node-utilization-json
 )
 
 message(STATUS "Adding variorum examples")
