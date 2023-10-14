@@ -1064,9 +1064,9 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         printf("JSON get gpu utilization failed. Exiting.\n");
         free(s);
-        return -1; 
+        return -1;
     }
-      
+
     /* Load the string as a JSON object using Jansson */
     json_t *get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
 
