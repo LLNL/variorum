@@ -1063,7 +1063,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     if (ret != 0)
     {
         printf("JSON get gpu utilization failed. Exiting.\n");
-        free(s);
+        free(gpu_util_str);
         return -1;
     }
 
