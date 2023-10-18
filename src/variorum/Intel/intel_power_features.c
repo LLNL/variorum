@@ -495,6 +495,7 @@ void print_verbose_rapl_power_unit(FILE *writedest, off_t msr)
     }
 
 #ifdef LIBJUSTIFY_FOUND
+    printf("CALLING FLUSH\n");
     cflush();
 #endif
 

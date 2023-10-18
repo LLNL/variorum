@@ -29,7 +29,7 @@ int ibm_cpu_p9_get_power(int long_ver)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -321,7 +321,7 @@ int ibm_cpu_p9_monitoring(FILE *output)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
     static unsigned count = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
@@ -406,7 +406,7 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;

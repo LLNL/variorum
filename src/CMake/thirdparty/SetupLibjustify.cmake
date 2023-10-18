@@ -24,6 +24,7 @@ if(LIBJUSTIFY_DIR)
     endif()
 
     set(LIBJUSTIFY_FOUND TRUE CACHE INTERNAL "")
+    add_definitions(-DLIBJUSTIFY_FOUND)
     set(LIBJUSTIFY_DIR ${LIBJUSTIFY_DIR} CACHE PATH "" FORCE)
     include_directories(${LIBJUSTIFY_INCLUDE_DIRS})
 

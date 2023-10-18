@@ -55,7 +55,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     //exit condition
 #ifdef LIBJUSTIFY_FOUND
-    if (obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE))
+    if ((int)obj->logical_index == hwloc_get_type_depth(topology, HWLOC_OBJ_NUMANODE))
     {
         cflush();
     }

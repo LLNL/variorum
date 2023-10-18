@@ -138,7 +138,7 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         if (long_ver == 0)
         {
 #ifdef LIBJUSTIFY_FOUND
-            intf(output "%s %s %s %s %s %s %s %s\n",
+            cfprintf(output, "%s %s %s %s %s %s %s %s\n",
                  "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
                  "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
 #else
@@ -231,9 +231,10 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
                 1000000.0);
 #endif
     }
-#ifdef LIBJUSTIFY_FOUND
-    cflush();
-#endif
+//#ifdef LIBJUSTIFY_FOUND
+//    printf("CALLING FLUSH\n");
+//    cflush();
+//#endif
 }
 
 // TODO: Every place where there is no space before a conversion specifer needs to be fixed
@@ -279,7 +280,8 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     }
 #ifdef LIBJUSTIFY_FOUND
     cfprintf(output, "\n"); // Add end of line.
-    cflush();
+    //printf("CALLING FLUSH\n");
+    //cflush();
 #else
     fprintf(output, "\n"); // Add end of line.
 #endif
@@ -372,7 +374,8 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
     }
 #ifdef LIBJUSTIFY_FOUND
     cfprintf(output, "\n"); // Add end of line.
-    cflush();
+    //printf("CALLING FLUSH\n");
+    //cflush();
 #else
     fprintf(output, "\n"); // Add end of line.
 #endif
