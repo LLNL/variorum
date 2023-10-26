@@ -19,11 +19,11 @@
 #define MEM_FILE "/proc/meminfo"
 #define CPU_FILE "/proc/stat"
 
-uint64_t lastSum = 0, lastUserTime = 0, lastMemFree = 0, lastMemTotal = 0,
-         lastSysTime = 0, lastIdle = 0;
+uint64_t last_sum = 0, last_user_time = 0, //lastMemFree = 0, last_mem_total = 0,
+         last_sys_time = 0, last_idle = 0;
 int state = 0;
-long prevTime = 0;
-long prevMem = 0;
+//long prev_time = 0;
+//long prev_mem = 0;
 int g_socket;
 int g_core;
 FILE *fp = 0;
@@ -1037,6 +1037,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         return -1;
     }
+
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
@@ -1049,15 +1050,16 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     const char d[2] = " ";
     char *token, *s, *p;
     int i = 0;
-    uint64_t sum = 0, idle = 0, userTime = 0, niceTime = 0, sumUserTime = 0,
-             iowait = 0, sumIdle = 0;
-    double cpuUtil = 0.0, userUtil = 0.0, sysUtil = 0.0, memUtil = 0.0;
+    uint64_t sum = 0, idle = 0, user_time = 0, nice_time = 0, sum_user_time = 0,
+             iowait = 0, sum_idle = 0;
+    double cpu_util = 0.0, user_util = 0.0, sys_util = 0.0, mem_util = 0.0;
     int rc, j;
     char lbuf[256];
     char metric_name[256];
     uint64_t metric_value;
-    uint64_t memTotal = 0, memFree = 0, sysTime = 0;
+    uint64_t mem_total = 0, mem_free = 0, sys_time = 0;
     int strcp;
+
     // get gpu utilization
     ret = variorum_get_gpu_utilization_json(&gpu_util_str);
     if (ret != 0)
@@ -1089,12 +1091,14 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         cpu_util_obj = json_object();
         json_object_set_new(get_cpu_util_obj, "CPU", cpu_util_obj);
     }
-
+      
+    // read /proc/stat file
     fp = fopen(CPU_FILE, "r");
     if (fp == NULL)
     {
         return -1;
     }
+    // read the first line (cpu)
     if (fgets(str, 100, fp) == NULL)
     {
         return -1;
@@ -1103,6 +1107,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         token = strtok(str, d);
         sum = 0;
+        // get required values to compute cpu utilizations 
         while (token != NULL)
         {
             token = strtok(NULL, d);
@@ -1112,26 +1117,25 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
                 if (i == 3)
                 {
                     idle = strtol(token, &p, 10);
-                    //break;
                 }
                 if (i == 0)
                 {
-                    userTime = strtol(token, &p, 10);
+                    user_time = strtol(token, &p, 10);
                 }
                 if (i == 1)
                 {
-                    niceTime = strtol(token, &p, 10);
+                    nice_time = strtol(token, &p, 10);
                 }
                 if (i == 2)
                 {
-                    sysTime = strtol(token, &p, 10);
+                    sys_time = strtol(token, &p, 10);
                 }
                 if (i == 4)
                 {
                     iowait = strtol(token, &p, 10);
                 }
-                sumIdle = idle + iowait;
-                sumUserTime = userTime + niceTime;
+                sum_idle = idle + iowait;
+                sum_user_time = user_time + nice_time;
                 i++;
             }
         }
@@ -1141,25 +1145,25 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     // make the utilization metrics 0 at the first sample
     if (state)
     {
-        userUtil = ((sumUserTime - lastUserTime) / (double)(sum - lastSum)) * 100;
-        sysUtil = ((sysTime - lastSysTime) / (double)(sum - lastSum)) * 100;
-        cpuUtil = (1 - ((sumIdle - lastIdle) / (double)(sum - lastSum))) * 100;
+        user_util = ((sum_user_time - last_user_time) / (double)(sum - last_sum)) * 100;
+        sys_util = ((sys_time - last_sys_time) / (double)(sum - last_sum)) * 100;
+        cpu_util = (1 - ((sum_idle - last_idle) / (double)(sum - last_sum))) * 100;
 
     }
     else
     {
-        userUtil = 0.0;
-        sysUtil = 0.0;
-        cpuUtil = 0.0;
+        user_util = 0.0;
+        sys_util = 0.0;
+        cpu_util = 0.0;
     }
 
-    lastUserTime = sumUserTime;
-    lastSum = sum;
-    lastSysTime = sysTime;
-    lastIdle = sumIdle;
-    json_object_set_new(cpu_util_obj, "total_util%", json_real(cpuUtil));
-    json_object_set_new(cpu_util_obj, "user_util%", json_real(userUtil));
-    json_object_set_new(cpu_util_obj, "system_util%", json_real(sysUtil));
+    last_user_time = sum_user_time;
+    last_sum = sum;
+    last_sys_time = sys_time;
+    last_idle = sum_idle;
+    json_object_set_new(cpu_util_obj, "total_util%", json_real(cpu_util));
+    json_object_set_new(cpu_util_obj, "user_util%", json_real(user_util));
+    json_object_set_new(cpu_util_obj, "system_util%", json_real(sys_util));
     fp = fopen(MEM_FILE, "r");
     if (fp == NULL)
     {
@@ -1185,27 +1189,27 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         strcp = strcmp(metric_name, "MemTotal");
         if (strcp == 0)
         {
-            memTotal = metric_value;
+            mem_total = metric_value;
         }
         strcp = strcmp(metric_name, "MemFree");
         if (strcp == 0)
         {
-            memFree = metric_value;
+            mem_free = metric_value;
         }
     }
     while (s);
 
     if (state)
     {
-        memUtil = (1 - (double)(memFree) / (memTotal)) * 100;
+        mem_util = (1 - (double)(mem_free) / (mem_total)) * 100;
     }
     else
     {
-        memUtil = 0.0;
+        mem_util = 0.0;
     }
 
     fclose(fp);
-    json_object_set_new(get_cpu_util_obj, "memory_util%", json_real(memUtil));
+    json_object_set_new(get_cpu_util_obj, "memory_util%", json_real(mem_util));
     *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
     json_decref(get_util_obj);
     state = 1;
@@ -1223,7 +1227,6 @@ int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
         return -1;
     }
 
-    //json_t *get_gpu_util_obj = json_object();
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
 #ifdef VARIORUM_WITH_INTEL_GPU
@@ -1249,14 +1252,11 @@ int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
         return -1;
     }
     err = g_platform[i].variorum_get_gpu_utilization_json(
-              get_gpu_util_obj_str);//get_gpu_util_obj);
+              get_gpu_util_obj_str);
     if (err)
     {
         return -1;
     }
-
-    //*get_gpu_util_obj_str = json_dumps(get_gpu_util_obj, JSON_INDENT(4));
-    //json_decref(get_gpu_util_obj);
 
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)

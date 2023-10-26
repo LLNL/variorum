@@ -42,6 +42,7 @@ set(BASIC_EXAMPLES
     variorum-print-verbose-thermals-example
     variorum-print-energy-example
     variorum-get-node-utilization-json
+    variorum-get-gpu-utilization-json
 )
 
 message(STATUS "Adding variorum examples")

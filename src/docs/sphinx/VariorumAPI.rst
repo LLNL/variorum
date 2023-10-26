@@ -118,9 +118,9 @@ Obtaining Node Utilization
 
 The API to obtain node utilization has the following format. It takes a string
 (``char**``) by reference as input, and populates this string with a JSON object
-with total CPU, system CPU, user CPU,total memory,and GPU (when available) utilizations.
+with total CPU, system CPU, user CPU, total memory, and GPU (when available) utilizations.
 It reports the utilization of each available GPU. GPU utilization is accompished using the
-``int variorum_get_gpu_utilization_json(json_t *get_gpu_util_obj)`` function.
+``int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)`` function.
 The total memory utilization is computed using `/proc/meminfo`, and CPU utilizations is
 computed using `/proc/stat`.
 
@@ -145,6 +145,20 @@ nested JSON object. An example is provided below.
 
 The "*" here refers to Socket ID, and the "#" refers to GPU ID.
 
+The ``variorum_get_node_utilization_json(char **get_util_obj_str)`` function returns a string type
+nested JSON object. An example is provided below.
+{
+    "hostname": {
+        "timestamp": (Integer),
+        "GPU": {
+            "Socket_*": {
+                "GPUn*#_util%": (Integer)
+            }
+        }
+    }
+}
+
+The "*" here refers to Socket ID, and the "#" refers to GPU ID.
 
 ***************************
  Best Effort Power Capping
