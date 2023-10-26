@@ -570,9 +570,9 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// check for NULL strings.
 int variorum_get_node_utilization_json(char **get_util_obj_str);
 
-/// @brief Populate a string in JSON format with utilization of each GPU 
+/// @brief Populate a string in JSON format with utilization of each GPU
 ///
-/// Format: { hostname: { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization }, 
+/// Format: { hostname: { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization },
 /// "timestamp" : timestampe }
 /// where n is the socket number and m is the GPU id.
 ///

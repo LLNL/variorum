@@ -19,8 +19,9 @@
 #define MEM_FILE "/proc/meminfo"
 #define CPU_FILE "/proc/stat"
 
-uint64_t last_sum = 0, last_user_time = 0, //lastMemFree = 0, last_mem_total = 0,
-         last_sys_time = 0, last_idle = 0;
+uint64_t last_sum = 0, last_user_time =
+                        0, //lastMemFree = 0, last_mem_total = 0,
+                        last_sys_time = 0, last_idle = 0;
 int state = 0;
 //long prev_time = 0;
 //long prev_mem = 0;
@@ -1091,7 +1092,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         cpu_util_obj = json_object();
         json_object_set_new(get_cpu_util_obj, "CPU", cpu_util_obj);
     }
-      
+
     // read /proc/stat file
     fp = fopen(CPU_FILE, "r");
     if (fp == NULL)
@@ -1107,7 +1108,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         token = strtok(str, d);
         sum = 0;
-        // get required values to compute cpu utilizations 
+        // get required values to compute cpu utilizations
         while (token != NULL)
         {
             token = strtok(NULL, d);
