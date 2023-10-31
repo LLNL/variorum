@@ -81,7 +81,11 @@ int main(int argc, char **argv)
                         "\n"
                         "    -v\n"
                         "        Verbose output that includes all sensors or registers.\n"
+                        "\n"
+                        "    -u\n"
+                        "        Sampling and printing domain power usage and node utilization \n"
                         "\n";
+
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
                           strncmp(argv[1], "-h", strlen("-h")) == 0)))
@@ -99,8 +103,9 @@ int main(int argc, char **argv)
     struct thread_args th_args;
     th_args.sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
     th_args.measure_all = false;
+    th_args.power_with_util = false;
 
-    while ((opt = getopt(argc, argv, "ca:p:i:v")) != -1)
+    while ((opt = getopt(argc, argv, "ca:p:i:v:u")) != -1)
     {
         switch (opt)
         {
@@ -126,6 +131,9 @@ int main(int argc, char **argv)
                 break;
             case 'v':
                 th_args.measure_all = true;
+                break;
+            case 'u':
+                th_args.power_with_util = true;
                 break;
             case '?':
                 if (optopt == 'a')
@@ -269,7 +277,7 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement(th_args.measure_all);
+        take_measurement(th_args.measure_all, true);//th_args.power_with_util);
         end = now_ms();
 
         if (logpath)

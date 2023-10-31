@@ -69,7 +69,7 @@ void *power_set_measurement(void *arg)
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
         // providing `true` as input value for the take_measurement function.
-        take_measurement(true);
+        take_measurement(true, false);
         if (poll_num % 5 == 0)
         {
             if (watts >= watt_cap)
@@ -269,7 +269,7 @@ int main(int argc, char **argv)
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
         // providing `true` as input value for the take_measurement function.
-        take_measurement(true);
+        take_measurement(true, false);
         end = now_ms();
 
         /* Output summary data. */
