@@ -123,7 +123,10 @@ int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str)
     json_t *get_util_obj = json_object();
     unsigned iter = 0;
     unsigned nsockets;
+#ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
+    
     for (iter = 0; iter < nsockets; iter++)
     {
         nvidia_get_gpu_utilization_json(iter, get_util_obj);
