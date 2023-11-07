@@ -20,6 +20,8 @@ int amd_cpu_epyc_print_energy();
 
 int amd_cpu_epyc_print_boostlimit();
 
+int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json);
+
 int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit);
 
 //int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit);
