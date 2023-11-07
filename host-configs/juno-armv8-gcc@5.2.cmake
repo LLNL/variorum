@@ -23,7 +23,6 @@ set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
 set(VARIORUM_DEBUG OFF CACHE BOOL "")
 
-set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
 # path to global hwloc install

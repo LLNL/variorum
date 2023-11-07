@@ -9,7 +9,6 @@ set(CMAKE_C_COMPILER "/usr/bin/gcc" CACHE PATH "")
 # cpp compiler
 set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE PATH "")
 
-set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
