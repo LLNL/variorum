@@ -33,14 +33,8 @@ set(VARIORUM_DEBUG OFF CACHE BOOL "")
 set(ENABLE_MPI ON CACHE BOOL "")
 set(ENABLE_OPENMP ON CACHE BOOL "")
 
-# build documentation (depends on sphinx, doxygen, and breathe)
-set(BUILD_DOCS ON CACHE BOOL "")
-
 # build unit tests
 set(BUILD_TESTS ON CACHE BOOL "")
-
-# SPHINX documentation building
-set("SPHINX_EXECUTABLE" "/path/to/sphinx-build" CACHE PATH "")
 
 # path to global hwloc install
 set(HWLOC_DIR "/path/to/hwloc-build" CACHE PATH "")
