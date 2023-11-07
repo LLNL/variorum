@@ -77,6 +77,8 @@ int set_amd_func_ptrs(int idx)
             g_platform[idx].variorum_get_node_power_json = amd_cpu_epyc_get_node_power_json;
             g_platform[idx].variorum_get_node_power_domain_info_json =
                 amd_cpu_epyc_get_node_power_domain_info_json;
+			g_platform[idx].variorum_get_frequency_json =
+				amd_cpu_epyc_get_json_boostlimit;
             break;
         default:
             fprintf(stdout, "ESMI not initialized, drivers not found. "
