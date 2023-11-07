@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <hwloc.h>
 #include <jansson.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <config_architecture.h>
 #include <variorum.h>

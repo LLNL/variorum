@@ -216,7 +216,6 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_4f_get_frequencies;
         g_platform[idx].variorum_get_thermals_json =
             intel_cpu_fm_06_4f_get_thermals_json;
-
     }
     // Skylake 06_55
     else if (*g_platform[idx].arch_id == FM_06_55)

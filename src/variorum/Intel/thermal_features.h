@@ -284,7 +284,7 @@ int print_verbose_therm_temp_reading(FILE *writedest,
                                      off_t msr_pkg_therm_stat,
                                      off_t msr_temp_target);
 
-/// #brief set json object string with temperature data
+/// @brief set json object string with temperature data
 int get_therm_temp_reading_json(json_t *get_thermal_object,
                                 off_t msr_therm_stat,
                                 off_t msr_pkg_therm_stat,

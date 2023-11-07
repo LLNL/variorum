@@ -6,14 +6,14 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <thermal_features.h>
 #include <config_architecture.h>
 #include <msr_core.h>
 #include <variorum_error.h>
-#include <string.h>
 
 #ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>

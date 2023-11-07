@@ -460,6 +460,7 @@ void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
 {
     struct occ_sensor_data_header *hb;
     struct occ_sensor_name *md;
+    int i;
 
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
@@ -483,9 +484,8 @@ void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
     json_t *mem_obj = json_object();
     json_object_set_new(cpu_obj, "Mem", mem_obj);
 
-    for (int i = 0; i < be16toh(hb->nr_sensors); i++)
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
-
         uint32_t offset = be32toh(md[i].reading_offset);
         uint32_t scale = be32toh(md[i].scale_factor);
         uint64_t sample = 0;
@@ -515,8 +515,5 @@ void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
 
             json_object_set_new(mem_obj, mem_temp, json_integer(sample * TO_FP(scale)));
         }
-
     }
-
-
 }

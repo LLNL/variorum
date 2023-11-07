@@ -502,7 +502,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
         lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
         buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
-
         if (!buf)
         {
             printf("Failed to allocate\n");
@@ -532,7 +531,6 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
 
     close(fd);
     return 0;
-
 }
 
 int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)

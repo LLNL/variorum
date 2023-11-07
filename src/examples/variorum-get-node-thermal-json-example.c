@@ -10,7 +10,6 @@
 #include <variorum.h>
 #include <variorum_topology.h>
 
-
 int main(int argc, char **argv)
 {
     int ret;

@@ -79,7 +79,6 @@ int amd_gpu_instinct_get_thermals(int verbose)
 
 int amd_gpu_instinct_get_thermals_json(json_t *get_thermal_obj)
 {
-
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
@@ -97,7 +96,6 @@ int amd_gpu_instinct_get_thermals_json(json_t *get_thermal_obj)
     }
 
     return 0;
-
 }
 
 int amd_gpu_instinct_get_clocks(int verbose)

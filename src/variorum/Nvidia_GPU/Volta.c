@@ -69,8 +69,6 @@ int volta_get_thermals_json(json_t *get_thermal_obj)
     }
 
     return 0;
-
-
 }
 
 int volta_get_clocks(int long_ver)

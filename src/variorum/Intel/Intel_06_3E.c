@@ -477,7 +477,6 @@ int intel_cpu_fm_06_3e_get_node_power_domain_info_json(char
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
     json_decref(get_domain_obj);
     return 0;
-
 }
 
 int intel_cpu_fm_06_3e_get_thermals_json(json_t *get_thermal_obj)
