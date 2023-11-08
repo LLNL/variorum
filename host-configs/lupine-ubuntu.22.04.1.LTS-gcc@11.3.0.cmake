@@ -36,5 +36,5 @@ set(HWLOC_DIR "/usr/include/hwloc/" CACHE PATH "")
 # Path to JANSSON build
 set(JANSSON_DIR "/usr/include/" CACHE PATH "")
 
-# Path to cprintf install
+# Path to libjustify install
 set(LIBJUSTIFY_DIR "/usr/local/share/libjustify-install/" CACHE PATH "")

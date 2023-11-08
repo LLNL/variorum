@@ -34,7 +34,7 @@ option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
-set(LIBJUSTIFY_DIR "" CACHE PATH "path to cprintf installation")
+set(LIBJUSTIFY_DIR "" CACHE PATH "path to libjustify installation")
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)

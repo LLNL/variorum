@@ -28,5 +28,5 @@ set(HWLOC_DIR "/usr/local" CACHE PATH "")
 
 set(NVML_DIR "/opt/nvidia/hpc_sdk/Linux_aarch64/22.1/cuda/11.5/targets/sbsa-linux/" CACHE PATH "")
 
-# Path to cprintf install
+# Path to libjustify install
 set(LIBJUSTIFY_DIR "/usr/local/share/libjustify-install" CACHE PATH "")
