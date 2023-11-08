@@ -37,6 +37,11 @@ jobs:
           - config: static_debug
             cc-version: 10
 
+          - config: shared_release_libjustify
+            cc-version: 11
+          - config: shared_release_libjustify
+            cc-version: 10
+
         include:
           - config: boilerplate
             BUILD_SHARED_LIBS: ON
