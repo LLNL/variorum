@@ -139,8 +139,8 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         {
 #ifdef LIBJUSTIFY_FOUND
             cfprintf(output, "%s %s %s %s %s %s %s %s\n",
-                 "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
-                 "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
+                     "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
+                     "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
 #else
             fprintf(output, "%s %s %s %s %s %s %s %s\n",
                     "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
@@ -231,10 +231,10 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
                 1000000.0);
 #endif
     }
-//#ifdef LIBJUSTIFY_FOUND
-//    printf("CALLING FLUSH\n");
-//    cflush();
-//#endif
+    //#ifdef LIBJUSTIFY_FOUND
+    //    printf("CALLING FLUSH\n");
+    //    cflush();
+    //#endif
 }
 
 // TODO: Every place where there is no space before a conversion specifer needs to be fixed
