@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         cc-version: [11, 10, 9]
-        config: [boilerplate, shared_debug_log, shared_debug, static_debug_log, static_debug shared_release_libjustify]
+        config: [boilerplate, shared_debug_log, shared_debug, static_debug_log, static_debug, shared_release_libjustify]
 
         exclude:
           - config: shared_debug_log
