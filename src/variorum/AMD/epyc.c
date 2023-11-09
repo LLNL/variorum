@@ -434,7 +434,7 @@ int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
 		json_t *core_obj = json_object();
 		json_object_set_new(cpu_obj, "core", core_obj);
 
-		for (core = 0; core < core_per_socket; ++core)
+		for (core = 0; core < cores_per_socket; ++core)
 		{
 			ret = esmi_core_boostlimit_get(current_core, &boostlimit);
 			char core_avg_string[24];
