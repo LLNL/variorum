@@ -403,47 +403,47 @@ int amd_cpu_epyc_print_boostlimit()
 
 int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
 {
-	char *val = getenv("VARIORUM_LOG");
-	if (val != NULL && atoi(val) == 1)
-	{
-		printf("Running %s\n\n", __FUNCTION__);
-	}
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n\n", __FUNCTION__);
+    }
 
-	int socket, core,  ret;
-	uint32_t boostlimit;
+    int socket, core,  ret;
+    uint32_t boostlimit;
 
-	int num_sockets = g_platform[P_AMD_CPU_IDX].num_sockets;
-	int total_cores = g_platform[P_AMD_CPU_IDX].total_cores;
-	int cores_per_socket = total_cores/num_sockets;
-	int current_core = 0;
+    int num_sockets = g_platform[P_AMD_CPU_IDX].num_sockets;
+    int total_cores = g_platform[P_AMD_CPU_IDX].total_cores;
+    int cores_per_socket = total_cores / num_sockets;
+    int current_core = 0;
 
-	for(socket = 0; socket < num_sockets; ++socket)
-	{
-		char socket_name[16];
-		snprintf(socket_name, 16, "socket_%d", socket);
-		json_t *socket_obj = json_object_get(get_clock_obj_json, socket_name);
-		if (socket_obj == NULL)
-		{
-			socket_obj = json_object();
-			json_object_set_new(get_clock_obj_json, socket_name, socket_obj);
-		}
+    for (socket = 0; socket < num_sockets; ++socket)
+    {
+        char socket_name[16];
+        snprintf(socket_name, 16, "socket_%d", socket);
+        json_t *socket_obj = json_object_get(get_clock_obj_json, socket_name);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(get_clock_obj_json, socket_name, socket_obj);
+        }
 
-		json_t *cpu_obj = json_object();
-		json_object_set_new(socket_obj, "CPU", cpu_obj);
+        json_t *cpu_obj = json_object();
+        json_object_set_new(socket_obj, "CPU", cpu_obj);
 
-		json_t *core_obj = json_object();
-		json_object_set_new(cpu_obj, "core", core_obj);
+        json_t *core_obj = json_object();
+        json_object_set_new(cpu_obj, "core", core_obj);
 
-		for (core = 0; core < cores_per_socket; ++core)
-		{
-			ret = esmi_core_boostlimit_get(current_core, &boostlimit);
-			char core_avg_string[24];
-			snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", current_core);
-			json_object_set_new(core_obj, core_avg_string, json_real(boostlimit) );
-			current_core++;	
-		}
-	}
-	return 0;
+        for (core = 0; core < cores_per_socket; ++core)
+        {
+            ret = esmi_core_boostlimit_get(current_core, &boostlimit);
+            char core_avg_string[24];
+            snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", current_core);
+            json_object_set_new(core_obj, core_avg_string, json_real(boostlimit));
+            current_core++;
+        }
+    }
+    return 0;
 }
 
 int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit)
