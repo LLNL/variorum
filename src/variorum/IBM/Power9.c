@@ -485,3 +485,8 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 
     return 0;
 }
+
+int ibm_cpu_p9_get_energy(int long_ver)
+{
+return 0;
+}
