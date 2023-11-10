@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -115,12 +115,6 @@ int main(void)
         exit(-1);
     }
 
-    /* Allocate string based on number of sockets on the platform */
-    /* String allocation below assumes the following:
-     * Upper bound of 180 characters for hostname, timestamp and node power.
-     * Upper bound of 150 characters for per-socket information */
-    s = (char *) malloc((num_sockets * 150 + 180) * sizeof(char));
-
     ret = variorum_get_node_power_json(&s);
     if (ret != 0)
     {
@@ -139,6 +133,7 @@ int main(void)
     {
         x += do_work(i);
     }
+    printf("Final result: %f\n", x);
 
     ret = variorum_get_node_power_json(&s);
     if (ret != 0)

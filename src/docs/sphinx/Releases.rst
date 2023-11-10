@@ -1,5 +1,5 @@
 ..
-   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+   # Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -10,6 +10,17 @@
 
 Variorum is under constant development. So, we recommend using our ``dev``
 branch, which contains our latest features.
+
+********
+ v0.7.0
+********
+
+06/12/2023: Major release adds support for new architectures, ARM Neoverse N1
+platform and Sapphire Rapids, enables heterogeneous build support for two
+architectures, adds power capping API for NVIDIA, AMD and Intel GPUs, adds get
+power limit for Intel GPUs, overhauls powmon utility, updates filenames and
+low-level function names to include architecture, updates logo. `v0.7.0 tarball
+here <https://github.com/LLNL/variorum/archive/v0.7.0.tar.gz>`_.
 
 ********
  v0.6.0

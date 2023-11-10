@@ -1,4 +1,4 @@
-# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
 # SPDX-License-Identifier: MIT
@@ -12,7 +12,6 @@ set(CMAKE_CXX_COMPILER "/usr/tce/packages/gcc/gcc-8.3.1/bin/g++" CACHE PATH "")
 set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP ON CACHE BOOL "")
 
-set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
 set(VARIORUM_WITH_AMD_CPU OFF CACHE BOOL "")
@@ -20,6 +19,7 @@ set(VARIORUM_WITH_AMD_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_ARM_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_IBM_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL_CPU OFF CACHE BOOL "")
+set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU ON CACHE BOOL "")
 
 # You need to load CUDA 9.2.* to build this on Lassen

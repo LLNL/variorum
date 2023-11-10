@@ -1,5 +1,5 @@
 ..
-   # Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+   # Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
    # Variorum Project Developers. See the top-level LICENSE file for details.
    #
    # SPDX-License-Identifier: MIT
@@ -15,6 +15,15 @@
 ***************
  Presentations
 ***************
+
+
+-  Variorum: Vendor-Agnostic Power Management `Watch here
+   <https://www.youtube.com/watch?v=rgJGgPERBao>`_
+
+-  Power Management on Exascale Platforms with Variorum, ECP Tutorial Series 2023.
+
+     -  Introduction to Variorum `Recording <https://uoregon.zoom.us/rec/share/K6rSbJeeW3R0wPndnspRJ3a-_ZJ_TywH__2fGJKW3h6TutWTac77RawRmr9ypCWV.EvsYnRIV7jy8pAdK>`_
+     -  Integrating Variorum with System Software and Tools `Recording <https://uoregon.zoom.us/rec/share/d1DQsA350JJrU0hVbQf401YOm5p4cLbKIN29rBv9_4Blp2sCjV-SKqXXEwDQa284.c2bhMxzM9Ia2qoDM>`_
 
 -  Introduction to Variorum, ECP Tutorial Series 2021.
 

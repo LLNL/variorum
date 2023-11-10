@@ -6,12 +6,12 @@
 Welcome to Variorum, a platform-agnostic library exposing monitor and control
 interfaces for several features in hardware architectures.
 
-version 0.6.0
+version 0.7.0
 
 
 Last Update
 -----------
-15 September 2022
+13 June 2023
 
 
 Webpages
@@ -21,9 +21,8 @@ https://variorum.readthedocs.io
 
 ## Overview
 
-Variorum is an extensible vendor-neutral library for exposing power and
-performance monitoring and control of low-level hardware knobs.
-
+Variorum is an extensible vendor-neutral library for Linux that exposes
+power and performance monitoring and control of low-level hardware dials.
 
 ## Documentation
 To get started building and using Variorum, check out the full documentation
@@ -102,6 +101,7 @@ Supported Intel Microarchitectures:
     0x9E (Kaby Lake)
     0x55 (Skylake, Cascade Lake, Cooper Lake)
     0x6A (Ice Lake)
+    0x8F (Sapphire Rapids)
 
 Supported Intel GPUs:
 

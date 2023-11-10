@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -40,6 +40,7 @@ int variorum_poll_power(FILE *output);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [in] output Location for output (stdout, stderr, filename).
 ///
@@ -96,7 +97,6 @@ int variorum_cap_best_effort_node_power_limit(int node_power_limit);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -133,6 +133,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 ///
 /// @supparch
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -173,6 +174,7 @@ int variorum_cap_each_gpu_power_limit(int gpu_power_limit);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -194,6 +196,7 @@ int variorum_print_verbose_power_limit(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -205,6 +208,7 @@ int variorum_print_power_limit(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -224,6 +228,7 @@ int variorum_print_verbose_thermals(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -277,6 +282,7 @@ int variorum_print_counters(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -287,6 +293,7 @@ int variorum_print_counters(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - NVIDIA Volta
 ///
 /// @return 0 if successful or if feature has not been implemented or is
@@ -299,6 +306,7 @@ int variorum_print_verbose_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -309,6 +317,7 @@ int variorum_print_verbose_power(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 /// - Intel Arctic Sound
 /// - NVIDIA Volta
 ///
@@ -323,6 +332,7 @@ int variorum_print_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -344,6 +354,7 @@ int variorum_print_verbose_frequency(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -379,6 +390,7 @@ void variorum_print_topology(void);
 /// - Intel Ice Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -405,7 +417,6 @@ int variorum_print_turbo(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -429,7 +440,6 @@ int variorum_print_verbose_gpu_utilization(void);
 ///
 /// @unsupported
 /// - AMD EPYC Milan
-/// - ARM Juno r2
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -449,6 +459,7 @@ int variorum_print_gpu_utilization(void);
 ///
 /// @supparch
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -516,6 +527,7 @@ int variorum_disable_turbo(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -525,6 +537,7 @@ int variorum_disable_turbo(void);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// power information.
@@ -540,6 +553,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
+//  - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -549,6 +563,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Kaby Lake
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
+/// - Intel Sapphire Rapids
 ///
 /// @param [out] output String (passed by reference) that contains the node-level
 /// domain information.

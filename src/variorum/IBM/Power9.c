@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -9,10 +9,10 @@
 
 #include <config_architecture.h>
 #include <Power9.h>
-#include <ibm_sensors.h>
+#include <ibm_power_features.h>
 #include <variorum_error.h>
 
-int p9_get_power(int long_ver)
+int ibm_cpu_p9_get_power(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -27,7 +27,9 @@ int p9_get_power(int long_ver)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -72,7 +74,7 @@ int p9_get_power(int long_ver)
     return 0;
 }
 
-int p9_get_power_limits(int long_ver)
+int ibm_cpu_p9_get_power_limits(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -156,7 +158,7 @@ int p9_get_power_limits(int long_ver)
     return 0;
 }
 
-int p9_cap_and_verify_node_power_limit(int pcap_new)
+int ibm_cpu_p9_cap_and_verify_node_power_limit(int pcap_new)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -224,7 +226,7 @@ int p9_cap_and_verify_node_power_limit(int pcap_new)
     return 0;
 }
 
-int p9_cap_gpu_power_ratio(int gpu_power_ratio)
+int ibm_cpu_p9_cap_gpu_power_ratio(int gpu_power_ratio)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -275,11 +277,11 @@ int p9_cap_gpu_power_ratio(int gpu_power_ratio)
     return 0;
 }
 
-int p9_monitoring(FILE *output)
+int ibm_cpu_p9_monitoring(FILE *output)
 {
     /* @todo There will be repeat implementation from the get_power API above.
      * We might want to extract that out into a static P9-get-power function,
-     * and call then from the p9_monitoring() and p9_get_power() APIs.
+     * and call then from the ibm_cpu_p9_monitoring() and ibm_cpu_p9_get_power() APIs.
      * fprintf(output, "to be implemented\n");
      * For the first cut, we are just printing power info, we can add other info later.
      * */
@@ -298,7 +300,9 @@ int p9_monitoring(FILE *output)
     unsigned nsockets;
     static unsigned count = 0;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -349,7 +353,7 @@ int p9_monitoring(FILE *output)
     return 0;
 }
 
-int p9_cap_socket_power_limit(int long_ver)
+int ibm_cpu_p9_cap_socket_power_limit(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -365,7 +369,7 @@ int p9_cap_socket_power_limit(int long_ver)
     return 0;
 }
 
-int p9_get_node_power_json(char **get_power_obj_str)
+int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -385,7 +389,9 @@ int p9_get_node_power_json(char **get_power_obj_str)
 
     json_t *get_power_obj = json_object();
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -396,6 +402,7 @@ int p9_get_node_power_json(char **get_power_obj_str)
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
     {
+        json_decref(get_power_obj);
         printf("Failed to open occ_inband_sensors file\n");
         return -1;
     }
@@ -440,7 +447,7 @@ int p9_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int p9_get_node_power_domain_info_json(char **get_domain_obj_str)
+int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

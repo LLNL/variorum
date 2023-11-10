@@ -1,3 +1,34 @@
+# Tue Jun 13 2022 Stephanie Brink <brink2@llnl.gov> v0.7.0
+Version 0.7.0 is a major release.
+
+### New features
+* Enable heterogeneous build support for two architectures
+* Support for new architectures: ARM Neoverse N1 platform, Sapphire Rapids
+* Add power capping API for NVIDIA, AMD and Intel GPUs
+* Add get power limit for intel GPUs
+
+### Documentation updates
+* add links to youtube video and recordings from ECP Tutorial 2023
+* Change knob to dial in documentation
+* Update Variorum Overview Figure
+* Upload new logo
+
+### Bug fixes
+* Fix fortran error with gfortran > 10
+* Fix issues coming up with DENABLE_WARNINGS=On on AMD CPU port
+* Fix AMD build errors: add missing headers, undefined variables, etc.
+* Fix inconsistent spacing issue in powmon
+* Fix for multiplatform build (ARM+NVIDIA) error/warnings
+* Remove the undefined variable in AMD debug build
+
+### Internal changes
+* Powmon rehaul
+* Fix for JSON example memory leak
+* Remove unnecessary call to obtain number of sockets from JSON example
+* Update filenames and low-level function names, prefix power_features.* with architecture name
+* Replace existing RSMI API call with the correct API to get GPU busy %
+* Resolve missing non-optional arguments in control examples
+
 # Thu Sept 15 2022 Stephanie Brink <brink2@llnl.gov> v0.6.0
 Version 0.6.0 is a major release.
 

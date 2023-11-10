@@ -1,4 +1,4 @@
-# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
 # SPDX-License-Identifier: MIT
@@ -13,7 +13,6 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 option(USE_MSR_SAFE_BEFORE_1_5_0 "Build for msr-safe whitelist interface" OFF)
 
 option(BUILD_SHARED_LIBS         "Build shared libraries"                 ON)
-option(BUILD_DOCS                "Build documentation"                    ON)
 option(BUILD_TESTS               "Build tests"                            ON)
 
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
@@ -71,12 +70,6 @@ include(CMake/Setup3rdParty.cmake)
 include(CMake/SetupTests.cmake)
 
 add_subdirectory(thirdparty_builtin)
-
-### Add documentation targets
-if(BUILD_DOCS)
-    include(CMake/SetupDocs.cmake)
-    add_subdirectory(docs)
-endif()
 
 ### Enable warnings
 if(ENABLE_WARNINGS)

@@ -1,4 +1,4 @@
-# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
 # SPDX-License-Identifier: MIT
@@ -7,7 +7,7 @@ from setuptools import setup
 
 setup(
     name="pyVariorum",
-    version="0.6",
+    version="0.7",
     description="A python wrapper for Variorum library.",
     url="https://variorum.readthedocs.io/",
     author="Stephanie Brink, Aniruddha Marathe, Tapasya Patki, Barry Rountree",

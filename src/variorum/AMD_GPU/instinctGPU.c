@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -9,9 +9,9 @@
 #include <instinctGPU.h>
 #include <config_architecture.h>
 #include <variorum_error.h>
-#include <power_features.h>
+#include <amd_gpu_power_features.h>
 
-int instinctGPU_get_power(int verbose)
+int amd_gpu_instinct_get_power(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -22,7 +22,9 @@ int instinctGPU_get_power(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -32,7 +34,7 @@ int instinctGPU_get_power(int verbose)
 }
 
 
-int instinctGPU_get_power_limit(int verbose)
+int amd_gpu_instinct_get_power_limit(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -43,7 +45,9 @@ int instinctGPU_get_power_limit(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -53,7 +57,7 @@ int instinctGPU_get_power_limit(int verbose)
 }
 
 
-int instinctGPU_get_thermals(int verbose)
+int amd_gpu_instinct_get_thermals(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -64,7 +68,9 @@ int instinctGPU_get_thermals(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -73,7 +79,7 @@ int instinctGPU_get_thermals(int verbose)
     return 0;
 }
 
-int instinctGPU_get_clocks(int verbose)
+int amd_gpu_instinct_get_clocks(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -84,7 +90,9 @@ int instinctGPU_get_clocks(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -93,7 +101,7 @@ int instinctGPU_get_clocks(int verbose)
     return 0;
 }
 
-int instinctGPU_get_gpu_utilization(int verbose)
+int amd_gpu_instinct_get_gpu_utilization(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -104,7 +112,9 @@ int instinctGPU_get_gpu_utilization(int verbose)
     unsigned iter = 0;
     unsigned nsockets;
 
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
 
     for (iter = 0; iter < nsockets; iter++)
     {
@@ -113,7 +123,7 @@ int instinctGPU_get_gpu_utilization(int verbose)
     return 0;
 }
 
-int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit)
+int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -123,7 +133,9 @@ int instinctGPU_cap_each_gpu_power_limit(unsigned int powerlimit)
 
     unsigned iter = 0;
     unsigned nsockets;
+#ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         cap_each_gpu_power_limit(iter, nsockets, powerlimit);

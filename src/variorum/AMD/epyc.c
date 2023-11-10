@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -15,9 +15,9 @@
 #include <e_smi/e_smi.h>
 
 #include "msr_core.h"
-#include "energy_feature.h"
+#include "amd_power_features.h"
 
-int epyc_get_power(int long_ver)
+int amd_cpu_epyc_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -47,7 +47,9 @@ int epyc_get_power(int long_ver)
     }
 
     // DELETE    fprintf(stdout, "Socket | Power(Watts)    |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
     {
         gettimeofday(&now, NULL);
 
@@ -81,7 +83,7 @@ int epyc_get_power(int long_ver)
     return 0;
 }
 
-int epyc_get_power_limits(int long_ver)
+int amd_cpu_epyc_get_power_limits(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -112,7 +114,9 @@ int epyc_get_power_limits(int long_ver)
 
     // DELETE fprintf(stdout,
     // "Socket | Power(Watts)    | PowerCap(Watts) | MaxPowerCap(Watts) |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
     {
         gettimeofday(&now, NULL);
 
@@ -165,7 +169,7 @@ int epyc_get_power_limits(int long_ver)
     return 0;
 }
 
-int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
+int amd_cpu_epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -185,7 +189,9 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
      */
     pcap_new = (pcap_new / 2) * 1000;
 
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
     {
         pcap_test = 0;
         ret = esmi_socket_power_cap_max_get(i, &max_power);
@@ -240,7 +246,7 @@ int epyc_set_and_verify_best_effort_node_power_limit(int pcap_new)
     return 0;
 }
 
-int epyc_set_socket_power_limit(int pcap_new)
+int amd_cpu_epyc_set_socket_power_limit(int pcap_new)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -258,7 +264,9 @@ int epyc_set_socket_power_limit(int pcap_new)
     pcap_new = pcap_new * 1000;
 
     fprintf(stdout, "Socket |  Powercap(Watts)  |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
     {
         ret = esmi_socket_power_cap_max_get(i, &max_power);
         if ((ret == 0) && (pcap_new > (int)max_power))
@@ -298,7 +306,8 @@ static struct EPYC_19h_offsets msrs =
     .msr_pkg_energy_stat         = 0xC001029B
 };
 
-int epyc_print_energy(int long_ver)
+
+int amd_cpu_epyc_print_energy(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -314,7 +323,9 @@ int epyc_print_energy(int long_ver)
 
         fprintf(stdout, "_SOCKET_ENERGY :\n");
         fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
         {
             energy = 0;
             ret = esmi_socket_energy_get(i, &energy);
@@ -332,7 +343,9 @@ int epyc_print_energy(int long_ver)
         }
         printf("\n_CORE_ENERGY :\n");
         fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
+#endif
         {
             energy = 0;
             ret = esmi_core_energy_get(i, &energy);
@@ -357,7 +370,7 @@ energy_batch:
     return ret;
 }
 
-int epyc_print_boostlimit()
+int amd_cpu_epyc_print_boostlimit()
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -369,7 +382,9 @@ int epyc_print_boostlimit()
     uint32_t boostlimit;
 
     fprintf(stdout, " Core   | Freq (MHz)  |\n");
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
+#endif
     {
         boostlimit = 0;
         ret = esmi_core_boostlimit_get(i, &boostlimit);
@@ -387,7 +402,7 @@ int epyc_print_boostlimit()
     return 0;
 }
 
-int epyc_set_each_core_boostlimit(int boostlimit)
+int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -397,7 +412,9 @@ int epyc_set_each_core_boostlimit(int boostlimit)
 
     int i, ret;
 
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
+#endif
     {
         ret = esmi_core_boostlimit_set(i, boostlimit);
         if (ret != 0)
@@ -415,8 +432,8 @@ int epyc_set_each_core_boostlimit(int boostlimit)
     }
 
 #ifdef VARIORUM_DEBUG
-    fprintf(stdout, "Values are input:%2u MHz, test=%2u MHz\n",
-            boostlimit, core_boost_lim);
+    fprintf(stdout, "Values are input:%2u MHz\n",
+            boostlimit);
 #endif
 
     return 0;
@@ -424,7 +441,7 @@ int epyc_set_each_core_boostlimit(int boostlimit)
 
 
 /*
-int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
+int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -483,7 +500,7 @@ int epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
 */
 
 
-int epyc_set_socket_boostlimit(int socket, int boostlimit)
+int amd_cpu_epyc_set_socket_boostlimit(int socket, int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -514,7 +531,7 @@ int epyc_set_socket_boostlimit(int socket, int boostlimit)
  * the variorum development team.
  * We expect to test and update these two functions when access is made available.
  * */
-int epyc_get_node_power_json(char **get_power_obj_str)
+int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -539,7 +556,9 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     json_object_set_new(get_power_obj, "host", json_string(hostname));
     json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
+#ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
+#endif
     {
         char cpu_str[36] = "power_cpu_watts_socket_";
         char mem_str[36] = "power_mem_watts_socket_";
@@ -584,7 +603,7 @@ int epyc_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
+int amd_cpu_epyc_get_node_power_domain_info_json(char **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

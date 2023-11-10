@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -8,7 +8,7 @@
 
 #include <inttypes.h>
 
-#include <power_features.h>
+#include <nvidia_gpu_power_features.h>
 #include <Volta.h>
 
 uint64_t *detect_gpu_arch(void);

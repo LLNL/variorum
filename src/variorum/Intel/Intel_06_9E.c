@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -10,7 +10,7 @@
 #include <clocks_features.h>
 #include <config_architecture.h>
 #include <counters_features.h>
-#include <power_features.h>
+#include <intel_power_features.h>
 #include <thermal_features.h>
 
 static struct kabylake_9e_offsets msrs =
@@ -68,11 +68,13 @@ static struct kabylake_9e_offsets msrs =
     .ia32_perfevtsel_counters[7]  = 0x18D
 };
 
-int fm_06_9e_get_power_limits(int long_ver)
+int intel_cpu_fm_06_9e_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -130,11 +132,13 @@ int fm_06_9e_get_power_limits(int long_ver)
     return 0;
 }
 
-int fm_06_9e_cap_power_limits(int package_power_limit)
+int intel_cpu_fm_06_9e_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -150,7 +154,7 @@ int fm_06_9e_cap_power_limits(int package_power_limit)
     return 0;
 }
 
-int fm_06_9e_get_features(void)
+int intel_cpu_fm_06_9e_get_features(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -253,7 +257,7 @@ int fm_06_9e_get_features(void)
     return 0;
 }
 
-int fm_06_9e_get_thermals(int long_ver)
+int intel_cpu_fm_06_9e_get_thermals(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -274,7 +278,7 @@ int fm_06_9e_get_thermals(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_counters(int long_ver)
+int intel_cpu_fm_06_9e_get_counters(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -297,7 +301,7 @@ int fm_06_9e_get_counters(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_clocks(int long_ver)
+int intel_cpu_fm_06_9e_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -320,7 +324,7 @@ int fm_06_9e_get_clocks(int long_ver)
     return 0;
 }
 
-int fm_06_9e_get_power(int long_ver)
+int intel_cpu_fm_06_9e_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -341,7 +345,7 @@ int fm_06_9e_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_9e_poll_power(FILE *output)
+int intel_cpu_fm_06_9e_poll_power(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -355,7 +359,7 @@ int fm_06_9e_poll_power(FILE *output)
     return 0;
 }
 
-int fm_06_9e_monitoring(FILE *output)
+int intel_cpu_fm_06_9e_monitoring(FILE *output)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -371,7 +375,7 @@ int fm_06_9e_monitoring(FILE *output)
     return 0;
 }
 
-int fm_06_9e_get_node_power_json(char **get_power_obj_str)
+int intel_cpu_fm_06_9e_get_node_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -391,7 +395,8 @@ int fm_06_9e_get_node_power_json(char **get_power_obj_str)
     return 0;
 }
 
-int fm_06_9e_get_node_power_domain_info_json(char **get_domain_obj_str)
+int intel_cpu_fm_06_9e_get_node_power_domain_info_json(char
+        **get_domain_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -411,7 +416,7 @@ int fm_06_9e_get_node_power_domain_info_json(char **get_domain_obj_str)
     return 0;
 }
 
-int fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
+int intel_cpu_fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -428,7 +433,9 @@ int fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
      * we will guarantee that we stay under the specified cap. */
 
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     // Adding this for portability and rounding down.
     // Ideally this should be okay as it is integer division and we have
@@ -439,12 +446,12 @@ int fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
 
     int pkg_limit = node_limit / nsockets;
 
-    fm_06_9e_cap_power_limits(pkg_limit);
+    intel_cpu_fm_06_9e_cap_power_limits(pkg_limit);
 
     return 0;
 }
 
-int fm_06_9e_get_frequencies(void)
+int intel_cpu_fm_06_9e_get_frequencies(void)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

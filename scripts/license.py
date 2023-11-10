@@ -1,4 +1,6 @@
-# Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+#!/usr/bin/env python3
+
+# Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
 # SPDX-License-Identifier: MIT
@@ -21,10 +23,8 @@ mit_spdx = "MIT"
 licensed_files = [
     r"^src/CMakeLists.txt$",
     # variorum docs
-    r"^src/docs/.*CMakeLists.txt$",
     r"^src/docs/sphinx/.*\.rst$",
     r"^src/docs/sphinx/conf.py$",
-    r"^src/docs/sphinx/conf.py.in$",
     # variorum examples
     r"^src/examples/.*CMakeLists.txt$",
     r"^src/examples/variorum-.*\.c$",
@@ -87,7 +87,7 @@ def list_files(root):
 OLD_LICENSE, SPDX_MISMATCH, GENERAL_MISMATCH = range(1, 4)
 
 #: Latest year that copyright applies. UPDATE THIS when bumping copyright.
-latest_year = 2022
+latest_year = 2023
 strict_date = r"Copyright 2019-%s" % latest_year
 
 #: regexes for valid license lines at tops of files

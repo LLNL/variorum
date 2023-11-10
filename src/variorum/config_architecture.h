@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -59,6 +59,7 @@ enum intel_arch_e
     FM_06_9E = 158, // Kaby Lake
     FM_06_57 = 87,  // Knights Landing
     FM_06_6A = 106, // IceLake
+    FM_06_8F = 143, // Sapphire Rapids
 };
 
 /// @brief List of IBM family and models.
@@ -77,7 +78,9 @@ enum nvidia_gpu_arch_e
 
 enum arm_arch_e
 {
-    ARMV8 = 1, //ARM Juno
+    ARM_CORTEX_A72  = 0xd08, //ARM Cortex-A72 MPCore processor
+    ARM_CORTEX_A53  = 0xd03, //ARM Cortex-A53 MPCore processor
+    ARM_NEOVERSE_N1 = 0xd0c //ARM Neoverse N1 processor
 };
 
 /// @brief List of AMD GPU family and models.

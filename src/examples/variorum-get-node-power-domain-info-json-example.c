@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -31,9 +31,6 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
-
-    /* Allocate string based on vendor-neutral JSON structure*/
-    s = (char *) malloc(800 * sizeof(char));
 
     ret = variorum_get_node_power_domain_info_json(&s);
 

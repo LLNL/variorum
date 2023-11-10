@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -404,7 +404,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
                                    VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
                                    getenv("HOSTNAME"), __FILE__,
                                    __FUNCTION__, __LINE__);
-            return -1;
+            return 0;
         }
         err = g_platform[i].variorum_cap_socket_frequency_limit(socketid,
                 socket_freq_mhz);
