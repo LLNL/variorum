@@ -7,6 +7,8 @@
 #define POWER9_H_INCLUDE
 
 #include <jansson.h>
+#include <pthread.h>
+#include <variorum_timers.h>
 
 struct thread_args
 {

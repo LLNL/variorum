@@ -15,6 +15,8 @@
 /*Figure our the right spot for this at some point*/
 static pthread_mutex_t mlock;
 
+/*For the get_energy sampling thread */
+static int active_sampling =  0;
 
 int ibm_cpu_p9_get_power(int long_ver)
 {
@@ -493,11 +495,10 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 int ibm_cpu_p9_get_energy(int long_ver)
 {
 
-/*For the get_energy sampling thread */
-static int active_sampling =  0;
-
-
 int fd;
+
+/*Set thread arguments here and accumulate energy here*/
+static struct thread_args th_args;
 
 if (active_sampling == 0)
 {
@@ -511,8 +512,7 @@ if (active_sampling == 0)
             return -1;
         }
 
-        /*Set thread arguments here and accumulate energy here*/
-        static struct thread_args th_args;
+        /*Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
 
@@ -532,7 +532,7 @@ if (active_sampling == 0)
         /*Calculate what value to return here*/
         printf("\nAccumulated energy test is %l\n", th_args.energy_acc);
         /*Close inband_sensors file*/
-        fd.close();
+        close(fd);
       }
 return 0;
 }
@@ -546,11 +546,13 @@ unsigned long take_measurement()
     // Default is to just dump out instantaneous power samples
         // Extract power information from Variorum JSON API
         int ret;
-        int num_sockets = 0;
+        int nsockets = 0;
 
-        num_sockets = variorum_get_num_sockets();
+#ifdef VARIORUM_WITH_IBM_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
-        if (num_sockets <= 0)
+        if (nsockets <= 0)
         {
             printf("HWLOC returned an invalid number of sockets. Exiting.\n");
             exit(-1);
@@ -569,10 +571,6 @@ void *power_measurement(void *arg)
     unsigned long curr_measurement;
     struct thread_args th_args;
 
-    /*Hardcode sampling interval at 250ms*/
-    sample_interval  = 250;
-
-
     th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
     th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
     // According to the Intel docs, the counter wraps at most once per second.
@@ -585,12 +583,12 @@ void *power_measurement(void *arg)
     timer_sleep(&timer);
     while (active_sampling)
     {
-       curr_measurement = take_measurement(th_args.measure_all);
+       curr_measurement = take_measurement();
        timer_sleep(&timer);
 
       /*Accummulate energy */
        pthread_mutex_lock(&mlock);
-       energy_acc += curr_measurement * sample_interval;
+       th_args.energy_acc += curr_measurement * th_args.sample_interval;
        pthread_mutex_unlock(&mlock);
     }
     return arg;
