@@ -495,13 +495,13 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 int ibm_cpu_p9_get_energy(int long_ver)
 {
 
-int fd;
+    int fd;
 
-/*Set thread arguments here and accumulate energy here*/
-static struct thread_args th_args;
+    /*Set thread arguments here and accumulate energy here*/
+    static struct thread_args th_args;
 
-if (active_sampling == 0)
-{
+    if (active_sampling == 0)
+    {
         active_sampling = 1;
 
         /* Open inband_sensors file */
@@ -523,8 +523,8 @@ if (active_sampling == 0)
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
         pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
- }
- else
+    }
+    else
     {
         /* Stop power measurement thread. */
         active_sampling = 0;
@@ -533,8 +533,8 @@ if (active_sampling == 0)
         printf("\nAccumulated energy test is %l\n", th_args.energy_acc);
         /*Close inband_sensors file*/
         close(fd);
-      }
-return 0;
+    }
+    return 0;
 }
 
 unsigned long take_measurement()
@@ -544,21 +544,21 @@ unsigned long take_measurement()
     pthread_mutex_lock(&mlock);
 
     // Default is to just dump out instantaneous power samples
-        // Extract power information from Variorum JSON API
-        int ret;
-        int nsockets = 0;
+    // Extract power information from Variorum JSON API
+    int ret;
+    int nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
 #endif
 
-        if (nsockets <= 0)
-        {
-            printf("HWLOC returned an invalid number of sockets. Exiting.\n");
-            exit(-1);
-        }
+    if (nsockets <= 0)
+    {
+        printf("HWLOC returned an invalid number of sockets. Exiting.\n");
+        exit(-1);
+    }
 
-        power_sample = 400;
+    power_sample = 400;
 
     pthread_mutex_unlock(&mlock);
 
@@ -583,13 +583,13 @@ void *power_measurement(void *arg)
     timer_sleep(&timer);
     while (active_sampling)
     {
-       curr_measurement = take_measurement();
-       timer_sleep(&timer);
+        curr_measurement = take_measurement();
+        timer_sleep(&timer);
 
-      /*Accummulate energy */
-       pthread_mutex_lock(&mlock);
-       th_args.energy_acc += curr_measurement * th_args.sample_interval;
-       pthread_mutex_unlock(&mlock);
+        /*Accummulate energy */
+        pthread_mutex_lock(&mlock);
+        th_args.energy_acc += curr_measurement * th_args.sample_interval;
+        pthread_mutex_unlock(&mlock);
     }
     return arg;
 }
