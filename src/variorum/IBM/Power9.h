@@ -8,6 +8,12 @@
 
 #include <jansson.h>
 
+struct thread_args
+{
+    unsigned long sample_interval;
+    unsigned long energy_acc;
+}
+
 int ibm_cpu_p9_get_power(int long_ver);
 
 int ibm_cpu_p9_get_energy(int long_ver);
