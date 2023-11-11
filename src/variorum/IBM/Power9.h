@@ -38,6 +38,6 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str);
 void *power_measurement(void *arg);
 
 unsigned long take_measurement();
- 
+
 
 #endif

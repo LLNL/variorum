@@ -13,7 +13,7 @@
 #include <variorum_error.h>
 
 /*Figure our the right spot for this at some point*/
-//static pthread_mutex_t mlock;
+static pthread_mutex_t mlock;
 
 /*For the get_energy sampling thread */
 static int active_sampling =  0;
@@ -498,7 +498,7 @@ int ibm_cpu_p9_get_energy(int long_ver)
     int fd;
     pthread_attr_t mattr;
     pthread_t mthread;
-    static pthread_mutex_t mlock;
+
 
     /*Set thread arguments here and accumulate energy here*/
     static struct thread_args th_args;
@@ -521,18 +521,17 @@ int ibm_cpu_p9_get_energy(int long_ver)
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
 
-       /*The first call should print zero as energy. */
-        printf("\nAccumulated energy before starting the thread is %lu\n", th_args.energy_acc);
+        /*The first call should print zero as energy. */
+        printf("\nAccumulated energy before starting the thread is %lu\n",
+               th_args.energy_acc);
 
         /* Start power measurement thread. */
         pthread_attr_init(&mattr);
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
         pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
-
     }
-
-    if (active_sampling == 1)
+    else
     {
         /* Stop power measurement thread. */
         active_sampling = 0;
@@ -540,7 +539,8 @@ int ibm_cpu_p9_get_energy(int long_ver)
         pthread_attr_destroy(&mattr);
 
         /*Calculate what value to return here*/
-        printf("\nAccumulated energy after stopping the thread is %lu\n", th_args.energy_acc);
+        printf("\nAccumulated energy after stopping the thread is %lu\n",
+               th_args.energy_acc);
         /*Close inband_sensors file*/
         close(fd);
     }
@@ -551,7 +551,6 @@ int ibm_cpu_p9_get_energy(int long_ver)
 unsigned long take_measurement()
 {
     unsigned long power_sample = 0;
-    static pthread_mutex_t mlock;
 
     pthread_mutex_lock(&mlock);
 
@@ -570,7 +569,7 @@ unsigned long take_measurement()
         exit(-1);
     }
 
-    printf ("Taking measurement.\n");
+    printf("Taking measurement.\n");
     power_sample = 400;
 
     pthread_mutex_unlock(&mlock);
@@ -580,12 +579,9 @@ unsigned long take_measurement()
 
 void *power_measurement(void *arg)
 {
-
-    printf("Setting active_sampling to 1, value is reset?: %d\n", active_sampling);
     struct mstimer timer;
     unsigned long curr_measurement;
     struct thread_args th_args;
-    static pthread_mutex_t mlock;
 
     th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
     th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
@@ -599,8 +595,6 @@ void *power_measurement(void *arg)
     printf("Value of active_sampling is: %d\n", active_sampling);
 
     timer_sleep(&timer);
-
-
     while (active_sampling)
     {
         curr_measurement = take_measurement();
