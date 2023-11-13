@@ -13,8 +13,10 @@
 #include <variorum_error.h>
 
 /* Figure out the right spot for this at some point */
-static pthread_mutex_t mlock;
-static struct thread_args th_args;
+pthread_mutex_t mlock;
+struct thread_args th_args;
+pthread_attr_t mattr;
+pthread_t mthread;
 
 /*For the get_energy sampling thread */
 static int active_sampling = 0;
@@ -495,23 +497,12 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 
 int ibm_cpu_p9_get_energy(int long_ver)
 {
-    int fd;
-    pthread_attr_t mattr;
-    pthread_t mthread;
-
     /* Enter the function the first time */
     if (active_sampling == 0)
     {
         active_sampling = 1;
         printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
 
-        /* Open inband_sensors file */
-        fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
-        if (fd < 0)
-        {
-            printf("Failed to open occ_inband_sensors file\n");
-            return -1;
-        }
 
         /* Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
@@ -525,7 +516,7 @@ int ibm_cpu_p9_get_energy(int long_ver)
         pthread_attr_init(&mattr);
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
-        pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
     }
     else
     {
@@ -533,24 +524,24 @@ int ibm_cpu_p9_get_energy(int long_ver)
         active_sampling = 0;
 
         /* Commenting out for now, results in invalid pointer and stack trace */
-        //pthread_attr_destroy(&mattr);
+        pthread_attr_destroy(&mattr);
 
+        pthread_mutex_lock(&mlock);
         /* Calculate what value to return here */
         printf("\nAccumulated energy after stopping the thread is %lu\n",
                th_args.energy_acc);
+        pthread_mutex_unlock(&mlock);
 
-        /* Close inband_sensors file */
-        close(fd);
     }
 
     return 0;
 }
 
-unsigned long take_measurement()
+unsigned long take_measurement(int fd)
 {
     unsigned long power_sample = 0;
 
-    pthread_mutex_lock(&mlock);
+    //pthread_mutex_lock(&mlock);
 
     // Default is to just dump out instantaneous power samples
     // Extract power information from Variorum JSON API
@@ -570,8 +561,7 @@ unsigned long take_measurement()
     printf("Taking measurement.\n");
     power_sample = 400;
 
-    pthread_mutex_unlock(&mlock);
-
+    //pthread_mutex_unlock(&mlock);
     return power_sample;
 }
 
@@ -579,29 +569,39 @@ void *power_measurement(void *arg)
 {
     struct mstimer timer;
     unsigned long curr_measurement;
+    int fd;
 
-    th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
-    th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
+    //th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
+    //th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
     // According to the Intel docs, the counter wraps at most once per second.
     // 50 ms should be short enough to always get good information (this is
     // default).
     printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
-
-    init_msTimer(&timer, th_args.sample_interval);
-
-    printf("Value of active_sampling is: %d\n", active_sampling);
-
-    timer_sleep(&timer);
-    while (active_sampling)
+    /* Open inband_sensors file */
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
     {
-        curr_measurement = take_measurement();
-        timer_sleep(&timer);
+        printf("Failed to open occ_inband_sensors file\n");
+    }
+    else
+    {
+        init_msTimer(&timer, th_args.sample_interval);
 
-        /* Accummulate energy */
-        pthread_mutex_lock(&mlock);
-        th_args.energy_acc += curr_measurement * th_args.sample_interval;
-        printf("current energy %lu\n", th_args.energy_acc);
-        pthread_mutex_unlock(&mlock);
+        printf("Value of active_sampling is: %d\n", active_sampling);
+
+        timer_sleep(&timer);
+        while (active_sampling)
+        {
+            /* Accummulate energy */
+            pthread_mutex_lock(&mlock);
+            curr_measurement = take_measurement(fd);
+            th_args.energy_acc += curr_measurement * th_args.sample_interval;
+            printf("current energy %lu\n", th_args.energy_acc);
+            pthread_mutex_unlock(&mlock);
+            timer_sleep(&timer);
+        }
+        /* Close inband_sensors file */
+        close(fd);
     }
     return arg;
 }
