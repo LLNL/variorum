@@ -39,7 +39,7 @@ int main(int argc, char **argv)
         return ret;
     }
 
-    sleep(10);
+    sleep(2);
 
     //Second call to variorum_print_energy should print a valid value.
     ret = variorum_print_energy();

@@ -12,11 +12,12 @@
 #include <ibm_power_features.h>
 #include <variorum_error.h>
 
-/*Figure our the right spot for this at some point*/
+/* Figure out the right spot for this at some point */
 static pthread_mutex_t mlock;
+static struct thread_args th_args;
 
 /*For the get_energy sampling thread */
-static int active_sampling =  0;
+static int active_sampling = 0;
 
 int ibm_cpu_p9_get_power(int long_ver)
 {
@@ -494,16 +495,11 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
 
 int ibm_cpu_p9_get_energy(int long_ver)
 {
-
     int fd;
     pthread_attr_t mattr;
     pthread_t mthread;
 
-
-    /*Set thread arguments here and accumulate energy here*/
-    static struct thread_args th_args;
-
-    /* Enter the function the first time*/
+    /* Enter the function the first time */
     if (active_sampling == 0)
     {
         active_sampling = 1;
@@ -517,11 +513,11 @@ int ibm_cpu_p9_get_energy(int long_ver)
             return -1;
         }
 
-        /*Sampling interval is hardcoded at 250ms */
+        /* Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
 
-        /*The first call should print zero as energy. */
+        /* The first call should print zero as energy. */
         printf("\nAccumulated energy before starting the thread is %lu\n",
                th_args.energy_acc);
 
@@ -536,12 +532,14 @@ int ibm_cpu_p9_get_energy(int long_ver)
         /* Stop power measurement thread. */
         active_sampling = 0;
 
-        pthread_attr_destroy(&mattr);
+        /* Commenting out for now, results in invalid pointer and stack trace */
+        //pthread_attr_destroy(&mattr);
 
-        /*Calculate what value to return here*/
+        /* Calculate what value to return here */
         printf("\nAccumulated energy after stopping the thread is %lu\n",
                th_args.energy_acc);
-        /*Close inband_sensors file*/
+
+        /* Close inband_sensors file */
         close(fd);
     }
 
@@ -581,7 +579,6 @@ void *power_measurement(void *arg)
 {
     struct mstimer timer;
     unsigned long curr_measurement;
-    struct thread_args th_args;
 
     th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
     th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
@@ -600,9 +597,10 @@ void *power_measurement(void *arg)
         curr_measurement = take_measurement();
         timer_sleep(&timer);
 
-        /*Accummulate energy */
+        /* Accummulate energy */
         pthread_mutex_lock(&mlock);
         th_args.energy_acc += curr_measurement * th_args.sample_interval;
+        printf("current energy %lu\n", th_args.energy_acc);
         pthread_mutex_unlock(&mlock);
     }
     return arg;
