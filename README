@@ -113,7 +113,6 @@ Supported Nvidia Microrchitectures:
     Volta
     Ampere 
 
-
 ## Testing
 
 From within the build directory, unit tests can be executed as follows:
