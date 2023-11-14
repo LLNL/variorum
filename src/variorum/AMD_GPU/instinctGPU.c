@@ -33,7 +33,6 @@ int amd_gpu_instinct_get_power(int verbose)
     return 0;
 }
 
-
 int amd_gpu_instinct_get_power_limit(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
@@ -55,7 +54,6 @@ int amd_gpu_instinct_get_power_limit(int verbose)
     }
     return 0;
 }
-
 
 int amd_gpu_instinct_get_thermals(int verbose)
 {

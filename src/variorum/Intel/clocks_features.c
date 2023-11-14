@@ -15,6 +15,10 @@
 #include <variorum_cpuid.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
                     off_t msr_tsc)
 {
@@ -134,13 +138,27 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
         perf_storage(&pd, msr_perf_status);
         if (control_domains == SOCKET)
         {
-            fprintf(writedest,
-                    "_CLOCKS_DATA Host Socket APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                     "_CLOCKS_DATA", "Host", "Socket", "APERF", "MPERF", "TSC", "CurrFreq_MHz",
+                     "AvgFreq_MHz");
+#else
+            fprintf(writedest, "%s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "APERF", "MPERF", "TSC", "CurrFreq_MHz",
+                    "AvgFreq_MHz");
+#endif
         }
         else if (control_domains == CORE)
         {
-            fprintf(writedest,
-                    "_CLOCKS_DATA Host Socket Core PhysicalThread LogicalThread APERF MPERF TSC CurrFreq_MHz AvgFreq_MHz\n");
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                     "_CLOCKS_DATA", "Host", "Socket", "Core", "PhysicalThread", "LogicalThread",
+                     "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#else
+            fprintf(writedest, "%s %s %s %s %s %s %s %s %s %s %s\n",
+                    "_CLOCKS_DATA", "Host", "Socket", "Core", "PhysicalThread", "LogicalThread",
+                    "APERF", "MPERF", "TSC", "CurrFreq_MHz", "AvgFreq_MHz");
+#endif
         }
         init = 1;
     }
@@ -157,10 +175,17 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     for (k = 0; k < nthreads / ncores; k += nthreads / ncores)
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                        fprintf(writedest, "_CLOCKS_DATA %s %d %lu %lu %lu %lu %f\n",
-                                hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+#ifdef LIBJUSTIFY_FOUND
+                        cfprintf(writedest, "%s %s %d %lu %lu %lu %lu %f\n",
+                                 "_CLOCKS_DATA", hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#else
+                        fprintf(writedest, "%s %s %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#endif
                     }
                 }
             }
@@ -173,10 +198,19 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                     for (k = 0; k < nthreads / ncores; k++)
                     {
                         idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                        fprintf(writedest, "_CLOCKS_DATA %s %d %d %d %d %lu %lu %lu %lu %f\n",
-                                hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx], *cd->tsc[idx],
+#ifdef LIBJUSTIFY_FOUND
+                        cfprintf(writedest, "%s %s %d %d %d %d %lu %lu %lu %lu %f\n",
+                                 "_CLOCKS_DATA", hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx],
+                                 *cd->tsc[idx],
+                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
+                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#else
+                        fprintf(writedest, "%s %s %d %d %d %d %lu %lu %lu %lu %f\n",
+                                "_CLOCKS_DATA", hostname, i, j, k, idx, *cd->aperf[idx], *cd->mperf[idx],
+                                *cd->tsc[idx],
                                 MASK_VAL(*pd->perf_status[i], 15, 8) * 100,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
+#endif
                     }
                 }
             }
@@ -185,6 +219,9 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
             fprintf(stderr, "Not a valid control domain.\n");
             break;
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -477,7 +514,12 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
      * All core turbo == P0n
      * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
      */
+    //#ifdef LIBJUSTIFY_FOUND
+    //    cfprintf(writedest, "=== Turbo Schedule ===\n");
+    //    cflush();
+    //#else
     fprintf(writedest, "=== Turbo Schedule ===\n");
+    //#endif
     if (get_turbo_ratio_limits_skx(*msr_turbo_ratio_limit,
                                    *msr_turbo_ratio_limit_cores) != 0)
     {
@@ -485,13 +527,15 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
     }
 
-    fprintf(writedest, "\n");
-
     /* AVX2, AVX512 (i.e., AVX3) */
-    fprintf(writedest, "=== AVX Schedule ===\n");
+    //#ifdef LIBJUSTIFY_FOUND
+    //cflush(); // Redundancy flush
+    //cfprintf(writedest, "\n=== AVX Schedule ===\n");
+    //cflush();
+    //#else
+    fprintf(writedest, "\n=== AVX Schedule ===\n");
+    //#endif
     get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2);
-
-    fprintf(writedest, "\n");
 
     /* P-State Table -- P1, Pn, and Pm
      * Read IA32_PLATFORM_INFO 0xCE
@@ -499,7 +543,14 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
      * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
      * Field "Minimum Operating Ratio: Bits 55:48 == Pm
      */
-    fprintf(writedest, "=== P-State Table ===\n");
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+    cfprintf(writedest, "\n=== P-State Table ===\n");
+    cflush();
+#else
+    fprintf(writedest, "\n=== P-State Table ===\n");
+#endif
     int max_non_turbo_ratio;
     int max_eff_ratio;
     int min_oper_ratio;
@@ -507,21 +558,39 @@ void get_available_frequencies_skx(FILE *writedest, off_t *msr_platform_info,
     int err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
     if (!err)
     {
-        fprintf(writedest, "Max Efficiency Ratio = %d MHz\n",
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n", "Max Efficiency Ratio",
+                 max_non_turbo_ratio);
+#else
+        fprintf(writedest, "%s = %d MHz\n", "Max Efficiency Ratio",
                 max_non_turbo_ratio);
+#endif
     }
     err = get_max_efficiency_ratio(*msr_platform_info, &max_eff_ratio);
     if (!err)
     {
-        fprintf(writedest, "Max Non-Turbo Ratio  = %d MHz\n",
-                max_eff_ratio);
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n",
+                 "Max Non-Turbo Ratio", max_eff_ratio);
+#else
+        fprintf(writedest, "%s  = %d MHz\n",
+                "Max Non-Turbo Ratio", max_eff_ratio);
+#endif
     }
     err = get_min_operating_ratio(*msr_platform_info, &min_oper_ratio);
     if (!err)
     {
-        fprintf(writedest, "Min Operating Ratio  = %d MHz\n",
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n", "Min Operating Ratio",
+                 min_oper_ratio);
+#else
+        fprintf(writedest, "%s  = %d MHz\n", "Min Operating Ratio",
                 min_oper_ratio);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
 }
 
 void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
@@ -533,7 +602,12 @@ void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
      * All core turbo == P0n
      * MSR_TURBO_RATIO_LIMIT_CORES for Skylake (1AEh)
      */
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(writedest, "=== Turbo Schedule ===\n");
+    cflush();
+#else
     fprintf(writedest, "=== Turbo Schedule ===\n");
+#endif
     if (get_turbo_ratio_limits(*msr_turbo_ratio_limit,
                                *msr_turbo_ratio_limit1) != 0)
     {
@@ -541,13 +615,15 @@ void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
                                VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
     }
 
-    fprintf(writedest, "\n");
-
     /* AVX2, AVX512 (i.e., AVX3) */
-    fprintf(writedest, "=== AVX Schedule ===\n");
+#ifdef LIBJUSTIFY_FOUND
+    cflush(); // Redundancy flush
+    cfprintf(writedest, "\n=== AVX Schedule ===\n");
+    cflush();
+#else
+    fprintf(writedest, "\n=== AVX Schedule ===\n");
+#endif
     get_avx_limits(msr_platform_info, msr_config_tdp_l1, msr_config_tdp_l2);
-
-    fprintf(writedest, "\n");
 
     /* P-State Table -- P1, Pn, and Pm
      * Read IA32_PLATFORM_INFO 0xCE
@@ -555,7 +631,13 @@ void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
      * Field "Maximum Non-Turbo Ratio: Bits 15:8 == P1
      * Field "Minimum Operating Ratio: Bits 55:48 == Pm
      */
-    fprintf(writedest, "=== P-State Table ===\n");
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+    cfprintf(writedest, "\n=== P-State Table ===\n");
+    cflush();
+#else
+    fprintf(writedest, "\n=== P-State Table ===\n");
+#endif
     int max_non_turbo_ratio;
     int max_eff_ratio;
     int min_oper_ratio;
@@ -563,19 +645,37 @@ void get_available_frequencies(FILE *writedest, off_t *msr_platform_info,
     int err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
     if (!err)
     {
-        fprintf(writedest, "Max Efficiency Ratio = %d MHz\n",
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n", "Max Efficiency Ratio",
+                 max_non_turbo_ratio);
+#else
+        fprintf(writedest, "%s = %d MHz\n", "Max Efficiency Ratio",
                 max_non_turbo_ratio);
+#endif
     }
     err = get_max_efficiency_ratio(*msr_platform_info, &max_eff_ratio);
     if (!err)
     {
-        fprintf(writedest, "Max Non-Turbo Ratio  = %d MHz\n",
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n", "Max Non-Turbo Ratio",
+                 max_eff_ratio);
+#else
+        fprintf(writedest, "%s  = %d MHz\n", "Max Non-Turbo Ratio",
                 max_eff_ratio);
+#endif
     }
     err = get_min_operating_ratio(*msr_platform_info, &min_oper_ratio);
     if (!err)
     {
-        fprintf(writedest, "Min Operating Ratio  = %d MHz\n",
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(writedest, "%-s = %d MHz\n", "Min Operating Ratio",
+                 min_oper_ratio);
+#else
+        fprintf(writedest, "%s  = %d MHz\n", "Min Operating Ratio",
                 min_oper_ratio);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
 }

@@ -10,6 +10,10 @@
 
 #include <ibm_power_features.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 unsigned long read_counter(const struct occ_sensor_data_header *hb,
                            uint32_t offset)
 {
@@ -133,8 +137,15 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
         gettimeofday(&start, NULL);
         if (long_ver == 0)
         {
-            fprintf(output,
-                    "_IBMPOWER Host Socket PWRSYS_W PWRPROC_W PWRMEM_W PWRGPU_W Timestamp_sec\n");
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s %s %s\n",
+                     "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
+                     "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
+#else
+            fprintf(output, "%s %s %s %s %s %s %s %s\n",
+                    "_IBMPOWER", "Host", "Socket", "PWRSYS_W",
+                    "PWRPROC_W", "PWRMEM_W", "PWRGPU_W", "Timestamp_sec");
+#endif
         }
     }
 
@@ -186,20 +197,48 @@ void print_power_sensors(int chipid, int long_ver, FILE *output,
 
     if (long_ver == 0)
     {
-        fprintf(output, "_IBMPOWER %s %d %lu %lu %lu %lu %lf\n",
-                hostname, chipid, pwrsys, pwrproc, pwrmem, pwrgpu,
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s %s %d %lu %lu %lu %lu %lf\n",
+                 "_IBMPOWER", hostname, chipid,
+                 pwrsys, pwrproc, pwrmem, pwrgpu,
+                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
+        fprintf(output,
+                "%s %s %d %lu %lu %lu %lu %lf\n",
+                "_IBMPOWER", hostname, chipid,
+                pwrsys, pwrproc, pwrmem, pwrgpu,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
     }
     else
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+                 "_IBMPOWER Host", hostname, "Socket", chipid,
+                 "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
+                 "PWRGPU", pwrgpu,
+                 "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                 1000000.0);
+#else
         fprintf(output,
-                "_IBMPOWER Host: %s, Socket: %d, PWRSYS: %lu W, PWRPROC: %lu W,"
-                " PWRMEM: %lu W, PWRGPU: %lu W, Timestamp: %lf sec\n",
-                hostname, chipid, pwrsys, pwrproc, pwrmem, pwrgpu,
-                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                "%s: %s, %s: %d, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lu W, %s: %lf sec\n",
+                "_IBMPOWER Host", hostname, "Socket", chipid,
+                "PWRSYS", pwrsys, "PWRPROC", pwrproc, "PWRMEM", pwrmem,
+                "PWRGPU", pwrgpu,
+                "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                1000000.0);
+#endif
     }
+    //#ifdef LIBJUSTIFY_FOUND
+    //    printf("CALLING FLUSH\n");
+    //    cflush();
+    //#endif
 }
 
+// TODO: Every place where there is no space before a conversion specifer needs to be fixed
+// this isn't currently supported
 void print_all_sensors_header(int chipid, FILE *output, const void *buf)
 {
     struct occ_sensor_data_header *hb;
@@ -209,21 +248,43 @@ void print_all_sensors_header(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE THIS AS WELL
+    char lbl[50];
+    sprintf(lbl, "_IBMPOWER %d", chipid);
+
+    cfprintf(output, "%s %s %s %s", lbl, "Timestamp_sec", "Host", "Socket");
+#else
     fprintf(output, "_IBMPOWER%d Timestamp_sec Host Socket", chipid);
+#endif
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
         if (be16toh(md[i].type) == OCC_SENSOR_TYPE_POWER)
         {
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE THIS, I don't think this will behave as intended
+            cfprintf(output, " %s %s %s %s %s", md[i].name, "_Scale_", md[i].units,
+                     md[i].name, "_Energy_J");
+#else
             fprintf(output, " %s_Scale_%s %s_Energy_J", md[i].name, md[i].units,
                     md[i].name);
+#endif
         }
         else
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, " %s_%s", md[i].name, md[i].units);
+#else
             fprintf(output, " %s_%s", md[i].name, md[i].units);
+#endif
         }
     }
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(output, "\n"); // Add end of line.
+    //printf("CALLING FLUSH\n");
+    //cflush();
+#else
     fprintf(output, "\n"); // Add end of line.
+#endif
 }
 
 void print_all_sensors(int chipid, FILE *output, const void *buf)
@@ -255,9 +316,17 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
 
+#ifdef LIBJUSTIFY_FOUND //TODO: EVALUATE
+    char lbl[50];
+    sprintf(lbl, "_IBMPOWER%d", chipid);
+    cfprintf(output, "%s %lf %s %d", lbl,
+             now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname,
+             chipid);
+#else
     fprintf(output, "_IBMPOWER%d %lf %s %d", chipid,
             now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0, hostname,
             chipid);
+#endif
 
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
@@ -286,15 +355,30 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
 
             // Note that we're not capturing timestamp here, the common timestamp printed
             // is the one from the beginning of the loop.
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)),
+                     (uint64_t)(energy / TO_FP(freq)));
+#else
             fprintf(output, " %lu %lu", (uint64_t)(sample * TO_FP(scale)),
                     (uint64_t)(energy / TO_FP(freq)));
+#endif
         }
         else
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, " %lu", (uint64_t)(sample * TO_FP(scale)));
+#else
             fprintf(output, " %lu", (uint64_t)(sample * TO_FP(scale)));
+#endif
         }
     }
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(output, "\n"); // Add end of line.
+    //printf("CALLING FLUSH\n");
+    //cflush();
+#else
     fprintf(output, "\n"); // Add end of line.
+#endif
 }
 
 void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)

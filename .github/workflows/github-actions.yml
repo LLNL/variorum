@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         cc-version: [11, 10, 9]
-        config: [boilerplate, shared_debug_log, shared_debug, static_debug_log, static_debug]
+        config: [boilerplate, shared_debug_log, shared_debug, static_debug_log, static_debug, shared_release_libjustify]
 
         exclude:
           - config: shared_debug_log
@@ -37,11 +37,17 @@ jobs:
           - config: static_debug
             cc-version: 10
 
+          - config: shared_release_libjustify
+            cc-version: 11
+          - config: shared_release_libjustify
+            cc-version: 10
+
         include:
           - config: boilerplate
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: ON
             CMAKE_BUILD_TYPE: RelWithDebInfo
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: ON
             ENABLE_MPI: ON
             ENABLE_OPENMP: ON
@@ -52,6 +58,7 @@ jobs:
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -61,6 +68,7 @@ jobs:
             BUILD_SHARED_LIBS: ON
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -70,6 +78,7 @@ jobs:
             BUILD_SHARED_LIBS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -79,6 +88,17 @@ jobs:
             BUILD_SHARED_LIBS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
+            ENABLE_FORTRAN: OFF
+            ENABLE_MPI: OFF
+            ENABLE_OPENMP: OFF
+            VARIORUM_DEBUG: OFF
+
+          - config: shared_release_libjustify
+            BUILD_SHARED_LIBS: ON
+            BUILD_TESTS: OFF
+            CMAKE_BUILD_TYPE: Release
+            ENABLE_LIBJUSTIFY: ON
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -106,6 +126,17 @@ jobs:
           # install
           sudo make -j install
 
+      - name: Build and install libjustify dependency
+        run: |
+          git clone https://github.com/llnl/libjustify.git
+          cd libjustify
+          mkdir build && cd build
+          cmake ../src
+          # build
+          VERBOSE=1 make -j
+          # install
+          sudo make -j install
+
       - name: Compile check
         run: |
           # create out-of-source build and install dir
@@ -116,6 +147,7 @@ jobs:
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_C_COMPILER=gcc-${{matrix.cc-version}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{matrix.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{matrix.CMAKE_BUILD_TYPE}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{matrix.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{matrix.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{matrix.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{matrix.ENABLE_OPENMP}}"
@@ -149,6 +181,7 @@ jobs:
           BUILD_SHARED_LIBS: ON
           BUILD_TESTS: OFF
           CMAKE_BUILD_TYPE: Release
+          ENABLE_LIBJUSTIFY: OFF
           ENABLE_FORTRAN: ON
           ENABLE_MPI: OFF
           ENABLE_OPENMP: OFF
@@ -162,6 +195,7 @@ jobs:
           export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{env.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{env.ENABLE_OPENMP}}"

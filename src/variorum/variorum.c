@@ -11,6 +11,10 @@
 #include <variorum.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 int g_socket;
 int g_core;
 
@@ -18,6 +22,13 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
     unsigned i;
+
+#ifdef LIBJUSTIFY_FOUND
+    if (depth == 0) //First interation
+    {
+        cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
+    }
+#endif
 
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_SOCKET))
     {
@@ -29,13 +40,27 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
+                 g_socket);
+#else
         printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
                g_socket);
+#endif
     }
+
     for (i = 0; i < obj->arity; i++)
     {
         print_children(topology, obj->children[i], depth + 1);
     }
+    //exit condition
+#ifdef LIBJUSTIFY_FOUND
+    if ((int)obj->logical_index == hwloc_get_type_depth(topology,
+            HWLOC_OBJ_NUMANODE))
+    {
+        cflush();
+    }
+#endif
 }
 
 int variorum_tester(void)
@@ -198,6 +223,35 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "Platform Topology\n");
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "  %-s: %-s\n", "Hostname", g_platform[i].hostname);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
+                 g_platform[i].num_cores_per_socket);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Threads per Core",
+                 g_platform[i].num_threads_per_core);
+        if (g_platform[i].num_threads_per_core == 1)
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "No");
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "Yes");
+        }
+
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Cores",
+                 g_platform[i].total_cores);
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Threads",
+                 g_platform[i].total_threads);
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "Layout:\n");
+        cfprintf(stdout, "-------\n");
+        cflush();
+#else
         fprintf(stdout, "=================\n");
         fprintf(stdout, "Platform Topology\n");
         fprintf(stdout, "=================\n");
@@ -222,8 +276,9 @@ void variorum_print_topology(void)
         fprintf(stdout, "Layout:\n");
         fprintf(stdout, "-------\n");
         fprintf(stdout, "Thread HWThread Core Socket\n");
-        print_children(topo, hwloc_get_root_obj(topo), 0);
+#endif
 
+        print_children(topo, hwloc_get_root_obj(topo), 0);
         hwloc_topology_destroy(topo);
     }
 
@@ -763,6 +818,18 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
+#ifdef LIBJUSTIFY_FOUND
+        if (hyperthreading == 1)
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
+            cfprintf(stdout, "  %-s %-d\n", "Num Thread Per Core: ",
+                     g_platform[i].num_threads_per_core);
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
+        }
+#else
         if (hyperthreading == 1)
         {
             fprintf(stdout, "  Hyperthreading:       Enabled\n");
@@ -773,8 +840,15 @@ int variorum_print_hyperthreading(void)
         {
             fprintf(stdout, "  Hyperthreading:       Disabled\n");
         }
+#endif
+
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush(); //TODO: Create a silent version on err that still frees.
+#endif
+
     if (err)
     {
         return -1;
@@ -946,7 +1020,6 @@ int variorum_disable_turbo(void)
     }
     return err;
 }
-
 
 // The variorum_get_node_power_json is a node-level API, and cannot be implemented
 // at a per-component (eg CPU, GPU) level. This can only be captured by what we

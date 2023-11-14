@@ -12,6 +12,10 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 void get_temp_target(struct msr_temp_target *s, off_t msr)
 {
     unsigned nsockets;
@@ -42,7 +46,6 @@ void get_temp_target(struct msr_temp_target *s, off_t msr)
         s[i].temp_target = MASK_VAL(s[i].raw, 23, 16);
     }
 }
-
 
 void get_therm_stat(struct therm_stat *s, off_t msr)
 {
@@ -327,9 +330,19 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
 
     t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
     get_therm_stat(t_stat, msr_therm_stat);
-
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(writedest,
+             "%s %s %s %s %s %s %s %s %s %s\n",
+             "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C",
+             "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C",
+             "Thread_DigitalReadingValid");
+#else
     fprintf(writedest,
-            "_THERMALS Socket PhysicalCore LogicalThread TCC_C Pkg_Reading_C Pkg_Actual_C Thread_Reading_C Thread_Actual_C Thread_DigitalReadingValid\n");
+            "%s %s %s %s %s %s %s %s %s %s\n",
+            "_THERMALS", "Socket", "PhysicalCore", "LogicalThread", "TCC_C",
+            "Pkg_Reading_C", "Pkg_Actual_C", "Thread_Reading_C", "Thread_Actual_C",
+            "Thread_DigitalReadingValid");
+#endif
     for (i = 0; i < nsockets; i++)
     {
         for (j = 0; j < ncores / nsockets; j++)
@@ -337,23 +350,32 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
             for (k = 0; k < nthreads / ncores; k++)
             {
                 idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
-                fprintf(writedest, "_THERMALS %d %d %d ", i, j, idx);
-                fprintf(writedest, "%d ", (int)t_target[i].temp_target);
-                fprintf(writedest, "%d ", pkg_stat[i].readout);
-                fprintf(writedest, "%d ", (int)t_target[i].temp_target - pkg_stat[i].readout);
-                fprintf(writedest, "%d ", t_stat[idx].readout);
-                fprintf(writedest, "%d ", (int)t_target[i].temp_target - t_stat[idx].readout);
-                fprintf(writedest, "%d\n", t_stat[idx].readout_valid);
+#ifdef LIBJUSTIFY_FOUND
+                cfprintf(writedest, "%s %d %d %d %d %d %d %d %d %d\n",
+                         "_THERMALS", i, j, idx, (int)t_target[i].temp_target,
+                         pkg_stat[i].readout, (int)t_target[i].temp_target - pkg_stat[i].readout,
+                         t_stat[idx].readout, (int)t_target[i].temp_target - t_stat[idx].readout,
+                         t_stat[idx].readout_valid);
+#else
+                fprintf(writedest, "%s %d %d %d %d %d %d %d %d %d\n",
+                        "_THERMALS", i, j, idx, (int)t_target[i].temp_target,
+                        pkg_stat[i].readout, (int)t_target[i].temp_target - pkg_stat[i].readout,
+                        t_stat[idx].readout, (int)t_target[i].temp_target - t_stat[idx].readout,
+                        t_stat[idx].readout_valid);
+#endif
             }
         }
     }
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
 
     free(pkg_stat);
     free(t_stat);
     free(t_target);
     return 0;
 }
-
 
 ///// @brief Initialize storage for IA32_THERM_INTERRUPT.
 /////

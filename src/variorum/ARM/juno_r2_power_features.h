@@ -25,5 +25,4 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj);
 
 int arm_cpu_juno_r2_json_get_power_domain_info(json_t *get_domain_obj);
 
-
 #endif

@@ -74,7 +74,6 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
         printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
     }
 
-
     variorum_init_func_ptrs();
 
     //Triggers initialization on first call.  Errors assert.
@@ -199,7 +198,6 @@ int variorum_detect_arch(void)
 
     return 0;
 }
-
 
 void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
                            unsigned *nthreads, int idx)
