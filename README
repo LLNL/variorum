@@ -86,7 +86,7 @@ Supported AMD GPUs:
 Supported ARM Microrchitectures:
 
     Juno r2
-    Neoverse
+    Neoverse N1
 
 Supported IBM Microrchitectures:
 
@@ -111,6 +111,8 @@ Supported Intel GPUs:
 Supported Nvidia Microrchitectures:
 
     Volta
+    Ampere 
+
 
 ## Testing
 
