@@ -77,7 +77,7 @@ or `/proc/cpuinfo` (note that it will not be in hexadecimal).
 
 Supported AMD Microrchitectures:
 
-    Family 19h, Models 0~Fh and 30h ~ 3Fh (EPYC Milan)
+    Family 19h, Models 0~Fh and 30h ~ 3Fh (EPYC Milan and Genoa)
 
 Supported AMD GPUs:
 
@@ -86,6 +86,7 @@ Supported AMD GPUs:
 Supported ARM Microrchitectures:
 
     Juno r2
+    Neoverse N1
 
 Supported IBM Microrchitectures:
 
@@ -109,7 +110,8 @@ Supported Intel GPUs:
 
 Supported Nvidia Microrchitectures:
 
-    Volta (requires [CUDA Toolkit[(https://developer.nvidia.com/cuda-downloads))
+    Volta
+    Ampere 
 
 ## Testing
 
