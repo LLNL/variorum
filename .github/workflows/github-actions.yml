@@ -230,6 +230,7 @@ jobs:
         run: |
           uname -a
           uname -r
+          cat /proc/cpuinfo | grep "model name"
           cd msr-safe
           sudo insmod msr-safe.ko
           sudo chmod o=u /dev/cpu/*/msr_safe
