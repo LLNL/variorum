@@ -394,9 +394,9 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     float core_temp;
     int pkg_temp;
 
-	variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 
-	pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
+    pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
                    struct pkg_therm_stat));
     get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
 
