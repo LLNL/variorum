@@ -59,7 +59,7 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     //exit condition
 #ifdef LIBJUSTIFY_FOUND
     if ((int)obj->logical_index == hwloc_get_type_depth(topology,
-        HWLOC_OBJ_NUMANODE))
+            HWLOC_OBJ_NUMANODE))
     {
         cflush();
     }
@@ -465,7 +465,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz)
             return 0;
         }
         err = g_platform[i].variorum_cap_socket_frequency_limit(socketid,
-              socket_freq_mhz);
+                socket_freq_mhz);
         if (err)
         {
             return -1;
