@@ -6,6 +6,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #include <thermal_features.h>
 #include <config_architecture.h>
@@ -374,6 +377,76 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     free(pkg_stat);
     free(t_stat);
     free(t_target);
+    return 0;
+}
+
+int get_therm_temp_reading_json(json_t *get_thermal_object,
+                                off_t msr_therm_stat,
+                                off_t msr_pkg_therm_stat,
+                                off_t msr_temp_target)
+{
+    struct therm_stat *t_stat = NULL;
+    struct msr_temp_target *t_target = NULL;
+    struct pkg_therm_stat *pkg_stat = NULL;
+    unsigned i, j, k;
+    unsigned nsockets, ncores, nthreads;
+    unsigned idx;
+    float core_temp;
+    int pkg_temp;
+
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+
+    pkg_stat = (struct pkg_therm_stat *) malloc(nsockets * sizeof(
+                   struct pkg_therm_stat));
+    get_pkg_therm_stat(pkg_stat, msr_pkg_therm_stat);
+
+    t_target = (struct msr_temp_target *) malloc(nsockets * sizeof(
+                   struct msr_temp_target));
+    get_temp_target(t_target, msr_temp_target);
+
+    t_stat = (struct therm_stat *) malloc(nthreads * sizeof(struct therm_stat));
+    get_therm_stat(t_stat, msr_therm_stat);
+
+    for (i = 0; i < nsockets; i++)
+    {
+        char socket_id[12]; //up to 9999 sockets
+        snprintf(socket_id, 12, "socket_%d", i);
+        json_t *socket_obj = json_object_get(get_thermal_object, socket_id);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(get_thermal_object, socket_id, socket_obj);
+        }
+
+        json_t *cpu_obj = json_object();
+        json_object_set_new(socket_obj, "CPU", cpu_obj);
+
+        pkg_temp = (int)t_target[i].temp_target - pkg_stat[i].readout;
+        json_object_set_new(cpu_obj, "PKG_Actual", json_integer(pkg_temp));
+
+        json_t *core_obj = json_object();
+        json_object_set_new(cpu_obj, "Core", core_obj);
+
+        for (j = 0; j < ncores / nsockets; j++)
+        {
+            char core[32];
+            snprintf(core, 32, "temp_celsius_core_%d", j);
+            core_temp = 0.0;
+
+            for (k = 0; k < nthreads / ncores; k++)
+            {
+                idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                core_temp += (int)t_target[i].temp_target - t_stat[idx].readout;
+            }
+            core_temp /= (nthreads / ncores);
+            json_object_set_new(core_obj, core, json_real(core_temp));
+        }
+    }
+
+    free(pkg_stat);
+    free(t_stat);
+    free(t_target);
+
     return 0;
 }
 

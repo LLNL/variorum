@@ -273,6 +273,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     static int init = 0;
     static struct timeval start;
     struct timeval now;
+    int i;
 
     gethostname(hostname, 1024);
 
@@ -316,8 +317,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     gettimeofday(&now, NULL);
 
-    for (int i = chipid * gpus_per_socket;
-         i < (chipid + 1) * gpus_per_socket; i++)
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
         int64_t temp_val = -1;
         double temp_val_flt = -1.0;
@@ -370,6 +370,86 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     cflush();
 #endif
     ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+}
+
+void get_thermals_json(int chipid, int total_sockets, json_t *output)
+{
+    rsmi_status_t ret;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    char hostname[1024];
+
+    gethostname(hostname, 1024);
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    char socketid[12];
+    snprintf(socketid, 12, "socket_%d", chipid);
+
+    // check if socket object is in node object
+    json_t *socket_obj = json_object_get(output, socketid);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(output, socketid, socket_obj);
+    }
+
+    // general gpu object
+    json_t *gpu_obj = json_object();
+    json_object_set_new(socket_obj, "GPU", gpu_obj);
+
+    int i;
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
+    {
+        int64_t temp_val = -1;
+        double temp_val_flt = -1.0;
+
+        ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
+                                       &temp_val);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("RSMI API was not successful",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
+
+        temp_val_flt = (double)(temp_val / (1000)); // Convert to Celcius.
+
+        // gpu entry
+        char gpuid[32];
+        snprintf(gpuid, 32, "temp_celsius_gpu_%d", i);
+        json_object_set_new(gpu_obj, gpuid, json_real(temp_val_flt));
+    }
+
+    ret = rsmi_shut_down();
+
     if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not shutdown RSMI",

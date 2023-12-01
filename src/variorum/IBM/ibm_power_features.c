@@ -455,3 +455,65 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     json_object_set_new(get_power_obj, mem_str, json_real(pwrmem));
     json_object_set_new(get_power_obj, gpu_str, json_real(pwrgpu));
 }
+
+void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)
+{
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
+    int i;
+
+    hb = (struct occ_sensor_data_header *)(uint64_t)buf;
+    md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
+
+    char socketid[12];
+    snprintf(socketid, 12, "socket_%d", chipid);
+
+    json_t *socket_obj = json_object_get(node_obj, socketid);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(node_obj, socketid, socket_obj);
+    }
+
+    json_t *cpu_obj = json_object();
+    json_object_set_new(socket_obj, "CPU", cpu_obj);
+
+    json_t *core_obj = json_object();
+    json_object_set_new(cpu_obj, "Core", core_obj);
+
+    json_t *mem_obj = json_object();
+    json_object_set_new(cpu_obj, "Mem", mem_obj);
+
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
+    {
+        uint32_t offset = be32toh(md[i].reading_offset);
+        uint32_t scale = be32toh(md[i].scale_factor);
+        uint64_t sample = 0;
+
+        if (md[i].structure_type == OCC_SENSOR_READING_FULL)
+        {
+            sample = read_sensor(hb, offset, SENSOR_SAMPLE);
+        }
+
+        if (strncmp(md[i].name, "TEMPPROCTHRMC", 13) == 0)
+        {
+            char core_temp[32];
+            char core_temp_value[5];
+            strncpy(core_temp_value, md[i].name + 13, 5);
+            int core_temp_int = atoi(core_temp_value);
+            snprintf(core_temp, 32, "temp_celsius_core_%d", core_temp_int);
+
+            json_object_set_new(core_obj, core_temp, json_integer(sample * TO_FP(scale)));
+        }
+        else if (strncmp(md[i].name, "TEMPDIMM", 8) == 0)
+        {
+            char mem_temp[32];
+            char mem_temp_value[5];
+            strncpy(mem_temp_value, md[i].name + 8, 5);
+            int mem_temp_int = atoi(mem_temp_value);
+            snprintf(mem_temp, 32, "temp_celsius_dimm_%d", mem_temp_int);
+
+            json_object_set_new(mem_obj, mem_temp, json_integer(sample * TO_FP(scale)));
+        }
+    }
+}
