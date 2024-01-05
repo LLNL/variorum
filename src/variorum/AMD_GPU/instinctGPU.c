@@ -146,6 +146,8 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 int amd_gpu_instinct_get_power_json(char **get_power_obj_str)
 {
     char *val = getenv("VARIORUM_LOG");
+    unsigned nsockets;
+
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
@@ -153,7 +155,11 @@ int amd_gpu_instinct_get_power_json(char **get_power_obj_str)
 
     json_t *get_power_obj = json_object();
 
-    amd_gpu_get_json_power_data(get_power_obj);
+#ifdef VARIORUM_WITH_AMD_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
+
+    amd_gpu_get_json_power_data(get_power_obj, nsockets);
 
     *get_power_obj_str = json_dumps(get_power_obj, 0);
     json_decref(get_power_obj);

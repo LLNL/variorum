@@ -553,7 +553,9 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
                                __LINE__);
     }
 }
-void get_json_power_data(json_t *get_power_obj)
+
+/*
+void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
 {
     rsmi_status_t ret;
     uint32_t num_devices;
@@ -641,24 +643,47 @@ void get_json_power_data(json_t *get_power_obj)
                                __LINE__);
     }
 }
+*/
 
-void get_json_power_data(json_t *get_power_obj)
+void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
 {
-    unsigned int power;
-    double value = 0.0;
-    int d;
     unsigned int chipid;
-    rsmi_status_t ret;
     uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
-    
+    uint64_t pwr_val = -1;
+    double pwr_val_flt = -1.0;
+    int d;
+
+    rsmi_status_t ret;
+
     struct timeval tv;
     uint64_t ts;
-    unsigned int nsockets;
     static size_t devIDlen = 24; // Long enough to avoid format truncation.
     char devID[devIDlen];
 	char socketID[24];
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    gpus_per_socket = num_devices / nsockets;
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -670,8 +695,6 @@ void get_json_power_data(json_t *get_power_obj)
     json_object_set_new(node_obj, "num_gpus",
                         json_integer(m_total_unit_devices));
 
-    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
-
     for (chipid = 0; chipid < nsockets; chipid++)
     {
 		snprintf(socketID, devIDlen, "Socket_%d", chipid);
@@ -682,14 +705,15 @@ void get_json_power_data(json_t *get_power_obj)
 		json_object_set_new(gpu_obj, "units", json_string("Watts") );
 
         //Iterate over all GPU device handles for this socket and update object
-        for (d = chipid * (int)m_gpus_per_socket;
-             d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
+        for (d = chipid * (int)gpus_per_socket;
+             d < (chipid + 1) * (int)gpus_per_socket; ++d)
         {
-            nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
-            value = (double)power * 0.001f;
+            ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
+            //nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
+            pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
 
             snprintf(devID, devIDlen, "Device_%d", d);
-            json_object_set_new(gpu_obj, devID, json_real(value));
+            json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
         }
     }
 }
