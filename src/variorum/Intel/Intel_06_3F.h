@@ -151,4 +151,6 @@ int intel_cpu_fm_06_3f_get_thermals_json(
     json_t *get_thermal_obj
 );
 
+int intel_cpu_fm_06_3f_get_clocks_json(json_t *get_clock_obj_json);
+
 #endif

@@ -59,4 +59,10 @@ void get_thermals_json(
     json_t *output
 );
 
+void get_clocks_json(
+    int chipid,
+    int total_sockets,
+    json_t *output
+);
+
 #endif

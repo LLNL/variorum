@@ -54,4 +54,8 @@ int amd_cpu_epyc_get_node_power_domain_info_json(
     char **get_domain_obj_str
 );
 
+int amd_cpu_epyc_get_json_boostlimit(
+    json_t *get_clock_obj_json
+);
+
 #endif

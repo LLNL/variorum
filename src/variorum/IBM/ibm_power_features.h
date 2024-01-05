@@ -171,4 +171,8 @@ void json_get_thermal_sensors(
     const void *buf
 );
 
+void json_get_frequency_sensors(int chipid,
+                                json_t *node_obj,
+                                const void *buf);
+
 #endif

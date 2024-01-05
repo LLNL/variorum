@@ -150,6 +150,14 @@ void get_available_frequencies_skx(
     off_t *msr_config_tdp_l2
 );
 
+int get_clocks_data_json(json_t *output,
+                         off_t msr_aperf,
+                         off_t msr_mperf,
+                         off_t msr_tsc,
+                         off_t msr_perf_status,
+                         off_t msr_platform_info,
+                         enum ctl_domains_e control_domain);
+
 ///// @brief Print current p-state.
 /////
 ///// @param [in] writedest File stream where output will be written to.

@@ -91,6 +91,27 @@ int volta_get_clocks(int long_ver)
     return 0;
 }
 
+int volta_get_clocks_json(json_t *get_clock_obj_json)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets = 0;
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_clocks_json(iter, get_clock_obj_json);
+    }
+    return 0;
+}
+
 int volta_get_power_limits(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");

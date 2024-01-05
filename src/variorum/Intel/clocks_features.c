@@ -6,6 +6,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <clocks_features.h>
@@ -291,6 +292,96 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
                                 max_non_turbo_ratio * ((*cd->aperf[idx]) / (double)(*cd->mperf[idx])));
                     }
                 }
+            }
+            break;
+        default:
+            fprintf(stderr, "Not a valid control domain.\n");
+            break;
+    }
+    return 0;
+}
+
+int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
+                         off_t msr_tsc, off_t msr_perf_status, off_t msr_platform_info,
+                         enum ctl_domains_e control_domains)
+{
+
+    static struct clocks_data *cd;
+    static struct perf_data *pd;
+    unsigned i, j, k;
+    int idx;
+    unsigned nsockets, ncores, nthreads;
+    int max_non_turbo_ratio;
+    int err;
+    float socket_average_freq = 0.0;
+
+    err = get_max_non_turbo_ratio(msr_platform_info, &max_non_turbo_ratio);
+    if (err)
+    {
+        variorum_error_handler("Error retrieving max non-turbo ratio",
+                               VARIORUM_ERROR_FUNCTION, getenv("HOSTNAME"),
+                               __FILE__, __FUNCTION__, __LINE__);
+        return -1;
+    }
+
+    variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+
+    clocks_storage(&cd, msr_aperf, msr_mperf, msr_tsc);
+    perf_storage(&pd, msr_perf_status);
+    read_batch(CLOCKS_DATA);
+    read_batch(PERF_DATA);
+
+    json_t *make_socket_obj(json_t *node_obj, int socket_index)
+    {
+        char socket_name[16];
+        snprintf(socket_name, 16, "socket_%d", socket_index);
+        json_t *socket_obj = json_object_get(node_obj, socket_name);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(node_obj, socket_name, socket_obj);
+        }
+        return socket_obj;
+    }
+
+    //use array to store core frequencies;
+    double core_frequencies[ncores];
+    memset(core_frequencies, 0.0, ncores * sizeof(double));
+
+    switch (control_domains)
+    {
+        case CORE:
+            for (i = 0; i < nsockets; i++)
+            {
+                socket_average_freq = 0.0;
+                json_t *socket_obj = make_socket_obj(output, i);
+                json_t *cpu_obj = json_object();
+                json_object_set_new(socket_obj, "CPU", cpu_obj);
+                json_t *core_obj = json_object();
+                json_object_set_new(cpu_obj, "core", core_obj);
+
+                for (j = 0; j < ncores / nsockets; j++)
+                {
+                    int core_freq_index = i * (ncores / nsockets) + j;
+                    for (k = 0; k < nthreads / ncores; k++)
+                    {
+                        idx = (k * nsockets * (ncores / nsockets)) + (i * (ncores / nsockets)) + j;
+                        core_frequencies[core_freq_index] += (max_non_turbo_ratio *
+                                                              (*cd->aperf[idx] / (double)(
+                                                                      *cd->mperf[idx])));
+                    }
+                    core_frequencies[core_freq_index] /= 2;
+                    socket_average_freq += core_frequencies[core_freq_index];
+
+                    char core_avg_string[24];
+                    snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", j);
+
+                    json_object_set_new(core_obj, core_avg_string,
+                                        json_real(core_frequencies[core_freq_index]));
+                }
+                socket_average_freq /= (ncores / nsockets);
+                json_object_set_new(cpu_obj, "cpu_avg_freq_mhz",
+                                    json_real(socket_average_freq));
             }
             break;
         default:

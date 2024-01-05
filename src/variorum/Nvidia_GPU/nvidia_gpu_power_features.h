@@ -64,4 +64,6 @@ void nvidia_gpu_get_thermal_json(
     json_t *output
 );
 
+void nvidia_gpu_get_clocks_json(int chipid, json_t *output);
+
 #endif

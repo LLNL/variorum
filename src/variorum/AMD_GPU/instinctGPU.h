@@ -37,4 +37,8 @@ int amd_gpu_instinct_get_thermals_json(
     json_t *get_thermal_obj
 );
 
+int amd_gpu_instinct_get_clocks_json(
+    json_t *get_clocks_obj_json
+);
+
 #endif
