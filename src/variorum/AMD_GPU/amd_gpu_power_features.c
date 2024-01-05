@@ -645,9 +645,9 @@ void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
 }
 */
 
-void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
+void get_json_power_data(json_t *get_power_obj, int total_sockets)
 {
-    unsigned int chipid;
+    int chipid;
     uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
@@ -683,7 +683,7 @@ void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
         exit(-1);
     }
 
-    gpus_per_socket = num_devices / nsockets;
+    gpus_per_socket = num_devices / total_sockets;
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
@@ -693,9 +693,9 @@ void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
     json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
     json_object_set_new(node_obj, "num_gpus",
-                        json_integer(m_total_unit_devices));
+                        json_integer(num_devices));
 
-    for (chipid = 0; chipid < nsockets; chipid++)
+    for (chipid = 0; chipid < total_sockets; chipid++)
     {
 		snprintf(socketID, devIDlen, "Socket_%d", chipid);
 		json_t *socket_obj = json_object();
@@ -705,8 +705,8 @@ void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
 		json_object_set_new(gpu_obj, "units", json_string("Watts") );
 
         //Iterate over all GPU device handles for this socket and update object
-        for (d = chipid * (int)gpus_per_socket;
-             d < (chipid + 1) * (int)gpus_per_socket; ++d)
+        for (d = chipid * gpus_per_socket;
+             d < (chipid + 1) * gpus_per_socket; ++d)
         {
             ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
             //nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
@@ -716,4 +716,14 @@ void get_json_power_data(json_t *get_power_obj, unsigned int nsockets)
             json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
         }
     }
+
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
 }
