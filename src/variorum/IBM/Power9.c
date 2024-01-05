@@ -501,15 +501,14 @@ int ibm_cpu_p9_get_energy(int long_ver)
     if (active_sampling == 0)
     {
         active_sampling = 1;
-        printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
-
+        // printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
 
         /* Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
 
-        /* The first call should print zero as energy. */
-        printf("\nAccumulated energy before starting the thread is %lu\n",
+        // /* The first call should print zero as energy. */
+        printf("Accumulated energy before starting the thread is %lu\n",
                th_args.energy_acc);
 
         /* Start power measurement thread. */
@@ -528,10 +527,9 @@ int ibm_cpu_p9_get_energy(int long_ver)
 
         pthread_mutex_lock(&mlock);
         /* Calculate what value to return here */
-        printf("\nAccumulated energy after stopping the thread is %lu\n",
+        printf("Accumulated energy after stopping the thread is %lu\n",
                th_args.energy_acc);
         pthread_mutex_unlock(&mlock);
-
     }
 
     return 0;
@@ -541,27 +539,50 @@ unsigned long take_measurement(int fd)
 {
     unsigned long power_sample = 0;
 
-    //pthread_mutex_lock(&mlock);
-
-    // Default is to just dump out instantaneous power samples
-    // Extract power information from Variorum JSON API
     int ret;
     int nsockets = 0;
 
-#ifdef VARIORUM_WITH_IBM_CPU
-    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
-#endif
-
-    if (nsockets <= 0)
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
     {
-        printf("HWLOC returned an invalid number of sockets. Exiting.\n");
-        exit(-1);
+        printf("Running %s\n", __FUNCTION__);
     }
 
-    printf("Taking measurement.\n");
-    power_sample = 400;
+    void *buf;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
 
-    //pthread_mutex_unlock(&mlock);
+    /* We assume that socket 0 on IBM Power9 reports total system power */
+    lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+    buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+
+    if (!buf)
+    {
+        printf("Failed to allocate\n");
+        return -1;
+    }
+
+    for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+    {
+        rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+        if (!rc || rc < 0)
+        {
+            break;
+        }
+    }
+
+    if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+    {
+        printf("Failed to read data\n");
+        free(buf);
+        return -1;
+    }
+
+    power_sample = get_node_power(buf);
+
+    free(buf);
     return power_sample;
 }
 
@@ -571,12 +592,7 @@ void *power_measurement(void *arg)
     unsigned long curr_measurement;
     int fd;
 
-    //th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
-    //th_args.energy_acc = (*(struct thread_args *)arg).energy_acc;
-    // According to the Intel docs, the counter wraps at most once per second.
-    // 50 ms should be short enough to always get good information (this is
-    // default).
-    printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
+    //printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
     /* Open inband_sensors file */
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -587,7 +603,7 @@ void *power_measurement(void *arg)
     {
         init_msTimer(&timer, th_args.sample_interval);
 
-        printf("Value of active_sampling is: %d\n", active_sampling);
+        //printf("Value of active_sampling is: %d\n", active_sampling);
 
         timer_sleep(&timer);
         while (active_sampling)
@@ -596,7 +612,6 @@ void *power_measurement(void *arg)
             pthread_mutex_lock(&mlock);
             curr_measurement = take_measurement(fd);
             th_args.energy_acc += curr_measurement * th_args.sample_interval;
-            printf("current energy %lu\n", th_args.energy_acc);
             pthread_mutex_unlock(&mlock);
             timer_sleep(&timer);
         }
