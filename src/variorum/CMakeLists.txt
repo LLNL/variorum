@@ -123,9 +123,14 @@ else()
                 ${variorum_deps})
 endif()
 
+
 target_link_libraries(variorum PUBLIC ${HWLOC_LIBRARY})
 target_link_libraries(variorum PUBLIC ${JANSSON_LIBRARY})
 target_link_libraries(variorum PUBLIC m)
+if(LIBJUSTIFY_FOUND)
+    target_link_libraries(variorum PUBLIC ${LIBJUSTIFY_LIBRARY})
+endif()
+
 if(VARIORUM_WITH_INTEL_GPU)
 target_link_libraries(variorum PUBLIC ${APMIDG_HEADER})
 endif()

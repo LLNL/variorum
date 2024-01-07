@@ -26,6 +26,7 @@ implementations in Variorum are described in the following sections:
 -  :doc:`api/cap_functions`
 -  :doc:`api/json_support_functions`
 -  :doc:`api/enable_disable_functions`
+-  :doc:`api/json`
 
 *******************
  Variorum Wrappers

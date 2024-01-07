@@ -10,11 +10,19 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <jansson.h>
+#include <sys/time.h>
+#include <unistd.h>
+
 #include <config_architecture.h>
 #include <variorum.h>
 #include <variorum_error.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
 
 #define MEM_FILE "/proc/meminfo"
 #define CPU_FILE "/proc/stat"
@@ -25,13 +33,22 @@ uint64_t last_sum = 0, last_user_time =
 int state = 0;
 //long prev_time = 0;
 //long prev_mem = 0;
+
 int g_socket;
 int g_core;
 FILE *fp = 0;
+
 static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
     unsigned i;
+
+#ifdef LIBJUSTIFY_FOUND
+    if (depth == 0) //First interation
+    {
+        cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
+    }
+#endif
 
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_SOCKET))
     {
@@ -43,13 +60,27 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
+                 g_socket);
+#else
         printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
                g_socket);
+#endif
     }
+
     for (i = 0; i < obj->arity; i++)
     {
         print_children(topology, obj->children[i], depth + 1);
     }
+    //exit condition
+#ifdef LIBJUSTIFY_FOUND
+    if ((int)obj->logical_index == hwloc_get_type_depth(topology,
+            HWLOC_OBJ_NUMANODE))
+    {
+        cflush();
+    }
+#endif
 }
 
 int variorum_tester(void)
@@ -212,6 +243,35 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "Platform Topology\n");
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "  %-s: %-s\n", "Hostname", g_platform[i].hostname);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
+                 g_platform[i].num_cores_per_socket);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Threads per Core",
+                 g_platform[i].num_threads_per_core);
+        if (g_platform[i].num_threads_per_core == 1)
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "No");
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "Yes");
+        }
+
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Cores",
+                 g_platform[i].total_cores);
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Threads",
+                 g_platform[i].total_threads);
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "Layout:\n");
+        cfprintf(stdout, "-------\n");
+        cflush();
+#else
         fprintf(stdout, "=================\n");
         fprintf(stdout, "Platform Topology\n");
         fprintf(stdout, "=================\n");
@@ -236,8 +296,9 @@ void variorum_print_topology(void)
         fprintf(stdout, "Layout:\n");
         fprintf(stdout, "-------\n");
         fprintf(stdout, "Thread HWThread Core Socket\n");
-        print_children(topo, hwloc_get_root_obj(topo), 0);
+#endif
 
+        print_children(topo, hwloc_get_root_obj(topo), 0);
         hwloc_topology_destroy(topo);
     }
 
@@ -777,6 +838,18 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
+#ifdef LIBJUSTIFY_FOUND
+        if (hyperthreading == 1)
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
+            cfprintf(stdout, "  %-s %-d\n", "Num Thread Per Core: ",
+                     g_platform[i].num_threads_per_core);
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
+        }
+#else
         if (hyperthreading == 1)
         {
             fprintf(stdout, "  Hyperthreading:       Enabled\n");
@@ -787,8 +860,15 @@ int variorum_print_hyperthreading(void)
         {
             fprintf(stdout, "  Hyperthreading:       Disabled\n");
         }
+#endif
+
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush(); //TODO: Create a silent version on err that still frees.
+#endif
+
     if (err)
     {
         return -1;
@@ -1322,6 +1402,58 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     {
         return -1;
     }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_get_thermals_json(char **get_thermal_obj_str)
+{
+    int err = 0;
+    int i;
+    uint64_t ts;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    char hostname[1024];
+    gethostname(hostname, 1024);
+
+    struct timeval tv;
+
+    json_t *get_thermal_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_thermal_obj, hostname, node_obj);
+
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_thermals_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_thermals_json(node_obj);
+        if (err)
+        {
+            return -1;
+        }
+    }
+
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
+    json_decref(get_thermal_obj);
+
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {

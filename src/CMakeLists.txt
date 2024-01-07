@@ -13,7 +13,6 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 option(USE_MSR_SAFE_BEFORE_1_5_0 "Build for msr-safe whitelist interface" OFF)
 
 option(BUILD_SHARED_LIBS         "Build shared libraries"                 ON)
-option(BUILD_DOCS                "Build documentation"                    ON)
 option(BUILD_TESTS               "Build tests"                            ON)
 
 option(ENABLE_FORTRAN            "Build Fortran support"                  ON)
@@ -21,6 +20,7 @@ option(ENABLE_PYTHON             "Build Python support"                   ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
+option(ENABLE_LIBJUSTIFY         "Enable libjustify formatting"           OFF)
 
 option(VARIORUM_WITH_AMD_CPU     "Support AMD CPU architectures"          OFF)
 option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
@@ -34,6 +34,7 @@ option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
+set(LIBJUSTIFY_DIR "" CACHE PATH "path to libjustify installation")
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)
@@ -71,12 +72,6 @@ include(CMake/Setup3rdParty.cmake)
 include(CMake/SetupTests.cmake)
 
 add_subdirectory(thirdparty_builtin)
-
-### Add documentation targets
-if(BUILD_DOCS)
-    include(CMake/SetupDocs.cmake)
-    add_subdirectory(docs)
-endif()
 
 ### Enable warnings
 if(ENABLE_WARNINGS)

@@ -33,6 +33,8 @@ void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output);
 
 void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit);
 
+void nvidia_gpu_get_thermal_json(int chipid, json_t *output);
+
 void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj);
 
 #endif

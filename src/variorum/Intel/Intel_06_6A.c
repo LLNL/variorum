@@ -168,4 +168,3 @@ int intel_cpu_fm_06_6a_get_node_power_domain_info_json(char
 
     return 0;
 }
-
