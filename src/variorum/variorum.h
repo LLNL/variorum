@@ -530,8 +530,8 @@ int variorum_disable_turbo(void);
 /// - Intel Cooper Lake
 /// - Intel Sapphire Rapids
 ///
-/// @param [out] output String (passed by reference) that contains the node-level
-/// power information.
+/// @param [out] get_power_obj_str String (passed by reference) that contains the
+/// node-level power information.
 ///
 /// @return 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicitly
@@ -556,16 +556,17 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Cooper Lake
 /// - Intel Sapphire Rapids
 ///
-/// @param [out] output String (passed by reference) that contains the node-level
-/// domain information.
+/// @param [out] get_domain_obj_str String (passed by reference) that contains the
+/// node-level domain information.
 ///
 /// @return 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
 int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
-/// @brief Populate a string in nested JSON format for temperature readouts
-/// format: hostname { Socket_n { CPU { Core { Sensor Name : Temp in C }, Mem { Sensor Name : Temp in C } } }, GPU { Device : Temp in C }  }
+/// @brief Populate a string in nested JSON format for temperature readouts.
+///
+/// Format: hostname { Socket_n { CPU { Core { Sensor Name : Temp in C }, Mem { Sensor Name : Temp in C } } }, GPU { Device : Temp in C }  }
 /// where n is the socket number
 ///
 /// @supparch
@@ -579,8 +580,8 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// - AMD Instinct
 /// - Nvidia Volta
 ///
-/// @param [out] output String (passed by reference) that contains node-level
-/// thermal information
+/// @param [out] get_thermal_obj_str String (passed by reference) that contains
+/// node-level thermal information.
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicily
