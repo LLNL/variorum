@@ -581,7 +581,6 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
 
 void get_clocks_json(int chipid, int total_sockets, json_t *output)
 {
-
     rsmi_status_t ret;
     uint32_t num_devices;
     int gpus_per_socket;
@@ -596,7 +595,6 @@ void get_clocks_json(int chipid, int total_sockets, json_t *output)
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);

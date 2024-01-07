@@ -598,13 +598,11 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
         return -1;
     }
 
-
     for (iter = 0; iter < nsockets; iter++)
     {
         lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
 
         buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
-
         if (!buf)
         {
             printf("Failed to allocate\n");
