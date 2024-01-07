@@ -6,8 +6,8 @@
 #ifndef KABYLAKE_9E_H_INCLUDE
 #define KABYLAKE_9E_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Kaby Lake Family/Model 9EH.
 struct kabylake_9e_offsets

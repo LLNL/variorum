@@ -6,8 +6,8 @@
 #ifndef SKYLAKE_55_H_INCLUDE
 #define SKYLAKE_55_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Skylake Family/Model 55H.
 struct skylake_55_offsets

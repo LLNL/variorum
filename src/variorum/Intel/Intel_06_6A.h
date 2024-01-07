@@ -6,8 +6,8 @@
 #ifndef ICELAKE_6A_H_INCLUDE
 #define ICELAKE_6A_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Ice Lake Family/Model 6AH.
 struct icelake_6a_offsets

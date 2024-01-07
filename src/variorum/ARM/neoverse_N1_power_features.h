@@ -6,20 +6,26 @@
 #ifndef POWER_FEATURES_NEOVERSE_N1_H_INCLUDE
 #define POWER_FEATURES_NEOVERSE_N1_H_INCLUDE
 
+#include <jansson.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <jansson.h>
+
 #include <arm_util.h>
 
 #define NUM_CORES 80
 
-int arm_cpu_neoverse_n1_get_power_data(int verbose, FILE *output);
+int arm_cpu_neoverse_n1_get_power_data(int verbose,
+                                       FILE *output);
 
-int arm_cpu_neoverse_n1_get_thermal_data(int verbose, FILE *output);
+int arm_cpu_neoverse_n1_get_thermal_data(int verbose,
+        FILE *output);
 
-int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output);
+int arm_cpu_neoverse_n1_get_clocks_data(int chipid,
+                                        int verbose,
+                                        FILE *output);
 
-int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq);
+int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid,
+        int new_freq);
 
 int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj);
 

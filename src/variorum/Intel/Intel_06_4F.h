@@ -6,8 +6,8 @@
 #ifndef BROADWELL_4F_H_INCLUDE
 #define BROADWELL_4F_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Broadwell Family/Model 4FH.
 struct broadwell_4f_offsets

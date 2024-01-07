@@ -11,15 +11,15 @@
  * borrowed from Shilpasri Bhat's original code on GitHub
  * */
 
-#include <stdio.h>
-#include <stdint.h>
 #include <fcntl.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <math.h>
 #include <jansson.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 /* Documentation for the OCC Sensors and the structures in this header file
  * is available in README_IBM_OCC.

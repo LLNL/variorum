@@ -6,8 +6,8 @@
 #ifndef IVYBRIDGE_3E_H_INCLUDE
 #define IVYBRIDGE_3E_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Ivy Bridge Family/Model 3EH.
 struct ivybridge_3e_offsets

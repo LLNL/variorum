@@ -8,8 +8,8 @@
 
 #include <inttypes.h>
 
-#include <intel_gpu_power_features.h>
 #include <GPU.h>
+#include <intel_gpu_power_features.h>
 
 extern uint64_t *detect_intel_gpu_arch(void);
 

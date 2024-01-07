@@ -22,9 +22,11 @@ int amd_cpu_epyc_print_boostlimit();
 
 int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit);
 
-//int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit);
+//int amd_cpu_epyc_set_and_verify_core_boostlimit(int core,
+//                                                unsigned int boostlimit);
 
-int amd_cpu_epyc_set_socket_boostlimit(int socket, int boostlimit);
+int amd_cpu_epyc_set_socket_boostlimit(int socket,
+                                       int boostlimit);
 
 int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str);
 
