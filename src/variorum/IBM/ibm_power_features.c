@@ -543,7 +543,6 @@ void json_get_frequency_sensors(int chipid, json_t *node_obj, const void *buf)
     for (i = 0; i < be16toh(hb->nr_sensors); i++)
     {
         uint32_t offset = be32toh(md[i].reading_offset);
-        uint32_t scale = be32toh(md[i].scale_factor);
         uint64_t sample = 0;
 
         if (md[i].structure_type == OCC_SENSOR_READING_FULL)
