@@ -566,7 +566,22 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 /// @brief Populate a string in nested JSON format for temperature readouts.
 ///
-/// Format: hostname { Socket_n { CPU { Core { Sensor Name : Temp in C }, Mem { Sensor Name : Temp in C } } }, GPU { Device : Temp in C }  }
+/// Format:
+/// hostname {
+///     Socket_n {
+///         CPU {
+///             Core {
+///                 Sensor Name : Temp in C
+///             },
+///             Mem {
+///                 Sensor Name : Temp in C
+///             }
+///         }
+///         GPU {
+///             Device : Temp in C
+///         }
+///     }
+/// }
 /// where n is the socket number
 ///
 /// @supparch
