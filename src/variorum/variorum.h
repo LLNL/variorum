@@ -578,13 +578,13 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// - Intel Kaby Lake
 /// - IBM Power9
 /// - AMD Instinct
-/// - Nvidia Volta
+/// - NVIDIA Volta
 ///
 /// @param [out] get_thermal_obj_str String (passed by reference) that contains
 /// node-level thermal information.
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
-/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
 int variorum_get_thermals_json(char **get_thermal_obj_str);
 
