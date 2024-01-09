@@ -96,6 +96,7 @@ the nation's exascale computing imperative.
    api/json_support_functions
    api/enable_disable_functions
    api/advanced_topology_functions
+   api/json
 
 .. toctree::
    :maxdepth: 2

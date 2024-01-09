@@ -7,6 +7,7 @@
 #define CLOCKS_FEATURES_H_INCLUDE
 
 #include <stdint.h>
+
 #include <config_architecture.h>
 
 ///// @brief Structure containing data for IA32_CLOCK_MODULATION.

@@ -6,11 +6,10 @@
 #ifndef POWER_FEATURES_H_INCLUDE
 #define POWER_FEATURES_H_INCLUDE
 
+#include <jansson.h>
+#include <nvml.h>
 #include <stdint.h>
 #include <stdio.h>
-
-#include <nvml.h>
-#include <jansson.h>
 
 extern unsigned m_total_unit_devices;
 extern nvmlDevice_t *m_unit_devices_file_desc;
@@ -21,18 +20,30 @@ void initNVML(void);
 
 void shutdownNVML(void);
 
-void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output);
+void nvidia_gpu_get_power_data(int chipid,
+                               int verbose,
+                               FILE *output);
 
-void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output);
+void nvidia_gpu_get_thermal_data(int chipid,
+                                 int verbose,
+                                 FILE *output);
 
-void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output);
+void nvidia_gpu_get_clocks_data(int chipid,
+                                int verbose,
+                                FILE *output);
 
-void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output);
+void nvidia_gpu_get_power_limits_data(int chipid,
+                                      int verbose,
+                                      FILE *output);
 
-void nvidia_gpu_get_gpu_utilization_data(int chipid, int verbose, FILE *output);
+void nvidia_gpu_get_gpu_utilization_data(int chipid,
+        int verbose,
+        FILE *output);
 
-void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit);
+void cap_each_gpu_power_limit(int chipid,
+                              unsigned int powerlimit);
 
-void nvidia_gpu_get_thermal_json(int chipid, json_t *output);
+void nvidia_gpu_get_thermal_json(int chipid,
+                                 json_t *output);
 
 #endif

@@ -6,8 +6,8 @@
 #ifndef HASWELL_3F_H_INCLUDE
 #define HASWELL_3F_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Haswell Family/Model 3FH.
 struct haswell_3f_offsets

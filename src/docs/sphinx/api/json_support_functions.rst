@@ -15,3 +15,5 @@ Defined in ``variorum/variorum.h``.
 .. doxygenfunction:: variorum_get_node_power_json
 
 .. doxygenfunction:: variorum_get_node_power_domain_info_json
+
+.. doxygenfunction:: variorum_get_thermals_json
