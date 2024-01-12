@@ -34,7 +34,6 @@ int amd_gpu_instinct_get_power(int verbose)
     return 0;
 }
 
-
 int amd_gpu_instinct_get_power_limit(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
@@ -57,7 +56,6 @@ int amd_gpu_instinct_get_power_limit(int verbose)
     return 0;
 }
 
-
 int amd_gpu_instinct_get_thermals(int verbose)
 {
     char *val = getenv("VARIORUM_LOG");
@@ -77,6 +75,27 @@ int amd_gpu_instinct_get_thermals(int verbose)
     {
         get_thermals_data(iter, nsockets, verbose, stdout);
     }
+    return 0;
+}
+
+int amd_gpu_instinct_get_thermals_json(json_t *get_thermal_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        get_thermals_json(iter, nsockets, get_thermal_obj);
+    }
+
     return 0;
 }
 

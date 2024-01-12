@@ -14,7 +14,8 @@ int arm_neoverse_n1_get_thermals(int long_ver);
 
 int arm_neoverse_n1_get_clocks(int long_ver);
 
-int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq);
+int arm_neoverse_n1_cap_socket_frequency(int cpuid,
+        int freq);
 
 int arm_neoverse_n1_get_power_json(char **get_power_obj_str);
 

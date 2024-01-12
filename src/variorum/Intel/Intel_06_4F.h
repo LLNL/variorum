@@ -6,8 +6,8 @@
 #ifndef BROADWELL_4F_H_INCLUDE
 #define BROADWELL_4F_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Broadwell Family/Model 4FH.
 struct broadwell_4f_offsets
@@ -115,5 +115,7 @@ int intel_cpu_fm_06_4f_get_node_power_domain_info_json(char
 int intel_cpu_fm_06_4f_cap_best_effort_node_power_limit(int node_power_limit);
 
 int intel_cpu_fm_06_4f_get_frequencies(void);
+
+int intel_cpu_fm_06_4f_get_thermals_json(json_t *get_thermal_obj);
 
 #endif

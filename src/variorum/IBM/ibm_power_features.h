@@ -11,15 +11,15 @@
  * borrowed from Shilpasri Bhat's original code on GitHub
  * */
 
-#include <stdio.h>
-#include <stdint.h>
 #include <fcntl.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <math.h>
 #include <jansson.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 /* Documentation for the OCC Sensors and the structures in this header file
  * is available in README_IBM_OCC.
@@ -129,7 +129,6 @@ struct occ_sensor_counter
     uint8_t  pad[5];
 } __attribute__((__packed__));
 
-
 void print_power_sensors(int chipid,
                          int long_ver,
                          FILE *output,
@@ -153,5 +152,9 @@ unsigned long read_sensor(const struct occ_sensor_data_header *hb,
 void json_get_power_sensors(int chipid,
                             json_t *get_power_obj,
                             const void *buf);
+
+void json_get_thermal_sensors(int chipid,
+                              json_t *get_thermal_obj,
+                              const void *buf);
 
 #endif

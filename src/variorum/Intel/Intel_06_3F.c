@@ -14,6 +14,10 @@
 #include <intel_power_features.h>
 #include <thermal_features.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 static struct haswell_3f_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
@@ -465,6 +469,22 @@ int intel_cpu_fm_06_3f_get_node_power_domain_info_json(char
 
     *get_domain_obj_str = json_dumps(get_domain_obj, 0);
     json_decref(get_domain_obj);
+
+    return 0;
+}
+
+int intel_cpu_fm_06_3f_get_thermals_json(json_t *get_thermal_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    get_therm_temp_reading_json(get_thermal_obj,
+                                msrs.ia32_therm_status,
+                                msrs.ia32_package_therm_status,
+                                msrs.msr_temperature_target);
 
     return 0;
 }

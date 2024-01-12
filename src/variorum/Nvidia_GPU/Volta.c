@@ -52,6 +52,26 @@ int volta_get_thermals(int long_ver)
     return 0;
 }
 
+int volta_get_thermals_json(json_t *get_thermal_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_thermal_json(iter, get_thermal_obj);
+    }
+
+    return 0;
+}
+
 int volta_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");

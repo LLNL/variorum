@@ -6,8 +6,8 @@
 #ifndef HASWELL_3F_H_INCLUDE
 #define HASWELL_3F_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Haswell Family/Model 3FH.
 struct haswell_3f_offsets
@@ -115,5 +115,7 @@ int intel_cpu_fm_06_3f_get_node_power_domain_info_json(char
 int intel_cpu_fm_06_3f_cap_best_effort_node_power_limit(int node_power_limit);
 
 int intel_cpu_fm_06_3f_get_frequencies(void);
+
+int intel_cpu_fm_06_3f_get_thermals_json(json_t *get_thermal_obj);
 
 #endif

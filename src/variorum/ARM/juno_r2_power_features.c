@@ -17,6 +17,10 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 {
     static int init_output = 0;
@@ -81,6 +85,16 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 
     if (verbose)
     {
+
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s: %s, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW\n",
+                 "_ARM_POWER Host", m_hostname,
+                 "Sys", (double)(sys_power_val) / 1000.0f,
+                 "Big", (double)(big_power_val) / 1000.0f,
+                 "Little", (double)(little_power_val) / 1000.0f,
+                 "GPU", (double)(gpu_power_val) / 1000.0f);
+#else
         fprintf(output,
                 "_ARM_POWER Host: %s, Sys: %0.2lf mW, Big: %0.2lf mW,"
                 " Little: %0.2lf mW, GPU: %0.2lf mW\n",
@@ -89,21 +103,39 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
                 (double)(big_power_val) / 1000.0f,
                 (double)(little_power_val) / 1000.0f,
                 (double)(gpu_power_val) / 1000.0f);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_POWER", "Host", "Sys_mW", "Big_mW", "Little_mW", "GPU_mW");
+#else
             fprintf(output, "_ARM_POWER Host Sys_mW Big_mW Little_mW GPU_mW\n");
+#endif
             init_output = 1;
         }
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                 "_ARM_POWER", m_hostname,
+                 (double)(sys_power_val) / 1000.0f,
+                 (double)(big_power_val) / 1000.0f,
+                 (double)(little_power_val) / 1000.0f,
+                 (double)(gpu_power_val) / 1000.0f);
+#else
         fprintf(output, "_ARM_POWER %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                 m_hostname,
                 (double)(sys_power_val) / 1000.0f,
                 (double)(big_power_val) / 1000.0f,
                 (double)(little_power_val) / 1000.0f,
                 (double)(gpu_power_val) / 1000.0f);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -153,6 +185,15 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
 
     if (verbose)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s: %s, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C\n",
+                 "_ARM_TEMPERATURE Host", m_hostname,
+                 "Sys", (double)(sys_therm_val) / 1000.0f,
+                 "Big", (double)(big_therm_val) / 1000.0f,
+                 "Little", (double)(little_therm_val) / 1000.0f,
+                 "GPU", (double)(gpu_therm_val) / 1000.0f);
+#else
         fprintf(output,
                 "_ARM_TEMPERATURE Host: %s, Sys: %0.2lf C, Big: %0.2lf C,"
                 " Little: %0.2lf C, GPU: %0.2lf C\n",
@@ -161,21 +202,40 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
                 (double)(big_therm_val) / 1000.0f,
                 (double)(little_therm_val) / 1000.0f,
                 (double)(gpu_therm_val) / 1000.0f);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_TEMPERATURE", "Host", "Sys_C", "Big_C", "Little_C", "GPU_C");
+#else
             fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
+#endif
             init_output = 1;
         }
+
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                 "_ARM_TEMPERATURE", m_hostname,
+                 (double)(sys_therm_val) / 1000.0f,
+                 (double)(big_therm_val) / 1000.0f,
+                 (double)(little_therm_val) / 1000.0f,
+                 (double)(gpu_therm_val) / 1000.0f);
+#else
         fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                 m_hostname,
                 (double)(sys_therm_val) / 1000.0f,
                 (double)(big_therm_val) / 1000.0f,
                 (double)(little_therm_val) / 1000.0f,
                 (double)(gpu_therm_val) / 1000.0f);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -211,20 +271,43 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
      */
     if (verbose)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s: %s, %s: %s, %s: %d, %s: %llu MHz\n",
+                 "_ARM_CLOCKS Host", m_hostname,
+                 "CPU", (chipid == 0) ? "Big" : "Little",
+                 "Socket", chipid,
+                 "Clock", freq_val / 1000);
+#else
         fprintf(output,
                 "_ARM_CLOCKS Host: %s, CPU: %s, Socket: %d, Clock: %"PRIu64" MHz\n",
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_CLOCKS", "Host", "CPU", "Socket", "Clock_MHz");
+#else
             fprintf(output, "_ARM_CLOCKS Host CPU Socket Clock_MHz\n");
+#endif
+
             init_output = 1;
         }
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %s %d %llu\n",
+                 "_ARM_CLOCKS", m_hostname, (chipid == 0) ? "Big" : "Little", chipid,
+                 freq_val / 1000);
+#else
         fprintf(output, "_ARM_CLOCKS %s %s %d %"PRIu64"\n",
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -257,6 +340,7 @@ int arm_cpu_juno_r2_get_frequencies(int chipid, FILE *output)
     }
     close(freq_fd);
 
+    //TODO: LIBJUSTIFY Spend a bit more time with this stuff. This is a bit wacky.
     fprintf(output, "=== Available frequencies for %s CPU (ID: %d) in MHz ===\n",
             (chipid == 0) ? "Big" : "Little", chipid);
     for (int i = 0; i < arr_size; i++)

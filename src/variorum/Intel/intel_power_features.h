@@ -6,10 +6,10 @@
 #ifndef POWER_FEATURES_H_INCLUDE
 #define POWER_FEATURES_H_INCLUDE
 
+#include <jansson.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <jansson.h>
 
 #define UINT_MAX 4294967295U // taken from limits.h
 #define STD_ENERGY_UNIT 65536.0

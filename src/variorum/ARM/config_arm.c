@@ -78,18 +78,14 @@ int set_arm_func_ptrs(int idx)
     if (*g_platform[idx].arch_id == ((ARM_CORTEX_A53 << 12) | ARM_CORTEX_A72))
     {
         /* Initialize interfaces */
-        g_platform[idx].variorum_print_power                     =
-            arm_juno_r2_get_power;
-        g_platform[idx].variorum_print_thermals                  =
-            arm_juno_r2_get_thermals;
-        g_platform[idx].variorum_print_frequency                 =
-            arm_juno_r2_get_clocks;
-        g_platform[idx].variorum_print_available_frequencies     =
+        g_platform[idx].variorum_print_power = arm_juno_r2_get_power;
+        g_platform[idx].variorum_print_thermals = arm_juno_r2_get_thermals;
+        g_platform[idx].variorum_print_frequency = arm_juno_r2_get_clocks;
+        g_platform[idx].variorum_print_available_frequencies =
             arm_juno_r2_get_frequencies;
-        g_platform[idx].variorum_cap_socket_frequency_limit      =
+        g_platform[idx].variorum_cap_socket_frequency_limit =
             arm_juno_r2_cap_socket_frequency;
-        g_platform[idx].variorum_get_node_power_json             =
-            arm_juno_r2_get_power_json;
+        g_platform[idx].variorum_get_node_power_json = arm_juno_r2_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             arm_juno_r2_get_power_domain_info_json;
     }
@@ -97,19 +93,14 @@ int set_arm_func_ptrs(int idx)
                                           ARM_NEOVERSE_N1))
     {
         /* Initialize interfaces */
-        g_platform[idx].variorum_print_power                     =
-            arm_neoverse_n1_get_power;
-        g_platform[idx].variorum_print_thermals                  =
-            arm_neoverse_n1_get_thermals;
-        g_platform[idx].variorum_print_frequency                 =
-            arm_neoverse_n1_get_clocks;
-        g_platform[idx].variorum_cap_socket_frequency_limit      =
+        g_platform[idx].variorum_print_power = arm_neoverse_n1_get_power;
+        g_platform[idx].variorum_print_thermals = arm_neoverse_n1_get_thermals;
+        g_platform[idx].variorum_print_frequency = arm_neoverse_n1_get_clocks;
+        g_platform[idx].variorum_cap_socket_frequency_limit =
             arm_neoverse_n1_cap_socket_frequency;
-        g_platform[idx].variorum_get_node_power_json             =
-            arm_neoverse_n1_get_power_json;
+        g_platform[idx].variorum_get_node_power_json = arm_neoverse_n1_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             arm_neoverse_n1_get_power_domain_info_json;
-
     }
     else
     {

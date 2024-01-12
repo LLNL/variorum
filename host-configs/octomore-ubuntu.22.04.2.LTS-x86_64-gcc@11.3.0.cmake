@@ -25,7 +25,6 @@ set(USE_MSR_SAFE_BEFORE_1_5_0 OFF CACHE BOOL "")
 
 set(VARIORUM_DEBUG OFF CACHE BOOL "")
 
-set(BUILD_DOCS OFF CACHE BOOL "")
 set(BUILD_TESTS OFF CACHE BOOL "")
 
 # path to global hwloc install
