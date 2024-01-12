@@ -14,17 +14,27 @@
 extern unsigned m_num_package;
 extern char m_hostname[1024];
 
-int read_file_ui64(const int,
-                   uint64_t *);
+int read_file_ui64(
+    const int,
+    uint64_t *
+);
 
-int write_file_ui64(const int,
-                    uint64_t);
+int write_file_ui64(
+    const int,
+    uint64_t
+);
 
-int read_array_ui64(const int,
-                    uint64_t **);
+int read_array_ui64(
+    const int,
+    uint64_t **
+);
 
-void init_arm(void);
+void init_arm(
+    void
+);
 
-void shutdown_arm(void);
+void shutdown_arm(
+    void
+);
 
 #endif

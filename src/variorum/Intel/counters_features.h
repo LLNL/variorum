@@ -61,15 +61,19 @@ struct fixed_counter_config
 ///        reference clock cycles.
 /// @param [in] msrs_fixed_ctrs Array storing unique MSR addresses for fixed
 ///        counters.
-void fixed_counter_storage(struct fixed_counter **ctr0,
-                           struct fixed_counter **ctr1,
-                           struct fixed_counter **ctr2,
-                           off_t *msrs_fixed_ctrs);
+void fixed_counter_storage(
+    struct fixed_counter **ctr0,
+    struct fixed_counter **ctr1,
+    struct fixed_counter **ctr2,
+    off_t *msrs_fixed_ctrs
+);
 
 /// @brief Initialize storage for fixed-function performance counter data.
 ///
 /// @param [out] ctr Data for fixed-function performance counters.
-void init_fixed_counter(struct fixed_counter *ctr);
+void init_fixed_counter(
+    struct fixed_counter *ctr
+);
 
 /// @brief Set value of IA32_FIXED_CTR_CTL and IA32_PERF_GLOBAL_CTL and reset
 /// all fixed-function performance counters on all logical processors.
@@ -82,11 +86,13 @@ void init_fixed_counter(struct fixed_counter *ctr);
 ///        reference clock cycles.
 /// @param [in] msr1 Unique MSR address.
 /// @param [in] msr2 Unique MSR address.
-void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
-                            struct fixed_counter *ctr1,
-                            struct fixed_counter *ctr2,
-                            off_t msr1,
-                            off_t msr2);
+void set_fixed_counter_ctrl(
+    struct fixed_counter *ctr0,
+    struct fixed_counter *ctr1,
+    struct fixed_counter *ctr2,
+    off_t msr1,
+    off_t msr2
+);
 
 /// @brief Initialize storage for performance global control and fixed-function
 /// performance control data, and store it on the heap.
@@ -99,10 +105,12 @@ void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
 ///        fixed-function performance counter.
 /// @param [in] msr_perf_global_ctrl Unique MSR address for MSR_PERF_GLOBAL_CTRL.
 /// @param [in] msr_fixed_counter_ctrl Unique MSR address for MSR_FIXED_COUNTER_CTRL.
-void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl,
-                                uint64_t ***fixed_ctrl,
-                                off_t msr_perf_global_ctrl,
-                                off_t msr_fixed_counter_ctrl);
+void fixed_counter_ctrl_storage(
+    uint64_t ***perf_ctrl,
+    uint64_t ***fixed_ctrl,
+    off_t msr_perf_global_ctrl,
+    off_t msr_fixed_counter_ctrl
+);
 
 /// @brief Enable fixed-function counters by setting enable bit in
 /// IA32_FIXED_CTR_CTL.
@@ -111,9 +119,11 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl,
 ///        counters.
 /// @param [in] msr1 Unique MSR address.
 /// @param [in] msr2 Unique MSR address.
-void enable_fixed_counters(off_t *msrs_fixed_ctrs,
-                           off_t msr1,
-                           off_t msr2);
+void enable_fixed_counters(
+    off_t *msrs_fixed_ctrs,
+    off_t msr1,
+    off_t msr2
+);
 
 /// @brief Disable fixed-function counters by clearing enable bit in
 /// IA32_FIXED_CTR_CTL.
@@ -122,37 +132,51 @@ void enable_fixed_counters(off_t *msrs_fixed_ctrs,
 ///        counters.
 /// @param [in] msr1 Unique MSR address.
 /// @param [in] msr2 Unique MSR address.
-void disable_fixed_counters(off_t *msrs_fixed_ctrs,
-                            off_t msr1,
-                            off_t msr2);
+void disable_fixed_counters(
+    off_t *msrs_fixed_ctrs,
+    off_t msr1,
+    off_t msr2
+);
 
-void print_fixed_counter_data(FILE *writedest,
-                              off_t *msrs_fixed_ctrs);
+void print_fixed_counter_data(
+    FILE *writedest,
+    off_t *msrs_fixed_ctrs
+);
 
-void print_verbose_fixed_counter_data(FILE *writedest,
-                                      off_t *msrs_fixed_ctrs);
+void print_verbose_fixed_counter_data(
+    FILE *writedest,
+    off_t *msrs_fixed_ctrs
+);
 
-void print_perfmon_counter_data(FILE *writedest,
-                                off_t *msrs_perfevtsel_ctrs,
-                                off_t *msrs_perfmon_ctrs);
+void print_perfmon_counter_data(
+    FILE *writedest,
+    off_t *msrs_perfevtsel_ctrs,
+    off_t *msrs_perfmon_ctrs
+);
 
-void print_verbose_perfmon_counter_data(FILE *writedest,
-                                        off_t *msrs_perfevtsel_ctrs,
-                                        off_t *msrs_perfmon_ctrs);
+void print_verbose_perfmon_counter_data(
+    FILE *writedest,
+    off_t *msrs_perfevtsel_ctrs,
+    off_t *msrs_perfmon_ctrs
+);
 
-void print_all_counter_data(FILE *writedest,
-                            off_t *msrs_fixed_ctrs,
-                            off_t *msrs_perfevtsel_ctrs,
-                            off_t *msrs_perfmon_ctrs,
-                            off_t *msrs_pcu_pmon_evtsel,
-                            off_t *msrs_pcu_pmon_ctrs);
+void print_all_counter_data(
+    FILE *writedest,
+    off_t *msrs_fixed_ctrs,
+    off_t *msrs_perfevtsel_ctrs,
+    off_t *msrs_perfmon_ctrs,
+    off_t *msrs_pcu_pmon_evtsel,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
-void print_verbose_all_counter_data(FILE *writedest,
-                                    off_t *msrs_fixed_ctrs,
-                                    off_t *msrs_perfevtsel_ctrs,
-                                    off_t *msrs_perfmon_ctrs,
-                                    off_t *msrs_pcu_pmon_evtsel,
-                                    off_t *msrs_pcu_pmon_ctrs);
+void print_verbose_all_counter_data(
+    FILE *writedest,
+    off_t *msrs_fixed_ctrs,
+    off_t *msrs_perfevtsel_ctrs,
+    off_t *msrs_perfmon_ctrs,
+    off_t *msrs_pcu_pmon_evtsel,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
 /*************************************/
 /* Programmable Performance Counters */
@@ -170,14 +194,18 @@ void print_verbose_all_counter_data(FILE *writedest,
 /// @param [in] pmcnum Unique performance event select counter identifier.
 /// @param [in] msrs_perfevtsel_ctrs Array of unique addresses for
 ///        PERFEVTSEL_CTRS.
-void set_all_pmc_ctrl(uint64_t cmask,
-                      uint64_t flags,
-                      uint64_t umask,
-                      uint64_t eventsel,
-                      int pmcnum,
-                      off_t *msrs_perfevtsel_ctrs);
+void set_all_pmc_ctrl(
+    uint64_t cmask,
+    uint64_t flags,
+    uint64_t umask,
+    uint64_t eventsel,
+    int pmcnum,
+    off_t *msrs_perfevtsel_ctrs
+);
 
-int cpuid_num_pmc(void);
+int cpuid_num_pmc(
+    void
+);
 
 /// @brief Structure containing data of performance event select counters.
 struct perfevtsel
@@ -226,8 +254,10 @@ struct pmc
 /// @param [out] e Data for performance event select counters.
 /// @param [in] msrs_perfevtsel_ctrs Array of unique addresses for
 ///        PERFEVTSEL_CTRS.
-void perfevtsel_storage(struct perfevtsel **e,
-                        off_t *msrs_perfevtsel_ctrs);
+void perfevtsel_storage(
+    struct perfevtsel **e,
+    off_t *msrs_perfevtsel_ctrs
+);
 
 /// @brief Allocate storage for performance counters and reset values.
 ///
@@ -237,8 +267,10 @@ void perfevtsel_storage(struct perfevtsel **e,
 ///        PERFMON_CTRS.
 /// @return 0 if successful, else -1 if no general-purpose performance counters
 /// are available.
-int enable_pmc(off_t *msrs_perfevtsel_ctrs,
-               off_t *msrs_perfmon_ctrs);
+int enable_pmc(
+    off_t *msrs_perfevtsel_ctrs,
+    off_t *msrs_perfmon_ctrs
+);
 
 /// @brief Set a performance event select counter on a single logical processor.
 ///
@@ -252,27 +284,33 @@ int enable_pmc(off_t *msrs_perfevtsel_ctrs,
 /// @param [in] thread Unique logical processor identifier.
 /// @param [in] msrs_perfevtsel_ctrs Array of unique addresses for
 ///        PERFEVTSEL_CTRS.
-void set_pmc_ctrl_flags(uint64_t cmask,
-                        uint64_t flags,
-                        uint64_t umask,
-                        uint64_t eventsel,
-                        int pmcnum,
-                        unsigned thread,
-                        off_t *msrs_perfevtsel_ctrs);
+void set_pmc_ctrl_flags(
+    uint64_t cmask,
+    uint64_t flags,
+    uint64_t umask,
+    uint64_t eventsel,
+    int pmcnum,
+    unsigned thread,
+    off_t *msrs_perfevtsel_ctrs
+);
 
 /// @brief Store the general-purpose performance counter data on the heap.
 ///
 /// @param [out] p Data for general-purpose performance counters.
 /// @param [in] msrs_perfmon_ctrs Array of unique addresses for
 ///        PERFMON_CTRS.
-void pmc_storage(struct pmc **p,
-                 off_t *msrs_perfmon_ctrs);
+void pmc_storage(
+    struct pmc **p,
+    off_t *msrs_perfmon_ctrs
+);
 
 /// @brief Reset all performance counters for each logical processor.
 ///
 /// @param [in] msrs_perfmon_ctrs Array of unique addresses for
 ///        PERFMON_CTRS.
-void clear_all_pmc(off_t *msrs_perfmon_ctrs);
+void clear_all_pmc(
+    off_t *msrs_perfmon_ctrs
+);
 
 /// @brief Structure containing data of uncore performance event select
 /// counters.
@@ -312,8 +350,10 @@ struct unc_counters
 ///        counters.
 /// @param [in] msrs_pcu_pmon_evtsel Array of unique addresses for
 ///        PCU_PMON_EVTSEL.
-void unc_perfevtsel_storage(struct unc_perfevtsel **uevt,
-                            off_t *msrs_pcu_pmon_evtsel);
+void unc_perfevtsel_storage(
+    struct unc_perfevtsel **uevt,
+    off_t *msrs_pcu_pmon_evtsel
+);
 
 /// @brief Store the uncore general-purpose performance counter data on the
 /// heap.
@@ -322,8 +362,10 @@ void unc_perfevtsel_storage(struct unc_perfevtsel **uevt,
 ///        counters.
 /// @param [in] msrs_pcu_pmon_ctrs Array of unique addresses for
 ///        PCU_PMON_CTRS.
-void unc_counters_storage(struct unc_counters **uc,
-                          off_t *msrs_pcu_pmon_ctrs);
+void unc_counters_storage(
+    struct unc_counters **uc,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
 /// @brief Allocate storage for uncore performance counters and reset values.
 ///
@@ -331,14 +373,18 @@ void unc_counters_storage(struct unc_counters **uc,
 ///        PCU_PMON_EVTSEL.
 /// @param [in] msrs_pcu_pmon_ctrs Array of unique addresses for
 ///        PCU_PMON_CTRS.
-void enable_pcu(off_t *msrs_pcu_pmon_evtsel,
-                off_t *msrs_pcu_pmon_ctrs);
+void enable_pcu(
+    off_t *msrs_pcu_pmon_evtsel,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
 /// @brief Reset all uncore performance counters for each socket.
 ///
 /// @param [in] msrs_pcu_pmon_ctrs Array of unique addresses for
 ///        PCU_PMON_CTRS.
-void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs);
+void clear_all_pcu(
+    off_t *msrs_pcu_pmon_ctrs
+);
 
 /// @brief Print out uncore performance counter data.
 ///
@@ -347,25 +393,31 @@ void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs);
 ///        PCU_PMON_EVTSEL.
 /// @param [in] msrs_pcu_pmon_ctrs Array of unique addresses for
 ///        PCU_PMON_CTRS.
-void print_unc_counter_data(FILE *writedest,
-                            off_t *msrs_pcu_pmon_evtsel,
-                            off_t *msrs_pcu_pmon_ctrs);
+void print_unc_counter_data(
+    FILE *writedest,
+    off_t *msrs_pcu_pmon_evtsel,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
-void print_verbose_unc_counter_data(FILE *writedest,
-                                    off_t *msrs_pcu_pmon_evtsel,
-                                    off_t *msrs_pcu_pmon_ctrs);
+void print_verbose_unc_counter_data(
+    FILE *writedest,
+    off_t *msrs_pcu_pmon_evtsel,
+    off_t *msrs_pcu_pmon_ctrs
+);
 
-void get_all_power_data_fixed(FILE *writedest,
-                              off_t msr_pkg_power_limit,
-                              off_t msr_dram_power_limit,
-                              off_t msr_rapl_unit,
-                              off_t msr_package_energy_status,
-                              off_t msr_dram_energy_status,
-                              off_t *msrs_fixed_ctrs,
-                              off_t msr_perf_global_ctrl,
-                              off_t msr_fixed_counter_ctrl,
-                              off_t msr_aperf,
-                              off_t msr_mperf,
-                              off_t msr_tsc);
+void get_all_power_data_fixed(
+    FILE *writedest,
+    off_t msr_pkg_power_limit,
+    off_t msr_dram_power_limit,
+    off_t msr_rapl_unit,
+    off_t msr_package_energy_status,
+    off_t msr_dram_energy_status,
+    off_t *msrs_fixed_ctrs,
+    off_t msr_perf_global_ctrl,
+    off_t msr_fixed_counter_ctrl,
+    off_t msr_aperf,
+    off_t msr_mperf,
+    off_t msr_tsc
+);
 
 #endif
