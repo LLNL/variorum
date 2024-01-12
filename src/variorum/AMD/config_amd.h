@@ -9,8 +9,12 @@
 #include <inttypes.h>
 #include <e_smi/e_smi.h>
 
-uint64_t *detect_amd_arch(void);
+uint64_t *detect_amd_arch(
+    void
+);
 
-int set_amd_func_ptrs(int idx);
+int set_amd_func_ptrs(
+    int idx
+);
 
 #endif

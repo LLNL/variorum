@@ -129,32 +129,46 @@ struct occ_sensor_counter
     uint8_t  pad[5];
 } __attribute__((__packed__));
 
-void print_power_sensors(int chipid,
-                         int long_ver,
-                         FILE *output,
-                         const void *buf);
+void print_power_sensors(
+    int chipid,
+    int long_ver,
+    FILE *output,
+    const void *buf
+);
 
-void print_all_sensors_header(int chipid,
-                              FILE *output,
-                              const void *buf);
+void print_all_sensors_header(
+    int chipid,
+    FILE *output,
+    const void *buf
+);
 
-void print_all_sensors(int chipid,
-                       FILE *output,
-                       const void *buf);
+void print_all_sensors(
+    int chipid,
+    FILE *output,
+    const void *buf
+);
 
-unsigned long read_counter(const struct occ_sensor_data_header *hb,
-                           uint32_t offset);
+unsigned long read_counter(
+    const struct occ_sensor_data_header *hb,
+    uint32_t offset
+);
 
-unsigned long read_sensor(const struct occ_sensor_data_header *hb,
-                          uint32_t offset,
-                          int attr);
+unsigned long read_sensor(
+    const struct occ_sensor_data_header *hb,
+    uint32_t offset,
+    int attr
+);
 
-void json_get_power_sensors(int chipid,
-                            json_t *get_power_obj,
-                            const void *buf);
+void json_get_power_sensors(
+    int chipid,
+    json_t *get_power_obj,
+    const void *buf
+);
 
-void json_get_thermal_sensors(int chipid,
-                              json_t *get_thermal_obj,
-                              const void *buf);
+void json_get_thermal_sensors(
+    int chipid,
+    json_t *get_thermal_obj,
+    const void *buf
+);
 
 #endif
