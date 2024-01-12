@@ -60,7 +60,7 @@ void get_thermals_json(
 );
 
 void get_json_power_data(
-    json_t *get_power_obj, 
+    json_t *get_power_obj,
     int total_sockets
 );
 
