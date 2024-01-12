@@ -408,13 +408,13 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     unsigned int nsockets;
     static size_t devIDlen = 24; // Long enough to avoid format truncation.
     char devID[devIDlen];
-	char socketID[24];
+    char socketID[24];
 
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-	json_t *node_obj = json_object();
+    json_t *node_obj = json_object();
     json_object_set_new(get_power_obj, hostname, node_obj);
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
     json_object_set_new(node_obj, "num_gpus",
@@ -423,12 +423,12 @@ void nvidia_gpu_get_json_power_data(json_t *get_power_obj)
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
     for (chipid = 0; chipid < (int) nsockets; chipid++)
     {
-		snprintf(socketID, devIDlen, "Socket_%d", chipid);
-		json_t *socket_obj = json_object();
-		json_object_set_new(node_obj, socketID, socket_obj);
-		json_t *gpu_obj = json_object();
-		json_object_set_new(socket_obj, "GPU", gpu_obj);
-		json_object_set_new(gpu_obj, "units", json_string("Watts") );
+        snprintf(socketID, devIDlen, "Socket_%d", chipid);
+        json_t *socket_obj = json_object();
+        json_object_set_new(node_obj, socketID, socket_obj);
+        json_t *gpu_obj = json_object();
+        json_object_set_new(socket_obj, "GPU", gpu_obj);
+        json_object_set_new(gpu_obj, "units", json_string("Watts"));
 
         //Iterate over all GPU device handles for this socket and update object
         for (d = chipid * (int)m_gpus_per_socket;
