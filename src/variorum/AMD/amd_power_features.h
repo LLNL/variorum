@@ -32,8 +32,10 @@ struct rapl_data
     double *core_joules;
 };
 
-int print_energy_data(FILE *writedest,
-                      off_t msr_rapl_unit,
-                      off_t msr_core_energy_status);
+int print_energy_data(
+    FILE *writedest,
+    off_t msr_rapl_unit,
+    off_t msr_core_energy_status
+);
 
 #endif

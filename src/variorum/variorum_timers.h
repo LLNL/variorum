@@ -19,16 +19,24 @@ struct mstimer
 };
 
 /// @brief Get a number of millis from a monotonic clock.
-unsigned long now_ms(void);
+unsigned long now_ms(
+    void
+);
 
 /// @brief Sleep until timer time has elapsed.
-int timer_sleep(struct mstimer *t);
+int timer_sleep(
+    struct mstimer *t
+);
 
 /// @brief Initialize a msTimer.
-void init_msTimer(struct mstimer *t,
-                  int ms_interval);
+void init_msTimer(
+    struct mstimer *t,
+    int ms_interval
+);
 
 /// @brief Use a select to sleep a given number of millis.
-void sleep_ms(long ms);
+void sleep_ms(
+    long ms
+);
 
 #endif

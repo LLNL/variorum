@@ -66,22 +66,28 @@ struct perf_data
 /// @param [in] msr_aperf Unique MSR address for IA32_APERF.
 /// @param [in] msr_mperf Unique MSR address for IA32_MPERF.
 /// @param [in] msr_tsc Unique MSR address for IA32_TIME_STAMP_COUNTER.
-void clocks_storage(struct clocks_data **cd,
-                    off_t msr_aperf,
-                    off_t msr_mperf,
-                    off_t msr_tsc);
+void clocks_storage(
+    struct clocks_data **cd,
+    off_t msr_aperf,
+    off_t msr_mperf,
+    off_t msr_tsc
+);
 
 /// @brief Allocate array for storing raw register data from IA32_PERF_STATUS
 /// and IA32_PERF_CTL.
 ///
 /// @param [in] pd Pointer to perf-related data.
 /// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
-void perf_storage(struct perf_data **pd,
-                  off_t msr_perf_status);
+void perf_storage(
+    struct perf_data **pd,
+    off_t msr_perf_status
+);
 
-void perf_storage_temp(struct perf_data **pd,
-                       off_t msr_perf_ctl,
-                       enum ctl_domains_e control_domains);
+void perf_storage_temp(
+    struct perf_data **pd,
+    off_t msr_perf_ctl,
+    enum ctl_domains_e control_domains
+);
 
 ///// @brief Print the label for the abbreviated clocks data print out.
 /////
@@ -97,13 +103,15 @@ void perf_storage_temp(struct perf_data **pd,
 /// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
 /// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
 /// @param [in] control_domain Specific granularity of control.
-int print_clocks_data(FILE *writedest,
-                      off_t msr_aperf,
-                      off_t msr_mperf,
-                      off_t msr_tsc,
-                      off_t msr_perf_status,
-                      off_t msr_platform_info,
-                      enum ctl_domains_e control_domain);
+int print_clocks_data(
+    FILE *writedest,
+    off_t msr_aperf,
+    off_t msr_mperf,
+    off_t msr_tsc,
+    off_t msr_perf_status,
+    off_t msr_platform_info,
+    enum ctl_domains_e control_domain
+);
 
 /// @brief Print clocks data in long format.
 ///
@@ -114,27 +122,33 @@ int print_clocks_data(FILE *writedest,
 /// @param [in] msr_perf_status Unique MSR address for IA32_PERF_STATUS.
 /// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
 /// @param [in] control_domain Specific granularity of control.
-int print_verbose_clocks_data(FILE *writedest,
-                              off_t msr_aperf,
-                              off_t msr_mperf,
-                              off_t msr_tsc,
-                              off_t msr_perf_status,
-                              off_t msr_platform_info,
-                              enum ctl_domains_e control_domain);
+int print_verbose_clocks_data(
+    FILE *writedest,
+    off_t msr_aperf,
+    off_t msr_mperf,
+    off_t msr_tsc,
+    off_t msr_perf_status,
+    off_t msr_platform_info,
+    enum ctl_domains_e control_domain
+);
 
-void get_available_frequencies(FILE *writedest,
-                               off_t *msr_platform_info,
-                               off_t *msr_turbo_ratio_limit,
-                               off_t *msr_turbo_ratio_limit_cores,
-                               off_t *msr_config_tdp_l1,
-                               off_t *msr_config_tdp_l2);
+void get_available_frequencies(
+    FILE *writedest,
+    off_t *msr_platform_info,
+    off_t *msr_turbo_ratio_limit,
+    off_t *msr_turbo_ratio_limit_cores,
+    off_t *msr_config_tdp_l1,
+    off_t *msr_config_tdp_l2
+);
 
-void get_available_frequencies_skx(FILE *writedest,
-                                   off_t *msr_platform_info,
-                                   off_t *msr_turbo_ratio_limit,
-                                   off_t *msr_turbo_ratio_limit_cores,
-                                   off_t *msr_config_tdp_l1,
-                                   off_t *msr_config_tdp_l2);
+void get_available_frequencies_skx(
+    FILE *writedest,
+    off_t *msr_platform_info,
+    off_t *msr_turbo_ratio_limit,
+    off_t *msr_turbo_ratio_limit_cores,
+    off_t *msr_config_tdp_l1,
+    off_t *msr_config_tdp_l2
+);
 
 ///// @brief Print current p-state.
 /////
@@ -148,10 +162,12 @@ void get_available_frequencies_skx(FILE *writedest,
 ///// @param [in] pstate Desired p-state.
 //void set_p_state(unsigned socket,
 //                 uint64_t pstate);
-void cap_p_state(int cpu_freq_mhz,
-                 enum ctl_domains_e domain,
-                 off_t msr_perf_status);
-//
+void cap_p_state(
+    int cpu_freq_mhz,
+    enum ctl_domains_e domain,
+    off_t msr_perf_status
+);
+
 ///****************************************/
 ///* Software Controlled Clock Modulation */
 ///****************************************/

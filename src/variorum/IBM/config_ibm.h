@@ -8,8 +8,12 @@
 
 #include <inttypes.h>
 
-uint64_t *detect_ibm_arch(void);
+uint64_t *detect_ibm_arch(
+    void
+);
 
-int set_ibm_func_ptrs(int idx);
+int set_ibm_func_ptrs(
+    int idx
+);
 
 #endif
