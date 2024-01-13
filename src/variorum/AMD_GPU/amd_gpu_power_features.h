@@ -12,7 +12,6 @@
 
 #include <rocm_smi/rocm_smi.h>
 
-<<<<<<< Updated upstream
 void get_power_data(
     int chipid,
     int total_sockets,
