@@ -3,9 +3,9 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <hwloc.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <hwloc.h>
 
 #include <variorum_topology.h>
 

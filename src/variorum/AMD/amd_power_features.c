@@ -3,11 +3,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include <config_architecture.h>
 #include <variorum_error.h>

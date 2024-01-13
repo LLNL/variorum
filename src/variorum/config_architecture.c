@@ -3,17 +3,17 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <assert.h>
 #include <inttypes.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <variorum_topology.h>
-#include <assert.h>
 
 #include <config_architecture.h>
 #include <variorum_config.h>
 #include <variorum_error.h>
+#include <variorum_topology.h>
 
 #ifdef VARIORUM_WITH_INTEL_CPU
 #include <config_intel.h>

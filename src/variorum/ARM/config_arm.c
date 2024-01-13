@@ -3,8 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <config_arm.h>
 #include <config_architecture.h>
@@ -13,8 +15,6 @@
 #include <ARM_Juno_r2.h>
 #include <ARM_Neoverse_N1.h>
 #include <variorum_error.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 #define CPU_ID_SIZE 64
 

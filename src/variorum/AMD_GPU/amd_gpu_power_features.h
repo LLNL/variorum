@@ -6,9 +6,9 @@
 #ifndef POWER_FEATURES_H_INCLUDE
 #define POWER_FEATURES_H_INCLUDE
 
+#include <jansson.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <jansson.h>
 
 #include <rocm_smi/rocm_smi.h>
 

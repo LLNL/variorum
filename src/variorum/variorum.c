@@ -3,10 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <hwloc.h>
 #include <jansson.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
 
