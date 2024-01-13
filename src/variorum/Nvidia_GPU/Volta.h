@@ -8,18 +8,32 @@
 
 #include <jansson.h>
 
-int volta_get_power(int long_ver);
+int volta_get_power(
+    int long_ver
+);
 
-int volta_get_thermals(int long_ver);
+int volta_get_thermals(
+    int long_ver
+);
 
-int volta_get_clocks(int long_ver);
+int volta_get_clocks(
+    int long_ver
+);
 
-int volta_get_power_limits(int long_ver);
+int volta_get_power_limits(
+    int long_ver
+);
 
-int volta_get_gpu_utilization(int long_ver);
+int volta_get_gpu_utilization(
+    int long_ver
+);
 
-int volta_cap_each_gpu_power_limit(unsigned int powerlimit);
+int volta_cap_each_gpu_power_limit(
+    unsigned int powerlimit
+);
 
-int volta_get_thermals_json(json_t *get_thermal_obj);
+int volta_get_thermals_json(
+    json_t *get_thermal_obj
+);
 
 #endif
