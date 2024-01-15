@@ -160,6 +160,11 @@ int get_clocks_data_json(
     enum ctl_domains_e control_domain
 );
 
+json_t *make_socket_obj(
+    json_t *node_obj,
+    int socket_index
+);
+
 ///// @brief Print current p-state.
 /////
 ///// @param [in] writedest File stream where output will be written to.
