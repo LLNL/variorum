@@ -29,17 +29,23 @@ enum variorum_error_e
     VARIORUM_ERROR_FUNCTION                = -15
 };
 
-void variorum_error_handler(const char *desc,
-                            int err,
-                            const char *host,
-                            const char *file,
-                            const char *func,
-                            int line);
+void variorum_error_handler(
+    const char *desc,
+    int err,
+    const char *host,
+    const char *file,
+    const char *func,
+    int line
+);
 
-char *get_variorum_error_message(enum variorum_error_e err);
+char *get_variorum_error_message(
+    enum variorum_error_e err
+);
 
-void variorum_error_message(enum variorum_error_e err,
-                            char *msg,
-                            size_t size);
+void variorum_error_message(
+    enum variorum_error_e err,
+    char *msg,
+    size_t size
+);
 
 #endif

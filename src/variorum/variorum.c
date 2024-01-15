@@ -3,14 +3,14 @@
 //
 // SPDX-License-Identifier: MIT
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <hwloc.h>
 #include <inttypes.h>
 #include <string.h>
 #include <stdio.h>
 
 #include <jansson.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -1453,6 +1453,57 @@ int variorum_get_thermals_json(char **get_thermal_obj_str)
 
     *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
     json_decref(get_thermal_obj);
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_get_node_frequency_json(char **get_frequency_obj_str)
+{
+    int err = 0;
+    int i;
+    char hostname[1024];
+    uint64_t ts;
+    struct timeval tv;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    json_t *get_frequency_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_frequency_obj, hostname, node_obj);
+
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_frequency_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_frequency_json(node_obj);
+        if (err)
+        {
+            printf("Error with variorum get frequency json platform %d\n", i);
+        }
+    }
+
+    *get_frequency_obj_str = json_dumps(get_frequency_obj, JSON_INDENT(4));
+    json_decref(get_frequency_obj);
 
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)

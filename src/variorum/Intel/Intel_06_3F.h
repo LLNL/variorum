@@ -6,8 +6,8 @@
 #ifndef HASWELL_3F_H_INCLUDE
 #define HASWELL_3F_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Haswell Family/Model 3FH.
 struct haswell_3f_offsets
@@ -83,39 +83,76 @@ struct haswell_3f_offsets
     off_t msr_config_tdp_nominal;
 };
 
-int intel_cpu_fm_06_3f_get_power_limits(int long_ver);
+int intel_cpu_fm_06_3f_get_power_limits(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3f_cap_power_limits(int package_power_limit);
+int intel_cpu_fm_06_3f_cap_power_limits(
+    int package_power_limit
+);
 
-int intel_cpu_fm_06_3f_get_features(void);
+int intel_cpu_fm_06_3f_get_features(
+    void
+);
 
-int intel_cpu_fm_06_3f_get_thermals(int long_ver);
+int intel_cpu_fm_06_3f_get_thermals(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3f_get_counters(int long_ver);
+int intel_cpu_fm_06_3f_get_counters(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3f_get_clocks(int long_ver);
+int intel_cpu_fm_06_3f_get_clocks(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3f_get_power(int long_ver);
+int intel_cpu_fm_06_3f_get_power(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3f_enable_turbo(void);
+int intel_cpu_fm_06_3f_enable_turbo(
+    void
+);
 
-int intel_cpu_fm_06_3f_disable_turbo(void);
+int intel_cpu_fm_06_3f_disable_turbo(
+    void
+);
 
-int intel_cpu_fm_06_3f_get_turbo_status(void);
+int intel_cpu_fm_06_3f_get_turbo_status(
+    void
+);
 
-int intel_cpu_fm_06_3f_poll_power(FILE *output);
+int intel_cpu_fm_06_3f_poll_power(
+    FILE *output
+);
 
-int intel_cpu_fm_06_3f_monitoring(FILE *output);
+int intel_cpu_fm_06_3f_monitoring(
+    FILE *output
+);
 
-int intel_cpu_fm_06_3f_get_node_power_json(char **get_power_obj_str);
+int intel_cpu_fm_06_3f_get_node_power_json(
+    char **get_power_obj_str
+);
 
-int intel_cpu_fm_06_3f_get_node_power_domain_info_json(char
-        **get_domain_obj_str);
+int intel_cpu_fm_06_3f_get_node_power_domain_info_json(
+    char **get_domain_obj_str
+);
 
-int intel_cpu_fm_06_3f_cap_best_effort_node_power_limit(int node_power_limit);
+int intel_cpu_fm_06_3f_cap_best_effort_node_power_limit(
+    int node_power_limit
+);
 
-int intel_cpu_fm_06_3f_get_frequencies(void);
+int intel_cpu_fm_06_3f_get_frequencies(
+    void
+);
 
-int intel_cpu_fm_06_3f_get_thermals_json(json_t *get_thermal_obj);
+int intel_cpu_fm_06_3f_get_thermals_json(
+    json_t *get_thermal_obj
+);
+
+int intel_cpu_fm_06_3f_get_clocks_json(
+    json_t *get_clock_obj_json
+);
 
 #endif
