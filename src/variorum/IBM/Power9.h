@@ -44,4 +44,8 @@ int ibm_cpu_p9_get_node_thermal_json(
     json_t *get_thermal_obj
 );
 
+int ibm_cpu_p9_get_node_frequency_json(
+    json_t *get_frequency_obj_json
+);
+
 #endif

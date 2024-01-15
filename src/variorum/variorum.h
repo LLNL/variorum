@@ -603,6 +603,27 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// check for NULL strings.
 int variorum_get_thermals_json(char **get_thermal_obj_str);
 
+/// @brief Populate a string in JSON format with node level frequency information
+///
+/// @supparch
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kabylake
+/// - IBM Power9
+/// - AMD Instinct
+/// - Nvidia Volta
+///
+/// @param [out] get_frequency_obj_str String (passed by reference) that contains the
+/// node-level frequency information.
+///
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings.
+int variorum_get_node_frequency_json(char **get_frequency_obj_str);
+
 /// @brief Returns Variorum version as a constant string.
 ///
 /// @supparch
