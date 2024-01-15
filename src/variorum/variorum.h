@@ -6,8 +6,8 @@
 #ifndef VARIORUM_H_INCLUDE
 #define VARIORUM_H_INCLUDE
 
-#include <stdio.h>
 #include <jansson.h>
+#include <stdio.h>
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
 /// domains.
@@ -542,12 +542,13 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// @brief Populate a string in JSON format with total CPU node utilization, user
 /// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
 /// utilization.
+///
 /// Format: { hostname: { "CPU": { "total_util%": total_CPU_utilization, "user_util%": user_utilization,
 /// "user_util%": CPU_user_utilization }, { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization },
 /// "memory_util%": total_memory_utilization, "timestamp" : timestampe }
 /// where n is the socket number and m is the GPU id.
 ///
-/// @supparcg
+/// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - NVIDIA Volta
 ///
@@ -564,8 +565,10 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 ///
-/// @param [out] output String (passed by refrence) that contains node-level utilization information.
-/// returns 0 if successful, otherwise -1. Note that feature not implemented
+/// @param [out] get_util_obj_str String (passed by refrence) that contains node-level
+/// utilization information.
+///
+/// @returns 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicily
 /// check for NULL strings.
 int variorum_get_node_utilization_json(char **get_util_obj_str);
@@ -576,7 +579,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str);
 /// "timestamp" : timestampe }
 /// where n is the socket number and m is the GPU id.
 ///
-/// @supparcg
+/// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - NVIDIA Volta
 ///
@@ -593,8 +596,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 ///
-/// @param [out] output String (passed by refrence) that contains node-level utilization information.
-/// returns 0 if successful, otherwise -1. Note that feature not implemented
+/// @param [out] get_gpu_util_obj_str String (passed by refrence) that contains
+/// node-level utilization information.
+///
+/// @returns 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicily
 /// check for NULL strings.
 int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str);

@@ -772,9 +772,7 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     }
 }
 
-void get_gpu_utilization_data_json(int chipid, int total_sockets,
-                                   json_t *get_gpu_util_obj)
-
+void get_gpu_utilization_data_json(int chipid, int total_sockets, json_t *get_gpu_util_obj)
 {
     rsmi_status_t ret;
     uint32_t num_devices;
@@ -828,7 +826,6 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        exit(-1);
     }
 
     ret = rsmi_num_monitor_devices(&num_devices);
@@ -849,8 +846,7 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
     }
 
     gettimeofday(&now, NULL);
-    for (int i = chipid * gpus_per_socket;
-         i < (chipid + 1) * gpus_per_socket; i++)
+    for (int i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
         uint32_t utilpercent; // Percentage of time the GPU was busy
         if (ret != RSMI_STATUS_SUCCESS)
