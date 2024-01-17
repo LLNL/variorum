@@ -48,7 +48,6 @@ int set_amd_gpu_func_ptrs(int idx)
         err = VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
     }
 
-
     if (init_complete == 0)
     {
         ret = rsmi_init(0);
