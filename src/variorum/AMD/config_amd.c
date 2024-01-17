@@ -55,7 +55,9 @@ int set_amd_func_ptrs(int idx)
         }
     }
     else
+    {
         return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
+    }
 
     /* smi monitor initialization */
     ret = esmi_init();
