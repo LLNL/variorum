@@ -133,7 +133,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 ///
 /// @supparch
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -148,7 +148,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 /// @supparch
 /// - NVIDIA Volta, Ampere
 /// - AMD Instinct (MI-50 onwards)
-//  - Intel Discrete GPU
+/// - Intel Discrete GPU
 ///
 /// @param [in] gpu_power_limit Desired power limit in watts for each GPU
 ///             on the node.
@@ -208,7 +208,7 @@ int variorum_print_power_limit(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -228,7 +228,7 @@ int variorum_print_verbose_thermals(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -282,7 +282,7 @@ int variorum_print_counters(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -306,7 +306,7 @@ int variorum_print_verbose_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -332,7 +332,7 @@ int variorum_print_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -354,7 +354,7 @@ int variorum_print_verbose_frequency(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -459,7 +459,7 @@ int variorum_print_gpu_utilization(void);
 ///
 /// @supparch
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -518,7 +518,7 @@ int variorum_disable_turbo(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -544,7 +544,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -611,10 +611,10 @@ int variorum_get_thermals_json(char **get_thermal_obj_str);
 /// - Intel Haswell
 /// - Intel Broadwell
 /// - Intel Skylake
-/// - Intel Kabylake
+/// - Intel Kaby Lake
 /// - IBM Power9
 /// - AMD Instinct
-/// - Nvidia Volta
+/// - NVIDIA Volta
 ///
 /// @param [out] get_frequency_obj_str String (passed by reference) that contains the
 /// node-level frequency information.
@@ -640,4 +640,5 @@ char *variorum_get_current_version(void);
 /***********/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
+
 #endif
