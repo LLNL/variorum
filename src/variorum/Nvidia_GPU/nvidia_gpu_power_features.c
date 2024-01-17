@@ -6,8 +6,8 @@
 #include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <nvidia_gpu_power_features.h>
 #include <config_architecture.h>

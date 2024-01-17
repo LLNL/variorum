@@ -29,7 +29,6 @@ uint64_t last_user_time = 0;
 uint64_t last_sys_time = 0;
 uint64_t last_idle = 0;
 int state = 0;
-
 int g_socket;
 int g_core;
 FILE *fp = 0;

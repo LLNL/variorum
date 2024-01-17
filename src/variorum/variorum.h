@@ -548,7 +548,7 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 ///         "CPU": {
 ///             "total_util%": total_CPU_utilization,
 ///             "user_util%": user_utilization,
-///             "system_util%": CPU_user_utilization,
+///             "system_util%": system_utilization,
 ///         },
 ///         "GPU": {
 ///             Socket_n : {
@@ -586,9 +586,16 @@ int variorum_get_node_utilization_json(char **get_util_obj_str);
 
 /// @brief Populate a string in JSON format with utilization of each GPU
 ///
-/// Format: { hostname: { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization },
-/// "timestamp" : timestampe }
-/// where n is the socket number and m is the GPU id.
+/// Format:
+/// {
+///     "hostname": {
+///         "GPU": {
+///             Socket_n : {
+///                 GPUnm_util% : GPU_utilization
+///             },
+///         "timestamp" : timestamp
+/// }
+/// where n is the socket number and m is the GPU ID.
 ///
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
