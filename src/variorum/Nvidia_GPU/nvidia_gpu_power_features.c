@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -12,7 +13,6 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <variorum_timers.h>
-#include <jansson.h>
 
 #ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>

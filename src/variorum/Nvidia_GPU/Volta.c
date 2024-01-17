@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,7 +11,6 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 #include <nvidia_gpu_power_features.h>
-#include <jansson.h>
 
 int volta_get_power(int long_ver)
 {

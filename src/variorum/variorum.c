@@ -5,13 +5,12 @@
 
 #include <hwloc.h>
 #include <inttypes.h>
+#include <jansson.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/resource.h>
 #include <sys/time.h>
-
-#include <jansson.h>
 #include <unistd.h>
 
 #include <config_architecture.h>
@@ -25,12 +24,11 @@
 #define MEM_FILE "/proc/meminfo"
 #define CPU_FILE "/proc/stat"
 
-uint64_t last_sum = 0, last_user_time =
-                        0, //lastMemFree = 0, last_mem_total = 0,
-                        last_sys_time = 0, last_idle = 0;
+uint64_t last_sum = 0;
+uint64_t last_user_time = 0;
+uint64_t last_sys_time = 0;
+uint64_t last_idle = 0;
 int state = 0;
-//long prev_time = 0;
-//long prev_mem = 0;
 
 int g_socket;
 int g_core;
@@ -1129,14 +1127,24 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     const char d[2] = " ";
     char *token, *s, *p;
     int i = 0;
-    uint64_t sum = 0, idle = 0, user_time = 0, nice_time = 0, sum_user_time = 0,
-             iowait = 0, sum_idle = 0;
-    double cpu_util = 0.0, user_util = 0.0, sys_util = 0.0, mem_util = 0.0;
+    uint64_t sum = 0;
+    uint64_t idle = 0;
+    uint64_t user_time = 0;
+    uint64_t nice_time = 0;
+    uint64_t sum_user_time = 0;
+    uint64_t iowait = 0;
+    uint64_t sum_idle = 0;
+    double cpu_util = 0.0;
+    double user_util = 0.0;
+    double sys_util = 0.0;
+    double mem_util = 0.0;
     int rc, j;
     char lbuf[256];
     char metric_name[256];
     uint64_t metric_value;
-    uint64_t mem_total = 0, mem_free = 0, sys_time = 0;
+    uint64_t mem_total = 0;
+    uint64_t mem_free = 0;
+    uint64_t sys_time = 0;
     int strcp;
 
     // get gpu utilization
@@ -1227,7 +1235,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         user_util = ((sum_user_time - last_user_time) / (double)(sum - last_sum)) * 100;
         sys_util = ((sys_time - last_sys_time) / (double)(sum - last_sum)) * 100;
         cpu_util = (1 - ((sum_idle - last_idle) / (double)(sum - last_sum))) * 100;
-
     }
     else
     {
@@ -1293,7 +1300,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     json_decref(get_util_obj);
     state = 1;
     return 0;
-
 }
 
 int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
@@ -1330,8 +1336,7 @@ int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
                                __FUNCTION__, __LINE__);
         return -1;
     }
-    err = g_platform[i].variorum_get_gpu_utilization_json(
-              get_gpu_util_obj_str);
+    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj_str);
     if (err)
     {
         return -1;

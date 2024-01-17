@@ -6,7 +6,6 @@
 #ifndef VARIORUM_H_INCLUDE
 #define VARIORUM_H_INCLUDE
 
-#include <jansson.h>
 #include <stdio.h>
 
 /// @brief Collect power limits and energy usage for both the package and DRAM
@@ -543,9 +542,21 @@ int variorum_get_node_power_json(char **get_power_obj_str);
 /// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
 /// utilization.
 ///
-/// Format: { hostname: { "CPU": { "total_util%": total_CPU_utilization, "user_util%": user_utilization,
-/// "user_util%": CPU_user_utilization }, { "GPU": { Socket_n : { GPUnm_util% : GPU_utilization },
-/// "memory_util%": total_memory_utilization, "timestamp" : timestampe }
+/// Format:
+/// {
+///     "hostname": {
+///         "CPU": {
+///             "total_util%": total_CPU_utilization,
+///             "user_util%": user_utilization,
+///             "system_util%": CPU_user_utilization,
+///         },
+///         "GPU": {
+///             Socket_n : {
+///                 GPUnm_util% : GPU_utilization
+///         },
+///         "memory_util%": total_memory_utilization,
+///         "timestamp" : timestamp
+/// }
 /// where n is the socket number and m is the GPU id.
 ///
 /// @supparch
