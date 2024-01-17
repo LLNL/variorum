@@ -69,4 +69,9 @@ void nvidia_gpu_get_clocks_json(
     json_t *output
 );
 
+void nvidia_get_gpu_utilization_json(
+    int chipid,
+    json_t *get_gpu_util_obj
+);
+
 #endif

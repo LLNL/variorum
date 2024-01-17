@@ -19,3 +19,7 @@ Defined in ``variorum/variorum.h``.
 .. doxygenfunction:: variorum_get_thermals_json
 
 .. doxygenfunction:: variorum_get_node_frequency_json
+
+.. doxygenfunction:: variorum_get_node_utilization_json
+
+.. doxygenfunction:: variorum_get_gpu_utilization_json 

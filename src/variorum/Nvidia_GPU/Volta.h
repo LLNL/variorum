@@ -40,4 +40,8 @@ int volta_get_clocks_json(
     json_t *get_clock_obj_json
 );
 
+int volta_get_gpu_utilization_json(
+    char **get_gpu_util_obj_str
+);
+
 #endif

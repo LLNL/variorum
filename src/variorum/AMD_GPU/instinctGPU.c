@@ -163,6 +163,32 @@ int amd_gpu_instinct_get_gpu_utilization(int verbose)
     return 0;
 }
 
+int amd_gpu_instinct_get_gpu_utilization_json(char **get_gpu_util_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    json_t *get_util_obj = json_object();
+    unsigned iter = 0;
+    unsigned nsockets;
+
+#ifdef VARIORUM_WITH_AMD_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        get_gpu_utilization_data_json(iter, nsockets, get_util_obj);
+    }
+
+    *get_gpu_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
+    json_decref(get_util_obj);
+    return 0;
+}
+
 int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");

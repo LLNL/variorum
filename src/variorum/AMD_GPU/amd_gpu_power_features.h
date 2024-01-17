@@ -65,4 +65,10 @@ void get_clocks_json(
     json_t *output
 );
 
+void get_gpu_utilization_data_json(
+    int chipid,
+    int total_sockets,
+    json_t *get_gpu_util_obj
+);
+
 #endif
