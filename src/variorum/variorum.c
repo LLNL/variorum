@@ -1259,11 +1259,15 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     {
         s = fgets(lbuf, sizeof(lbuf), fp);
         if (!s)
+        {
             break;
+        }
 
         rc = sscanf(lbuf, "%s%" PRIu64, metric_name, &metric_value);
         if (rc < 2)
+        {
             break;
+        }
 
         /* Strip the colon from metric name if present */
         j = strlen(metric_name);
