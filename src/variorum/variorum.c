@@ -7,18 +7,16 @@
 #include <inttypes.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 
 #include <jansson.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
 #include <unistd.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
 #include <variorum_error.h>
-#include <sys/time.h>
-#include <sys/resource.h>
 
 #ifdef LIBJUSTIFY_FOUND
 #include <cprintf.h>

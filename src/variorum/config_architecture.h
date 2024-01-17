@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <variorum_config.h>
-#include <jansson.h>
 
 #include <jansson.h>
 
