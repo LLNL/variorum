@@ -36,6 +36,8 @@ int volta_get_thermals_json(
     json_t *get_thermal_obj
 );
 
-int volta_get_clocks_json(json_t *get_clock_obj_json);
+int volta_get_clocks_json(
+    json_t *get_clock_obj_json
+);
 
 #endif
