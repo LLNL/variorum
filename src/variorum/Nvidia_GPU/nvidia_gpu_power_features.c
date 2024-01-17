@@ -419,7 +419,6 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
 {
     nvmlUtilization_t util;
     int d;
-    static int init_output = 0;
     char socket_id[12];
     char device_id[12];
     char hostname[1024];
@@ -464,7 +463,7 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
         nvmlDeviceGetUtilizationRates(m_unit_devices_file_desc[d], &util);
-        snprintf(device_id, 12, "GPU%d_util%", d);
+        snprintf(device_id, 12, "GPU%d_util%%", d);
         json_object_set_new(socket_obj, device_id, json_integer(util.gpu));
     }
 }

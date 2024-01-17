@@ -778,7 +778,7 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
     rsmi_status_t ret;
     uint32_t num_devices;
     int gpus_per_socket;
-    int d;
+    int d = 0;
     char socket_id[12];
     char hostname[1024];
     char device_id[12];
@@ -847,9 +847,10 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
     }
 
     gettimeofday(&now, NULL);
-    for (int i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
+    int i;
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint32_t utilpercent; // Percentage of time the GPU was busy
+        uint32_t utilpercent = 0; // Percentage of time the GPU was busy
         if (ret != RSMI_STATUS_SUCCESS)
         {
             variorum_error_handler("RSMI API was not successful",
@@ -857,7 +858,7 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
                                    getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
         }
-        snprintf(device_id, 12, "GPU%d_util%", d);
+        snprintf(device_id, 12, "GPU%d_util%%", d);
         json_object_set_new(socket_obj, device_id, json_integer(utilpercent));
     }
 
@@ -914,8 +915,8 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
 
     gettimeofday(&now, NULL);
 
-    for (int i = chipid * gpus_per_socket;
-         i < (chipid + 1) * gpus_per_socket; i++)
+    int i;
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
         ret = rsmi_dev_power_cap_set(i, 0, powerlimit_uwatts);
         if (ret != RSMI_STATUS_SUCCESS)
