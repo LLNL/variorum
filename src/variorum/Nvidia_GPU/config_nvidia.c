@@ -31,6 +31,9 @@ int set_nvidia_func_ptrs(int idx)
         g_platform[idx].variorum_print_power_limit = volta_get_power_limits;
         g_platform[idx].variorum_print_gpu_utilization = volta_get_gpu_utilization;
         g_platform[idx].variorum_get_thermals_json = volta_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json = volta_get_clocks_json;
+        g_platform[idx].variorum_get_gpu_utilization_json =
+            volta_get_gpu_utilization_json;
         /* Initialize control interfaces */
         g_platform[idx].variorum_cap_each_gpu_power_limit =
             volta_cap_each_gpu_power_limit;

@@ -3,15 +3,15 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <fcntl.h>
-#include <string.h>
-#include <inttypes.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "arm_util.h"
 #include <variorum_error.h>

@@ -6,9 +6,9 @@
 #ifndef POWER_FEATURES_H_INCLUDE
 #define POWER_FEATURES_H_INCLUDE
 
+#include <jansson.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <jansson.h>
 
 #include <rocm_smi/rocm_smi.h>
 
@@ -62,6 +62,18 @@ void get_thermals_json(
 void get_json_power_data(
     json_t *get_power_obj,
     int total_sockets
+);
+    
+void get_clocks_json(
+    int chipid,
+    int total_sockets,
+    json_t *output
+);
+
+void get_gpu_utilization_data_json(
+    int chipid,
+    int total_sockets,
+    json_t *get_gpu_util_obj
 );
 
 #endif

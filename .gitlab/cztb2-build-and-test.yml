@@ -64,4 +64,6 @@ build-cztb2:
    - git clone $VARIORUM_ANSIBLE
    - cd variorum-ansible-setup
    - MOD_TARGET_BRANCH=$(echo "${TARGET_BRANCH}" | tr "/" "_")
+   - echo "TARGET_BRANCH=${TARGET_BRANCH}"
+   - echo "MOD_TARGET_BRANCH=${MOD_TARGET_BRANCH}"
    - ansible-playbook variorum-powerlab-playbook.yml --extra-vars "branch=${TARGET_BRANCH} modbranch=${MOD_TARGET_BRANCH}"

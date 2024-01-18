@@ -89,7 +89,9 @@ void parse_json_obj(char *s, int num_sockets)
             }
 
             if ((i + 1) == num_sockets)
+            {
                 write_header = false;
+            }
         }
 
     }
@@ -168,7 +170,9 @@ void take_measurement(bool measure_all)
 
     // Verbose output with all sensors/registers
     if (measure_all == true)
+    {
         variorum_monitoring(logfile);
+    }
 
 #if 0
     total_joules += rapl_data[0] + rapl_data[1];

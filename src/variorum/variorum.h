@@ -133,7 +133,7 @@ int variorum_cap_each_core_frequency_limit(int cpu_freq_mhz);
 ///
 /// @supparch
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - AMD EPYC Milan
 ///
 /// @param [in] socketid Target socket ID.
@@ -148,7 +148,7 @@ int variorum_cap_socket_frequency_limit(int socketid, int socket_freq_mhz);
 /// @supparch
 /// - NVIDIA Volta, Ampere
 /// - AMD Instinct (MI-50 onwards)
-//  - Intel Discrete GPU
+/// - Intel Discrete GPU
 ///
 /// @param [in] gpu_power_limit Desired power limit in watts for each GPU
 ///             on the node.
@@ -208,7 +208,7 @@ int variorum_print_power_limit(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -228,7 +228,7 @@ int variorum_print_verbose_thermals(void);
 /// @supparch
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -282,7 +282,7 @@ int variorum_print_counters(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -306,7 +306,7 @@ int variorum_print_verbose_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -332,7 +332,7 @@ int variorum_print_power(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -354,7 +354,7 @@ int variorum_print_verbose_frequency(void);
 /// - AMD EPYC Milan
 /// - AMD Radeon Instinct GPUs (MI50 onwards)
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -459,7 +459,7 @@ int variorum_print_gpu_utilization(void);
 ///
 /// @supparch
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
 /// - Intel Haswell
@@ -518,7 +518,7 @@ int variorum_disable_turbo(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -538,13 +538,97 @@ int variorum_disable_turbo(void);
 /// check for NULL strings.
 int variorum_get_node_power_json(char **get_power_obj_str);
 
+/// @brief Populate a string in JSON format with total CPU node utilization, user
+/// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU
+/// utilization.
+///
+/// Format:
+/// {
+///     "hostname": {
+///         "CPU": {
+///             "total_util%": total_CPU_utilization,
+///             "user_util%": user_utilization,
+///             "system_util%": system_utilization,
+///         },
+///         "GPU": {
+///             Socket_n : {
+///                 GPUnm_util% : GPU_utilization
+///         },
+///         "memory_util%": total_memory_utilization,
+///         "timestamp" : timestamp
+/// }
+/// where n is the socket number and m is the GPU id.
+///
+/// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
+/// - NVIDIA Volta
+///
+/// @unsupported
+/// - AMD EPYC Milan
+/// - IBM Power9
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
+///
+/// @param [out] get_util_obj_str String (passed by refrence) that contains node-level
+/// utilization information.
+///
+/// @returns 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// check for NULL strings.
+int variorum_get_node_utilization_json(char **get_util_obj_str);
+
+/// @brief Populate a string in JSON format with utilization of each GPU
+///
+/// Format:
+/// {
+///     "hostname": {
+///         "GPU": {
+///             Socket_n : {
+///                 GPUnm_util% : GPU_utilization
+///             },
+///         "timestamp" : timestamp
+/// }
+/// where n is the socket number and m is the GPU ID.
+///
+/// @supparch
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
+/// - NVIDIA Volta
+///
+/// @unsupported
+/// - AMD EPYC Milan
+/// - IBM Power9
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Ice Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
+///
+/// @param [out] get_gpu_util_obj_str String (passed by refrence) that contains
+/// node-level utilization information.
+///
+/// @returns 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// check for NULL strings.
+int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str);
+
 /// @brief Populate a string in JSON format with measurable and controllable
 /// power domains, along with the ranges.
 ///
 /// @supparch
 /// - AMD EPYC Milan
 /// - ARM Juno r2
-//  - Ampere Neoverse N1
+/// - Ampere Neoverse N1
 /// - IBM Power9
 /// - Intel Sandy Bridge
 /// - Intel Ivy Bridge
@@ -603,6 +687,27 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str);
 /// check for NULL strings.
 int variorum_get_thermals_json(char **get_thermal_obj_str);
 
+/// @brief Populate a string in JSON format with node level frequency information
+///
+/// @supparch
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - IBM Power9
+/// - AMD Instinct
+/// - NVIDIA Volta
+///
+/// @param [out] get_frequency_obj_str String (passed by reference) that contains the
+/// node-level frequency information.
+///
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings.
+int variorum_get_node_frequency_json(char **get_frequency_obj_str);
+
 /// @brief Populate a string in JSON format with per GPU power.
 ///
 /// @supparch
@@ -633,4 +738,5 @@ char *variorum_get_current_version(void);
 /***********/
 /// @brief Test for memory leaks.
 int variorum_tester(void);
+
 #endif

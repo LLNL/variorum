@@ -579,6 +579,92 @@ void get_clocks_data(int chipid, int total_sockets, int verbose, FILE *output)
     }
 }
 
+void get_clocks_json(int chipid, int total_sockets, json_t *output)
+{
+    rsmi_status_t ret;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    char socketID[16];
+
+    snprintf(socketID, 16, "socket_%d", chipid);
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    json_t *socket_obj = json_object_get(output, socketID);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(output, socketID, socket_obj);
+    }
+
+    json_t *gpu_obj = json_object();
+    json_object_set_new(socket_obj, "GPU", gpu_obj);
+
+    for (int i = chipid * gpus_per_socket;
+         i < (chipid + 1) * gpus_per_socket; i++)
+    {
+        rsmi_frequencies_t f_sys, f_mem;
+        uint32_t f_sys_val, f_mem_val;
+
+        ret = rsmi_dev_gpu_clk_freq_get(i, RSMI_CLK_TYPE_SYS, &f_sys);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("RSMI API was not successful",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
+
+        ret = rsmi_dev_gpu_clk_freq_get(i, RSMI_CLK_TYPE_MEM, &f_mem);
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("RSMI API was not successful",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
+
+        f_sys_val = f_sys.frequency[f_sys.current] / (1000 * 1000); // Convert to MHz
+        f_mem_val = f_mem.frequency[f_mem.current] / (1000 * 1000); // Convert to MHz
+
+        char gpu_clock_string[32];
+        snprintf(gpu_clock_string, 32, "gpu_%d_freq_mhz", i);
+
+        char gpu_mem_clock_string[32];
+        snprintf(gpu_mem_clock_string, 32, "gpu_%d_mem_freq_mhz", i);
+
+        json_object_set_new(gpu_obj, gpu_clock_string, json_integer(f_sys_val));
+        json_object_set_new(gpu_obj, gpu_mem_clock_string, json_integer(f_mem_val));
+    }
+
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+}
+
 void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
                               FILE *output)
 {
@@ -686,6 +772,106 @@ void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
     }
 }
 
+void get_gpu_utilization_data_json(int chipid, int total_sockets,
+                                   json_t *get_gpu_util_obj)
+{
+    rsmi_status_t ret;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    int d = 0;
+    char socket_id[12];
+    char hostname[1024];
+    char device_id[12];
+    static int init = 0;
+    static struct timeval start;
+    struct timeval now;
+    struct timeval tv;
+    uint64_t ts;
+
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+
+    json_t *get_host_util_obj = json_object_get(get_gpu_util_obj, hostname);
+    if (get_host_util_obj == NULL)
+    {
+        get_host_util_obj = json_object();
+        json_object_set_new(get_gpu_util_obj, hostname, get_host_util_obj);
+    }
+
+    json_t *timestamp_obj = json_object_get(get_host_util_obj, "timestamp");
+    if (timestamp_obj == NULL)
+    {
+        json_object_set_new(get_host_util_obj, "timestamp", json_integer(ts));
+    }
+
+    json_t *gpu_obj = json_object_get(get_host_util_obj, "GPU");
+    if (gpu_obj == NULL)
+    {
+        gpu_obj = json_object();
+        json_object_set_new(get_host_util_obj, "GPU", gpu_obj);
+    }
+    snprintf(socket_id, 12, "Socket_%d", chipid);
+
+    json_t *socket_obj = json_object_get(gpu_obj, socket_id);
+    if (socket_obj == NULL)
+    {
+        socket_obj = json_object();
+        json_object_set_new(gpu_obj, socket_id, socket_obj);
+    }
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+    }
+
+    gettimeofday(&now, NULL);
+    int i;
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
+    {
+        uint32_t utilpercent = 0; // Percentage of time the GPU was busy
+        if (ret != RSMI_STATUS_SUCCESS)
+        {
+            variorum_error_handler("RSMI API was not successful",
+                                   VARIORUM_ERROR_PLATFORM_ENV,
+                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                   __LINE__);
+        }
+        snprintf(device_id, 12, "GPU%d_util%%", d);
+        json_object_set_new(socket_obj, device_id, json_integer(utilpercent));
+    }
+
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+}
+
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
                               unsigned int powerlimit)
 {
@@ -729,8 +915,8 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
 
     gettimeofday(&now, NULL);
 
-    for (int i = chipid * gpus_per_socket;
-         i < (chipid + 1) * gpus_per_socket; i++)
+    int i;
+    for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
         ret = rsmi_dev_power_cap_set(i, 0, powerlimit_uwatts);
         if (ret != RSMI_STATUS_SUCCESS)

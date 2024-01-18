@@ -317,6 +317,20 @@ int intel_cpu_fm_06_2a_get_clocks(int long_ver)
     return 0;
 }
 
+int intel_cpu_fm_06_2a_get_clocks_json(json_t *get_clock_obj_json)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    get_clocks_data_json(get_clock_obj_json, msrs.ia32_aperf, msrs.ia32_mperf,
+                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                         CORE);
+    return 0;
+}
+
 int intel_cpu_fm_06_2a_get_power(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");

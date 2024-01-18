@@ -237,6 +237,11 @@ struct platform
     /// @return Error code.
     int (*variorum_print_gpu_utilization)(int long_ver);
 
+    /// @brief Function pointer to get JSON object for GPU utilization
+    ///
+    /// @return Error code.
+    int (*variorum_get_gpu_utilization_json)(char **get_gpu_util_obj_str);
+
     /// @brief Function pointer to get JSON object for node power data.
     ///
     /// @return Error code.
@@ -251,6 +256,11 @@ struct platform
     ///
     /// @return Error code.
     int (*variorum_get_gpu_power_json)(char **get_power_obj_str);
+
+    /// @brief Function pointer to get JSON object for frequency information
+    ///
+    /// @return Error code.
+    int (*variorum_get_frequency_json)(json_t *get_clock_obj_json);
 
     /// @brief Function pointer to get JSON object for thermal information
     ///
