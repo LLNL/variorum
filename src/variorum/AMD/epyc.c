@@ -81,7 +81,7 @@ int amd_cpu_epyc_get_power(int long_ver)
 #else
                 fprintf(stdout, "_AMDPOWER %s %d %f %lf\n",
                         hostname, i, (double)current_power / 1000,
-                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0); \
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
                 /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
                             i, (double)current_power / 1000); */
