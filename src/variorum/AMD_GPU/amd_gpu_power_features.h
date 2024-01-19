@@ -63,7 +63,7 @@ void get_json_power_data(
     json_t *get_power_obj,
     int total_sockets
 );
-    
+
 void get_clocks_json(
     int chipid,
     int total_sockets,
