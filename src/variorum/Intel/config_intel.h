@@ -8,10 +8,16 @@
 
 #include <inttypes.h>
 
-uint64_t *detect_intel_arch(void);
+uint64_t *detect_intel_arch(
+    void
+);
 
-int set_intel_func_ptrs(int idx);
+int set_intel_func_ptrs(
+    int idx
+);
 
-int gpu_power_ratio_unimplemented(int long_ver);
+int gpu_power_ratio_unimplemented(
+    int long_ver
+);
 
 #endif

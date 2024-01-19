@@ -14,19 +14,9 @@ jobs:
     strategy:
       matrix:
         cc-version: [11, 10, 9]
-        config: [boilerplate, shared_debug_log_docs, shared_debug_docs, shared_debug_log, shared_debug, static_debug_log_docs, static_debug_docs, static_debug_log, static_debug, shared_release_log_docs]
+        config: [boilerplate, shared_debug_log, shared_debug, static_debug_log, static_debug, shared_release_libjustify]
 
         exclude:
-          - config: shared_debug_log_docs
-            cc-version: 11
-          - config: shared_debug_log_docs
-            cc-version: 10
-
-          - config: shared_debug_docs
-            cc-version: 11
-          - config: shared_debug_docs
-            cc-version: 10
-
           - config: shared_debug_log
             cc-version: 11
           - config: shared_debug_log
@@ -35,16 +25,6 @@ jobs:
           - config: shared_debug
             cc-version: 11
           - config: shared_debug
-            cc-version: 10
-
-          - config: static_debug_log_docs
-            cc-version: 11
-          - config: static_debug_log_docs
-            cc-version: 10
-
-          - config: static_debug_docs
-            cc-version: 11
-          - config: static_debug_docs
             cc-version: 10
 
           - config: static_debug_log
@@ -57,48 +37,28 @@ jobs:
           - config: static_debug
             cc-version: 10
 
-          - config: shared_release_log_docs
+          - config: shared_release_libjustify
             cc-version: 11
-          - config: shared_release_log_docs
+          - config: shared_release_libjustify
             cc-version: 10
 
         include:
           - config: boilerplate
             BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: ON
             BUILD_TESTS: ON
             CMAKE_BUILD_TYPE: RelWithDebInfo
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: ON
             ENABLE_MPI: ON
             ENABLE_OPENMP: ON
             VARIORUM_DEBUG: ON
             ENABLE_WARNINGS: ON
 
-          - config: shared_debug_log_docs
-            BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: ON
-            BUILD_TESTS: OFF
-            CMAKE_BUILD_TYPE: Debug
-            ENABLE_FORTRAN: OFF
-            ENABLE_MPI: OFF
-            ENABLE_OPENMP: OFF
-            VARIORUM_DEBUG: ON
-
-          - config: shared_debug_docs
-            BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: ON
-            BUILD_TESTS: OFF
-            CMAKE_BUILD_TYPE: Debug
-            ENABLE_FORTRAN: OFF
-            ENABLE_MPI: OFF
-            ENABLE_OPENMP: OFF
-            VARIORUM_DEBUG: OFF
-
           - config: shared_debug_log
             BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -106,39 +66,19 @@ jobs:
 
           - config: shared_debug
             BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
-
-          - config: static_debug_log_docs
-            BUILD_SHARED_LIBS: OFF
-            BUILD_DOCS: ON
-            BUILD_TESTS: OFF
-            CMAKE_BUILD_TYPE: Debug
-            ENABLE_FORTRAN: OFF
-            ENABLE_MPI: OFF
-            ENABLE_OPENMP: OFF
-            VARIORUM_DEBUG: OFF
-
-          - config: static_debug_docs
-            BUILD_SHARED_LIBS: OFF
-            BUILD_DOCS: ON
-            BUILD_TESTS: OFF
-            CMAKE_BUILD_TYPE: Debug
-            ENABLE_FORTRAN: OFF
-            ENABLE_MPI: OFF
-            ENABLE_OPENMP: OFF
-            VARIORUM_DEBUG: ON
 
           - config: static_debug_log
             BUILD_SHARED_LIBS: OFF
-            BUILD_DOCS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -146,19 +86,19 @@ jobs:
 
           - config: static_debug
             BUILD_SHARED_LIBS: OFF
-            BUILD_DOCS: OFF
             BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Debug
+            ENABLE_LIBJUSTIFY: OFF
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
             VARIORUM_DEBUG: OFF
 
-          - config: shared_release_log_docs
+          - config: shared_release_libjustify
             BUILD_SHARED_LIBS: ON
-            BUILD_DOCS: ON
-            BUILD_TESTS: ON
+            BUILD_TESTS: OFF
             CMAKE_BUILD_TYPE: Release
+            ENABLE_LIBJUSTIFY: ON
             ENABLE_FORTRAN: OFF
             ENABLE_MPI: OFF
             ENABLE_OPENMP: OFF
@@ -186,6 +126,17 @@ jobs:
           # install
           sudo make -j install
 
+      - name: Build and install libjustify dependency
+        run: |
+          git clone https://github.com/llnl/libjustify.git
+          cd libjustify
+          mkdir build && cd build
+          cmake ../src
+          # build
+          VERBOSE=1 make -j
+          # install
+          sudo make -j install
+
       - name: Compile check
         run: |
           # create out-of-source build and install dir
@@ -194,9 +145,9 @@ jobs:
           # setup cmake options
           export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{matrix.BUILD_SHARED_LIBS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_C_COMPILER=gcc-${{matrix.cc-version}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{matrix.BUILD_DOCS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{matrix.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{matrix.CMAKE_BUILD_TYPE}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{matrix.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{matrix.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{matrix.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{matrix.ENABLE_OPENMP}}"
@@ -228,9 +179,9 @@ jobs:
       - name: Compile check
         env:
           BUILD_SHARED_LIBS: ON
-          BUILD_DOCS: OFF
           BUILD_TESTS: OFF
           CMAKE_BUILD_TYPE: Release
+          ENABLE_LIBJUSTIFY: OFF
           ENABLE_FORTRAN: ON
           ENABLE_MPI: OFF
           ENABLE_OPENMP: OFF
@@ -242,9 +193,9 @@ jobs:
           cd build
           # setup cmake options
           export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
-          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{env.BUILD_DOCS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
+          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_LIBJUSTIFY=${{env.ENABLE_LIBJUSTIFY}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_MPI=${{env.ENABLE_MPI}}"
           export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_OPENMP=${{env.ENABLE_OPENMP}}"
@@ -279,6 +230,7 @@ jobs:
         run: |
           uname -a
           uname -r
+          cat /proc/cpuinfo | grep "model name"
           cd msr-safe
           sudo insmod msr-safe.ko
           sudo chmod o=u /dev/cpu/*/msr_safe
@@ -288,9 +240,10 @@ jobs:
           ls -l /dev/cpu/*/msr_safe
           MSR_SAFE_VERSION=`cat /sys/module/msr_safe/version`
           echo -e "MSR_SAFE_VERSION:" ${MSR_SAFE_VERSION}
-          AL=$(printf 'al_%.2x%x\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
+          AL=$(printf 'al_%.2x_%X\n' $(lscpu | grep "CPU family:" | awk -F: '{print $2}') $(lscpu | grep "Model:" | awk -F: '{print $2}'))
           echo -e "AL:" ${AL}
-          cat allowlists/${AL} > /dev/cpu/msr_allowlist
+          cut -c 2- allowlists/${AL} > allowlists/${AL}_mod
+          cat allowlists/${AL}_mod > /dev/cpu/msr_allowlist
           head -n 5 /dev/cpu/msr_allowlist
 
       - name: Test install with cmake example
@@ -375,7 +328,6 @@ jobs:
 #
 #    env:
 #      BUILD_SHARED_LIBS: ON
-#      BUILD_DOCS: ON
 #      BUILD_TESTS: ON
 #      CMAKE_BUILD_TYPE: RelWithDebInfo
 #      ENABLE_FORTRAN: ON
@@ -444,7 +396,6 @@ jobs:
 #          cd build
 #          # setup cmake options
 #          export CMAKE_OPTS="-DBUILD_SHARED_LIBS=${{env.BUILD_SHARED_LIBS}}"
-#          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_DOCS=${{env.BUILD_DOCS}}"
 #          export CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_TESTS=${{env.BUILD_TESTS}}"
 #          export CMAKE_OPTS="${CMAKE_OPTS} -DCMAKE_BUILD_TYPE=${{env.CMAKE_BUILD_TYPE}}"
 #          export CMAKE_OPTS="${CMAKE_OPTS} -DENABLE_FORTRAN=${{env.ENABLE_FORTRAN}}"
@@ -461,5 +412,3 @@ jobs:
 #          VERBOSE=1 make -j
 #          # install
 #          make -j install
-#          # build docs
-#          make -j docs

@@ -6,8 +6,8 @@
 #ifndef SKYLAKE_55_H_INCLUDE
 #define SKYLAKE_55_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Skylake Family/Model 55H.
 struct skylake_55_offsets
@@ -111,5 +111,9 @@ int intel_cpu_fm_06_55_get_node_power_domain_info_json(char
 int intel_cpu_fm_06_55_cap_frequency(int core_freq_mhz);
 
 int intel_cpu_fm_06_55_get_frequencies(void);
+
+int intel_cpu_fm_06_55_get_thermals_json(json_t *get_thermal_obj);
+
+int intel_cpu_fm_06_55_get_clocks_json(json_t *get_clock_obj_json);
 
 #endif

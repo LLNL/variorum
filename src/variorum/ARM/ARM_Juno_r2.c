@@ -3,12 +3,12 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <ARM_Juno_r2.h>
 #include <config_architecture.h>

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 # Variorum Project Developers. See the top-level LICENSE file for details.
 #
@@ -21,10 +23,8 @@ mit_spdx = "MIT"
 licensed_files = [
     r"^src/CMakeLists.txt$",
     # variorum docs
-    r"^src/docs/.*CMakeLists.txt$",
     r"^src/docs/sphinx/.*\.rst$",
     r"^src/docs/sphinx/conf.py$",
-    r"^src/docs/sphinx/conf.py.in$",
     # variorum examples
     r"^src/examples/.*CMakeLists.txt$",
     r"^src/examples/variorum-.*\.c$",

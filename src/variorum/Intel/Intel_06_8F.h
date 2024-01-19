@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -6,8 +6,8 @@
 #ifndef SAPPHIRE_RAPIDS_6A_H_INCLUDE
 #define SAPPHIRE_RAPIDS_6A_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Sapphire Rapids Family/Model 6AH.
 struct sapphire_rapids_6a_offsets
@@ -56,4 +56,5 @@ int fm_06_8f_get_node_power_json(char **get_power_obj_str);
 int fm_06_8f_get_node_power_domain_info_json(char **get_domain_obj_str);
 
 int fm_06_8f_monitoring(FILE *output);
+
 #endif

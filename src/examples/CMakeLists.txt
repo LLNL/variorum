@@ -10,23 +10,28 @@ add_definitions(-DSECOND_RUN)
 set(BASIC_EXAMPLES
     variorum-cap-best-effort-node-power-limit-example
     variorum-cap-each-core-frequency-limit-example
+    variorum-cap-gpu-power-limit-example
     variorum-cap-gpu-power-ratio-example
     variorum-cap-socket-frequency-limit-example
     variorum-cap-socket-power-limit-example
-    variorum-cap-gpu-power-limit-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
-    variorum-get-node-power-json-example
+    variorum-get-gpu-utilization-json
+    variorum-get-node-frequency-json-example
     variorum-get-node-power-domain-info-json-example
-    variorum-integration-using-json-example
+    variorum-get-node-power-json-example
+    variorum-get-node-thermal-json-example
+    variorum-get-node-utilization-json
     variorum-get-topology-info-example
+    variorum-integration-using-json-example
     variorum-monitoring-to-file-example
     variorum-poll-power-to-file-example
     variorum-poll-power-to-stdout-example
     variorum-print-available-frequencies-example
-    variorum-print-frequency-example
     variorum-print-counters-example
+    variorum-print-energy-example
     variorum-print-features-example
+    variorum-print-frequency-example
     variorum-print-gpu-utilization-example
     variorum-print-hyperthreading-example
     variorum-print-power-example
@@ -34,13 +39,12 @@ set(BASIC_EXAMPLES
     variorum-print-thermals-example
     variorum-print-topology-example
     variorum-print-turbo-example
-    variorum-print-verbose-frequency-example
     variorum-print-verbose-counters-example
+    variorum-print-verbose-frequency-example
     variorum-print-verbose-gpu-utilization-example
-    variorum-print-verbose-power-limit-example
     variorum-print-verbose-power-example
+    variorum-print-verbose-power-limit-example
     variorum-print-verbose-thermals-example
-    variorum-print-energy-example
 )
 
 message(STATUS "Adding variorum examples")

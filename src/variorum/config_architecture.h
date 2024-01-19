@@ -10,6 +10,8 @@
 
 #include <variorum_config.h>
 
+#include <jansson.h>
+
 /// @brief Create a mask from bit m to n (63 >= m >= n >= 0).
 ///
 /// Example: MASK_RANGE(4,2) --> (((1<<((4)-(2)+1))-1)<<(2))
@@ -235,6 +237,11 @@ struct platform
     /// @return Error code.
     int (*variorum_print_gpu_utilization)(int long_ver);
 
+    /// @brief Function pointer to get JSON object for GPU utilization
+    ///
+    /// @return Error code.
+    int (*variorum_get_gpu_utilization_json)(char **get_gpu_util_obj_str);
+
     /// @brief Function pointer to get JSON object for node power data.
     ///
     /// @return Error code.
@@ -244,6 +251,16 @@ struct platform
     ///
     /// @return Error code.
     int (*variorum_get_node_power_domain_info_json)(char **get_domain_obj_str);
+
+    /// @brief Function pointer to get JSON object for frequency information
+    ///
+    /// @return Error code.
+    int (*variorum_get_frequency_json)(json_t *get_clock_obj_json);
+
+    /// @brief Function pointer to get JSON object for thermal information
+    ///
+    /// @return Error code.
+    int (*variorum_get_thermals_json)(json_t *get_thermal_obj);
 
     /// @brief Function pointer to get list of available frequencies.
     ///
@@ -283,23 +300,35 @@ extern struct platform g_platform[2];
 // across Intel and AMD platforms.
 extern int P_MSR_CORE_IDX;
 
-int variorum_enter(const char *filename,
-                   const char *func_name,
-                   int line_num);
+int variorum_enter(
+    const char *filename,
+    const char *func_name,
+    int line_num
+);
 
-int variorum_exit(const char *filename,
-                  const char *func_name,
-                  int line_num);
+int variorum_exit(
+    const char *filename,
+    const char *func_name,
+    int line_num
+);
 
-void variorum_get_topology(unsigned *nsockets,
-                           unsigned *ncores,
-                           unsigned *nthreads,
-                           int idx);
+void variorum_get_topology(
+    unsigned *nsockets,
+    unsigned *ncores,
+    unsigned *nthreads,
+    int idx
+);
 
-int variorum_set_func_ptrs(void);
+int variorum_set_func_ptrs(
+    void
+);
 
-int variorum_detect_arch(void);
+int variorum_detect_arch(
+    void
+);
 
-void variorum_init_func_ptrs(void);
+void variorum_init_func_ptrs(
+    void
+);
 
 #endif

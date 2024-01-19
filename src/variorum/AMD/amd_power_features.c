@@ -3,17 +3,21 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include <config_architecture.h>
 #include <variorum_error.h>
 
 #include "msr_core.h"
 #include "amd_power_features.h"
+
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
 
 static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
@@ -145,10 +149,24 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
 
     get_rapl_unit(msr_rapl_unit, &val);
 
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(writedest, "%s  | %s  |\n", "Core", "Energy (J)");
+#else
     fprintf(writedest, " Core   | Energy (J)   |\n");
+#endif
+
     for (i = 0; i < (int)ncores; i++)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf(writedest, "%d  | %f  |\n", i, (*rapl->core_bits[i]) * val);
+#else
         fprintf(writedest, "%6d  | %10f  |\n", i, (*rapl->core_bits[i]) * val);
+#endif
     }
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
+
     return 0;
 }
