@@ -31,7 +31,7 @@ int main(int argc, char **argv)
         }
     }
     char *s = NULL;
-    ret = variorum_get_node_frequency_json(&s);
+    ret = variorum_get_frequency_json(&s);
     if (ret != 0)
     {
         printf("Variorum get frequency json failure!\n");
