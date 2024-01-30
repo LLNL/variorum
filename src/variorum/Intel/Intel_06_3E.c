@@ -453,7 +453,7 @@ int intel_cpu_fm_06_3e_monitoring(FILE *output)
     return 0;
 }
 
-int intel_cpu_fm_06_3e_get_node_power_json(json_t *get_power_obj)
+int intel_cpu_fm_06_3e_get_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
