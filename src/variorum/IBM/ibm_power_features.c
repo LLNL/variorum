@@ -390,10 +390,9 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
     uint64_t pwrsys = 0;
     uint64_t pwrproc = 0;
     uint64_t pwrmem = 0;
-    uint64_t pwrgpu = 0;
     char socketID[12];
 
-    sprintf(socketID, "Socket_%d", chipid);
+    sprintf(socketID, "socket_%d", chipid);
 
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
@@ -433,10 +432,6 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
         {
             pwrmem = (uint64_t)(sample * TO_FP(scale));
         }
-        if (strcmp(md[i].name, "PWRGPU") == 0)
-        {
-            pwrgpu = (uint64_t)(sample * TO_FP(scale));
-        }
     }
 
     if (chipid == 0)
@@ -449,7 +444,6 @@ void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
 
     json_object_set_new(socket_obj, "power_cpu_watts", json_real(pwrproc));
     json_object_set_new(socket_obj, "power_mem_watts", json_real(pwrmem));
-    json_object_set_new(socket_obj, "power_gpu_watts", json_real(pwrgpu));
 }
 
 void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)

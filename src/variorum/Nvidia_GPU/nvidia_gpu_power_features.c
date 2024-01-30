@@ -487,7 +487,7 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
     }
 }
 
-void nvidia_gpu_get_json_power_data(int chipid, json_t *output)
+void nvidia_gpu_get_power_json(int chipid, json_t *output)
 {
     unsigned gpu_power;
     double value = 0.0;
@@ -513,7 +513,7 @@ void nvidia_gpu_get_json_power_data(int chipid, json_t *output)
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
             nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &gpu_power);
-            value = (double)power * 0.001f;
+            value = (double)gpu_power * 0.001f;
             snprintf(devID, devIDlen, "Device_%d", d);
             json_object_set_new(gpu_obj, devID, json_real(value));
     }

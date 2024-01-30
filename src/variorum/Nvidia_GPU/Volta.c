@@ -212,7 +212,7 @@ int volta_get_power_json(json_t *get_power_obj)
 
     for (iter = 0; iter < nsockets; iter++)
     {
-        nvidia_gpu_get_json_power_data(iter, get_power_obj);
+        nvidia_gpu_get_power_json(iter, get_power_obj);
     }
 
     return 0;

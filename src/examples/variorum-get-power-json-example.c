@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         }
     }
 
-    ret = variorum_get_node_power_json(&s);
+    ret = variorum_get_power_json(&s);
     if (ret != 0)
     {
         printf("First run: JSON get node power failed!\n");
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
         x += do_work(i);
     }
     printf("Final result: %f\n", x);
-    ret = variorum_get_node_power_json(&s);
+    ret = variorum_get_power_json(&s);
     if (ret != 0)
     {
         printf("Second run: JSON get node power failed!\n");

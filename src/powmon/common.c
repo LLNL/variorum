@@ -156,7 +156,7 @@ void take_measurement(bool measure_all)
             exit(-1);
         }
 
-        ret = variorum_get_node_power_json(&s);
+        ret = variorum_get_power_json(&s);
         if (ret != 0)
         {
             printf("JSON get node power failed. Exiting.\n");

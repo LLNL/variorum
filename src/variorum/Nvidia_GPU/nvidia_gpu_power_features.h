@@ -76,6 +76,10 @@ void nvidia_get_gpu_utilization_json(
     json_t *get_gpu_util_obj
 );
 
-void nvidia_gpu_get_json_power_data(json_t *get_power_obj);
+
+void nvidia_gpu_get_power_json(
+    int chipid,
+    json_t *output
+);
 
 #endif
