@@ -126,8 +126,8 @@ int intel_cpu_fm_06_2a_monitoring(
     FILE *output
 );
 
-int intel_cpu_fm_06_2a_get_node_power_json(
-    char **get_power_obj_str
+int intel_cpu_fm_06_2a_get_power_json(
+    json_t *get_power_obj
 );
 
 int intel_cpu_fm_06_2a_get_node_power_domain_info_json(
