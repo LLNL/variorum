@@ -256,6 +256,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_55_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json =
             intel_cpu_fm_06_55_get_clocks_json;
+        g_platform[idx].variorum_print_energy =
+            intel_cpu_fm_06_55_get_energy;
     }
     // Kaby Lake 06_9E
     else if (*g_platform[idx].arch_id == FM_06_9E)

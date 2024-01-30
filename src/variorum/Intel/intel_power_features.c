@@ -1597,3 +1597,72 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     fprintf(writedest, "\n");
 #endif
 }
+
+void print_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    static struct timeval start;
+    unsigned nsockets = 0;
+    struct timeval now;
+    char hostname[1024];
+    unsigned i;
+    off_t msr_dram_energy_status;
+    off_t msr_rapl_unit;
+
+    gethostname(hostname, 1024);
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+
+    if (!init)
+    {
+        gettimeofday(&start, NULL);
+        fprintf(writedest,
+                "PACKAGE_ENERGY_STATUS Socket Energy_J\n");
+        rapl_storage(&rapl);
+    }
+    gettimeofday(&now, NULL);
+    for (i = 0; i < nsockets; i++)
+    {
+        fprintf(writedest, "PACKAGE_ENERGY_STATUS %d %lf\n",
+                i, rapl->pkg_joules[i]);
+    }
+}
+
+void print_verbose_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    static struct timeval start;
+    unsigned nsockets = 0;
+    struct timeval now;
+    char hostname[1024];
+    unsigned i;
+    off_t msr_dram_energy_status;
+    off_t msr_rapl_unit;
+
+
+    gethostname(hostname, 1024);
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+
+    if (!init)
+    {
+        gettimeofday(&start, NULL);
+        fprintf(writedest,
+                "PACKAGE_ENERGY_STATUS Socket Energy_J\n");
+        rapl_storage(&rapl);
+    }
+    gettimeofday(&now, NULL);
+    for (i = 0; i < nsockets; i++)
+    {
+        fprintf(writedest, "PACKAGE_ENERGY_STATUS %d %lf\n",
+                i, rapl->pkg_joules[i]);
+    }
+}

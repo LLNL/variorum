@@ -97,6 +97,8 @@ int intel_cpu_fm_06_55_get_clocks(int long_ver);
 
 int intel_cpu_fm_06_55_get_power(int long_ver);
 
+int intel_cpu_fm_06_55_get_energy(int long_ver);
+
 int intel_cpu_fm_06_55_poll_power(FILE *output);
 
 int intel_cpu_fm_06_55_monitoring(FILE *output);
