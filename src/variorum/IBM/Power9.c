@@ -407,9 +407,6 @@ int ibm_cpu_p9_get_power_json(json_t *get_power_obj)
     int bytes;
     unsigned iter = 0;
     unsigned nsockets = 0;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
