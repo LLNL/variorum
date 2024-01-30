@@ -3,21 +3,47 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <hwloc.h>
+#include <inttypes.h>
+#include <jansson.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <hwloc.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #include <config_architecture.h>
 #include <variorum.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
+#define MEM_FILE "/proc/meminfo"
+#define CPU_FILE "/proc/stat"
+
+uint64_t last_sum = 0;
+uint64_t last_user_time = 0;
+uint64_t last_sys_time = 0;
+uint64_t last_idle = 0;
+int state = 0;
 int g_socket;
 int g_core;
+FILE *fp = 0;
 
 static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
     unsigned i;
+
+#ifdef LIBJUSTIFY_FOUND
+    if (depth == 0) //First interation
+    {
+        cfprintf(stdout, "%s %s %s %s\n", "Thread", "HWThread", "Core", "Socket");
+    }
+#endif
 
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_SOCKET))
     {
@@ -29,13 +55,27 @@ static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     }
     if (depth == hwloc_get_type_depth(topology, HWLOC_OBJ_PU))
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "%d %d %d %d\n", obj->logical_index, obj->os_index, g_core,
+                 g_socket);
+#else
         printf("%3u %6u %8u %4u\n", obj->logical_index, obj->os_index, g_core,
                g_socket);
+#endif
     }
+
     for (i = 0; i < obj->arity; i++)
     {
         print_children(topology, obj->children[i], depth + 1);
     }
+    //exit condition
+#ifdef LIBJUSTIFY_FOUND
+    if ((int)obj->logical_index == hwloc_get_type_depth(topology,
+            HWLOC_OBJ_NUMANODE))
+    {
+        cflush();
+    }
+#endif
 }
 
 int variorum_tester(void)
@@ -198,6 +238,35 @@ void variorum_print_topology(void)
 
         variorum_get_topology(NULL, NULL, NULL, i);
 
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "Platform Topology\n");
+        cfprintf(stdout, "=================\n");
+        cfprintf(stdout, "  %-s: %-s\n", "Hostname", g_platform[i].hostname);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Sockets", g_platform[i].num_sockets);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Cores per Socket",
+                 g_platform[i].num_cores_per_socket);
+        cfprintf(stdout, "  %-s: %-d\n", "Num Threads per Core",
+                 g_platform[i].num_threads_per_core);
+        if (g_platform[i].num_threads_per_core == 1)
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "No");
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s: %-s\n", "  Hyperthreading", "Yes");
+        }
+
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Cores",
+                 g_platform[i].total_cores);
+        cfprintf(stdout, "  %-s: %-d\n", "Total Num of Threads",
+                 g_platform[i].total_threads);
+        cfprintf(stdout, "\n");
+        cfprintf(stdout, "Layout:\n");
+        cfprintf(stdout, "-------\n");
+        cflush();
+#else
         fprintf(stdout, "=================\n");
         fprintf(stdout, "Platform Topology\n");
         fprintf(stdout, "=================\n");
@@ -222,8 +291,9 @@ void variorum_print_topology(void)
         fprintf(stdout, "Layout:\n");
         fprintf(stdout, "-------\n");
         fprintf(stdout, "Thread HWThread Core Socket\n");
-        print_children(topo, hwloc_get_root_obj(topo), 0);
+#endif
 
+        print_children(topo, hwloc_get_root_obj(topo), 0);
         hwloc_topology_destroy(topo);
     }
 
@@ -763,6 +833,18 @@ int variorum_print_hyperthreading(void)
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
         int hyperthreading = (g_platform[i].num_threads_per_core == 1) ? 0 : 1;
+#ifdef LIBJUSTIFY_FOUND
+        if (hyperthreading == 1)
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Enabled");
+            cfprintf(stdout, "  %-s %-d\n", "Num Thread Per Core: ",
+                     g_platform[i].num_threads_per_core);
+        }
+        else
+        {
+            cfprintf(stdout, "  %-s %s\n", "Hyperthreading:", "Disabled");
+        }
+#else
         if (hyperthreading == 1)
         {
             fprintf(stdout, "  Hyperthreading:       Enabled\n");
@@ -773,8 +855,15 @@ int variorum_print_hyperthreading(void)
         {
             fprintf(stdout, "  Hyperthreading:       Disabled\n");
         }
+#endif
+
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush(); //TODO: Create a silent version on err that still frees.
+#endif
+
     if (err)
     {
         return -1;
@@ -947,7 +1036,6 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-
 // The variorum_get_node_power_json is a node-level API, and cannot be implemented
 // at a per-component (eg CPU, GPU) level. This can only be captured by what we
 // define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,
@@ -1011,6 +1099,260 @@ int variorum_get_node_power_json(char **get_power_obj_str)
     return err;
 }
 
+int variorum_get_node_utilization_json(char **get_util_obj_str)
+{
+    int err = 0;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    char hostname[1024];
+    struct timeval tv;
+    uint64_t ts;
+    char *gpu_util_str = NULL;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    int ret;
+    char str[100];
+    const char d[2] = " ";
+    char *token, *s, *p;
+    int i = 0;
+    uint64_t sum = 0;
+    uint64_t idle = 0;
+    uint64_t user_time = 0;
+    uint64_t nice_time = 0;
+    uint64_t sum_user_time = 0;
+    uint64_t iowait = 0;
+    uint64_t sum_idle = 0;
+    double cpu_util = 0.0;
+    double user_util = 0.0;
+    double sys_util = 0.0;
+    double mem_util = 0.0;
+    int rc, j;
+    char lbuf[256];
+    char metric_name[256];
+    uint64_t metric_value;
+    uint64_t mem_total = 0;
+    uint64_t mem_free = 0;
+    uint64_t sys_time = 0;
+    int strcp;
+
+    // get gpu utilization
+    ret = variorum_get_gpu_utilization_json(&gpu_util_str);
+    if (ret != 0)
+    {
+        printf("JSON get gpu utilization failed. Exiting.\n");
+        free(gpu_util_str);
+        return -1;
+    }
+
+    /* Load the string as a JSON object using Jansson */
+    json_t *get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+
+    json_t *get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+    if (get_cpu_util_obj == NULL)
+    {
+        get_cpu_util_obj = json_object();
+        json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
+    }
+
+    json_t *get_timestamp_obj = json_object_get(get_util_obj, "timestamp");
+    if (get_timestamp_obj == NULL)
+    {
+        json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
+    }
+
+    json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
+    if (cpu_util_obj == NULL)
+    {
+        cpu_util_obj = json_object();
+        json_object_set_new(get_cpu_util_obj, "CPU", cpu_util_obj);
+    }
+
+    // read /proc/stat file
+    fp = fopen(CPU_FILE, "r");
+    if (fp == NULL)
+    {
+        return -1;
+    }
+    // read the first line (cpu)
+    if (fgets(str, 100, fp) == NULL)
+    {
+        return -1;
+    }
+    if (str != NULL)
+    {
+        token = strtok(str, d);
+        sum = 0;
+        // get required values to compute cpu utilizations
+        while (token != NULL)
+        {
+            token = strtok(NULL, d);
+            if (token != NULL)
+            {
+                sum += strtol(token, &p, 10);
+                if (i == 3)
+                {
+                    idle = strtol(token, &p, 10);
+                }
+                if (i == 0)
+                {
+                    user_time = strtol(token, &p, 10);
+                }
+                if (i == 1)
+                {
+                    nice_time = strtol(token, &p, 10);
+                }
+                if (i == 2)
+                {
+                    sys_time = strtol(token, &p, 10);
+                }
+                if (i == 4)
+                {
+                    iowait = strtol(token, &p, 10);
+                }
+                sum_idle = idle + iowait;
+                sum_user_time = user_time + nice_time;
+                i++;
+            }
+        }
+    }
+
+    fclose(fp);
+    // make the utilization metrics 0 at the first sample
+    if (state)
+    {
+        user_util = ((sum_user_time - last_user_time) / (double)(sum - last_sum)) * 100;
+        sys_util = ((sys_time - last_sys_time) / (double)(sum - last_sum)) * 100;
+        cpu_util = (1 - ((sum_idle - last_idle) / (double)(sum - last_sum))) * 100;
+    }
+    else
+    {
+        user_util = 0.0;
+        sys_util = 0.0;
+        cpu_util = 0.0;
+    }
+
+    last_user_time = sum_user_time;
+    last_sum = sum;
+    last_sys_time = sys_time;
+    last_idle = sum_idle;
+    json_object_set_new(cpu_util_obj, "total_util%", json_real(cpu_util));
+    json_object_set_new(cpu_util_obj, "user_util%", json_real(user_util));
+    json_object_set_new(cpu_util_obj, "system_util%", json_real(sys_util));
+    fp = fopen(MEM_FILE, "r");
+    if (fp == NULL)
+    {
+        return -1;
+    }
+    fseek(fp, 0, SEEK_SET);
+    do
+    {
+        s = fgets(lbuf, sizeof(lbuf), fp);
+        if (!s)
+        {
+            break;
+        }
+
+        rc = sscanf(lbuf, "%s%" PRIu64, metric_name, &metric_value);
+        if (rc < 2)
+        {
+            break;
+        }
+
+        /* Strip the colon from metric name if present */
+        j = strlen(metric_name);
+        if (i && metric_name[j - 1] == ':')
+        {
+            metric_name[j - 1] = '\0';
+        }
+        strcp = strcmp(metric_name, "MemTotal");
+        if (strcp == 0)
+        {
+            mem_total = metric_value;
+        }
+        strcp = strcmp(metric_name, "MemFree");
+        if (strcp == 0)
+        {
+            mem_free = metric_value;
+        }
+    }
+    while (s);
+
+    if (state)
+    {
+        mem_util = (1 - (double)(mem_free) / (mem_total)) * 100;
+    }
+    else
+    {
+        mem_util = 0.0;
+    }
+
+    fclose(fp);
+    json_object_set_new(get_cpu_util_obj, "memory_util%", json_real(mem_util));
+    *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
+    json_decref(get_util_obj);
+    state = 1;
+    return 0;
+}
+
+int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+#ifdef VARIORUM_WITH_INTEL_GPU
+        i = P_INTEL_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+        i = P_NVIDIA_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+        i = P_AMD_GPU_IDX;
+        break;
+#endif
+    }
+
+    if (g_platform[i].variorum_get_gpu_utilization_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        return -1;
+    }
+    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj_str);
+    if (err)
+    {
+        return -1;
+    }
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 // The variorum_get_node_power_domain_info_json is a node-level API, and cannot
 // be implemented at a per-component (eg CPU, GPU) level. This can only be available
 // on what we define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,
@@ -1066,6 +1408,109 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
     {
         return -1;
     }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_get_thermals_json(char **get_thermal_obj_str)
+{
+    int err = 0;
+    int i;
+    uint64_t ts;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    char hostname[1024];
+    gethostname(hostname, 1024);
+
+    struct timeval tv;
+
+    json_t *get_thermal_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_thermal_obj, hostname, node_obj);
+
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_thermals_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_thermals_json(node_obj);
+        if (err)
+        {
+            return -1;
+        }
+    }
+
+    *get_thermal_obj_str = json_dumps(get_thermal_obj, JSON_INDENT(4));
+    json_decref(get_thermal_obj);
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
+int variorum_get_frequency_json(char **get_frequency_obj_str)
+{
+    int err = 0;
+    int i;
+    char hostname[1024];
+    uint64_t ts;
+    struct timeval tv;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    json_t *get_frequency_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_frequency_obj, hostname, node_obj);
+
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_frequency_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_frequency_json(node_obj);
+        if (err)
+        {
+            printf("Error with variorum get frequency json platform %d\n", i);
+        }
+    }
+
+    *get_frequency_obj_str = json_dumps(get_frequency_obj, JSON_INDENT(4));
+    json_decref(get_frequency_obj);
+
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {

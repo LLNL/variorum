@@ -20,6 +20,7 @@ option(ENABLE_PYTHON             "Build Python support"                   ON)
 option(ENABLE_WARNINGS           "Enable warnings"                        OFF)
 option(ENABLE_MPI                "Build MPI examples"                     OFF)
 option(ENABLE_OPENMP             "Build OpenMP examples"                  ON)
+option(ENABLE_LIBJUSTIFY         "Enable libjustify formatting"           OFF)
 
 option(VARIORUM_WITH_AMD_CPU     "Support AMD CPU architectures"          OFF)
 option(VARIORUM_WITH_AMD_GPU     "Support AMD GPU architectures"          OFF)
@@ -33,6 +34,7 @@ option(VARIORUM_DEBUG            "Enable debug statements"                OFF)
 
 set(HWLOC_DIR "" CACHE PATH "path to hwloc installation")
 set(JANSSON_DIR "" CACHE PATH "path to jansson installation")
+set(LIBJUSTIFY_DIR "" CACHE PATH "path to libjustify installation")
 
 if(USE_MSR_SAFE_BEFORE_1_5_0)
     add_definitions(-DUSE_MSR_SAFE_BEFORE_1_5_0)

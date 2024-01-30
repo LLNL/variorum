@@ -33,6 +33,7 @@ astyle --errors-to-stdout \
        --break-after-logical \
        --indent-switches \
        --formatted \
+       --add-brackets \
        ${FILES}
 
 #

@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <config_architecture.h>
 #include <epyc.h>
@@ -16,6 +16,10 @@
 
 #include "msr_core.h"
 #include "amd_power_features.h"
+
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
 
 int amd_cpu_epyc_get_power(int long_ver)
 {
@@ -41,8 +45,13 @@ int amd_cpu_epyc_get_power(int long_ver)
         gettimeofday(&start, NULL);
         if (long_ver == 0)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(stdout, "%s %s %s %s %s\n",
+                     "_AMDPOWER", "Host", "Socket", "Power_W", "Timestamp_sec");
+#else
             fprintf(stdout,
                     "_AMDPOWER Host Socket Power_W Timestamp_sec\n");
+#endif
         }
     }
 
@@ -65,21 +74,39 @@ int amd_cpu_epyc_get_power(int long_ver)
         {
             if (long_ver == 0)
             {
+#ifdef LIBJUSTIFY_FOUND
+                cfprintf(stdout, "%s %s %d %f %lf\n",
+                         "_AMDPOWER", hostname, i, (double)current_power / 1000,
+                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
                 fprintf(stdout, "_AMDPOWER %s %d %f %lf\n",
                         hostname, i, (double)current_power / 1000,
-                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0); \
+#endif
                 /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
                             i, (double)current_power / 1000); */
             }
             else
             {
+#ifdef LIBJUSTIFY_FOUND
+                cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %lf\n",
+                         "_AMDPOWER Host", hostname,
+                         "Socket", i,
+                         "Power", (double)current_power / 1000,
+                         "Timestamp", now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                         1000000.0);
+#else
                 fprintf(stdout,
                         "_AMDPOWER Host: %s, Socket: %d, Power: %f W, Timestamp: %lf sec\n",
                         hostname, i, (double)current_power / 1000,
                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
             }
         }
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush()
+#endif
     return 0;
 }
 
@@ -146,25 +173,46 @@ int amd_cpu_epyc_get_power_limits(int long_ver)
         }
         if (long_ver == 0)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(stdout, "%s %s %d %f %f %f %lf\n",
+                     "_AMDPOWER", hostname, i, (double)power / 1000, (double)pcap_current / 1000,
+                     (double)pcap_max / 1000,
+                     now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
             fprintf(stdout, "_AMDPOWER %s %d %f %f %f %lf\n",
                     hostname, i, (double)power / 1000, (double)pcap_current / 1000,
                     (double)pcap_max / 1000,
                     now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
             /*DELETE     fprintf(stdout, "%6d | %12.03f    |\n",
                         i, (double)current_power / 1000); */
         }
         else
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(stdout, "%s: %s, %s: %d, %s: %f W, %s: %f W, %s: %f W, %s: %lf\n",
+                     "_AMDPOWER Host", hostname,
+                     "Socket", i,
+                     "Power", (double)power / 1000,
+                     "PowerCap", (double)pcap_current / 1000, "MaxPowerCap", (double)pcap_max / 1000,
+                     "Timestamp",
+                     now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
             fprintf(stdout,
                     "_AMDPOWER Host: %s, Socket: %d, Power: %f W, PowerCap: %f W, MaxPowerCap: %f W, Timestamp: %lf sec\n",
                     hostname, i, (double)power / 1000, (double)pcap_current / 1000,
                     (double)pcap_max / 1000,
                     now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
         }
         /* DELETE fprintf(stdout, "%6d | %14.03f  | %14.03f  | %14.03f     |\n",
                  i, (double)power / 1000, (double)pcap_current / 1000,
                  (double)pcap_max / 1000); */
     }
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush()
+#endif
 
     return 0;
 }
@@ -263,7 +311,12 @@ int amd_cpu_epyc_set_socket_power_limit(int pcap_new)
      */
     pcap_new = pcap_new * 1000;
 
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(stdout, "%s |  %s  |\n", "Socket", "Powercap(Watts)");
+#else
     fprintf(stdout, "Socket |  Powercap(Watts)  |\n");
+#endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
@@ -292,10 +345,18 @@ int amd_cpu_epyc_set_socket_power_limit(int pcap_new)
         }
         else
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(stdout, "%d |  %.03f  | %s\n",
+                     i, (double)pcap_new / 1000, "successfully set");
+#else
             fprintf(stdout, "%6d | %14.03f    | successfully set\n",
                     i, (double)pcap_new / 1000);
+#endif
         }
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -322,7 +383,12 @@ int amd_cpu_epyc_print_energy(int long_ver)
         uint64_t energy;
 
         fprintf(stdout, "_SOCKET_ENERGY :\n");
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout, "%s |  %s |\n", "Socket", "Energy(uJoules)");
+#else
         fprintf(stdout, " Socket |  Energy (uJoules) |\n");
+#endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
@@ -337,12 +403,25 @@ int amd_cpu_epyc_print_energy(int long_ver)
             }
             else
             {
+#ifdef LIBJUSTIFY_FOUND
+                cfprintf(stdout, "%d |  %.06f |\n",
+                         i, (double)energy / 1000000);
+#else
                 fprintf(stdout, "%6d  | %17.06f | \n",
                         i, (double)energy / 1000000);
+#endif
             }
         }
+
+#ifdef LIBJUSTIFY_FOUND
+        cflush();
+        printf("\n_CORE_ENERGY :\n");
+        cfprintf(stdout, "%s |  %s |\n", "Core", "Energy(uJoules)");
+#else
         printf("\n_CORE_ENERGY :\n");
         fprintf(stdout, "   Core |  Energy (uJoules) |\n");
+#endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
         for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
 #endif
@@ -357,8 +436,13 @@ int amd_cpu_epyc_print_energy(int long_ver)
             }
             else
             {
+#if LIBJUSTIFY_FOUND
+                cfprintf(stdout, "%d |  %.06f |\n",
+                         i, (double)energy / 1000000);
+#else
                 fprintf(stdout, " %6d | %17.06f | \n",
                         i, (double)energy / 1000000);
+#endif
             }
         }
         return 0;
@@ -381,7 +465,12 @@ int amd_cpu_epyc_print_boostlimit()
     int i, ret;
     uint32_t boostlimit;
 
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(stdout, "%s |  %s  |\n", "Core", "Freq(MHz)");
+#else
     fprintf(stdout, " Core   | Freq (MHz)  |\n");
+#endif
+
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
 #endif
@@ -396,7 +485,61 @@ int amd_cpu_epyc_print_boostlimit()
         }
         else
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(stdout, "%d |  %u  |\n", i, boostlimit);
+#else
             fprintf(stdout, "%6d  | %10u  |\n", i, boostlimit);
+#endif
+        }
+    }
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
+
+    return 0;
+}
+
+int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n\n", __FUNCTION__);
+    }
+
+    int socket, core,  ret;
+    uint32_t boostlimit;
+
+    int num_sockets = g_platform[P_AMD_CPU_IDX].num_sockets;
+    int total_cores = g_platform[P_AMD_CPU_IDX].total_cores;
+    int cores_per_socket = total_cores / num_sockets;
+    int current_core = 0;
+
+    for (socket = 0; socket < num_sockets; ++socket)
+    {
+        char socket_name[16];
+        snprintf(socket_name, 16, "socket_%d", socket);
+        json_t *socket_obj = json_object_get(get_clock_obj_json, socket_name);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(get_clock_obj_json, socket_name, socket_obj);
+        }
+
+        json_t *cpu_obj = json_object();
+        json_object_set_new(socket_obj, "CPU", cpu_obj);
+
+        json_t *core_obj = json_object();
+        json_object_set_new(cpu_obj, "core", core_obj);
+
+        for (core = 0; core < cores_per_socket; ++core)
+        {
+            ret = esmi_core_boostlimit_get(current_core, &boostlimit);
+            char core_avg_string[24];
+            snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", current_core);
+            json_object_set_new(core_obj, core_avg_string, json_real(boostlimit));
+            current_core++;
         }
     }
     return 0;
@@ -438,7 +581,6 @@ int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit)
 
     return 0;
 }
-
 
 /*
 int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
@@ -498,7 +640,6 @@ int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimi
     return 0;
 }
 */
-
 
 int amd_cpu_epyc_set_socket_boostlimit(int socket, int boostlimit)
 {

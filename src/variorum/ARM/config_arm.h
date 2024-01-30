@@ -8,8 +8,12 @@
 
 #include <inttypes.h>
 
-uint64_t *detect_arm_arch(void);
+uint64_t *detect_arm_arch(
+    void
+);
 
-int set_arm_func_ptrs(int idx);
+int set_arm_func_ptrs(
+    int idx
+);
 
 #endif

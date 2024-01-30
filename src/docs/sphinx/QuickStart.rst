@@ -51,6 +51,8 @@ have implementations in Variorum are provided in the following sections:
 -  :doc:`api/cap_functions`
 -  :doc:`api/json_support_functions`
 -  :doc:`api/enable_disable_functions`
+-  :doc:`api/advanced_topology_functions`
+-  :doc:`api/json`
 
 For beginners, the `ECP Variorum Lecture Series
 <https://www.exascaleproject.org/event/variorum-class-series/>`_ is beneficial.

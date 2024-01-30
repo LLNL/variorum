@@ -8,8 +8,12 @@
 
 #include <inttypes.h>
 
-uint64_t *detect_amd_gpu_arch(void);
+uint64_t *detect_amd_gpu_arch(
+    void
+);
 
-int set_amd_gpu_func_ptrs(int idx);
+int set_amd_gpu_func_ptrs(
+    int idx
+);
 
 #endif

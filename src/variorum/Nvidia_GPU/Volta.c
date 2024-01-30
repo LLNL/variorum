@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -51,6 +52,26 @@ int volta_get_thermals(int long_ver)
     return 0;
 }
 
+int volta_get_thermals_json(json_t *get_thermal_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_thermal_json(iter, get_thermal_obj);
+    }
+
+    return 0;
+}
+
 int volta_get_clocks(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
@@ -67,6 +88,27 @@ int volta_get_clocks(int long_ver)
     for (iter = 0; iter < nsockets; iter++)
     {
         nvidia_gpu_get_clocks_data(iter, long_ver, stdout);
+    }
+    return 0;
+}
+
+int volta_get_clocks_json(json_t *get_clock_obj_json)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets = 0;
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_clocks_json(iter, get_clock_obj_json);
     }
     return 0;
 }
@@ -108,6 +150,30 @@ int volta_get_gpu_utilization(int long_ver)
     {
         nvidia_gpu_get_gpu_utilization_data(iter, long_ver, stdout);
     }
+    return 0;
+}
+
+int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    json_t *get_util_obj = json_object();
+    unsigned iter = 0;
+    unsigned nsockets;
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_get_gpu_utilization_json(iter, get_util_obj);
+    }
+    *get_gpu_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
+    json_decref(get_util_obj);
     return 0;
 }
 
