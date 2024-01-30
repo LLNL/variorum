@@ -32,8 +32,8 @@ int volta_cap_each_gpu_power_limit(
     unsigned int powerlimit
 );
 
-int volta_get_gpu_power_json(
-    char **get_power_obj_str
+int volta_get_power_json(
+    json_t *get_power_obj_str
 );
 
 int volta_get_thermals_json(
