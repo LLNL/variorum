@@ -41,8 +41,8 @@ int set_amd_gpu_func_ptrs(int idx)
         g_platform[idx].variorum_cap_each_gpu_power_limit =
             amd_gpu_instinct_cap_each_gpu_power_limit;
         /* Initialize JSON interfaces */
-        g_platform[idx].variorum_get_gpu_power_json   =
-            amd_gpu_instinct_get_gpu_power_json;
+        g_platform[idx].variorum_get_power_json   =
+            amd_gpu_instinct_get_power_json;
     }
     else
     {
