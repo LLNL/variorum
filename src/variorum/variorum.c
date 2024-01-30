@@ -1073,8 +1073,8 @@ int variorum_get_power_json(char **get_power_obj_str)
         err = g_platform[i].variorum_get_power_json(node_obj);
         if (err)
         {
-        // For the JSON functions, we return a -1 here, so users don't need
-        // to explicitly check for NULL strings.
+            // For the JSON functions, we return a -1 here, so users don't need
+            // to explicitly check for NULL strings.
             return -1;
         }
     }

@@ -512,10 +512,10 @@ void nvidia_gpu_get_power_json(int chipid, json_t *output)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-            nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &gpu_power);
-            value = (double)gpu_power * 0.001f;
-            snprintf(devID, devIDlen, "Device_%d", d);
-            json_object_set_new(gpu_obj, devID, json_real(value));
+        nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &gpu_power);
+        value = (double)gpu_power * 0.001f;
+        snprintf(devID, devIDlen, "Device_%d", d);
+        json_object_set_new(gpu_obj, devID, json_real(value));
     }
 }
 
