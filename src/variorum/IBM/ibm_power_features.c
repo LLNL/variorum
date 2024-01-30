@@ -132,7 +132,7 @@ uint64_t get_node_power(const void *buf)
         if (strcmp(md[i].name, "PWRSYS") == 0)
         {
             pwrsys = (uint64_t)(sample * TO_FP(scale));
-            return(pwrsys);
+            return (pwrsys);
         }
     }
 }

@@ -178,7 +178,7 @@ void json_get_frequency_sensors(
 );
 
 uint64_t get_node_power(
-    const void *buf   
- );
+    const void *buf
+);
 
 #endif
