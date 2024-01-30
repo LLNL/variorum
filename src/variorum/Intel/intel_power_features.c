@@ -1236,7 +1236,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         snprintf(socketid, 12, "Socket_%d", i);
 
         json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, socketid, socket_obj);
+        json_object_set_new(get_power_obj, socketid, socket_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
@@ -1248,7 +1248,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(node_obj, "power_node_watts",
+    json_object_set_new(get_power_obj, "power_node_watts",
                         json_real(node_power));
 }
 
