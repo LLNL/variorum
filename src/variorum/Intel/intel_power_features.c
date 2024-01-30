@@ -1217,19 +1217,12 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     static struct rapl_data *rapl = NULL;
     struct rapl_limit l1, l2;
     unsigned nsockets = 0;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
     unsigned i;
     double node_power = 0.0;
 
-    gethostname(hostname, 1024);
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 #endif
-
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
     if (!init)
@@ -1239,8 +1232,6 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
 
     json_t *node_obj = json_object();
     json_object_set_new(get_power_obj, hostname, node_obj);
-
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     for (i = 0; i < nsockets; i++)
     {
@@ -1256,25 +1247,6 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
                             json_real(rapl->pkg_watts[i]));
         json_object_set_new(socket_obj, "power_mem_watts",
                             json_real(rapl->dram_watts[i]));
-
-        /* To ensure vendor-neutrality of the JSON power object across various
-           platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
-           report it. The negative -1.0 value indicates that the JSON object does
-           not contain the data for the associated key due to architecture
-           limitations.
-           TODO is to populate this through the NVIDIA NVML GPU power values
-           when variorum is built with NVIDIA on Intel architectures. */
-
-        json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
-
-        /* To ensure vendor-neutrality of the JSON power object across various
-           platforms, such as IBM, we set power_sys as the sum of CPU and DRAM
-           power values. This is estimated node power, and is not total power on
-           the node. Intel platforms currently do not report total node power
-           like the IBM platforms. We hope this changes in the future, and we
-           have an acutal measurement for node power instead, so the following
-           can be updated accordingly. */
-
         node_power += rapl->pkg_watts[i] + rapl->dram_watts[i];
     }
 
