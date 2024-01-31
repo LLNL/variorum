@@ -984,7 +984,6 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
     gpus_per_socket = num_devices / total_sockets;
 
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
     json_object_set_new(get_power_obj, "num_gpus",
                         json_integer(num_devices));
 
