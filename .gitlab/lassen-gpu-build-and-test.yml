@@ -86,3 +86,4 @@ build-lassen-gpu:
    - echo -e "PWD:" ${PWD}
    - make VERBOSE=1 F77=/usr/tce/packages/gcc/gcc-8.3.1/bin/gfortran FFLAGS=-O
    - ./ep.W.x
+   - ./examples/variorum-get-power-json-example 
