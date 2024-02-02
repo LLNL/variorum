@@ -48,7 +48,7 @@ status_failure:
 build-corona-gpu:
  tags:
    - corona
-   - shell
+   - batch
  stage: build
  script:
    - export HOSTNAME=`hostname`
