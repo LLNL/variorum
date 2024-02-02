@@ -111,6 +111,10 @@ int intel_cpu_fm_06_3f_get_power(
     int long_ver
 );
 
+int intel_cpu_fm_06_3f_get_energy(
+    int long_ver
+);
+
 int intel_cpu_fm_06_3f_enable_turbo(
     void
 );

@@ -175,6 +175,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_3f_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_3f_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_3f_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_3f_get_energy;
         g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_3f_get_turbo_status;
         g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_3f_enable_turbo;
         g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_3f_disable_turbo;
@@ -205,6 +206,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_4f_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_4f_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_4f_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_4f_get_energy;
         g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_4f_get_turbo_status;
         g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_4f_enable_turbo;
         g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_4f_disable_turbo;
@@ -237,6 +239,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_55_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_55_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_55_get_power;
+        g_platform[idx].variorum_print_energy =
+            intel_cpu_fm_06_55_get_energy;
         //g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_55_get_turbo_status;
         //g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_55_enable_turbo;
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_55_disable_turbo;
@@ -256,8 +260,6 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_55_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json =
             intel_cpu_fm_06_55_get_clocks_json;
-        g_platform[idx].variorum_print_energy =
-            intel_cpu_fm_06_55_get_energy;
     }
     // Kaby Lake 06_9E
     else if (*g_platform[idx].arch_id == FM_06_9E)

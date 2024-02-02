@@ -552,3 +552,22 @@ int intel_cpu_fm_06_3f_get_frequencies(void)
                               &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2);
     return 0;
 }
+
+int intel_cpu_fm_06_3f_get_energy(int long_ver)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    if (long_ver == 0)
+    {
+        print_energy_data(stdout, msrs.msr_pkg_energy_status);
+    }
+    else if (long_ver == 1)
+    {
+        print_verbose_energy_data(stdout, msrs.msr_pkg_energy_status);
+    }
+    return 0;
+}
