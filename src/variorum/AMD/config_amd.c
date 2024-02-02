@@ -76,7 +76,7 @@ int set_amd_func_ptrs(int idx)
                 amd_cpu_epyc_set_each_core_boostlimit;
             g_platform[idx].variorum_cap_socket_frequency_limit =
                 amd_cpu_epyc_set_socket_boostlimit;
-            g_platform[idx].variorum_get_node_power_json = amd_cpu_epyc_get_node_power_json;
+            g_platform[idx].variorum_get_power_json = amd_cpu_epyc_get_node_power_json;
             g_platform[idx].variorum_get_node_power_domain_info_json =
                 amd_cpu_epyc_get_node_power_domain_info_json;
             g_platform[idx].variorum_get_frequency_json = amd_cpu_epyc_get_json_boostlimit;

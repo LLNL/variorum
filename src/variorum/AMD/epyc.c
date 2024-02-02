@@ -671,16 +671,13 @@ int amd_cpu_epyc_set_socket_boostlimit(int socket, int boostlimit)
  * the variorum development team.
  * We expect to test and update these two functions when access is made available.
  * */
-int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
+int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
         printf("Running %s\n", __FUNCTION__);
     }
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
@@ -688,21 +685,12 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
     int i, ret = 0;
     int sockID_len = 12;
     char sockID[sockID_len];
-    json_t *get_power_obj = json_object();
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object();
-    json_object_set_new(get_power_obj, hostname, node_obj);
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
 #ifdef VARIORUM_WITH_AMD_CPU
     for (i = 0; i < g_platform[P_AMD_CPU_IDX].num_sockets; i++)
 #endif
     {
-        snprintf(sockID, sockID_len, "Socket_%d", i);
+        snprintf(sockID, sockID_len, "socket_%d", i);
         json_t *socket_obj = json_object();
         json_object_set_new(node_obj, sockID, socket_obj);
 
@@ -720,10 +708,6 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
                                 json_real((double)current_power / 1000));
         }
 
-        // GPU power set to -1.0 for vendor neutrality and first cut, as we
-        // don't have a way to measure this yet.
-        json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
-
         // Memory power set to -1.0 as this platform does not expose
         // memory power yet.
         json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
@@ -731,12 +715,8 @@ int amd_cpu_epyc_get_node_power_json(char **get_power_obj_str)
         node_power += ((double)current_power / 1000);
     }
 
-
     // Set the node power key with pwrnode value.
     json_object_set_new(node_obj, "power_node_watts", json_real(node_power));
-
-    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
-    json_decref(get_power_obj);
 
     return 0;
 }

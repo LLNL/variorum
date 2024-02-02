@@ -989,9 +989,15 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
     for (chipid = 0; chipid < total_sockets; chipid++)
     {
-        snprintf(socketID, devIDlen, "Socket_%d", chipid);
-        json_t *socket_obj = json_object();
-        json_object_set_new(get_power_obj, socketID, socket_obj);
+        snprintf(socketID, devIDlen, "socket_%d", chipid);
+
+        json_t *socket_obj = json_object_get(get_power_obj, socket_id);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(get_power_obj, socket_id, socket_obj);
+        }
+
         json_t *gpu_obj = json_object();
         json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
         //    json_object_set_new(gpu_obj, "units", json_string("Watts"));
