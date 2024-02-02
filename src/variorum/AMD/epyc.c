@@ -453,7 +453,7 @@ energy_batch:
     return ret;
 }
 
-int amd_cpu_epyc_print_boostlimit()
+int amd_cpu_epyc_print_boostlimit(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -692,7 +692,7 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
     {
         snprintf(sockID, sockID_len, "socket_%d", i);
         json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, sockID, socket_obj);
+        json_object_set_new(get_power_obj, sockID, socket_obj);
 
         current_power = 0;
         ret = esmi_socket_power_get(i, &current_power);
@@ -716,7 +716,7 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(node_obj, "power_node_watts", json_real(node_power));
+    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
 
     return 0;
 }

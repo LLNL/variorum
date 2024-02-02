@@ -29,7 +29,7 @@ int amd_cpu_epyc_print_energy(
 );
 
 int amd_cpu_epyc_print_boostlimit(
-    void
+    int long_ver
 );
 
 int amd_cpu_epyc_set_each_core_boostlimit(
