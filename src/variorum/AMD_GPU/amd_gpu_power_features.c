@@ -991,11 +991,11 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
     {
         snprintf(socketID, devIDlen, "socket_%d", chipid);
 
-        json_t *socket_obj = json_object_get(get_power_obj, socket_id);
+        json_t *socket_obj = json_object_get(get_power_obj, socketID);
         if (socket_obj == NULL)
         {
             socket_obj = json_object();
-            json_object_set_new(get_power_obj, socket_id, socket_obj);
+            json_object_set_new(get_power_obj, socketID, socket_obj);
         }
 
         json_t *gpu_obj = json_object();
