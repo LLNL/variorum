@@ -342,7 +342,10 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     }
 
     json_t *gpu_obj = json_object();
-    json_object_set_new(socket_obj, "GPU", gpu_obj);
+    json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
+
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(m_gpus_per_socket));
 
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)

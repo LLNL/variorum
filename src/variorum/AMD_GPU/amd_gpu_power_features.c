@@ -984,8 +984,8 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
     gpus_per_socket = num_devices / total_sockets;
 
-    json_object_set_new(get_power_obj, "num_gpus",
-                        json_integer(num_devices));
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(gpus_per_socket));
 
     for (chipid = 0; chipid < total_sockets; chipid++)
     {
@@ -993,8 +993,8 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
         json_t *socket_obj = json_object();
         json_object_set_new(get_power_obj, socketID, socket_obj);
         json_t *gpu_obj = json_object();
-        json_object_set_new(socket_obj, "GPU", gpu_obj);
-        json_object_set_new(gpu_obj, "units", json_string("Watts"));
+        json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
+    //    json_object_set_new(gpu_obj, "units", json_string("Watts"));
 
         //Iterate over all GPU device handles for this socket and update object
         for (d = chipid * gpus_per_socket;
