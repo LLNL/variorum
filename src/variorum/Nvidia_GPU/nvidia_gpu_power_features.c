@@ -342,10 +342,7 @@ void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
     }
 
     json_t *gpu_obj = json_object();
-    json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
-
-    json_object_set_new(get_power_obj, "num_gpus_per_socket",
-                        json_integer(m_gpus_per_socket));
+    json_object_set_new(socket_obj, "GPU", gpu_obj);
 
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
@@ -490,7 +487,7 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
     }
 }
 
-void nvidia_gpu_get_power_json(int chipid, json_t *output)
+void nvidia_gpu_get_power_json(int chipid, json_t *get_power_obj)
 {
     unsigned gpu_power;
     double value = 0.0;
@@ -500,17 +497,20 @@ void nvidia_gpu_get_power_json(int chipid, json_t *output)
     char socket_id[12];
     snprintf(socket_id, 12, "socket_%d", chipid);
 
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(m_gpus_per_socket));
+
     //try to find socket object in node object, set new object if not found
-    json_t *socket_obj = json_object_get(output, socket_id);
+    json_t *socket_obj = json_object_get(get_power_obj, socket_id);
     if (socket_obj == NULL)
     {
         socket_obj = json_object();
-        json_object_set_new(output, socket_id, socket_obj);
+        json_object_set_new(get_power_obj, socket_id, socket_obj);
     }
 
     //create new json object for GPU
     json_t *gpu_obj = json_object();
-    json_object_set_new(socket_obj, "GPU", gpu_obj);
+    json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
 
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
