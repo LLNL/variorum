@@ -382,24 +382,10 @@ int arm_cpu_juno_r2_cap_socket_frequency(int socketid, int new_freq)
 
 int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 {
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
-
-    uint64_t sys_power_val;
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
     int i;
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object();
-
-    json_object_set_new(get_power_obj, hostname, node_obj);
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
@@ -449,10 +435,10 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     for (i = 0; i < (int)m_num_package; i++)
     {
         char socketID[12];
-        snprintf(socketID, 12, "Socket_%d", i);
+        snprintf(socketID, 12, "socket_%d", i);
 
         json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, socketID, socket_obj);
+        json_object_set_new(get_power_obj, socketID, socket_obj);
 
         json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
         if (i != 0)
@@ -472,11 +458,13 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
         exit(-1);
     }
 
-    json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
-    json_t *socket_1_obj = json_object_get(node_obj, "Socket_1");
+    json_t *socket_0_obj = json_object_get(get_power_obj, "socket_0");
+    json_t *socket_1_obj = json_object_get(get_power__obj, "socket_1");
 
-    json_object_set_new(node_obj, "power_node_watts",
+    json_object_set_new(get_power_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(-1));
     json_object_set_new(socket_0_obj, "power_cpu_watts",
                         json_real((double)(big_power_val) / 1000000.0f));
     json_object_set_new(socket_1_obj, "power_cpu_watts",

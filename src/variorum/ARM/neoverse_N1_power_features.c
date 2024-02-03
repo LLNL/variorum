@@ -310,21 +310,9 @@ int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq)
 
 int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
 {
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
-
     uint64_t cpu_power_val;
     uint64_t io_power_val;
     int i;
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-
-    json_t *node_obj = json_object();
-    json_object_set_new(get_power_obj, hostname, node_obj);
-    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
@@ -369,13 +357,9 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
         snprintf(socketID, 12, "Socket_%d", i);
 
         json_t *socket_obj = json_object();
-        json_object_set_new(node_obj, socketID, socket_obj);
+        json_object_set_new(get_power_obj, socketID, socket_obj);
 
         json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
-        if (i != 0)
-        {
-            json_object_set_new(get_power_obj, "power_gpu_watts", json_real(-1.0));
-        }
     }
 
     /* The power telemetry obtained from the power registers is in
@@ -383,7 +367,7 @@ int arm_cpu_neoverse_n1_json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
-    json_t *socket_0_obj = json_object_get(node_obj, "Socket_0");
+    json_t *socket_0_obj = json_object_get(get_power_obj, "socket_0");
 
     json_object_set_new(socket_0_obj, "power_cpu_watts",
                         json_real((double)(cpu_power_val) / 1000000.0f));

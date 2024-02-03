@@ -26,7 +26,7 @@ int arm_neoverse_n1_cap_socket_frequency(
 );
 
 int arm_neoverse_n1_get_power_json(
-    char **get_power_obj_str
+    json_t *get_power_obj
 );
 
 int arm_neoverse_n1_get_power_domain_info_json(
