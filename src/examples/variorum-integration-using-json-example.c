@@ -45,7 +45,8 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 
     /* extract node power value from node object */
     power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
-    num_gpus_per_socket = json_real_value(json_object_get(node_obj, "num_gpus_per_socket"));
+    num_gpus_per_socket = json_real_value(json_object_get(node_obj,
+                                          "num_gpus_per_socket"));
 
     printf("\nExtracted power values at node and socket level are:");
     printf("\n\nNode Power: %lf Watts\n\n", power_node);
