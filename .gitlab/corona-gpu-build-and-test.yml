@@ -48,7 +48,9 @@ status_failure:
 build-corona-gpu:
  tags:
    - corona
-   - shell
+   - batch
+ variables:
+    LLNL_FLUX_SCHEDULER_PARAMETERS: "--nodes=1 --nslots=1 --t=10m"
  stage: build
  script:
    - export HOSTNAME=`hostname`
