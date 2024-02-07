@@ -15,7 +15,7 @@ struct thread_args
 {
     bool measure_all;
     unsigned long sample_interval;
-    bool power_with_util; 
+    bool power_with_util;
 };
 
 int init_data(void)
@@ -23,7 +23,8 @@ int init_data(void)
     return 0;
 }
 
-void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_sockets)
+void parse_power_and_util_json_obj(char *pow_str, char *util_str,
+                                   int num_sockets)
 {
     int i, j;
     char hostname[1024];
@@ -50,7 +51,7 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
                                     "power_gpu_watts_socket_",
                                     "power_mem_watts_socket_"
                                    };
-     /* Allocate space for metric names */
+    /* Allocate space for metric names */
     json_metric_names = malloc(3 * num_sockets * sizeof(char *));
     for (i = 0; i < (3 * num_sockets); i++)
     {
@@ -108,9 +109,9 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
 
     /* Load the string as a JSON object using Jansson */
     util_obj = json_loads(util_str, JSON_DECODE_ANY, NULL);
-  
 
-    
+
+
     /* Extract and print values from JSON object */
     json_t *host_obj = json_object_get(util_obj, hostname);
     mem_util = json_real_value(json_object_get(host_obj, "memory_util%"));
@@ -122,7 +123,7 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
 
 
     if (write_header == true)
-    { 
+    {
         fprintf(logfile, "%s,%s,", "Timestamp (ms)", "Node Power (W)");
         for (i = 0; i < num_sockets; i++)
         {
@@ -136,19 +137,20 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
 
         }
 
-        fprintf(logfile, "%s,%s,%s,%s,", "Memory Utiilizaion%", "Total CPU Utilization%", "User Utilization%", "System Utilization%");
+        fprintf(logfile, "%s,%s,%s,%s,", "Memory Utiilizaion%",
+                "Total CPU Utilization%", "User Utilization%", "System Utilization%");
         for (i = 0; i < num_sockets; ++i)
         {
-            sprintf(socket_num,"Socket_%d",i);
+            sprintf(socket_num, "Socket_%d", i);
             json_t *socket_obj = json_object_get(gpu_obj, socket_num);
             size = json_object_size(socket_obj);
-            ndevices  = size; 
-            for ( j=0; j < ndevices; j++)
+            ndevices  = size;
+            for (j = 0; j < ndevices; j++)
             {
                 char device_id[12];
                 snprintf(device_id, 12, "GPU%d%d_util%", i, j);
                 // Don't write out a comma after the last column name
-                if ((i + 1) == num_sockets && (j +1) == ndevices)
+                if ((i + 1) == num_sockets && (j + 1) == ndevices)
                 {
                     fprintf(logfile, "%s\n", device_id);
                     write_header = false;
@@ -161,7 +163,7 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
         }
     }
 
-        fprintf(logfile, "%ld, %lf, ", now_ms(), power_node);
+    fprintf(logfile, "%ld, %lf, ", now_ms(), power_node);
 
     for (i = 0; i < num_sockets; i++)
     {
@@ -172,18 +174,19 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
                                     json_metric_names[(num_sockets * 2) + i]));
         fprintf(logfile, "%lf, %lf, %lf,", power_cpu, power_gpu, power_mem);
     }
-        
 
-    fprintf(logfile, "%lf, %lf, %lf, %lf, ", mem_util, cpu_util, user_util, sys_util);
+
+    fprintf(logfile, "%lf, %lf, %lf, %lf, ", mem_util, cpu_util, user_util,
+            sys_util);
     for (i = 0; i < num_sockets; ++i)
     {
-        sprintf(socket_num,"Socket_%d",i);
+        sprintf(socket_num, "Socket_%d", i);
         json_t *socket_obj = json_object_get(gpu_obj, socket_num);
         size = json_object_size(socket_obj);
         ndevices  = size;
-        for ( j=0; j < ndevices; j++)
-        {   
-            char device_id[12]; 
+        for (j = 0; j < ndevices; j++)
+        {
+            char device_id[12];
             snprintf(device_id, 12, "GPU%d%d_util%", i, j);
             gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
             // Don't write out a comma after the last column name
@@ -199,7 +202,7 @@ void parse_power_and_util_json_obj(char *pow_str, char *util_str, int num_socket
         }
     }
 
- 
+
 
 
 
@@ -347,8 +350,8 @@ void take_measurement(bool measure_all, bool power_with_util)
 
         //ret = variorum_get_node_power_json(&s);
         if (power_with_util == true)
-        { 
-            ret_util = variorum_get_node_utilization_json(&util_str); 
+        {
+            ret_util = variorum_get_node_utilization_json(&util_str);
             if (ret_util != 0)
             {
                 printf("JSON get node utilization failed. Exiting.\n");
@@ -364,8 +367,8 @@ void take_measurement(bool measure_all, bool power_with_util)
                 free(power_str);
                 exit(-1);
             }
-        
-            parse_power_and_util_json_obj(power_str, util_str, num_sockets); 
+
+            parse_power_and_util_json_obj(power_str, util_str, num_sockets);
         }
         else
         {
@@ -378,7 +381,7 @@ void take_measurement(bool measure_all, bool power_with_util)
             }
             // Write out to logfile
             parse_json_obj(power_str, num_sockets);
-        }    
+        }
     }
 
     // Verbose output with all sensors/registers
@@ -417,7 +420,7 @@ void *power_measurement(void *arg)
     struct thread_args th_args;
     th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
     th_args.measure_all = (*(struct thread_args *)arg).measure_all;
-    th_args.power_with_util = (*(struct thread_args *)arg).power_with_util; 
+    th_args.power_with_util = (*(struct thread_args *)arg).power_with_util;
     // According to the Intel docs, the counter wraps at most once per second.
     // 50 ms should be short enough to always get good information (this is
     // default).
