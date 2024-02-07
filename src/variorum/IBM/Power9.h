@@ -65,5 +65,8 @@ void *power_measurement(void *arg);
 
 unsigned long take_measurement();
 
+int ibm_cpu_p9_get_node_energy_json(
+    json_t *get_energy_obj
+);
 
 #endif

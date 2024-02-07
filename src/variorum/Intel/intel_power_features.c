@@ -1473,6 +1473,7 @@ void print_verbose_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
         fprintf(writedest,
                 "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
-                rapl->elapsed, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                rapl->elapsed, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
+                1000000.0);
     }
 }

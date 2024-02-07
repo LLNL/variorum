@@ -767,3 +767,53 @@ void *power_measurement(void *arg)
     }
     return arg;
 }
+
+
+int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
+{
+    /* Enter the function the first time */
+    if (active_sampling == 0)
+    {
+        active_sampling = 1;
+        // printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
+
+        /* Sampling interval is hardcoded at 250ms */
+        th_args.sample_interval = 250;
+        th_args.energy_acc = 0;
+
+        // /* The first call should print zero as energy. */
+        //     printf("Accumulated energy before starting the thread is %lu\n",
+        //             th_args.energy_acc);
+
+        /*Only set node_energy for now */
+        json_object_set_new(get_energy_obj, "energy_node_joules",
+                            json_integer(th_args.energy_acc));
+
+        /* Start power measurement thread. */
+        pthread_attr_init(&mattr);
+        pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
+        pthread_mutex_init(&mlock, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
+    }
+    else
+    {
+        /* Stop power measurement thread. */
+        active_sampling = 0;
+
+        /* Commenting out for now, results in invalid pointer and stack trace */
+        pthread_attr_destroy(&mattr);
+
+        pthread_mutex_lock(&mlock);
+        /* Calculate what value to return here */
+        // printf("Accumulated energy after stopping the thread is %lu\n",
+        //       th_args.energy_acc);
+
+        /*Only set node_energy for now */
+        json_object_set_new(get_energy_obj, "energy_node_joules",
+                            json_integer(th_args.energy_acc));
+
+        pthread_mutex_unlock(&mlock);
+    }
+
+    return 0;
+}

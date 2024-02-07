@@ -272,6 +272,11 @@ struct platform
     /// @return Error code.
     int (*variorum_print_energy)(int long_ver);
 
+    /// @brief Function pointer to get JSON object for thermal information
+    ///
+    /// @return Error code.
+    int (*variorum_get_energy_json)(json_t *get_energy_obj);
+
     /// @brief Identifier for architecture.
     uint64_t *arch_id;
     /// @brief Hostname.

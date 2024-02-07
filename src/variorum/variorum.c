@@ -1616,6 +1616,57 @@ int variorum_print_verbose_energy(void)
     return err;
 }
 
+int variorum_get_energy_json(char **get_energy_obj_str)
+{
+    int err = 0;
+    int i;
+    char hostname[1024];
+    uint64_t ts;
+    struct timeval tv;
+    gethostname(hostname, 1024);
+    gettimeofday(&tv, NULL);
+
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    json_t *get_energy_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_energy_obj, hostname, node_obj);
+
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+        if (g_platform[i].variorum_get_energy_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_energy_json(node_obj);
+        if (err)
+        {
+            printf("Error with variorum get frequency json platform %d\n", i);
+        }
+    }
+
+    *get_energy_obj_str = json_dumps(get_energy_obj, JSON_INDENT(4));
+    json_decref(get_energy_obj);
+
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+
 char *variorum_get_current_version()
 {
     return QuoteMacro(VARIORUM_VERSION);

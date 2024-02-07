@@ -477,6 +477,9 @@ int variorum_print_available_frequencies(void);
 ///
 /// @supparch
 /// - AMD EPYC Milan
+/// - IBM Power9
+/// - Intel Haswell
+/// - Intel Broadwell
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -716,6 +719,19 @@ int variorum_get_thermals_json(char **get_thermal_obj_str);
 /// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
 int variorum_get_frequency_json(char **get_frequency_obj_str);
+
+/// @brief Populate a string in JSON format with node level frequency information
+///
+/// @supparch
+/// - IBM Power9
+///
+/// @param [out] get_energy_obj_str String (passed by reference) that contains the
+/// node-level energy information.
+///
+/// @return 0 if successful, otherwise -1. Note that feature not implemented
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
+/// check for NULL strings.
+int variorum_get_energy_json(char **get_energy_obj_str);
 
 /// @brief Returns Variorum version as a constant string.
 ///
