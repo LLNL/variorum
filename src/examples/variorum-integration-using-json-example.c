@@ -31,6 +31,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
     int i;
     char socketID[20];
     double power_node, power_cpu, power_gpu, power_mem;
+    int num_gpus_per_socket = 0;
 
     /* load power object from string then load node object from power object with the hostname*/
     json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
@@ -44,6 +45,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 
     /* extract node power value from node object */
     power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
+    num_gpus_per_socket = json_real_value(json_object_get(node_obj, "num_gpus_per_socket"));
 
     printf("\nExtracted power values at node and socket level are:");
     printf("\n\nNode Power: %lf Watts\n\n", power_node);
@@ -60,7 +62,7 @@ void parse_json_obj(char *s, int num_sockets, char *hostname)
 
         /* extract cpu, gpu, mem power values from json */
         power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
-        power_gpu = json_real_value(json_object_get(socket_obj, "GPU"));
+        power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
         power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
 
         printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
