@@ -246,8 +246,8 @@ jobs:
           cat allowlists/${AL}_mod > /dev/cpu/msr_allowlist
           head -n 5 /dev/cpu/msr_allowlist
 
-     - name: Install amd_energy driver
-       run: | 
+      - name: Install amd_energy driver
+        run: | 
           git clone https://github.com/amd/amd_energy
           cd amd_energy
           make
