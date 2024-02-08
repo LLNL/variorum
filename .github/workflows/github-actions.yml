@@ -246,21 +246,19 @@ jobs:
           cat allowlists/${AL}_mod > /dev/cpu/msr_allowlist
           head -n 5 /dev/cpu/msr_allowlist
 
-     - name: Install amd_energy driver and esmi
-       run: | 
+      - name: Install amd_energy driver and esmi
+        run: | 
           git clone https://github.com/amd/amd_energy
           cd amd_energy
           make
           sudo make modules_install
-          sudo modprobe amd_energy
+          sudo insmod ./amd_energy.ko
           git clone https://github.com/amd/esmi_ib_library.git
           cd esmi_ib_library
           mkdir -p build && cd build
           cmake ../
           ls -l
           sudo make install
-    
-          
 
       - name: Test install with cmake example
         run: |
