@@ -256,6 +256,8 @@ jobs:
           cmake ../
           make VERBOSE=1
           ldd ./variorum-print-power-example
+          lsmod | grep amd_energy
+          lsmod | grep hsmp
           ./variorum-print-power-example
 
       - name: Test install with make examples

@@ -69,7 +69,10 @@ int set_amd_func_ptrs(int idx)
 
     /* smi monitor initialization */
     ret = esmi_init();
-    switch (ret)
+
+    printf("\n ESMI return value is %d", ret);
+
+ /*   switch (ret)
     {
         case 0:
             printf("\n After ESMI in case 0.");
@@ -97,6 +100,10 @@ int set_amd_func_ptrs(int idx)
             g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
             g_platform[idx].variorum_print_power = amd_cpu_epyc_print_power;
             ret = 0;
-    }
+    } */
+
+    //Umm, let's really mess things up and set function pointers and see what fails now.
+            g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
+            g_platform[idx].variorum_print_power = amd_cpu_epyc_print_power;
     return ret;
 }
