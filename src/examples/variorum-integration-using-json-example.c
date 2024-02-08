@@ -29,8 +29,8 @@ static inline double do_work(int input)
 void parse_json_power_obj(char *s, int num_sockets)
 {
 
-    const char *hostname;
-    json_t *node_obj;
+    const char *hostname = NULL;
+    json_t *node_obj = NULL;
     json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
     void *iter = json_object_iter(power_obj);
 
@@ -52,7 +52,6 @@ void parse_json_power_obj(char *s, int num_sockets)
     }
 
     uint64_t timestamp;
-    json_t *num_gpus_obj;
     int num_gpus_per_socket = -1;
 
     //  Extract node-levels value from node object
