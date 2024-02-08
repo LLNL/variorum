@@ -252,7 +252,7 @@ jobs:
           cd amd_energy
           make
           sudo make modules_install
-          sudo modprobe amd_energy
+          sudo insmod ./amd_energy.ko
 
       - name: Test install with cmake example
         run: |
