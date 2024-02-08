@@ -95,6 +95,7 @@ int set_amd_func_ptrs(int idx)
             fprintf(stdout, "ESMI not initialized, drivers not found. "
                     "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
             g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
+            g_platform[idx].variorum_print_power = amd_cpu_epyc_print_power;
             ret = 0;
     }
     return ret;
