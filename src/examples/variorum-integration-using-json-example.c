@@ -26,60 +26,150 @@ static inline double do_work(int input)
 }
 #endif
 
-void parse_json_obj(char *s, int num_sockets, char *hostname)
+void parse_json_power_obj(char *s, int num_sockets)
 {
-    int i;
-    char socketID[20];
-    double power_node, power_cpu, power_gpu, power_mem;
-    int num_gpus_per_socket = 0;
 
-    /* load power object from string then load node object from power object with the hostname*/
+    const char *hostname;
+    json_t *node_obj;
     json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
-    json_t *node_obj = json_object_get(power_obj, hostname);
+    void *iter = json_object_iter(power_obj);
 
-    /* check if hostname is in the power object */
-    if (node_obj == NULL)
+    /* This is tailored to the nested structure that we have created (see docs). */
+    /* Just for the first level, we use the iterator to obtain the hostname,
+     * as this is encoded as a key to reduce verbosity. */
+
+    while (iter)
     {
-        printf("host object not found");
+        hostname = json_object_iter_key(iter);
+        node_obj = json_object_iter_value(iter);
+        if (node_obj == NULL)
+        {
+            printf("JSON object not found");
+            exit(0);
+        }
+        /* The following should return NULL after the first call per our object. */
+        iter = json_object_iter_next(power_obj, iter);
     }
 
-    /* extract node power value from node object */
-    power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
-    num_gpus_per_socket = json_real_value(json_object_get(node_obj,
-                                          "num_gpus_per_socket"));
+    uint64_t timestamp;
+    json_t *num_gpus_obj;
+    int num_gpus_per_socket = -1;
 
-    printf("\n\nNumber of GPUs per socket: %d\n\n", num_gpus_per_socket);
-    printf("\nExtracted power values at node and socket level are:");
-    printf("\n\nNode Power: %lf Watts\n\n", power_node);
+    //  Extract node-levels value from node object
+    timestamp = json_integer_value(json_object_get(node_obj, "timestamp"));
+
+    printf("Hostname: %s\n", hostname);
+    printf("Timestamp: %lu\n", timestamp);
+
+    // If we're on a GPU-only build, we don't have power_node_watts.
+    if (json_object_get(node_obj, "power_node_watts") != NULL)
+    {
+        double power_node;
+        power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
+        printf("Node Power: %0.2lf Watts\n", power_node);
+    }
+
+    // If we're on a CPU-only build, we don't have num_gpus_per_socket
+    if (json_object_get(node_obj, "num_gpus_per_socket") != NULL)
+    {
+        num_gpus_per_socket = json_integer_value(json_object_get(node_obj,
+                              "num_gpus_per_socket"));
+        printf("Number of GPUs per socket: %d\n", num_gpus_per_socket);
+    }
+
+    //  Extract socket and GPU-level data from the node object
+
+    int i;
+    char socketID[20];
 
     for (i = 0; i < num_sockets; ++i)
     {
-        /* extract socket object from node object with "Socket_#" */
         snprintf(socketID, 20, "socket_%d", i);
         json_t *socket_obj = json_object_get(node_obj, socketID);
         if (socket_obj == NULL)
         {
             printf("Socket object not found!\n");
+            exit(0);
         }
 
-        /* extract cpu, gpu, mem power values from json */
-        power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
-        power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
-        power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+        //If we're on a GPU-only build, we don't have power_cpu_watts
+        if (json_object_get(socket_obj, "power_cpu_watts") != NULL)
+        {
+            double power_cpu;
+            power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+            printf("Socket %d, CPU Power: %0.2lf Watts\n", i, power_cpu);
+        }
 
-        printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
-        printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
-        printf("Socket %d, Mem Power: %lf Watts\n\n", i, power_mem);
+        //If we're on a GPU-only build, we don't have power_mem_watts
+        if (json_object_get(socket_obj, "power_mem_watts") != NULL)
+        {
+            double power_mem;
+            power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+            printf("Socket %d, Mem Power: %0.2lf Watts\n", i, power_mem);
+        }
+
+        if (num_gpus_per_socket > 0)
+        {
+            json_t *gpu_obj = json_object_get(socket_obj, "power_gpu_watts");
+
+            if (gpu_obj == NULL)
+            {
+                printf("GPU object not found! \n");
+                exit(0);
+            }
+            const char *key;
+            json_t *value;
+
+            json_object_foreach(gpu_obj, key, value)
+            {
+                printf("Socket %d, %s Power: %0.2lf Watts\n", i, key, json_real_value(value));
+            }
+        }
+
     }
 
-    /* clean up memory */
+    /*
+        int i;
+        char hostname[512];
+        double power_node, power_cpu, power_gpu, power_mem;
+        int num_gpus_per_socket = 0;
+
+        //  load power object from string then load node object from power object with the hostname
+        json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+        json_t *node_obj = json_object_get(power_obj, hostname);
+
+        // check if hostname is in the power object
+
+
+        for (i = 0; i < num_sockets; ++i)
+        {
+            // extract socket object from node object with "Socket_#"
+            snprintf(socketID, 20, "socket_%d", i);
+            json_t *socket_obj = json_object_get(node_obj, socketID);
+            if (socket_obj == NULL)
+            {
+                printf("Socket object not found!\n");
+            }
+
+            // extract cpu, gpu, mem power values from json
+            power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+            power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
+            power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+
+            printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
+            printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
+            printf("Socket %d, Mem Power: %lf Watts\n\n", i, power_mem);
+        }
+
+        //  clean up memory
+        //
+       */
     json_decref(power_obj);
 }
 
 
 int main(void)
 {
-    char hostname[1024];
     int ret;
     int num_sockets = 0;
     char *s = NULL;
@@ -91,10 +181,6 @@ int main(void)
 
     /* Determine number of sockets */
     num_sockets = variorum_get_num_sockets();
-
-    /* get the host name */
-    gethostname(hostname, 1024);
-
     if (num_sockets <= 0)
     {
         printf("HWLOC returned an invalid number of sockets. Exiting.\n");
@@ -112,7 +198,7 @@ int main(void)
     /* Print the entire JSON object and then the parsed JSON object */
     printf("\n*****JSON object received from first run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets, hostname);
+    parse_json_power_obj(s, num_sockets);
 
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
@@ -131,7 +217,7 @@ int main(void)
 
     printf("\n*****JSON object received from second run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets, hostname);
+    parse_json_power_obj(s, num_sockets);
 #endif
 
     /* Deallocate the string */

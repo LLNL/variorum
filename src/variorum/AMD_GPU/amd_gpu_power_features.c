@@ -1010,7 +1010,7 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
             //nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
             pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
 
-            snprintf(devID, devIDlen, "Device_%d", d);
+            snprintf(devID, devIDlen, "GPU_%d", d);
             json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
         }
     }
