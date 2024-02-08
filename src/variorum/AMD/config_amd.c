@@ -61,16 +61,18 @@ int set_amd_func_ptrs(int idx)
 
     //Tapasya's hack to move past arch match issues in GitHub CI on AMD node
     // removes the check for the model, only checks for family.
-   /* if (family != 0x19)
+    if (family != 0x19)
     {
+        printf("\n Here, found the wrong family.");
         return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
-    }*/
+    }
 
     /* smi monitor initialization */
     ret = esmi_init();
     switch (ret)
     {
         case 0:
+            printf("\n After ESMI in case 0.");
             g_platform[idx].variorum_print_power = amd_cpu_epyc_get_power;
             g_platform[idx].variorum_print_power_limit = amd_cpu_epyc_get_power_limits;
             g_platform[idx].variorum_cap_each_socket_power_limit =
@@ -89,6 +91,7 @@ int set_amd_func_ptrs(int idx)
             g_platform[idx].variorum_get_frequency_json = amd_cpu_epyc_get_json_boostlimit;
             break;
         default:
+            printf("\n After ESMI in case default.");
             fprintf(stdout, "ESMI not initialized, drivers not found. "
                     "Msg[%d]: %s\n", ret, esmi_get_err_msg(ret));
             g_platform[idx].variorum_print_energy = amd_cpu_epyc_print_energy;
