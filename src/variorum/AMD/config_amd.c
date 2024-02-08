@@ -61,10 +61,10 @@ int set_amd_func_ptrs(int idx)
 
     //Tapasya's hack to move past arch match issues in GitHub CI on AMD node
     // removes the check for the model, only checks for family.
-    if (family != 0x19)
+   /* if (family != 0x19)
     {
         return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;
-    }
+    }*/
 
     /* smi monitor initialization */
     ret = esmi_init();
