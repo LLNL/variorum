@@ -28,5 +28,5 @@ set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
 #ROCm setup
-set(CMAKE_SHARED_LINKER_FLAGS "-L/opt/rocm-5.2.0/lib -lrocm_smi64" CACHE PATH "")
-set(ROCM_DIR "/opt/rocm-5.2.0/" CACHE PATH "")
+set(CMAKE_SHARED_LINKER_FLAGS "-L/opt/rocm-6.0.2/lib -lrocm_smi64" CACHE PATH "")
+set(ROCM_DIR "/opt/rocm-6.0.2/" CACHE PATH "")
