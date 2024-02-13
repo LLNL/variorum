@@ -489,8 +489,9 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 
 void nvidia_gpu_get_power_json(int chipid, json_t *get_power_obj)
 {
-    unsigned gpu_power;
+    unsigned int gpu_power;
     double value = 0.0;
+    double total_gpu_power = 0.0;
     int d;
     static size_t devIDlen = 24; // Long enough to avoid format truncation.
     char devID[devIDlen];
@@ -519,6 +520,19 @@ void nvidia_gpu_get_power_json(int chipid, json_t *get_power_obj)
         value = (double)gpu_power * 0.001f;
         snprintf(devID, devIDlen, "GPU_%d", d);
         json_object_set_new(gpu_obj, devID, json_real(value));
+        total_gpu_power += value;
     }
+
+    // If we have an existing CPU object with power_node_watts, update its value.
+    if (json_object_get(get_power_obj, "power_node_watts") != NULL)
+    {
+        double power_node;
+        power_node = json_real_value(json_object_get(get_power_obj,
+                                     "power_node_watts"));
+        json_object_set(get_power_obj, "power_node_watts",
+                        (power_node + total_gpu_power));
+    }
+
+
 }
 
