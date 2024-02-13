@@ -1018,16 +1018,16 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
              d < (chipid + 1) * gpus_per_socket; ++d)
         {
 
-        /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
-         * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
-         * If using an older version of ROCm, please use the code segment
-         * with the rsmi_dev_power_ave_get() API below on line 85 and comment
-         * lines 88 and 89. We're not adding backward compatibility checks
-         * at the moment due to lack of resources and time.
-         *
-         * ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
-         *
-         */
+            /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
+             * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
+             * If using an older version of ROCm, please use the code segment
+             * with the rsmi_dev_power_ave_get() API below on line 85 and comment
+             * lines 88 and 89. We're not adding backward compatibility checks
+             * at the moment due to lack of resources and time.
+             *
+             * ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
+             *
+             */
 
             RSMI_POWER_TYPE pwr_type = RSMI_AVERAGE_POWER;
             ret = rsmi_dev_power_get(d, &pwr_val, &pwr_type);
