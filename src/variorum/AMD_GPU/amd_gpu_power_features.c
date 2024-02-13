@@ -1012,18 +1012,29 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
         json_t *gpu_obj = json_object();
         json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
-        //    json_object_set_new(gpu_obj, "units", json_string("Watts"));
 
         //Iterate over all GPU device handles for this socket and update object
         for (d = chipid * gpus_per_socket;
              d < (chipid + 1) * gpus_per_socket; ++d)
         {
-            ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
-            //nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
+
+        /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
+         * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
+         * If using an older version of ROCm, please use the code segment
+         * with the rsmi_dev_power_ave_get() API below on line 85 and comment
+         * lines 88 and 89. We're not adding backward compatibility checks
+         * at the moment due to lack of resources and time.
+         *
+         * ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
+         *
+         */
+
+            RSMI_POWER_TYPE pwr_type = RSMI_AVERAGE_POWER;
+            ret = rsmi_dev_power_get(d, &pwr_val, &pwr_type);
             pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
             snprintf(devID, devIDlen, "GPU_%d", d);
             json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
-            total_gpu_power += power_val_flt;
+            total_gpu_power += pwr_val_flt;
         }
     }
 
