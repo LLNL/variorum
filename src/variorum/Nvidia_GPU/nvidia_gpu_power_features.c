@@ -524,15 +524,19 @@ void nvidia_gpu_get_power_json(int chipid, json_t *get_power_obj)
     }
 
     // If we have an existing CPU object with power_node_watts, update its value.
+    // Except on IBM Power9 systems, as they report node power with PWRSYS
+    // directly. So we don't need to add in the GPU values separately.
+
+#ifndef VARIORUM_WITH_IBM_CPU
     if (json_object_get(get_power_obj, "power_node_watts") != NULL)
     {
         double power_node;
         power_node = json_real_value(json_object_get(get_power_obj,
                                      "power_node_watts"));
         json_object_set(get_power_obj, "power_node_watts",
-                        (power_node + total_gpu_power));
+                        json_real(power_node + total_gpu_power));
     }
-
+#endif
 
 }
 

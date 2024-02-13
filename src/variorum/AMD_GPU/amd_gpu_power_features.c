@@ -953,7 +953,8 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
     uint32_t num_devices;
     int gpus_per_socket;
     uint64_t pwr_val = -1;
-    double pwr_val_flt = -1.0;
+    double pwr_val_flt = 0.0;
+    double total_gpu_power = 0.0;
     int d;
 
     rsmi_status_t ret;
@@ -1009,11 +1010,22 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
             ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
             //nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &power);
             pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
-
             snprintf(devID, devIDlen, "GPU_%d", d);
             json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
+            total_gpu_power += power_val_flt;
         }
     }
+
+    // If we have an existing CPU object with power_node_watts, update its value.
+    if (json_object_get(get_power_obj, "power_node_watts") != NULL)
+    {
+        double power_node;
+        power_node = json_real_value(json_object_get(get_power_obj,
+                                     "power_node_watts"));
+        json_object_set(get_power_obj, "power_node_watts",
+                        json_real(power_node + total_gpu_power));
+    }
+
 
     ret = rsmi_shut_down();
     if (ret != RSMI_STATUS_SUCCESS)
