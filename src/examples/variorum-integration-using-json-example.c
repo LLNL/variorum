@@ -127,42 +127,7 @@ void parse_json_power_obj(char *s, int num_sockets)
 
     }
 
-    /*
-        int i;
-        char hostname[512];
-        double power_node, power_cpu, power_gpu, power_mem;
-        int num_gpus_per_socket = 0;
-
-        //  load power object from string then load node object from power object with the hostname
-        json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
-        json_t *node_obj = json_object_get(power_obj, hostname);
-
-        // check if hostname is in the power object
-
-
-        for (i = 0; i < num_sockets; ++i)
-        {
-            // extract socket object from node object with "Socket_#"
-            snprintf(socketID, 20, "socket_%d", i);
-            json_t *socket_obj = json_object_get(node_obj, socketID);
-            if (socket_obj == NULL)
-            {
-                printf("Socket object not found!\n");
-            }
-
-            // extract cpu, gpu, mem power values from json
-            power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
-            power_gpu = json_real_value(json_object_get(socket_obj, "power_gpu_watts"));
-            power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
-
-            printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
-            printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
-            printf("Socket %d, Mem Power: %lf Watts\n\n", i, power_mem);
-        }
-
-        //  clean up memory
-        //
-       */
+    // Clean up memory.
     json_decref(power_obj);
 }
 
