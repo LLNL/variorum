@@ -25,9 +25,9 @@ int init_data(void)
 void parse_json_power_obj(char *s, int num_sockets)
 {
     const char *hostname = NULL;
-    char header_str[500]; //A big allocation at the moment.
-    char value_str[1000]; //A big allocation at the moment.
-    char temp_value_str[100];
+    char header_str[500] = {'\0'}; //A big allocation at the moment.
+    char value_str[1000] = {'\0'}; //A big allocation at the moment.
+    char temp_value_str[100] = {'\0'};
     json_t *node_obj = NULL;
     json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
     void *iter = json_object_iter(power_obj);
@@ -37,7 +37,6 @@ void parse_json_power_obj(char *s, int num_sockets)
     /* This is tailored to the nested structure that we have created (see docs). */
     /* Just for the first level, we use the iterator to obtain the hostname,
      * as this is encoded as a key to reduce verbosity. */
-
     while (iter)
     {
         hostname = json_object_iter_key(iter);
@@ -111,7 +110,7 @@ void parse_json_power_obj(char *s, int num_sockets)
             power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
             if (write_header == true)
             {
-                sprintf(temp_value_str, "Socket %d CPU Power (W),", i);
+                sprintf(temp_value_str, "Socket_%d Power (W),", i);
                 strcat(header_str, temp_value_str);
             }
             sprintf(temp_value_str, "%0.2lf,", power_cpu);
@@ -127,10 +126,29 @@ void parse_json_power_obj(char *s, int num_sockets)
             power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
             if (write_header == true)
             {
-                sprintf(temp_value_str, "Socket %d Mem Power (W),", i);
+                if (((i + 1) == num_sockets) && (num_gpus_per_socket < 0))
+                {
+                    // Add a newline as we've reached the last column
+                    sprintf(temp_value_str, "Mem_%d Power (W)\n", i);
+                }
+                else
+                {
+                    sprintf(temp_value_str, "Mem_%d Power (W),", i);
+                }
+
                 strcat(header_str, temp_value_str);
             }
-            sprintf(temp_value_str, "%0.2lf,", power_mem);
+
+            if (((i + 1) == num_sockets) && (num_gpus_per_socket < 0))
+            {
+                // Add a newline as we've reached the last column
+                sprintf(temp_value_str, "%0.2lf\n", power_mem);
+            }
+            else
+            {
+                sprintf(temp_value_str, "%0.2lf,", power_mem);
+            }
+
             strcat(value_str, temp_value_str);
             //printf("Socket %d, Mem Power: %0.2lf Watts\n", i, power_mem);
         }
@@ -156,26 +174,26 @@ void parse_json_power_obj(char *s, int num_sockets)
                 {
                     if (strcmp(last_gpu_str, key) == 0)
                     {
-                        sprintf(temp_value_str, "%s Power\n", key);
-                        strcat(header_str, temp_value_str);
+                        sprintf(temp_value_str, "%s Power (W)\n", key);
                     }
                     else
                     {
-                        sprintf(temp_value_str, "%s Power,", key);
-                        strcat(header_str, temp_value_str);
+                        sprintf(temp_value_str, "%s Power (W),", key);
                     }
+
+                    strcat(header_str, temp_value_str);
 
                 }
                 if (strcmp(last_gpu_str, key) == 0)
                 {
                     sprintf(temp_value_str, "%0.2lf\n", json_real_value(gpu_value));
-                    strcat(value_str, temp_value_str);
                 }
                 else
                 {
                     sprintf(temp_value_str, "%0.2lf,", json_real_value(gpu_value));
-                    strcat(value_str, temp_value_str);
                 }
+
+                strcat(value_str, temp_value_str);
                 //printf("Socket %d, %s Power: %0.2lf Watts\n", i, key, json_real_value(value));
             }
         }
@@ -183,14 +201,14 @@ void parse_json_power_obj(char *s, int num_sockets)
         if ((i + 1) == num_sockets)
         {
             // Write the header and set flag to false
-            fprintf(logfile, "%s,", header_str);
+            fprintf(logfile, "%s", header_str);
             write_header = false;
         }
 
     }
 
     //Write the values now
-    fprintf(logfile, "%s,", value_str);
+    fprintf(logfile, "%s", value_str);
 
     // Clean up memory.
     json_decref(power_obj);
