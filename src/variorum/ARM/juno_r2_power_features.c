@@ -385,6 +385,7 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
+    uint64_t sys_power_val;
     int i;
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
@@ -440,7 +441,6 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
         json_t *socket_obj = json_object();
         json_object_set_new(get_power_obj, socketID, socket_obj);
 
-        json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
         if (i != 0)
         {
             json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
@@ -452,17 +452,20 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
-    if (int(m_num_package) < 2)
+    if (((int)m_num_package) < 2)
     {
         printf("less than 2 sockets detected, unable to insert power json objects!\n");
         exit(-1);
     }
 
     json_t *socket_0_obj = json_object_get(get_power_obj, "socket_0");
-    json_t *socket_1_obj = json_object_get(get_power__obj, "socket_1");
+    json_t *socket_1_obj = json_object_get(get_power_obj, "socket_1");
 
     json_object_set_new(get_power_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
+    // While number of GPUs is 1, it is only resident on the first socket.
+    // Powmon won't print GPU power as a result,
+    // but GPU power is available in the JSON object.
     json_object_set_new(get_power_obj, "num_gpus_per_socket",
                         json_integer(-1));
     json_object_set_new(socket_0_obj, "power_cpu_watts",
@@ -503,11 +506,11 @@ int arm_cpu_juno_r2_json_get_power_domain_info(json_t *get_domain_obj)
 
     json_t *measurement_cpu_obj = json_object();
     json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
-    json_object_set_new(measurement_cpu_obj, "units", "Watts");
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
 
     json_t *measurement_gpu_obj = json_object();
     json_object_set_new(measurement_obj, "power_gpu", measurement_gpu_obj);
-    json_object_set_new(measurement_gpu_obj, "units", "Watts");
+    json_object_set_new(measurement_gpu_obj, "units", json_string("Watts"));
 
     json_t *unsupported_features = json_array();
     json_object_set_new(node_obj, "unsupported", unsupported_features);

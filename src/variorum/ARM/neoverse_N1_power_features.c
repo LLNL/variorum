@@ -405,7 +405,7 @@ int arm_cpu_neoverse_n1_json_get_power_domain_info(json_t *get_domain_obj)
 
     json_t *measurement_cpu_obj = json_object();
     json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
-    json_object_set_new(measurement_cpu_obj, "units", "Watts");
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
 
     json_t *unsupported_features = json_array();
     json_object_set_new(node_obj, "unsupported", unsupported_features);
