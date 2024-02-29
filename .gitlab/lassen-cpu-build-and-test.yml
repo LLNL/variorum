@@ -47,7 +47,7 @@ status_failure:
 
 build-lassen-cpu:
  tags:
-   - batch
+   - ci
    - lassen
  stage: build
  script:
