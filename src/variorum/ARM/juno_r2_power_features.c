@@ -3,19 +3,23 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <fcntl.h>
-#include <string.h>
-#include <inttypes.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "juno_r2_power_features.h"
 #include <variorum_error.h>
 #include <variorum_timers.h>
+
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
 
 int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 {
@@ -81,6 +85,16 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
 
     if (verbose)
     {
+
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s: %s, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW, %s: %0.2lf mW\n",
+                 "_ARM_POWER Host", m_hostname,
+                 "Sys", (double)(sys_power_val) / 1000.0f,
+                 "Big", (double)(big_power_val) / 1000.0f,
+                 "Little", (double)(little_power_val) / 1000.0f,
+                 "GPU", (double)(gpu_power_val) / 1000.0f);
+#else
         fprintf(output,
                 "_ARM_POWER Host: %s, Sys: %0.2lf mW, Big: %0.2lf mW,"
                 " Little: %0.2lf mW, GPU: %0.2lf mW\n",
@@ -89,21 +103,39 @@ int arm_cpu_juno_r2_get_power_data(int verbose, FILE *output)
                 (double)(big_power_val) / 1000.0f,
                 (double)(little_power_val) / 1000.0f,
                 (double)(gpu_power_val) / 1000.0f);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_POWER", "Host", "Sys_mW", "Big_mW", "Little_mW", "GPU_mW");
+#else
             fprintf(output, "_ARM_POWER Host Sys_mW Big_mW Little_mW GPU_mW\n");
+#endif
             init_output = 1;
         }
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                 "_ARM_POWER", m_hostname,
+                 (double)(sys_power_val) / 1000.0f,
+                 (double)(big_power_val) / 1000.0f,
+                 (double)(little_power_val) / 1000.0f,
+                 (double)(gpu_power_val) / 1000.0f);
+#else
         fprintf(output, "_ARM_POWER %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                 m_hostname,
                 (double)(sys_power_val) / 1000.0f,
                 (double)(big_power_val) / 1000.0f,
                 (double)(little_power_val) / 1000.0f,
                 (double)(gpu_power_val) / 1000.0f);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -153,6 +185,15 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
 
     if (verbose)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output,
+                 "%s: %s, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C, %s: %0.2lf C\n",
+                 "_ARM_TEMPERATURE Host", m_hostname,
+                 "Sys", (double)(sys_therm_val) / 1000.0f,
+                 "Big", (double)(big_therm_val) / 1000.0f,
+                 "Little", (double)(little_therm_val) / 1000.0f,
+                 "GPU", (double)(gpu_therm_val) / 1000.0f);
+#else
         fprintf(output,
                 "_ARM_TEMPERATURE Host: %s, Sys: %0.2lf C, Big: %0.2lf C,"
                 " Little: %0.2lf C, GPU: %0.2lf C\n",
@@ -161,21 +202,40 @@ int arm_cpu_juno_r2_get_thermal_data(int verbose, FILE *output)
                 (double)(big_therm_val) / 1000.0f,
                 (double)(little_therm_val) / 1000.0f,
                 (double)(gpu_therm_val) / 1000.0f);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_TEMPERATURE", "Host", "Sys_C", "Big_C", "Little_C", "GPU_C");
+#else
             fprintf(output, "_ARM_TEMPERATURE Host Sys_C Big_C Little_C GPU_C\n");
+#endif
             init_output = 1;
         }
+
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
+                 "_ARM_TEMPERATURE", m_hostname,
+                 (double)(sys_therm_val) / 1000.0f,
+                 (double)(big_therm_val) / 1000.0f,
+                 (double)(little_therm_val) / 1000.0f,
+                 (double)(gpu_therm_val) / 1000.0f);
+#else
         fprintf(output, "_ARM_TEMPERATURE %s %0.2lf %0.2lf %0.2lf %0.2lf\n",
                 m_hostname,
                 (double)(sys_therm_val) / 1000.0f,
                 (double)(big_therm_val) / 1000.0f,
                 (double)(little_therm_val) / 1000.0f,
                 (double)(gpu_therm_val) / 1000.0f);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -211,20 +271,43 @@ int arm_cpu_juno_r2_get_clocks_data(int chipid, int verbose, FILE *output)
      */
     if (verbose)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s: %s, %s: %s, %s: %d, %s: %llu MHz\n",
+                 "_ARM_CLOCKS Host", m_hostname,
+                 "CPU", (chipid == 0) ? "Big" : "Little",
+                 "Socket", chipid,
+                 "Clock", freq_val / 1000);
+#else
         fprintf(output,
                 "_ARM_CLOCKS Host: %s, CPU: %s, Socket: %d, Clock: %"PRIu64" MHz\n",
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+#endif
     }
     else
     {
         if (!init_output)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cfprintf(output, "%s %s %s %s %s %s\n",
+                     "_ARM_CLOCKS", "Host", "CPU", "Socket", "Clock_MHz");
+#else
             fprintf(output, "_ARM_CLOCKS Host CPU Socket Clock_MHz\n");
+#endif
+
             init_output = 1;
         }
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(output, "%s %s %s %d %llu\n",
+                 "_ARM_CLOCKS", m_hostname, (chipid == 0) ? "Big" : "Little", chipid,
+                 freq_val / 1000);
+#else
         fprintf(output, "_ARM_CLOCKS %s %s %d %"PRIu64"\n",
                 m_hostname, (chipid == 0) ? "Big" : "Little", chipid, freq_val / 1000);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -257,6 +340,7 @@ int arm_cpu_juno_r2_get_frequencies(int chipid, FILE *output)
     }
     close(freq_fd);
 
+    //TODO: LIBJUSTIFY Spend a bit more time with this stuff. This is a bit wacky.
     fprintf(output, "=== Available frequencies for %s CPU (ID: %d) in MHz ===\n",
             (chipid == 0) ? "Big" : "Little", chipid);
     for (int i = 0; i < arr_size; i++)
@@ -298,23 +382,11 @@ int arm_cpu_juno_r2_cap_socket_frequency(int socketid, int new_freq)
 
 int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 {
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
-
-    uint64_t sys_power_val;
     uint64_t big_power_val;
     uint64_t little_power_val;
     uint64_t gpu_power_val;
+    uint64_t sys_power_val;
     int i;
-
-    char sockID[4];
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
 
     /* Read power data from hwmon interfaces, similar to the get_power_data()
        function, defined previously. */
@@ -363,13 +435,16 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
 
     for (i = 0; i < (int)m_num_package; i++)
     {
-        char mem_str[36] = "power_mem_watts_socket_";
-        char gpu_str[36] = "power_gpu_watts_socket_";
-        sprintf(sockID, "%d", i);
-        strcat(mem_str, sockID);
-        strcat(gpu_str, sockID);
-        json_object_set_new(get_power_obj, mem_str, json_real(-1.0));
-        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
+        char socketID[12];
+        snprintf(socketID, 12, "socket_%d", i);
+
+        json_t *socket_obj = json_object();
+        json_object_set_new(get_power_obj, socketID, socket_obj);
+
+        if (i != 0)
+        {
+            json_object_set_new(socket_obj, "power_gpu_watts", json_real(-1.0));
+        }
     }
 
     /* The power telemetry obtained from the power registers is in
@@ -377,13 +452,27 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
        Variorum converts power into watts before reporting. Socket 0 is big,
        and Socket 1 is little. */
 
+    if (((int)m_num_package) < 2)
+    {
+        printf("less than 2 sockets detected, unable to insert power json objects!\n");
+        exit(-1);
+    }
+
+    json_t *socket_0_obj = json_object_get(get_power_obj, "socket_0");
+    json_t *socket_1_obj = json_object_get(get_power_obj, "socket_1");
+
     json_object_set_new(get_power_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_0",
+    // While number of GPUs is 1, it is only resident on the first socket.
+    // Powmon won't print GPU power as a result,
+    // but GPU power is available in the JSON object.
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(-1));
+    json_object_set_new(socket_0_obj, "power_cpu_watts",
                         json_real((double)(big_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_cpu_watts_socket_1",
+    json_object_set_new(socket_1_obj, "power_cpu_watts",
                         json_real((double)(little_power_val) / 1000000.0f));
-    json_object_set_new(get_power_obj, "power_gpu_watts_socket_0",
+    json_object_set_new(socket_0_obj, "power_gpu_watts",
                         json_real((double)(gpu_power_val) / 1000000.0f));
     return 0;
 }
@@ -405,21 +494,28 @@ int arm_cpu_juno_r2_json_get_power_domain_info(json_t *get_domain_obj)
 
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
-    json_object_set_new(get_domain_obj, "host", json_string(hostname));
-    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
+    json_t *node_obj = json_object();
+    json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "measurement",
-                        json_string("[power_cpu, power_gpu]"));
-    json_object_set_new(get_domain_obj, "control",
-                        json_string("[]"));
-    json_object_set_new(get_domain_obj, "unsupported",
-                        json_string("[power_node, power_mem]"));
-    json_object_set_new(get_domain_obj, "measurement_units",
-                        json_string("[Watts, Watts]"));
-    json_object_set_new(get_domain_obj, "control_units",
-                        json_string("[]"));
-    json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[]"));
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
+
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
+
+    json_t *measurement_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
+
+    json_t *measurement_gpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_gpu", measurement_gpu_obj);
+    json_object_set_new(measurement_gpu_obj, "units", json_string("Watts"));
+
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_array_append(unsupported_features, json_string("power_node"));
+    json_array_append(unsupported_features, json_string("power_mem"));
 
     return 0;
 }

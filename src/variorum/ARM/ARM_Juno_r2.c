@@ -3,12 +3,12 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <ARM_Juno_r2.h>
 #include <config_architecture.h>
@@ -57,7 +57,9 @@ int arm_juno_r2_get_clocks(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = arm_cpu_juno_r2_get_clocks_data(iter, long_ver, stdout);
@@ -78,7 +80,9 @@ int arm_juno_r2_get_frequencies(void)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     for (iter = 0; iter < nsockets; iter++)
     {
         ret = arm_cpu_juno_r2_get_frequencies(iter, stdout);
@@ -98,7 +102,9 @@ int arm_juno_r2_cap_socket_frequency(int cpuid, int freq)
         printf("Running %s\n", __FUNCTION__);
     }
 
+#ifdef VARIORUM_WITH_ARM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_ARM_CPU_IDX);
+#endif
     if (cpuid < 0 || cpuid >= (int)nsockets)
     {
         fprintf(stdout, "The specified CPU ID does not exist\n");
@@ -109,7 +115,7 @@ int arm_juno_r2_cap_socket_frequency(int cpuid, int freq)
     return ret;
 }
 
-int arm_juno_r2_get_power_json(char **get_power_obj_str)
+int arm_juno_r2_get_power_json(json_t *get_power_obj)
 {
     int ret = 0;
 
@@ -119,12 +125,7 @@ int arm_juno_r2_get_power_json(char **get_power_obj_str)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    json_t *get_power_obj = json_object();
-
     ret = arm_cpu_juno_r2_json_get_power_data(get_power_obj);
-
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
-    json_decref(get_power_obj);
 
     return ret;
 }
@@ -143,7 +144,7 @@ int arm_juno_r2_get_power_domain_info_json(char **get_domain_obj_str)
 
     ret = arm_cpu_juno_r2_json_get_power_domain_info(get_domain_obj);
 
-    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
     return ret;

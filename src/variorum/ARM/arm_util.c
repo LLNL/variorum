@@ -1,17 +1,17 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <fcntl.h>
-#include <string.h>
-#include <inttypes.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "arm_util.h"
 #include <variorum_error.h>
@@ -75,8 +75,10 @@ int read_array_ui64(const int fd, uint64_t **array)
 
 void init_arm(void)
 {
+#ifdef VARIORUM_WITH_ARM_CPU
     /* Collect number of packages and GPUs per package */
     variorum_get_topology(&m_num_package, NULL, NULL, P_ARM_CPU_IDX);
+#endif
 
     /* Save hostname */
     gethostname(m_hostname, 1024);

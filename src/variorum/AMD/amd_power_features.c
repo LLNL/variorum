@@ -3,11 +3,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include <config_architecture.h>
 #include <variorum_error.h>
@@ -15,11 +15,17 @@
 #include "msr_core.h"
 #include "amd_power_features.h"
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
 {
     unsigned ncores;
+#ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
+#endif
 
     allocate_batch(RAPL_DATA, 2UL * ncores);
 
@@ -37,7 +43,9 @@ static int rapl_storage(struct rapl_data **data)
     if (!init)
     {
         init = 1;
+#ifdef VARIORUM_WITH_AMD_CPU
         variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
+#endif
 
         rapl = (struct rapl_data *) malloc(ncores * sizeof(struct rapl_data));
 
@@ -69,7 +77,9 @@ static int read_rapl_data(off_t msr_core_energy_status)
 
     if (!init)
     {
+#ifdef VARIORUM_WITH_AMD_CPU
         variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
+#endif
         if (rapl_storage(&rapl))
         {
             return -1;
@@ -125,7 +135,9 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
         return batchfd;
     }
 
+#ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
+#endif
 
     read_rapl_data(msr_core_energy_status);
 
@@ -137,10 +149,24 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
 
     get_rapl_unit(msr_rapl_unit, &val);
 
+#ifdef LIBJUSTIFY_FOUND
+    cfprintf(writedest, "%s  | %s  |\n", "Core", "Energy (J)");
+#else
     fprintf(writedest, " Core   | Energy (J)   |\n");
+#endif
+
     for (i = 0; i < (int)ncores; i++)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf(writedest, "%d  | %f  |\n", i, (*rapl->core_bits[i]) * val);
+#else
         fprintf(writedest, "%6d  | %10f  |\n", i, (*rapl->core_bits[i]) * val);
+#endif
     }
+
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
+
     return 0;
 }

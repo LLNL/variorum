@@ -72,7 +72,9 @@ int intel_cpu_fm_06_9e_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -134,7 +136,9 @@ int intel_cpu_fm_06_9e_cap_power_limits(int package_power_limit)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -371,7 +375,7 @@ int intel_cpu_fm_06_9e_monitoring(FILE *output)
     return 0;
 }
 
-int intel_cpu_fm_06_9e_get_node_power_json(char **get_power_obj_str)
+int intel_cpu_fm_06_9e_get_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -379,14 +383,9 @@ int intel_cpu_fm_06_9e_get_node_power_json(char **get_power_obj_str)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    json_t *get_power_obj = json_object();
-
     json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
-
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
-    json_decref(get_power_obj);
 
     return 0;
 }
@@ -406,9 +405,39 @@ int intel_cpu_fm_06_9e_get_node_power_domain_info_json(char
                                msrs.msr_dram_power_info, msrs.msr_rapl_power_unit,
                                msrs.msr_pkg_power_limit);
 
-    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
+    return 0;
+}
+
+int intel_cpu_fm_06_9e_get_thermals_json(json_t *get_thermal_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    get_therm_temp_reading_json(get_thermal_obj,
+                                msrs.ia32_therm_status,
+                                msrs.ia32_package_therm_status,
+                                msrs.msr_temperature_target);
+
+    return 0;
+}
+
+int intel_cpu_fm_06_9e_get_clocks_json(json_t *get_clock_obj_json)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    get_clocks_data_json(get_clock_obj_json, msrs.ia32_aperf, msrs.ia32_mperf,
+                         msrs.ia32_time_stamp_counter, msrs.ia32_perf_status, msrs.msr_platform_info,
+                         CORE);
     return 0;
 }
 
@@ -429,7 +458,9 @@ int intel_cpu_fm_06_9e_cap_best_effort_node_power_limit(int node_limit)
      * we will guarantee that we stay under the specified cap. */
 
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     // Adding this for portability and rounding down.
     // Ideally this should be okay as it is integer division and we have

@@ -3,17 +3,17 @@
 //
 // SPDX-License-Identifier: MIT
 
+#include <assert.h>
 #include <inttypes.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <variorum_topology.h>
-#include <assert.h>
 
 #include <config_architecture.h>
 #include <variorum_config.h>
 #include <variorum_error.h>
+#include <variorum_topology.h>
 
 #ifdef VARIORUM_WITH_INTEL_CPU
 #include <config_intel.h>
@@ -73,7 +73,6 @@ int variorum_enter(const char *filename, const char *func_name, int line_num)
         printf("_LOG_VARIORUM_ENTER:%s:%s::%d\n", filename, func_name, line_num);
         printf("Number of registered platforms: %d\n", P_NUM_PLATFORMS);
     }
-
 
     variorum_init_func_ptrs();
 
@@ -199,7 +198,6 @@ int variorum_detect_arch(void)
 
     return 0;
 }
-
 
 void variorum_get_topology(unsigned *nsockets, unsigned *ncores,
                            unsigned *nthreads, int idx)
@@ -356,10 +354,13 @@ void variorum_init_func_ptrs()
         g_platform[i].variorum_print_turbo = NULL;
         g_platform[i].variorum_poll_power = NULL;
         g_platform[i].variorum_print_gpu_utilization = NULL;
+        g_platform[i].variorum_get_gpu_utilization_json = NULL;
         g_platform[i].variorum_monitoring = NULL;
-        g_platform[i].variorum_get_node_power_json = NULL;
+        g_platform[i].variorum_get_power_json = NULL;
         g_platform[i].variorum_get_node_power_domain_info_json = NULL;
         g_platform[i].variorum_print_energy = NULL;
+        g_platform[i].variorum_get_thermals_json = NULL;
+        g_platform[i].variorum_get_frequency_json = NULL;
     }
 }
 

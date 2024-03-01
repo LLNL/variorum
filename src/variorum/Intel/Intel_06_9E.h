@@ -6,8 +6,8 @@
 #ifndef KABYLAKE_9E_H_INCLUDE
 #define KABYLAKE_9E_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Kaby Lake Family/Model 9EH.
 struct kabylake_9e_offsets
@@ -101,7 +101,7 @@ int intel_cpu_fm_06_9e_poll_power(FILE *output);
 
 int intel_cpu_fm_06_9e_monitoring(FILE *output);
 
-int intel_cpu_fm_06_9e_get_node_power_json(char **get_power_obj_str);
+int intel_cpu_fm_06_9e_get_power_json(json_t *get_power_obj);
 
 int intel_cpu_fm_06_9e_get_node_power_domain_info_json(char
         **get_domain_obj_str);
@@ -109,5 +109,9 @@ int intel_cpu_fm_06_9e_get_node_power_domain_info_json(char
 int intel_cpu_fm_06_9e_cap_best_effort_node_power_limit(int node_power_limit);
 
 int intel_cpu_fm_06_9e_get_frequencies(void);
+
+int intel_cpu_fm_06_9e_get_thermals_json(json_t *get_thermal_obj);
+
+int intel_cpu_fm_06_9e_get_clocks_json(json_t *get_clock_obj_json);
 
 #endif

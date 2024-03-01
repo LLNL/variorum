@@ -13,7 +13,6 @@ set(FORTRAN_EXAMPLES
 enable_language(Fortran)
 
 if(CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER 10.2)
-    message(STATUS "HERE")
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-invalid-boz")
 endif()
 

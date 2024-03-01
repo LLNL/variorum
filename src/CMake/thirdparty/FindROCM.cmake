@@ -11,7 +11,7 @@ if(ROCM_DIR)
     set(VARIORUM_ROCM_DIR ${ROCM_DIR} CACHE INTERNAL "")
     set(ROCM_DIR ${ROCM_DIR} CACHE PATH "" FORCE)
     set(ROCM_INCLUDE_DIRS ${ROCM_DIR}/include/ CACHE PATH "" FORCE)
-    set(ROCM_LIBRARY ${ROCM_DIR}/lib/librocm_smi64.so.5 CACHE PATH "" FORCE)
+    set(ROCM_LIBRARY ${ROCM_DIR}/lib/librocm_smi64.so CACHE PATH "" FORCE)
     include_directories(${ROCM_INCLUDE_DIRS})
 
     message(STATUS "FOUND ROCM")
@@ -26,7 +26,7 @@ elseif(NOT ROCM_FOUND)
     )
 
     find_library(ROCM_LIBRARY
-        NAMES librocm_smi64.so.5
+        NAMES librocm_smi64.so
     )
 
     if(ROCM_INCLUDE_DIRS AND ROCM_LIBRARY)

@@ -12,6 +12,10 @@
 #include <ibm_power_features.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 int ibm_cpu_p9_get_power(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
@@ -25,9 +29,11 @@ int ibm_cpu_p9_get_power(int long_ver)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -142,17 +148,37 @@ int ibm_cpu_p9_get_power_limits(int long_ver)
 
     if (long_ver == 0)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout,
+                 "%s %s %s %s %s %s%% %s%%\n", "_POWERCAP", "Host", "CurrentPower_W",
+                 "MaxPower_W", "MinPower_W", "PSR_CPU_to_GPU_0_", "PSR_CPU_to_GPU_8_");
+        cfprintf(stdout,
+                 "%s %s %d %d %d %d %d\n", "_POWERCAP", hostname, pcap_current, pcap_max,
+                 pcap_min, psr_1, psr_2);
+#else
         fprintf(stdout,
                 "_POWERCAP Host CurrentPower_W MaxPower_W MinPower_W PSR_CPU_to_GPU_0_%% PSR_CPU_to_GPU_8_%%\n");
         fprintf(stdout, "_POWERCAP %s %d %d %d %d %d \n",
                 hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+#endif
     }
     else
     {
+#ifdef LIBJUSTIFY_FOUND
+        cfprintf(stdout,
+                 "%s: %s, %s: %d W, %s: %d W, %s: %d W, %s: %d%%, %s: %d%%\n",
+                 "_POWERCAP Host:", hostname, "CurrentPower:", pcap_current, "MaxPower:",
+                 pcap_max, "MinPower:", pcap_min, "PSR_CPU_to_GPU_0:", psr_1,
+                 "PSR_CPU_to_GPU_8:", psr_2);
+#else
         fprintf(stdout,
                 "_POWERCAP Host: %s, CurrentPower: %d W, MaxPower: %d W, MinPower: %d W, PSR_CPU_to_GPU_0: %d%%, PSR_CPU_to_GPU_8: %d%%\n",
                 hostname, pcap_current, pcap_max, pcap_min, psr_1, psr_2);
+#endif
     }
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -295,10 +321,12 @@ int ibm_cpu_p9_monitoring(FILE *output)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
     static unsigned count = 0;
 
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -365,7 +393,7 @@ int ibm_cpu_p9_cap_socket_power_limit(int long_ver)
     return 0;
 }
 
-int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
+int ibm_cpu_p9_get_power_json(json_t *get_power_obj)
 {
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -378,20 +406,11 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
+    unsigned nsockets = 0;
 
-    json_t *get_power_obj = json_object();
-
+#ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
-
-    gethostname(hostname, 1024);
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
+#endif
 
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -433,9 +452,68 @@ int ibm_cpu_p9_get_node_power_json(char **get_power_obj_str)
         free(buf);
     }
 
-    // Export JSON object as a string for returning.
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
-    json_decref(get_power_obj);
+    close(fd);
+    return 0;
+}
+
+int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
+{
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int fd;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+    unsigned nsockets;
+
+#ifdef VARIORUM_WITH_IBM_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
+
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+        return -1;
+    }
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+        buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+        if (!buf)
+        {
+            printf("Failed to allocate\n");
+            return -1;
+        }
+
+        for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+        {
+            rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+
+            if (!rc || rc < 0)
+            {
+                break;
+            }
+        }
+
+        if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+        {
+            printf("Failed to read data\n");
+            free(buf);
+            return -1;
+        }
+
+        json_get_thermal_sensors(iter, get_thermal_obj, buf);
+        free(buf);
+    }
+
     close(fd);
     return 0;
 }
@@ -456,25 +534,113 @@ int ibm_cpu_p9_get_node_power_domain_info_json(char **get_domain_obj_str)
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_domain_obj, "host", json_string(hostname));
-    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "measurement",
-                        json_string("[power_node, power_cpu, power_mem, power_gpu]"));
-    json_object_set_new(get_domain_obj, "control",
-                        json_string("[power_node, power_gpu]"));
-    json_object_set_new(get_domain_obj, "unsupported",
-                        json_string("[]"));
-    json_object_set_new(get_domain_obj, "measurement_units",
-                        json_string("[Watts, Watts, Watts, Watts]"));
-    json_object_set_new(get_domain_obj, "control_units",
-                        json_string("[Watts, Percentage]"));
-    json_object_set_new(get_domain_obj, "control_range",
-                        json_string("[{min: 500, max: 3050}, {min: 0, max: 100}]"));
+    json_t *node_obj = json_object();
+
+    json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
+
+    json_t *control_node_obj = json_object();
+    json_object_set_new(control_obj, "power_node", control_node_obj);
+    json_object_set_new(control_node_obj, "min", json_integer(500));
+    json_object_set_new(control_node_obj, "max", json_integer(3050));
+    json_object_set_new(control_node_obj, "units", json_string("Watts"));
+
+    json_t *control_gpu_obj = json_object();
+    json_object_set_new(control_obj, "power_gpu", control_gpu_obj);
+    json_object_set_new(control_gpu_obj, "min", json_integer(0));
+    json_object_set_new(control_gpu_obj, "max", json_integer(100));
+    json_object_set_new(control_gpu_obj, "units", json_string("Percentage"));
+
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
+
+    json_t *measurement_node_obj = json_object();
+    json_object_set_new(measurement_obj, "power_node", measurement_node_obj);
+    json_object_set_new(measurement_node_obj, "units", json_string("Watts"));
+
+    json_t *measurement_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measurement_cpu_obj);
+    json_object_set_new(measurement_cpu_obj, "units", json_string("Watts"));
+
+    json_t *measurement_mem_obj = json_object();
+    json_object_set_new(measurement_obj, "power_mem", measurement_mem_obj);
+    json_object_set_new(measurement_mem_obj, "units", json_string("Watts"));
+
+    json_t *measurement_gpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_gpu", measurement_gpu_obj);
+    json_object_set_new(measurement_gpu_obj, "units", json_string("Watts"));
 
     // Export JSON object as a string for returning.
-    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
+    return 0;
+}
+
+int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
+{
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int fd;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+    unsigned nsockets;
+
+#ifdef VARIORUM_WITH_IBM_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
+#endif
+
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+        return -1;
+    }
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+        buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+        if (!buf)
+        {
+            printf("Failed to allocate\n");
+            return -1;
+        }
+
+        for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+        {
+            rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+
+            if (!rc || rc < 0)
+            {
+                break;
+            }
+        }
+
+        if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+        {
+            printf("Failed to read data\n");
+            free(buf);
+            return -1;
+        }
+        json_get_frequency_sensors(iter, get_frequency_obj_json, buf);
+        free(buf);
+    }
+
+    close(fd);
     return 0;
 }

@@ -13,7 +13,7 @@ the value of various features. For each feature, there is a ``print`` and
 formats. The ``print`` API prints the output in tabular format that can be
 filtered and parsed by a data analysis framework, such as ``R`` or ``Python``.
 The ``print_verbose`` API prints the output in verbose format that is more
-human-readable (with units, titles, etc.). See :doc:`Examples` for sample
+human-readable (with units, titles, etc.). See :doc:`Examples <../Examples>` for sample
 output formats supported by Variorum.
 
 Defined in ``variorum/variorum.h``.

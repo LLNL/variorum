@@ -6,6 +6,7 @@
 #include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <variorum.h>
 #include <variorum_topology.h>
@@ -25,75 +26,111 @@ static inline double do_work(int input)
 }
 #endif
 
-void parse_json_obj(char *s, int num_sockets)
+void parse_json_power_obj(char *s, int num_sockets)
 {
-    int i, j;
 
-    /* Create a Jansson based JSON structure */
-    json_t *power_obj = NULL;
+    const char *hostname = NULL;
+    json_t *node_obj = NULL;
+    json_t *power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+    void *iter = json_object_iter(power_obj);
 
-    double power_node, power_cpu, power_gpu, power_mem;
-    static char **json_metric_names = NULL;
+    /* This is tailored to the nested structure that we have created (see docs). */
+    /* Just for the first level, we use the iterator to obtain the hostname,
+     * as this is encoded as a key to reduce verbosity. */
 
-    /* List of socket-level JSON object metrics */
-    static const char *metrics[] = {"power_cpu_watts_socket_",
-                                    "power_gpu_watts_socket_",
-                                    "power_mem_watts_socket_"
-                                   };
-
-    /* Allocate space for metric names */
-    json_metric_names = malloc(3 * num_sockets * sizeof(char *));
-    for (i = 0; i < (3 * num_sockets); i++)
+    while (iter)
     {
-        json_metric_names[i] = malloc(40);
-    }
-
-    for (i = 0; i < num_sockets; i++)
-    {
-        /* Create a metric name list for querying json object later on */
-        for (j = 0; j < 3; j++)
+        hostname = json_object_iter_key(iter);
+        node_obj = json_object_iter_value(iter);
+        if (node_obj == NULL)
         {
-            char current_metric[40];
-            char current_socket[16];
-            strcpy(current_metric, metrics[j]);
-            sprintf(current_socket, "%d", i);
-            strcat(current_metric, current_socket);
-            strcpy(json_metric_names[(num_sockets * j) + i], current_metric);
+            printf("JSON object not found");
+            exit(0);
         }
+        /* The following should return NULL after the first call per our object. */
+        iter = json_object_iter_next(power_obj, iter);
     }
 
-    /* Load the string as a JSON object using Jansson */
-    power_obj = json_loads(s, JSON_DECODE_ANY, NULL);
+    uint64_t timestamp;
+    int num_gpus_per_socket = -1;
 
-    /* Extract and print values from JSON object */
-    power_node = json_real_value(json_object_get(power_obj, "power_node_watts"));
+    //  Extract node-levels value from node object
+    timestamp = json_integer_value(json_object_get(node_obj, "timestamp"));
 
-    printf("\nExtracted power values at node and socket level are:");
-    printf("\n\nNode Power: %lf Watts\n\n", power_node);
+    printf("Hostname: %s\n", hostname);
+    printf("Timestamp: %lu\n", timestamp);
 
-    for (i = 0; i < num_sockets; i++)
+    // If we're on a GPU-only build, we don't have power_node_watts.
+    if (json_object_get(node_obj, "power_node_watts") != NULL)
     {
-        power_cpu = json_real_value(json_object_get(power_obj, json_metric_names[i]));
-        power_gpu = json_real_value(json_object_get(power_obj,
-                                    json_metric_names[num_sockets + i]));
-        power_mem = json_real_value(json_object_get(power_obj,
-                                    json_metric_names[(num_sockets * 2) + i]));
-
-        printf("Socket %d, CPU Power: %lf Watts\n", i, power_cpu);
-        printf("Socket %d, GPU Power: %lf Watts\n", i, power_gpu);
-        printf("Socket %d, Memory Power: %lf Watts\n\n", i, power_mem);
+        double power_node;
+        power_node = json_real_value(json_object_get(node_obj, "power_node_watts"));
+        printf("Node Power: %0.2lf Watts\n", power_node);
     }
 
-    /* Deallocate metric array */
-    for (i = 0; i < num_sockets * 3; i++)
+    // If we're on a CPU-only build, we don't have num_gpus_per_socket
+    if (json_object_get(node_obj, "num_gpus_per_socket") != NULL)
     {
-        free(json_metric_names[i]);
+        num_gpus_per_socket = json_integer_value(json_object_get(node_obj,
+                              "num_gpus_per_socket"));
+        printf("Number of GPUs per socket: %d\n", num_gpus_per_socket);
     }
-    free(json_metric_names);
 
-    /*Deallocate JSON object*/
+    //  Extract socket and GPU-level data from the node object
+
+    int i;
+    char socketID[20];
+
+    for (i = 0; i < num_sockets; ++i)
+    {
+        snprintf(socketID, 20, "socket_%d", i);
+        json_t *socket_obj = json_object_get(node_obj, socketID);
+        if (socket_obj == NULL)
+        {
+            printf("Socket object not found!\n");
+            exit(0);
+        }
+
+        //If we're on a GPU-only build, we don't have power_cpu_watts
+        if (json_object_get(socket_obj, "power_cpu_watts") != NULL)
+        {
+            double power_cpu;
+            power_cpu = json_real_value(json_object_get(socket_obj, "power_cpu_watts"));
+            printf("Socket %d, CPU Power: %0.2lf Watts\n", i, power_cpu);
+        }
+
+        //If we're on a GPU-only build, we don't have power_mem_watts
+        if (json_object_get(socket_obj, "power_mem_watts") != NULL)
+        {
+            double power_mem;
+            power_mem = json_real_value(json_object_get(socket_obj, "power_mem_watts"));
+            printf("Socket %d, Mem Power: %0.2lf Watts\n", i, power_mem);
+        }
+
+        if (num_gpus_per_socket > 0)
+        {
+            json_t *gpu_obj = json_object_get(socket_obj, "power_gpu_watts");
+
+            if (gpu_obj == NULL)
+            {
+                printf("GPU object not found! \n");
+                exit(0);
+            }
+            const char *key;
+            json_t *value;
+
+            json_object_foreach(gpu_obj, key, value)
+            {
+                printf("Socket %d, %s Power: %0.2lf Watts\n", i, key, json_real_value(value));
+            }
+        }
+
+    }
+
+    // Clean up memory.
     json_decref(power_obj);
 }
+
 
 int main(void)
 {
@@ -108,14 +145,13 @@ int main(void)
 
     /* Determine number of sockets */
     num_sockets = variorum_get_num_sockets();
-
     if (num_sockets <= 0)
     {
         printf("HWLOC returned an invalid number of sockets. Exiting.\n");
         exit(-1);
     }
 
-    ret = variorum_get_node_power_json(&s);
+    ret = variorum_get_power_json(&s);
     if (ret != 0)
     {
         printf("First run: JSON get node power failed!\n");
@@ -126,7 +162,7 @@ int main(void)
     /* Print the entire JSON object and then the parsed JSON object */
     printf("\n*****JSON object received from first run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets);
+    parse_json_power_obj(s, num_sockets);
 
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
@@ -135,7 +171,7 @@ int main(void)
     }
     printf("Final result: %f\n", x);
 
-    ret = variorum_get_node_power_json(&s);
+    ret = variorum_get_power_json(&s);
     if (ret != 0)
     {
         printf("Second run: JSON get node power failed!\n");
@@ -145,7 +181,7 @@ int main(void)
 
     printf("\n*****JSON object received from second run is: \n");
     puts(s);
-    parse_json_obj(s, num_sockets);
+    parse_json_power_obj(s, num_sockets);
 #endif
 
     /* Deallocate the string */

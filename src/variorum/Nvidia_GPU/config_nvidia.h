@@ -11,8 +11,12 @@
 #include <nvidia_gpu_power_features.h>
 #include <Volta.h>
 
-uint64_t *detect_gpu_arch(void);
+uint64_t *detect_gpu_arch(
+    void
+);
 
-int set_nvidia_func_ptrs(int idx);
+int set_nvidia_func_ptrs(
+    int idx
+);
 
 #endif

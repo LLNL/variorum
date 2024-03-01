@@ -6,8 +6,8 @@
 #ifndef IVYBRIDGE_3E_H_INCLUDE
 #define IVYBRIDGE_3E_H_INCLUDE
 
-#include <sys/types.h>
 #include <jansson.h>
+#include <sys/types.h>
 
 /// @brief List of unique addresses for Ivy Bridge Family/Model 3EH.
 struct ivybridge_3e_offsets
@@ -81,37 +81,76 @@ struct ivybridge_3e_offsets
     off_t msr_config_tdp_nominal;
 };
 
-int intel_cpu_fm_06_3e_get_power_limits(int long_ver);
+int intel_cpu_fm_06_3e_get_power_limits(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3e_cap_power_limits(int package_power_limit);
+int intel_cpu_fm_06_3e_cap_power_limits(
+    int package_power_limit
+);
 
-int intel_cpu_fm_06_3e_get_features(void);
+int intel_cpu_fm_06_3e_get_features(
+    void
+);
 
-int intel_cpu_fm_06_3e_get_thermals(int long_ver);
+int intel_cpu_fm_06_3e_get_thermals(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3e_get_counters(int long_ver);
+int intel_cpu_fm_06_3e_get_counters(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3e_get_clocks(int long_ver);
+int intel_cpu_fm_06_3e_get_clocks(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3e_get_power(int long_ver);
+int intel_cpu_fm_06_3e_get_power(
+    int long_ver
+);
 
-int intel_cpu_fm_06_3e_enable_turbo(void);
+int intel_cpu_fm_06_3e_enable_turbo(
+    void
+);
 
-int intel_cpu_fm_06_3e_disable_turbo(void);
+int intel_cpu_fm_06_3e_disable_turbo(
+    void
+);
 
-int intel_cpu_fm_06_3e_get_turbo_status(void);
+int intel_cpu_fm_06_3e_get_turbo_status(
+    void
+);
 
-int intel_cpu_fm_06_3e_poll_power(FILE *output);
+int intel_cpu_fm_06_3e_poll_power(
+    FILE *output
+);
 
-int intel_cpu_fm_06_3e_monitoring(FILE *output);
+int intel_cpu_fm_06_3e_monitoring(
+    FILE *output
+);
 
-int intel_cpu_fm_06_3e_get_node_power_json(char **get_power_obj_str);
+int intel_cpu_fm_06_3e_get_power_json(
+    json_t *get_power_obj
+);
 
-int intel_cpu_fm_06_3e_get_node_power_domain_info_json(char
-        **get_domain_obj_str);
+int intel_cpu_fm_06_3e_get_node_power_domain_info_json(
+    char **get_domain_obj_str
+);
 
-int intel_cpu_fm_06_3e_cap_best_effort_node_power_limit(int node_power_limit);
+int intel_cpu_fm_06_3e_cap_best_effort_node_power_limit(
+    int node_power_limit
+);
 
-int intel_cpu_fm_06_3e_get_frequencies(void);
+int intel_cpu_fm_06_3e_get_frequencies(
+    void
+);
+
+int intel_cpu_fm_06_3e_get_thermals_json(
+    json_t *get_thermal_obj
+);
+
+int intel_cpu_fm_06_3e_get_clocks_json(
+    json_t *get_clock_obj_json
+);
 
 #endif

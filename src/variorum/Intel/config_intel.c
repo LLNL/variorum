@@ -87,14 +87,18 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_2a_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_2a_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_2a_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_2a_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_2a_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_2a_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_2a_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_2a_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_2a_get_clocks_json;
     }
     else if (*g_platform[idx].arch_id == FM_06_2D)
     {
@@ -114,14 +118,18 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_2d_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_2d_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_2d_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_2d_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_2d_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_2d_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_2d_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_2d_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_2d_get_clocks_json;
     }
     // Ivy Bridge 06_3E
     else if (*g_platform[idx].arch_id == FM_06_3E)
@@ -142,14 +150,18 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_3e_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_3e_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_3e_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_3e_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_3e_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_3e_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_3e_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_3e_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_3e_get_clocks_json;
     }
     // Haswell 06_3F
     else if (*g_platform[idx].arch_id == FM_06_3F)
@@ -170,14 +182,16 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_3f_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_3f_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_3f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_3f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_3f_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_3f_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_3f_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_3f_get_thermals_json;
     }
     // Broadwell 06_4F
     else if (*g_platform[idx].arch_id == FM_06_4F)
@@ -198,14 +212,18 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_4f_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_4f_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_4f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_4f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_4f_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_4f_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_4f_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_4f_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_3f_get_clocks_json;
     }
     // Skylake 06_55
     else if (*g_platform[idx].arch_id == FM_06_55)
@@ -224,8 +242,8 @@ int set_intel_func_ptrs(int idx)
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_55_disable_turbo;
         g_platform[idx].variorum_poll_power = intel_cpu_fm_06_55_poll_power;
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_55_monitoring;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_55_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_55_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_55_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -234,6 +252,10 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_55_cap_frequency;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_55_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_55_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_55_get_clocks_json;
     }
     // Kaby Lake 06_9E
     else if (*g_platform[idx].arch_id == FM_06_9E)
@@ -252,14 +274,18 @@ int set_intel_func_ptrs(int idx)
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_9e_disable_turbo;
         g_platform[idx].variorum_poll_power = intel_cpu_fm_06_9e_poll_power;
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_9e_monitoring;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_9e_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_9e_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_9e_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
             intel_cpu_fm_06_9e_cap_best_effort_node_power_limit;
         g_platform[idx].variorum_print_available_frequencies =
             intel_cpu_fm_06_9e_get_frequencies;
+        g_platform[idx].variorum_get_thermals_json =
+            intel_cpu_fm_06_9e_get_thermals_json;
+        g_platform[idx].variorum_get_frequency_json =
+            intel_cpu_fm_06_9e_get_clocks_json;
     }
     // Ice Lake 06_6A
     else if (*g_platform[idx].arch_id == FM_06_6A)
@@ -275,8 +301,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_power_limit = fm_06_8f_get_power_limits;
         g_platform[idx].variorum_print_features = fm_06_8f_get_features;
         g_platform[idx].variorum_print_power = fm_06_8f_get_power;
-        g_platform[idx].variorum_get_node_power_json =
-            fm_06_8f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            fm_06_8f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             fm_06_8f_get_node_power_domain_info_json;
         g_platform[idx].variorum_monitoring = fm_06_8f_monitoring;

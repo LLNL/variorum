@@ -11,6 +11,10 @@
 #include <msr_core.h>
 #include <variorum_error.h>
 
+#ifdef LIBJUSTIFY_FOUND
+#include <cprintf.h>
+#endif
+
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
  * I am currently batching the read of the turbo ratio limit, which is per
@@ -24,7 +28,9 @@ int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int max_non_turbo_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -67,7 +73,9 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int max_efficiency_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -97,7 +105,6 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
     return 0;
 }
 
-
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
  * I am currently batching the read of the turbo ratio limit, which is per
@@ -111,7 +118,9 @@ int get_min_operating_ratio(off_t msr_platform_info, int *val)
     static uint64_t **raw_val = NULL;
     int min_operating_ratio;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         raw_val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -148,7 +157,9 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
     static uint64_t **val = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -170,18 +181,25 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
         core += 1;
         if (core > ncores)
         {
             break;
         }
     }
-
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
-
 
 /* 02/25/19 SB
  * This format will be used moving forward for Xeon
@@ -198,12 +216,17 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     static uint64_t **val2 = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         val2 = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
         allocate_batch(TURBO_RATIO_LIMIT, nsockets);
+#ifdef LIBJUSTIFY_FOUND
+        cflush();
+#endif
         allocate_batch(TURBO_RATIO_LIMIT1, nsockets);
         load_socket_batch(msr_turbo_ratio_limit, val, TURBO_RATIO_LIMIT);
         load_socket_batch(msr_turbo_ratio_limit1, val2, TURBO_RATIO_LIMIT1);
@@ -225,8 +248,13 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     unsigned core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                               nbits)) * 100);
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
         core += 1;
         if (core > ncores)
         {
@@ -235,15 +263,22 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
     }
     for (nbits = 0; nbits < 64; nbits += 8)
     {
-        printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
-                                              nbits)) * 100);
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+                                               nbits)) * 100);
+#else
+        printf("%2d C = %d MHz\n", core, (int)(MASK_VAL(*val2[0], nbits + 7,
+                                               nbits)) * 100);
+#endif
         core += 1;
         if (core >= ncores)
         {
             break;
         }
     }
-
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -256,7 +291,9 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
     static uint64_t **val2 = NULL;
     unsigned ncores, nbits;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -288,10 +325,17 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
         {
             break;
         }
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
+                                              nbits)) * 100);
+#else
         printf("%2dC = %d MHz\n", core, (int)(MASK_VAL(*val[0], nbits + 7,
                                               nbits)) * 100);
+#endif
     }
-
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -304,7 +348,9 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     static uint64_t **l = NULL;
     int level;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         l = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -331,13 +377,23 @@ int config_tdp(int nlevels, off_t msr_config_tdp_level)
     }
     if (nlevels == 2)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%s  = %d MHz\n", "AVX512", level * 100);
+#else
         printf("AVX512  = %d MHz\n", level * 100);
+#endif
     }
     else if (nlevels == 1)
     {
+#ifdef LIBJUSTIFY_FOUND
+        cprintf("%s  = %d MHz\n", "AVX", level * 100);
+#else
         printf("AVX     = %d MHz\n", level * 100);
+#endif
     }
-
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -360,7 +416,9 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
     static unsigned nsockets = 0;
     static uint64_t **val = NULL;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     if (!init)
     {
         val = (uint64_t **) malloc(nsockets * sizeof(uint64_t *));
@@ -407,10 +465,16 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
         err = get_max_non_turbo_ratio(*msr_platform_info, &max_non_turbo_ratio);
         if (!err)
         {
+#ifdef LIBJUSTIFY_FOUND
+            cprintf("%s = %d MHz\n", "Non-AVX", max_non_turbo_ratio);
+#else
             printf("Non-AVX = %d MHz\n", max_non_turbo_ratio);
+#endif
         }
     }
-
+#ifdef LIBJUSTIFY_FOUND
+    cflush();
+#endif
     return 0;
 }
 
@@ -423,7 +487,9 @@ int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     /// Creates mask for turbo disable bit according to the architecture offset
     /// given.
     mask |= 1LL << turbo_mode_disable_bit;
@@ -468,7 +534,9 @@ int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     /// Creates mask for turbo disable bit according to the architecture offset
     /// given.
     mask |= 1LL << turbo_mode_disable_bit;
@@ -514,7 +582,9 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
     mask |= 1LL << turbo_mode_disable_bit;
 
     for (socket = 0; socket < nsockets; socket++)

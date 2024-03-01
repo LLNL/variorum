@@ -1,4 +1,4 @@
-// Copyright 2019-2022 Lawrence Livermore National Security, LLC and other
+// Copyright 2019-2023 Lawrence Livermore National Security, LLC and other
 // Variorum Project Developers. See the top-level LICENSE file for details.
 //
 // SPDX-License-Identifier: MIT
@@ -38,7 +38,9 @@ int fm_06_8f_get_power_limits(int long_ver)
 {
     unsigned socket;
     unsigned nsockets, ncores, nthreads;
+#ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
+#endif
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -134,7 +136,7 @@ int fm_06_8f_get_power(int long_ver)
     return 0;
 }
 
-int fm_06_8f_get_node_power_json(char **get_power_obj_str)
+int fm_06_8f_get_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -142,14 +144,9 @@ int fm_06_8f_get_node_power_json(char **get_power_obj_str)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    json_t *get_power_obj = json_object();
-
     json_get_power_data(get_power_obj, msrs.msr_pkg_power_limit,
                         msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
                         msrs.msr_dram_energy_status);
-
-    *get_power_obj_str = json_dumps(get_power_obj, 0);
-    json_decref(get_power_obj);
 
     return 0;
 }
@@ -168,7 +165,7 @@ int fm_06_8f_get_node_power_domain_info_json(char **get_domain_obj_str)
                                msrs.msr_dram_power_info, msrs.msr_rapl_power_unit,
                                msrs.msr_pkg_power_limit);
 
-    *get_domain_obj_str = json_dumps(get_domain_obj, 0);
+    *get_domain_obj_str = json_dumps(get_domain_obj, JSON_INDENT(4));
     json_decref(get_domain_obj);
 
     return 0;
