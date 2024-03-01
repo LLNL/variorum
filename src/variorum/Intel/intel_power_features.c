@@ -1233,7 +1233,7 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     for (i = 0; i < nsockets; i++)
     {
         char socketid[12];
-        snprintf(socketid, 12, "Socket_%d", i);
+        snprintf(socketid, 12, "socket_%d", i);
 
         json_t *socket_obj = json_object();
         json_object_set_new(get_power_obj, socketid, socket_obj);
