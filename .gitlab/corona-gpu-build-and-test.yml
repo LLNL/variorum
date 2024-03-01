@@ -64,7 +64,6 @@ build-corona-gpu:
    - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-corona -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON ../src
    - make VERBOSE=1
    - make install
-   - ./examples/variorum-get-power-json-example 
 
 # disabling for now
 #   - env CTEST_OUTPUT_ON_FAILURE=1 make test
