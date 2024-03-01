@@ -70,4 +70,5 @@ int main(int argc, char **argv)
         printf("HWLOC returned an invalid number of threads (<=0)."
                "Variorum does not handle this case. \n");
     }
+    return 0;
 }

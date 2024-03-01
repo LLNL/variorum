@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <jansson.h>
 
 #include <instinctGPU.h>
 #include <config_architecture.h>
@@ -206,5 +207,24 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
     {
         cap_each_gpu_power_limit(iter, nsockets, powerlimit);
     }
+    return 0;
+}
+
+int amd_gpu_instinct_get_power_json(json_t *get_power_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    unsigned nsockets;
+
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+#ifdef VARIORUM_WITH_AMD_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
+#endif
+
+    get_json_power_data(get_power_obj, nsockets);
+
     return 0;
 }

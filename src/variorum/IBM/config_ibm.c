@@ -33,7 +33,7 @@ int set_ibm_func_ptrs(int idx)
             ibm_cpu_p9_cap_socket_power_limit;
         g_platform[idx].variorum_cap_gpu_power_ratio = ibm_cpu_p9_cap_gpu_power_ratio;
         g_platform[idx].variorum_monitoring = ibm_cpu_p9_monitoring;
-        g_platform[idx].variorum_get_node_power_json = ibm_cpu_p9_get_node_power_json;
+        g_platform[idx].variorum_get_power_json = ibm_cpu_p9_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             ibm_cpu_p9_get_node_power_domain_info_json;
         g_platform[idx].variorum_get_thermals_json = ibm_cpu_p9_get_node_thermal_json;

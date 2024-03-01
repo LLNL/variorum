@@ -151,9 +151,9 @@ class variorum:
         """
 
         # Get Node Power in JSON Format
-        self.variorum_get_node_power_json = self.variorum_c.variorum_get_node_power_json
-        self.variorum_get_node_power_json.argtypes = [POINTER(c_char_p)]
-        self.variorum_get_node_power_json.restype = c_int
+        self.variorum_get_power_json = self.variorum_c.variorum_get_power_json
+        self.variorum_get_power_json.argtypes = [POINTER(c_char_p)]
+        self.variorum_get_power_json.restype = c_int
 
         # Get Node Power Domain Information in JSON Format
         self.variorum_get_node_power_domain_info_json = (

@@ -381,7 +381,7 @@ void print_all_sensors(int chipid, FILE *output, const void *buf)
 #endif
 }
 
-void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
+void json_get_power_sensors(int chipid, json_t *node_obj, const void *buf)
 {
     struct occ_sensor_data_header *hb;
     struct occ_sensor_name *md;
@@ -390,17 +390,9 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
     uint64_t pwrsys = 0;
     uint64_t pwrproc = 0;
     uint64_t pwrmem = 0;
-    uint64_t pwrgpu = 0;
-    char sockID[4];
+    char socketID[12];
 
-    char cpu_str[36] = "power_cpu_watts_socket_";
-    char mem_str[36] = "power_mem_watts_socket_";
-    char gpu_str[36] = "power_gpu_watts_socket_";
-
-    sprintf(sockID, "%d", chipid);
-    strcat(cpu_str, sockID);
-    strcat(mem_str, sockID);
-    strcat(gpu_str, sockID);
+    sprintf(socketID, "socket_%d", chipid);
 
     hb = (struct occ_sensor_data_header *)(uint64_t)buf;
     md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
@@ -440,20 +432,18 @@ void json_get_power_sensors(int chipid, json_t *get_power_obj, const void *buf)
         {
             pwrmem = (uint64_t)(sample * TO_FP(scale));
         }
-        if (strcmp(md[i].name, "PWRGPU") == 0)
-        {
-            pwrgpu = (uint64_t)(sample * TO_FP(scale));
-        }
     }
 
     if (chipid == 0)
     {
-        json_object_set_new(get_power_obj, "power_node_watts", json_real(pwrsys));
+        json_object_set_new(node_obj, "power_node_watts", json_real(pwrsys));
     }
 
-    json_object_set_new(get_power_obj, cpu_str, json_real(pwrproc));
-    json_object_set_new(get_power_obj, mem_str, json_real(pwrmem));
-    json_object_set_new(get_power_obj, gpu_str, json_real(pwrgpu));
+    json_t *socket_obj = json_object();
+    json_object_set_new(node_obj, socketID, socket_obj);
+
+    json_object_set_new(socket_obj, "power_cpu_watts", json_real(pwrproc));
+    json_object_set_new(socket_obj, "power_mem_watts", json_real(pwrmem));
 }
 
 void json_get_thermal_sensors(int chipid, json_t *node_obj, const void *buf)

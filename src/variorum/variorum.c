@@ -1036,61 +1036,52 @@ int variorum_disable_turbo(void)
     return err;
 }
 
-// The variorum_get_node_power_json is a node-level API, and cannot be implemented
-// at a per-component (eg CPU, GPU) level. This can only be captured by what we
-// define as the 'primary' platform, e.g. IBM Power9 CPU or Intel and AMD CPUs,
-// and internally, the implementation can update power usage of CPU, GPUs and
-// memory where applicable. Current implementation is basic, and in the future,
-// we will update this API to do obtain and return the GPU power usage using a new
-// JSON API for GPU power.
-
-int variorum_get_node_power_json(char **get_power_obj_str)
+int variorum_get_power_json(char **get_power_obj_str)
 {
     int err = 0;
     int i;
+    uint64_t ts;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
 
-    // Obtain the index corresponding to the primary platform.
+    char hostname[1024];
+    gethostname(hostname, 1024);
+
+    struct timeval tv;
+
+    json_t *get_power_obj = json_object();
+    json_t *node_obj = json_object();
+    json_object_set_new(get_power_obj, hostname, node_obj);
+
+    gettimeofday(&tv, NULL);
+    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-#ifdef VARIORUM_WITH_INTEL_CPU
-        i = P_INTEL_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_IBM_CPU
-        i = P_IBM_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_AMD_CPU
-        i = P_AMD_CPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_ARM_CPU
-        i = P_ARM_CPU_IDX;
-        break;
-#endif
+        if (g_platform[i].variorum_get_power_json == NULL)
+        {
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            continue;
+        }
+        err = g_platform[i].variorum_get_power_json(node_obj);
+        if (err)
+        {
+            // For the JSON functions, we return a -1 here, so users don't need
+            // to explicitly check for NULL strings.
+            return -1;
+        }
     }
 
-    if (g_platform[i].variorum_get_node_power_json == NULL)
-    {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        // For the JSON functions, we return a -1 here, so users don't need
-        // to explicitly check for NULL strings.
-        return -1;
-    }
+    *get_power_obj_str = json_dumps(get_power_obj, JSON_INDENT(4));
+    json_decref(get_power_obj);
 
-    err = g_platform[i].variorum_get_node_power_json(get_power_obj_str);
-    if (err)
-    {
-        return -1;
-    }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1518,6 +1509,55 @@ int variorum_get_frequency_json(char **get_frequency_obj_str)
     }
     return err;
 }
+
+/*
+int variorum_get_gpu_power_json(char **get_power_obj_str)
+{
+    int err = 0;
+    int i;
+    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+
+    // Obtain the index corresponding to the primary platform.
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
+    {
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+        i = P_NVIDIA_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+        i = P_AMD_GPU_IDX;
+        break;
+#endif
+    }
+
+    if (g_platform[i].variorum_get_gpu_power_json == NULL)
+    {
+        variorum_error_handler("Feature not yet implemented or is not supported",
+                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                               getenv("HOSTNAME"), __FILE__,
+                               __FUNCTION__, __LINE__);
+        // For the JSON functions, we return a -1 here, so users don't need
+        // to explicitly check for NULL strings.
+        return -1;
+    }
+
+    err = g_platform[i].variorum_get_gpu_power_json(get_power_obj_str);
+    if (err)
+    {
+        return -1;
+    }
+    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+    if (err)
+    {
+        return -1;
+    }
+    return err;
+}
+*/
 
 int variorum_print_available_frequencies(void)
 {

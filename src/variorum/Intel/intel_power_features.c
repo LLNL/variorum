@@ -1217,21 +1217,12 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
     static struct rapl_data *rapl = NULL;
     struct rapl_limit l1, l2;
     unsigned nsockets = 0;
-    char hostname[1024];
-    struct timeval tv;
-    uint64_t ts;
-    static size_t sockID_len = 11; // large enough to avoid format truncation
-    char sockID[sockID_len + 1];
     unsigned i;
     double node_power = 0.0;
 
-    gethostname(hostname, 1024);
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
 #endif
-
-    gettimeofday(&tv, NULL);
-    ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 
     get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
     if (!init)
@@ -1239,50 +1230,26 @@ void json_get_power_data(json_t *get_power_obj, off_t msr_power_limit,
         rapl_storage(&rapl);
     }
 
-    json_object_set_new(get_power_obj, "host", json_string(hostname));
-    json_object_set_new(get_power_obj, "timestamp", json_integer(ts));
-
     for (i = 0; i < nsockets; i++)
     {
-        /* Defined here so as to reset the string for each socket
-         * and append correctly */
-        char cpu_str[36] = "power_cpu_watts_socket_";
-        char mem_str[36] = "power_mem_watts_socket_";
-        char gpu_str[36] = "power_gpu_watts_socket_";
+        char socketid[12];
+        snprintf(socketid, 12, "socket_%d", i);
 
-        snprintf(sockID, sockID_len, "%d", i);
-        strcat(cpu_str, sockID);
-        strcat(mem_str, sockID);
-        strcat(gpu_str, sockID);
+        json_t *socket_obj = json_object();
+        json_object_set_new(get_power_obj, socketid, socket_obj);
 
         get_package_rapl_limit(i, &l1, &l2, msr_power_limit, msr_rapl_unit);
 
-        json_object_set_new(get_power_obj, cpu_str, json_real(rapl->pkg_watts[i]));
-        json_object_set_new(get_power_obj, mem_str, json_real(rapl->dram_watts[i]));
-
-        /* To ensure vendor-neutrality of the JSON power object across various
-           platforms, such as IBM, we set gpu_power to -1.0 here as MSRs do not
-           report it. The negative -1.0 value indicates that the JSON object does
-           not contain the data for the associated key due to architecture
-           limitations.
-           TODO is to populate this through the NVIDIA NVML GPU power values
-           when variorum is built with NVIDIA on Intel architectures. */
-
-        json_object_set_new(get_power_obj, gpu_str, json_real(-1.0));
-
-        /* To ensure vendor-neutrality of the JSON power object across various
-           platforms, such as IBM, we set power_sys as the sum of CPU and DRAM
-           power values. This is estimated node power, and is not total power on
-           the node. Intel platforms currently do not report total node power
-           like the IBM platforms. We hope this changes in the future, and we
-           have an acutal measurement for node power instead, so the following
-           can be updated accordingly. */
-
+        json_object_set_new(socket_obj, "power_cpu_watts",
+                            json_real(rapl->pkg_watts[i]));
+        json_object_set_new(socket_obj, "power_mem_watts",
+                            json_real(rapl->dram_watts[i]));
         node_power += rapl->pkg_watts[i] + rapl->dram_watts[i];
     }
 
     // Set the node power key with pwrnode value.
-    json_object_set_new(get_power_obj, "power_node_watts", json_real(node_power));
+    json_object_set_new(get_power_obj, "power_node_watts",
+                        json_real(node_power));
 }
 
 void json_get_power_domain_info(json_t *get_domain_obj,
@@ -1294,7 +1261,6 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     uint64_t ts;
     struct rapl_pkg_power_info pkg_info;
     struct rapl_dram_power_info dram_info;
-    char range_str[100];
 
     get_package_rapl_limit(0, NULL, NULL, 0, msr_rapl_unit);
     struct rapl_limit l1, l2;
@@ -1306,30 +1272,46 @@ void json_get_power_domain_info(json_t *get_domain_obj,
     get_rapl_pkg_power_info(0, &pkg_info, msr_pkg_power_info);
     get_rapl_dram_power_info(0, &dram_info, msr_dram_power_info);
 
-    snprintf(range_str, sizeof range_str, "%s%lf%s%lf%s%lf%s%lf%s",
-             "[{min: ", pkg_info.pkg_min_power,
-             ", max: ", pkg_info.pkg_max_power,
-             "}, {min: ", dram_info.dram_min_power,
-             ", max: ", dram_info.dram_max_power, "}]");
-
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    json_object_set_new(get_domain_obj, "host", json_string(hostname));
-    json_object_set_new(get_domain_obj, "timestamp", json_integer(ts));
 
-    json_object_set_new(get_domain_obj, "measurement",
-                        json_string("[power_cpu, power_mem]"));
-    json_object_set_new(get_domain_obj, "control",
-                        json_string("[power_cpu, power_mem]"));
-    json_object_set_new(get_domain_obj, "unsupported",
-                        json_string("[power_node]"));
-    json_object_set_new(get_domain_obj, "measurement_units",
-                        json_string("[Watts, Watts]"));
-    json_object_set_new(get_domain_obj, "control_units",
-                        json_string("[Watts, Watts]"));
-    json_object_set_new(get_domain_obj, "control_range",
-                        json_string(range_str));
+    json_t *node_obj = json_object();
+
+    json_object_set_new(get_domain_obj, hostname, node_obj);
+    json_object_set_new(node_obj, "timestamp", json_integer(ts));
+
+    json_t *control_obj = json_object();
+    json_object_set_new(node_obj, "control", control_obj);
+
+    json_t *control_cpu_obj = json_object();
+    json_object_set_new(control_obj, "power_cpu", control_cpu_obj);
+    json_object_set_new(control_cpu_obj, "min", json_real(pkg_info.pkg_min_power));
+    json_object_set_new(control_cpu_obj, "max", json_real(pkg_info.pkg_max_power));
+    json_object_set_new(control_cpu_obj, "units", json_string("Watts"));
+
+    json_t *control_mem_obj = json_object();
+    json_object_set_new(control_obj, "power_mem", control_mem_obj);
+    json_object_set_new(control_mem_obj, "min",
+                        json_real(dram_info.dram_min_power));
+    json_object_set_new(control_mem_obj, "max",
+                        json_real(dram_info.dram_max_power));
+    json_object_set_new(control_mem_obj, "units", json_string("Watts"));
+
+    json_t *unsupported_features = json_array();
+    json_object_set_new(node_obj, "unsupported", unsupported_features);
+    json_array_append(unsupported_features, json_string("power_node"));
+
+    json_t *measurement_obj = json_object();
+    json_object_set_new(node_obj, "measurement", measurement_obj);
+
+    json_t *measure_cpu_obj = json_object();
+    json_object_set_new(measurement_obj, "power_cpu", measure_cpu_obj);
+    json_object_set_new(measure_cpu_obj, "units", json_string("Watts"));
+
+    json_t *measure_mem_obj = json_object();
+    json_object_set_new(measurement_obj, "power_mem", measure_mem_obj);
+    json_object_set_new(measure_mem_obj, "units", json_string("Watts"));
 
     // Need to figure out a way to specify capping limits by reading MSRs.
     // If we have an NVIDIA + Intel build, the GPU info should be updated.
@@ -1486,6 +1468,7 @@ int read_rapl_data(off_t msr_rapl_unit, off_t msr_pkg_energy_status,
 void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
                         off_t msr_dram_power_limit, off_t msr_rapl_unit,
                         off_t msr_package_energy_status, off_t msr_dram_energy_status)
+
 {
     // The length of the rlim array assumes dual socket system.
     static struct rapl_limit *rlim;

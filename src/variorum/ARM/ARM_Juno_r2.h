@@ -30,7 +30,7 @@ int arm_juno_r2_cap_socket_frequency(
 );
 
 int arm_juno_r2_get_power_json(
-    char **get_power_obj_str
+    json_t *get_power_obj
 );
 
 int arm_juno_r2_get_power_domain_info_json(
