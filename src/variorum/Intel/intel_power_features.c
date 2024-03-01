@@ -1581,7 +1581,8 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 #endif
 }
 
-void print_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
+void print_energy_data(FILE *writedest, off_t msr_rapl_unit,
+                       off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
@@ -1590,8 +1591,6 @@ void print_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
     struct timeval now;
     char hostname[1024];
     unsigned i;
-    off_t msr_dram_energy_status;
-    off_t msr_rapl_unit;
 
     gethostname(hostname, 1024);
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -1615,7 +1614,8 @@ void print_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
     }
 }
 
-void print_verbose_energy_data(FILE *writedest, off_t msr_pkg_energy_status)
+void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
+                              off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;
