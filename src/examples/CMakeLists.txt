@@ -19,8 +19,8 @@ set(BASIC_EXAMPLES
     variorum-get-frequency-json-example
     variorum-get-gpu-utilization-json-example
     variorum-get-node-power-domain-info-json-example
-    variorum-get-node-power-json-example
-    variorum-get-node-thermal-json-example
+    variorum-get-power-json-example
+    variorum-get-thermals-json-example
     variorum-get-node-utilization-json-example
     variorum-get-topology-info-example
     variorum-integration-using-json-example

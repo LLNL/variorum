@@ -87,8 +87,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_2a_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_2a_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_2a_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_2a_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_2a_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -118,8 +118,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_2d_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_2d_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_2d_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_2d_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_2d_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -150,8 +150,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_3e_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_3e_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_3e_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_3e_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_3e_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -183,8 +183,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_3f_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_3f_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_3f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_3f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_3f_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -214,8 +214,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_4f_monitoring;
         //g_platform[idx].variorum_cap_each_core_frequency =
         //    intel_cpu_fm_06_4f_cap_frequency;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_4f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_4f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_4f_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -246,8 +246,8 @@ int set_intel_func_ptrs(int idx)
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_55_disable_turbo;
         g_platform[idx].variorum_poll_power = intel_cpu_fm_06_55_poll_power;
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_55_monitoring;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_55_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_55_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_55_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -278,8 +278,8 @@ int set_intel_func_ptrs(int idx)
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_9e_disable_turbo;
         g_platform[idx].variorum_poll_power = intel_cpu_fm_06_9e_poll_power;
         g_platform[idx].variorum_monitoring = intel_cpu_fm_06_9e_monitoring;
-        g_platform[idx].variorum_get_node_power_json =
-            intel_cpu_fm_06_9e_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            intel_cpu_fm_06_9e_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             intel_cpu_fm_06_9e_get_node_power_domain_info_json;
         g_platform[idx].variorum_cap_best_effort_node_power_limit =
@@ -305,8 +305,8 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_power_limit = fm_06_8f_get_power_limits;
         g_platform[idx].variorum_print_features = fm_06_8f_get_features;
         g_platform[idx].variorum_print_power = fm_06_8f_get_power;
-        g_platform[idx].variorum_get_node_power_json =
-            fm_06_8f_get_node_power_json;
+        g_platform[idx].variorum_get_power_json =
+            fm_06_8f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             fm_06_8f_get_node_power_domain_info_json;
         g_platform[idx].variorum_monitoring = fm_06_8f_monitoring;

@@ -10,6 +10,8 @@
 #include <nvml.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/time.h>
 
 extern unsigned m_total_unit_devices;
 extern nvmlDevice_t *m_unit_devices_file_desc;
@@ -72,6 +74,12 @@ void nvidia_gpu_get_clocks_json(
 void nvidia_get_gpu_utilization_json(
     int chipid,
     json_t *get_gpu_util_obj
+);
+
+
+void nvidia_gpu_get_power_json(
+    int chipid,
+    json_t *output
 );
 
 #endif

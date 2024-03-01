@@ -541,6 +541,8 @@ int variorum_disable_turbo(void);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 /// - Intel Sapphire Rapids
+/// - NVIDIA Volta
+/// - AMD Radeon Instinct GPUs (MI50 onwards)
 ///
 /// @param [out] get_power_obj_str String (passed by reference) that contains the
 /// node-level power information.
@@ -548,7 +550,7 @@ int variorum_disable_turbo(void);
 /// @return 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
-int variorum_get_node_power_json(char **get_power_obj_str);
+int variorum_get_power_json(char **get_power_obj_str);
 
 /// @brief Populate a string in JSON format with total CPU node utilization, user
 /// CPU utilization, kernel CPU utilization, total node memory utilization, and GPU

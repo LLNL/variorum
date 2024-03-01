@@ -72,10 +72,21 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t pwr_val = -1;
+        uint64_t pwr_val = 0;
         double pwr_val_flt = -1.0;
 
-        ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+        /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
+         * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
+         * If using an older version of ROCm, please use the code segment
+         * with the rsmi_dev_power_ave_get() API below on line 85 and comment
+         * lines 88 and 89. We're not adding backward compatibility checks
+         * at the moment due to lack of resources and time.
+         *
+         *  ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+         */
+
+        RSMI_POWER_TYPE pwr_type = RSMI_AVERAGE_POWER;
+        ret = rsmi_dev_power_get(i, &pwr_val, &pwr_type);
         if (ret != RSMI_STATUS_SUCCESS)
         {
             variorum_error_handler("RSMI API was not successful",
@@ -945,4 +956,106 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
     }
+}
+
+void get_json_power_data(json_t *get_power_obj, int total_sockets)
+{
+    int chipid;
+    uint32_t num_devices;
+    int gpus_per_socket;
+    uint64_t pwr_val = -1;
+    double pwr_val_flt = 0.0;
+    double total_gpu_power = 0.0;
+    int d;
+
+    rsmi_status_t ret;
+
+    static size_t devIDlen = 24; // Long enough to avoid format truncation.
+    char devID[devIDlen];
+    char socketID[24];
+
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not initialize RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not get number of GPU devices",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+        exit(-1);
+    }
+
+    gpus_per_socket = num_devices / total_sockets;
+
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
+                        json_integer(gpus_per_socket));
+
+    for (chipid = 0; chipid < total_sockets; chipid++)
+    {
+        snprintf(socketID, devIDlen, "socket_%d", chipid);
+
+        json_t *socket_obj = json_object_get(get_power_obj, socketID);
+        if (socket_obj == NULL)
+        {
+            socket_obj = json_object();
+            json_object_set_new(get_power_obj, socketID, socket_obj);
+        }
+
+        json_t *gpu_obj = json_object();
+        json_object_set_new(socket_obj, "power_gpu_watts", gpu_obj);
+
+        //Iterate over all GPU device handles for this socket and update object
+        for (d = chipid * gpus_per_socket;
+             d < (chipid + 1) * gpus_per_socket; ++d)
+        {
+
+            /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
+             * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
+             * If using an older version of ROCm, please use the code segment
+             * with the rsmi_dev_power_ave_get() API below on line 85 and comment
+             * lines 88 and 89. We're not adding backward compatibility checks
+             * at the moment due to lack of resources and time.
+             *
+             * ret = rsmi_dev_power_ave_get(d, 0, &pwr_val);
+             *
+             */
+
+            RSMI_POWER_TYPE pwr_type = RSMI_AVERAGE_POWER;
+            ret = rsmi_dev_power_get(d, &pwr_val, &pwr_type);
+            pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
+            snprintf(devID, devIDlen, "GPU_%d", d);
+            json_object_set_new(gpu_obj, devID, json_real(pwr_val_flt));
+            total_gpu_power += pwr_val_flt;
+        }
+    }
+
+    // If we have an existing CPU object with power_node_watts, update its value.
+    if (json_object_get(get_power_obj, "power_node_watts") != NULL)
+    {
+        double power_node;
+        power_node = json_real_value(json_object_get(get_power_obj,
+                                     "power_node_watts"));
+        json_object_set(get_power_obj, "power_node_watts",
+                        json_real(power_node + total_gpu_power));
+    }
+
+
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
+    {
+        variorum_error_handler("Could not shutdown RSMI",
+                               VARIORUM_ERROR_PLATFORM_ENV,
+                               getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                               __LINE__);
+    }
+
 }
