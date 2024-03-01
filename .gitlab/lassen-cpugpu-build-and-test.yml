@@ -47,8 +47,10 @@ status_failure:
 
 build-lassen-both:
  tags:
-   - ci
+   - batch
    - lassen
+ variables:
+    LLNL_LSF_SCHEDULER_PARAMETERS: "-q pci"
  stage: build
  script:
    - export HOSTNAME=`hostname`
