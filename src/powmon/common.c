@@ -252,7 +252,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
     }
 
     /* Extract and print values from JSON object */
-   // json_t *host_obj = json_object_get(util_obj, hostname);
+    // json_t *host_obj = json_object_get(util_obj, hostname);
     mem_util = json_real_value(json_object_get(host_obj, "memory_util%"));
     json_t *cpu_util_obj = json_object_get(host_obj, "CPU");
     cpu_util = json_real_value(json_object_get(cpu_util_obj, "total_util%"));
@@ -290,7 +290,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
         }
     }
 
-    printf ("Writing util values %lf %lf\n", mem_util, cpu_util);
+    printf("Writing util values %lf %lf\n", mem_util, cpu_util);
     fprintf(utilfile, "%ld, ", now_ms());
     fprintf(utilfile, "%lf, %lf, %lf, %lf, ", mem_util, cpu_util, user_util,
             sys_util);
