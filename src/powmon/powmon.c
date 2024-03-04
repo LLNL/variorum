@@ -40,6 +40,9 @@ static unsigned long start;
 static unsigned long end;
 static FILE *summaryfile = NULL;
 static FILE *logfile = NULL;
+// Create another file for logging utilization samples
+// At some point, we want this to be a condition/macro
+static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;
@@ -133,8 +136,6 @@ int main(int argc, char **argv)
                 th_args.measure_all = true;
                 break;
             case 'u':
-                //Create another file for logging utilization samples
-                static FILE *utilfile = NULL;
                 th_args.power_with_util = true;
                 break;
             case '?':
@@ -189,26 +190,17 @@ int main(int argc, char **argv)
 #endif
 
     char *fname_dat = NULL;
+    char *fname_util = NULL;
     char *fname_summary = NULL;
     int rc;
-
-    //Create another file if we're measuring utilization
-    if (th_args.power_with_util)
-    {
-        char *fname_util = NULL;
-    }
 
     if (highlander())
     {
         /* Start the log file. */
         int logfd;
+        int logfd_util;
         char hostname[64];
         gethostname(hostname, 64);
-
-        if (th_args.power_with_util)
-        {
-            int logfd_util;
-        }
 
         if (logpath)
         {
@@ -233,201 +225,206 @@ int main(int argc, char **argv)
                             __FILE__, __LINE__);
                 }
             }
-            else
-            {
-                /* Output trace data into the default location. */
-                rc = asprintf(&fname_dat, "%s.power.dat", hostname);
-                if (rc == -1)
-                {
-                    fprintf(stderr,
-                            "%s:%d asprintf failed, perhaps out of memory.\n",
-                            __FILE__, __LINE__);
-                }
-
-                // Also create a utilization logfile if this option is selected.
-                if (th_args.power_with_util)
-                {
-                    /* Output trace data into the specified location. */
-                    rc = asprintf(&fname_util, "%s.util.dat", hostname);
-                    if (rc == -1)
-                    {
-                        fprintf(stderr,
-                                "%s:%d asprintf failed, perhaps out of memory.\n",
-                                __FILE__, __LINE__);
-                    }
-                }
-            }
-
-            logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
-                         S_IRUSR | S_IWUSR);
-            if (logfd < 0)
-            {
-                fprintf(stderr,
-                        "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
-                        hostname, fname_dat, strerror(errno));
-                return 1;
-            }
-            logfile = fdopen(logfd, "w");
-            if (logfile == NULL)
-            {
-                fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
-                        hostname, fname_dat, strerror(errno));
-                return 1;
-            }
-
-            // Open the utilization file if the option is selected.
-            if (th_args.power_with_util)
-            {
-
-                logfd_util = open(fname_util,
-                                  O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
-                                  S_IRUSR | S_IWUSR);
-                if (logfd_util < 0)
-                {
-                    fprintf(stderr,
-                            "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
-                            hostname, fname_util, strerror(errno));
-                    return 1;
-                }
-                utilfile = fdopen(logfd_util, "w");
-                if (utilfile == NULL)
-                {
-                    fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
-                            hostname, fname_util, strerror(errno));
-                    return 1;
-                }
-            }
-
-            if (logpath)
-            {
-                printf("Trace and summary files will be dumped in %s/\n", logpath);
-            }
-            else
-            {
-                printf("Trace and summary files will be dumped in ./\n");
-            }
-
-            /* Start power measurement thread. */
-            pthread_attr_t mattr;
-            pthread_t mthread;
-            pthread_attr_init(&mattr);
-            pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
-            pthread_mutex_init(&mlock, NULL);
-            pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
-
-            /* Fork. */
-            pid_t app_pid = fork();
-            if (app_pid == 0)
-            {
-                /* I'm the child. */
-                printf("Profiling:");
-                int i = 0;
-                for (i = 0; i < n_spaces; i++)
-                {
-                    printf(" %s", arg[i]);
-                }
-                printf("\n");
-                execvp(arg[0], &arg[0]);
-                printf("Fork failure\n");
-                return 1;
-            }
-            /* Wait. */
-            waitpid(app_pid, NULL, 0);
-            sleep(1);
-
-            highlander_wait();
-
-            /* Stop power measurement thread. */
-            running = 0;
-            take_measurement(th_args.measure_all, th_args.power_with_util);
-            end = now_ms();
-
-            if (logpath)
-            {
-                /* Output summary data into the specified location. */
-                rc = asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
-                if (rc == -1)
-                {
-                    fprintf(stderr,
-                            "%s:%d asprintf failed, perhaps out of memory.\n",
-                            __FILE__, __LINE__);
-                }
-            }
-            else
-            {
-                /* Output summary data into the default location. */
-                rc = asprintf(&fname_summary, "%s.powmon.summary", hostname);
-                if (rc == -1)
-                {
-                    fprintf(stderr,
-                            "%s:%d asprintf failed, perhaps out of memory.\n",
-                            __FILE__, __LINE__);
-                }
-            }
-
-            logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
-                         S_IRUSR | S_IWUSR);
-            if (logfd < 0)
-            {
-                fprintf(stderr,
-                        "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
-                        hostname, fname_summary, strerror(errno));
-                return 1;
-            }
-            summaryfile = fdopen(logfd, "w");
-            if (summaryfile == NULL)
-            {
-                fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
-                        hostname, fname_summary, strerror(errno));
-                return 1;
-            }
-
-            char *msg;
-            rc = asprintf(&msg,
-                          "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
-                          hostname, app_pid, end - start, start, end);
-            if (-1 == rc)
+        }
+        else
+        {
+            /* Output trace data into the default location. */
+            rc = asprintf(&fname_dat, "%s.power.dat", hostname);
+            if (rc == -1)
             {
                 fprintf(stderr,
                         "%s:%d asprintf failed, perhaps out of memory.\n",
                         __FILE__, __LINE__);
             }
 
-            fprintf(summaryfile, "%s", msg);
-            free(msg);
-            fclose(summaryfile);
-            close(logfd);
-            close(logfd_util);
+            // Also create a utilization logfile if this option is selected.
+            if (th_args.power_with_util)
+            {
+                /* Output trace data into the specified location. */
+                rc = asprintf(&fname_util, "%s.util.dat", hostname);
+                if (rc == -1)
+                {
+                    fprintf(stderr,
+                            "%s:%d asprintf failed, perhaps out of memory.\n",
+                            __FILE__, __LINE__);
+                }
+            }
+        }
 
-            shmctl(shmid, IPC_RMID, NULL);
-            shmdt(shmseg);
+        logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
+        if (logfd < 0)
+        {
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
+            return 1;
+        }
+        logfile = fdopen(logfd, "w");
+        if (logfile == NULL)
+        {
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_dat, strerror(errno));
+            return 1;
+        }
 
-            pthread_attr_destroy(&mattr);
+        // Open the utilization file if the option is selected.
+        if (th_args.power_with_util)
+        {
+
+            logfd_util = open(fname_util,
+                              O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                              S_IRUSR | S_IWUSR);
+            if (logfd_util < 0)
+            {
+                fprintf(stderr,
+                        "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                        hostname, fname_util, strerror(errno));
+                return 1;
+            }
+            utilfile = fdopen(logfd_util, "w");
+
+            printf("Here, I opened the utilfile\n");
+            fprintf(utilfile, "%s", "Here, I opened the utilfile\n");
+
+            if (utilfile == NULL)
+            {
+                fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                        hostname, fname_util, strerror(errno));
+                return 1;
+            }
+        }
+
+        if (logpath)
+        {
+            printf("Trace and summary files will be dumped in %s/\n", logpath);
         }
         else
         {
-            /* Fork. */
-            pid_t app_pid = fork();
-            if (app_pid == 0)
-            {
-                /* I'm the child. */
-                execvp(arg[0], &arg[0]);
-                printf("Fork failure: %s\n", argv[1]);
-                return 1;
-            }
-            /* Wait. */
-            waitpid(app_pid, NULL, 0);
-
-            highlander_wait();
+            printf("Trace and summary files will be dumped in ./\n");
         }
 
-        printf("Output Files:\n"
-               "  %s\n"
-               "  %s\n"
-               "  %s\n\n", fname_dat, fname_util, fname_summary);
-        highlander_clean();
-        free(fname_dat);
-        free(fname_util);
-        free(fname_summary);
-        return 0;
+        /* Start power measurement thread. */
+        pthread_attr_t mattr;
+        pthread_t mthread;
+        pthread_attr_init(&mattr);
+        pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
+        pthread_mutex_init(&mlock, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, (void *) &th_args);
+
+        /* Fork. */
+        pid_t app_pid = fork();
+        if (app_pid == 0)
+        {
+            /* I'm the child. */
+            printf("Profiling:");
+            int i = 0;
+            for (i = 0; i < n_spaces; i++)
+            {
+                printf(" %s", arg[i]);
+            }
+            printf("\n");
+            execvp(arg[0], &arg[0]);
+            printf("Fork failure\n");
+            return 1;
+        }
+        /* Wait. */
+        waitpid(app_pid, NULL, 0);
+        sleep(1);
+
+        highlander_wait();
+
+        /* Stop power measurement thread. */
+        running = 0;
+        take_measurement(th_args.measure_all, th_args.power_with_util);
+        end = now_ms();
+
+        if (logpath)
+        {
+            /* Output summary data into the specified location. */
+            rc = asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
+        }
+        else
+        {
+            /* Output summary data into the default location. */
+            rc = asprintf(&fname_summary, "%s.powmon.summary", hostname);
+            if (rc == -1)
+            {
+                fprintf(stderr,
+                        "%s:%d asprintf failed, perhaps out of memory.\n",
+                        __FILE__, __LINE__);
+            }
+        }
+
+        logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                     S_IRUSR | S_IWUSR);
+        if (logfd < 0)
+        {
+            fprintf(stderr,
+                    "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
+            return 1;
+        }
+        summaryfile = fdopen(logfd, "w");
+        if (summaryfile == NULL)
+        {
+            fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                    hostname, fname_summary, strerror(errno));
+            return 1;
+        }
+
+        char *msg;
+        rc = asprintf(&msg,
+                      "host: %s\npid: %d\nruntime ms: %lu\nstart: %lu\nend: %lu\n",
+                      hostname, app_pid, end - start, start, end);
+        if (-1 == rc)
+        {
+            fprintf(stderr,
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
+                    __FILE__, __LINE__);
+        }
+
+        fprintf(summaryfile, "%s", msg);
+        free(msg);
+        fclose(summaryfile);
+        close(logfd);
+        close(logfd_util);
+
+        shmctl(shmid, IPC_RMID, NULL);
+        shmdt(shmseg);
+
+        pthread_attr_destroy(&mattr);
     }
+    else
+    {
+        /* Fork. */
+        pid_t app_pid = fork();
+        if (app_pid == 0)
+        {
+            /* I'm the child. */
+            execvp(arg[0], &arg[0]);
+            printf("Fork failure: %s\n", argv[1]);
+            return 1;
+        }
+        /* Wait. */
+        waitpid(app_pid, NULL, 0);
+
+        highlander_wait();
+    }
+
+    printf("Output Files:\n"
+           "  %s\n"
+           "  %s\n"
+           "  %s\n\n", fname_dat, fname_util, fname_summary);
+    highlander_clean();
+    free(fname_dat);
+    free(fname_util);
+    free(fname_summary);
+    return 0;
+}

@@ -39,6 +39,7 @@ static unsigned long end;
 static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
+static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;

@@ -15,6 +15,7 @@ struct thread_args
 {
     bool measure_all;
     unsigned long sample_interval;
+    bool power_with_util;
 };
 
 int init_data(void)
@@ -214,7 +215,115 @@ void parse_json_power_obj(char *s, int num_sockets)
     json_decref(power_obj);
 }
 
-void take_measurement(bool measure_all)
+void parse_json_util_obj(char *util_str, int num_sockets)
+{
+
+    int i, j;
+    const char *hostname = NULL;
+    char socket_num[11];
+    size_t size;
+    int ndevices;
+
+    json_t *util_obj = NULL;
+
+    double cpu_util, mem_util, sys_util, user_util;
+    int gpu_util;
+    static bool write_util_header = true;
+
+    /* Load the string as a JSON object using Jansson */
+    util_obj = json_loads(util_str, JSON_DECODE_ANY, NULL);
+    void *iter = json_object_iter(util_obj);
+    json_t *host_obj = NULL;
+
+    /* This is tailored to the nested structure that we have created (see docs). */
+    /* Just for the first level, we use the iterator to obtain the hostname,
+     * as this is encoded as a key to reduce verbosity. */
+    while (iter)
+    {
+        hostname = json_object_iter_key(iter);
+        host_obj = json_object_iter_value(iter);
+        if (host_obj == NULL)
+        {
+            printf("JSON object not found");
+            exit(0);
+        }
+        /* The following should return NULL after the first call per our object. */
+        iter = json_object_iter_next(util_obj, iter);
+    }
+
+    /* Extract and print values from JSON object */
+   // json_t *host_obj = json_object_get(util_obj, hostname);
+    mem_util = json_real_value(json_object_get(host_obj, "memory_util%"));
+    json_t *cpu_util_obj = json_object_get(host_obj, "CPU");
+    cpu_util = json_real_value(json_object_get(cpu_util_obj, "total_util%"));
+    sys_util = json_real_value(json_object_get(cpu_util_obj, "system_util%"));
+    user_util = json_real_value(json_object_get(cpu_util_obj, "user_util%"));
+    json_t *gpu_obj = json_object_get(host_obj, "GPU");
+
+    if (write_util_header == true)
+    {
+        printf("write_util_header is true\n");
+        fprintf(utilfile, "%s,", "Timestamp (ms)");
+        fprintf(utilfile, "%s,%s,%s,%s,", "Memory_Util (%)",
+                "CPU_Util (%)", "User_Util (%)", "System_Util (%)");
+        for (i = 0; i < num_sockets; ++i)
+        {
+            sprintf(socket_num, "Socket_%d", i);
+            json_t *socket_obj = json_object_get(gpu_obj, socket_num);
+            size = json_object_size(socket_obj);
+            ndevices  = size;
+            for (j = 0; j < ndevices; j++)
+            {
+                char device_id[12];
+                snprintf(device_id, 12, "GPU%d%d_util%", i, j);
+                // Don't write out a comma after the last column name
+                if ((i + 1) == num_sockets && (j + 1) == ndevices)
+                {
+                    fprintf(utilfile, "%s\n", device_id);
+                    write_util_header = false;
+                }
+                else
+                {
+                    fprintf(utilfile, "%s,", device_id);
+                }
+            }
+        }
+    }
+
+    printf ("Writing util values %lf %lf\n", mem_util, cpu_util);
+    fprintf(utilfile, "%ld, ", now_ms());
+    fprintf(utilfile, "%lf, %lf, %lf, %lf, ", mem_util, cpu_util, user_util,
+            sys_util);
+
+    for (i = 0; i < num_sockets; ++i)
+    {
+        sprintf(socket_num, "Socket_%d", i);
+        json_t *socket_obj = json_object_get(gpu_obj, socket_num);
+        size = json_object_size(socket_obj);
+        ndevices  = size;
+        for (j = 0; j < ndevices; j++)
+        {
+            char device_id[12];
+            snprintf(device_id, 12, "GPU%d%d_util%", i, j);
+            gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
+            // Don't write out a comma after the last column name
+            if ((i + 1) == num_sockets && (j + 1) == ndevices)
+            {
+                fprintf(utilfile, "%d", gpu_util);
+                fprintf(utilfile, "\n");
+            }
+            else
+            {
+                fprintf(utilfile, "%d,", gpu_util);
+            }
+        }
+    }
+
+    /*Deallocate JSON object*/
+    json_decref(util_obj);
+}
+
+void take_measurement(bool measure_all, bool power_with_util)
 {
 #if 0
     uint64_t instr0 = 0;
@@ -251,6 +360,22 @@ void take_measurement(bool measure_all)
 
         // Write out to logfile
         parse_json_power_obj(s, num_sockets);
+
+        // Also print utilization if that is requested
+        if (power_with_util == true)
+        {
+            int ret_util;
+            char *util_str = NULL;
+
+            ret_util = variorum_get_node_utilization_json(&util_str);
+            if (ret_util != 0)
+            {
+                printf("JSON get node utilization failed. Exiting.\n");
+                free(util_str);
+                exit(-1);
+            }
+            parse_json_util_obj(util_str, num_sockets);
+        }
     }
 
     // Verbose output with all sensors/registers
@@ -291,6 +416,8 @@ void *power_measurement(void *arg)
     struct thread_args th_args;
     th_args.sample_interval = (*(struct thread_args *)arg).sample_interval;
     th_args.measure_all = (*(struct thread_args *)arg).measure_all;
+    th_args.power_with_util = (*(struct thread_args *)arg).power_with_util;
+
     // According to the Intel docs, the counter wraps at most once per second.
     // 50 ms should be short enough to always get good information (this is
     // default).
@@ -302,7 +429,7 @@ void *power_measurement(void *arg)
     timer_sleep(&timer);
     while (running)
     {
-        take_measurement(th_args.measure_all);
+        take_measurement(th_args.measure_all, th_args.power_with_util);
         timer_sleep(&timer);
     }
     return arg;
