@@ -199,8 +199,8 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        uint64_t pwr_val = -1, pwr_min = -1, pwr_max = -1;
-        double pwr_val_flt = -1.0;
+        uint64_t pwr_val = 0, pwr_min = 0, pwr_max = 0;
+        double pwr_val_flt = 0.0;
 
         ret = rsmi_dev_power_cap_get(i, 0, &pwr_val);
         if (ret != RSMI_STATUS_SUCCESS)
@@ -963,7 +963,7 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
     int chipid;
     uint32_t num_devices;
     int gpus_per_socket;
-    uint64_t pwr_val = -1;
+    uint64_t pwr_val = 0;
     double pwr_val_flt = 0.0;
     double total_gpu_power = 0.0;
     int d;
