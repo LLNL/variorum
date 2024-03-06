@@ -578,11 +578,11 @@ int variorum_get_power_json(char **get_power_obj_str);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 ///
-/// @param [out] get_util_obj_str String (passed by refrence) that contains node-level
+/// @param [out] get_util_obj_str String (passed by reference) that contains node-level
 /// utilization information.
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
-/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
 int variorum_get_node_utilization_json(char **get_util_obj_str);
 
@@ -616,11 +616,11 @@ int variorum_get_node_utilization_json(char **get_util_obj_str);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 ///
-/// @param [out] get_gpu_util_obj_str String (passed by refrence) that contains
+/// @param [out] get_gpu_util_obj_str String (passed by reference) that contains
 /// node-level utilization information.
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
-/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
 int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str);
 
