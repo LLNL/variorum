@@ -21,10 +21,10 @@
 
 void get_temp_target(struct msr_temp_target *s, off_t msr)
 {
-    unsigned nsockets;
+    uint16_t nsockets;
     static uint64_t **val = NULL;
     static int init_tt = 0;
-    unsigned i;
+    unsigned int i;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
@@ -52,10 +52,10 @@ void get_temp_target(struct msr_temp_target *s, off_t msr)
 
 void get_therm_stat(struct therm_stat *s, off_t msr)
 {
-    unsigned nthreads;
+    uint16_t nthreads;
     static uint64_t **val = NULL;
     static int init_ts = 0;
-    unsigned i;
+    unsigned int i;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
@@ -160,10 +160,10 @@ void get_therm_stat(struct therm_stat *s, off_t msr)
 
 int get_pkg_therm_stat(struct pkg_therm_stat *s, off_t msr)
 {
-    unsigned nsockets;
+    uint16_t nsockets;
     static uint64_t **val = NULL;
     static int init_pkg_ts = 0;
-    unsigned i;
+    unsigned int i;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
@@ -253,9 +253,9 @@ int print_verbose_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
     struct therm_stat *t_stat = NULL;
-    unsigned idx;
-    unsigned i, j, k;
-    unsigned nsockets, ncores, nthreads;
+    unsigned int idx;
+    unsigned int i, j, k;
+    uint16_t nsockets, ncores, nthreads;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
@@ -315,9 +315,9 @@ int print_therm_temp_reading(FILE *writedest, off_t msr_therm_stat,
     struct pkg_therm_stat *pkg_stat = NULL;
     struct msr_temp_target *t_target = NULL;
     struct therm_stat *t_stat = NULL;
-    unsigned idx;
-    unsigned i, j, k;
-    unsigned nsockets, ncores, nthreads;
+    unsigned int idx;
+    unsigned int i, j, k;
+    uint16_t nsockets, ncores, nthreads;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
@@ -388,9 +388,9 @@ int get_therm_temp_reading_json(json_t *get_thermal_object,
     struct therm_stat *t_stat = NULL;
     struct msr_temp_target *t_target = NULL;
     struct pkg_therm_stat *pkg_stat = NULL;
-    unsigned i, j, k;
-    unsigned nsockets, ncores, nthreads;
-    unsigned idx;
+    unsigned int i, j, k;
+    uint16_t nsockets, ncores, nthreads;
+    unsigned int idx;
     float core_temp;
     int pkg_temp;
 

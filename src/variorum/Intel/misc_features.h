@@ -14,29 +14,45 @@
 /// @param [in] msr_platform_info Unique MSR address for MSR_PLATFORM_INFO.
 ///
 /// @return Maximum non-turbo ratio in Hz.
-int get_max_non_turbo_ratio(off_t msr_platform_info,
-                            int *val);
+int get_max_non_turbo_ratio(
+    off_t msr_platform_info,
+    int *val
+);
 
-int get_max_efficiency_ratio(off_t msr_platform_info,
-                             int *val);
+int get_max_efficiency_ratio(
+    off_t msr_platform_info,
+    int *val
+);
 
-int get_min_operating_ratio(off_t msr_platform_info,
-                            int *val);
+int get_min_operating_ratio(
+    off_t msr_platform_info,
+    int *val
+);
 
-int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit);
+int get_turbo_ratio_limit(
+    off_t msr_turbo_ratio_limit
+);
 
-int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
-                           off_t msr_turbo_ratio_limit1);
+int get_turbo_ratio_limits(
+    off_t msr_turbo_ratio_limit,
+    off_t msr_turbo_ratio_limit1
+);
 
-int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
-                               off_t msr_turbo_ratio_limit_cores);
+int get_turbo_ratio_limits_skx(
+    off_t msr_turbo_ratio_limit,
+    off_t msr_turbo_ratio_limit_cores
+);
 
-int get_avx_limits(off_t *msr_platform_info,
-                   off_t *msr_config_tdp_l1,
-                   off_t *msr_config_tdp_l2);
+int get_avx_limits(
+    off_t *msr_platform_info,
+    off_t *msr_config_tdp_l1,
+    off_t *msr_config_tdp_l2
+);
 
-int config_tdp(int nlevels,
-               off_t msr_config_tdp_level);
+int config_tdp(
+    int nlevels,
+    off_t msr_config_tdp_level
+);
 
 /// NOTE about Turbo bit -- Pulled from the Intel Vol. 4 2-154 Documentation
 /// When set to 1 on processors that support Intel Turbo Boost Technology,
@@ -50,8 +66,10 @@ int config_tdp(int nlevels,
 ///             register for disabling turbo mode.
 ///
 /// @return 0 if successful, else non-zero.
-int set_turbo_on(off_t msr_misc_enable,
-                 unsigned int turbo_mode_disable_bit);
+int set_turbo_on(
+    off_t msr_misc_enable,
+    unsigned int turbo_mode_disable_bit
+);
 
 /// @brief Disable Turbo Mode on each socket.
 ///
@@ -60,8 +78,10 @@ int set_turbo_on(off_t msr_misc_enable,
 ///             register for disabling turbo mode.
 ///
 /// @return 0 if successful, else non-zero.
-int set_turbo_off(off_t msr_misc_enable,
-                  unsigned int turbo_mode_disable_bit);
+int set_turbo_off(
+    off_t msr_misc_enable,
+    unsigned int turbo_mode_disable_bit
+);
 
 /// @brief Print status of Turbo Mode on each socket.
 ///
@@ -71,27 +91,35 @@ int set_turbo_off(off_t msr_misc_enable,
 ///             register for disabling turbo mode.
 ///
 /// @return 0 if successful, else non-zero.
-int print_turbo_status(FILE *writedest,
-                       off_t msr_misc_enable,
-                       unsigned int turbo_mode_disable_bit);
+int print_turbo_status(
+    FILE *writedest,
+    off_t msr_misc_enable,
+    unsigned int turbo_mode_disable_bit
+);
 
 ///// These per core functions seemingly only for Intel Signatures 06_57H (KNL) and
 ///// 06_85H (future Xeon Phi), at the moment.
 ///// Intel Vol. 4 2-287 Documentation
-//int set_turbo_on_core(unsigned const socket,
-//                      unsigned const core,
-//                      off_t msr_misc_enable,
-//                      unsigned int turbo_mode_disable_bit);
-//int set_turbo_off_core(unsigned const socket,
-//                       unsigned const core,
-//                       off_t msr_misc_enable,
-//                       unsigned int turbo_mode_disable_bit);
+//int set_turbo_on_core(
+//    uint16_t const socket,
+//    uint16_t const core,
+//    off_t msr_misc_enable,
+//    unsigned int turbo_mode_disable_bit
+//);
+//int set_turbo_off_core(
+//    uint16_t const socket,
+//    uint16_t const core,
+//    off_t msr_misc_enable,
+//    unsigned int turbo_mode_disable_bit
+//);
 ///// @brief
 ///// @return -1 if there is an error, 0 if Turbo is DISabled, 1 if Turbo is
 ///// ENabled.
-//int get_turbo_status_core(unsigned const socket,
-//                          unsigned const core,
-//                          off_t msr_misc_enable,
-//                          unsigned int turbo_mode_disable_bit);
+//int get_turbo_status_core(
+//    uint16_t const socket,
+//    uint16_t const core,
+//    off_t msr_misc_enable,
+//    unsigned int turbo_mode_disable_bit
+//);
 
 #endif

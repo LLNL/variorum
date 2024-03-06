@@ -23,9 +23,9 @@
 #include <config_architecture.h>
 #include <variorum_error.h>
 
-static uint64_t devidx(unsigned socket, unsigned core, unsigned thread)
+static uint64_t devidx(uint16_t socket, uint16_t core, uint16_t thread)
 {
-    unsigned nsockets, ncores, nthreads;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_MSR_CORE_IDX);
 #endif
@@ -37,12 +37,12 @@ static uint64_t devidx(unsigned socket, unsigned core, unsigned thread)
 }
 
 static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
-                         unsigned **opssize)
+                         unsigned int **opssize)
 {
     static struct msr_batch_array *batch = NULL;
-    static unsigned arrsize = 1;
-    static unsigned *size = NULL;
-    unsigned i;
+    static unsigned int arrsize = 1;
+    static unsigned int *size = NULL;
+    unsigned int i;
 
     if (batch == NULL)
     {
@@ -53,7 +53,7 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
         //        printf("QQQ arrsize %d\n", arrsize);
         batch = (struct msr_batch_array *) calloc(arrsize,
                 sizeof(struct msr_batch_array));
-        size = (unsigned *) calloc(arrsize, sizeof(unsigned));
+        size = (unsigned int *) calloc(arrsize, sizeof(unsigned int));
         for (i = 0; i < arrsize; i++)
         {
             size[i] = 0;
@@ -67,11 +67,11 @@ static int batch_storage(struct msr_batch_array **batchsel, const int batchnum,
         fprintf(stderr, "BATCH: reallocating array of batches for batch %d\n",
                 batchnum);
 #endif
-        unsigned oldsize = arrsize;
+        unsigned int oldsize = arrsize;
         arrsize = batchnum + 1;
         batch = (struct msr_batch_array *) realloc(batch,
                 arrsize * sizeof(struct msr_batch_array));
-        size = (unsigned *) realloc(size, arrsize * sizeof(unsigned));
+        size = (unsigned int *) realloc(size, arrsize * sizeof(unsigned int));
         for (; oldsize < arrsize; oldsize++)
         {
             batch[oldsize].ops = NULL;
@@ -126,11 +126,11 @@ static int compatibility_batch(int batchnum, int type)
 /// @param [in] dev_idx Unique logical processor identifier.
 ///
 /// @return Unique file descriptor, else NULL.
-static int *core_fd(const unsigned dev_idx)
+static int *core_fd(const unsigned int dev_idx)
 {
     static int init_core_fd = 0;
     static int *file_descriptors = NULL;
-    static unsigned nthreads;
+    static uint16_t nthreads;
     char *variorum_error_msg = (char *) malloc(NAME_MAX * sizeof(char));
 
     if (!init_core_fd)
@@ -235,10 +235,10 @@ static int do_batch_op(int batchnum, int type)
     return 0;
 }
 
-int sockets_assert(const unsigned *socket)
+int sockets_assert(const uint16_t *socket)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    unsigned nsockets;
+    uint16_t nsockets;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_MSR_CORE_IDX);
 #endif
@@ -259,10 +259,10 @@ int sockets_assert(const unsigned *socket)
     return 0;
 }
 
-int threads_assert(const unsigned *thread)
+int threads_assert(const uint16_t *thread)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    unsigned nthreads;
+    uint16_t nthreads;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_MSR_CORE_IDX);
 #endif
@@ -283,10 +283,10 @@ int threads_assert(const unsigned *thread)
     return 0;
 }
 
-int cores_assert(const unsigned *core)
+int cores_assert(const uint16_t *core)
 {
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    unsigned ncores;
+    uint16_t ncores;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, &ncores, NULL, P_MSR_CORE_IDX);
 #endif
@@ -395,10 +395,10 @@ int stat_module(char *filename, int *kerneltype, int *dev_idx)
 int finalize_msr(void)
 {
     int ret = 0;
-    unsigned dev_idx;
+    unsigned int dev_idx;
     int *file_descriptor = NULL;
     char *variorum_error_msg = (char *) malloc(NAME_MAX * sizeof(char));
-    unsigned nthreads;
+    uint16_t nthreads;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_MSR_CORE_IDX);
 #endif
@@ -438,7 +438,7 @@ int init_msr(void)
     char filename[FILENAME_SIZE];
     int kerneltype = 3; // 0 is msr_safe, 1 is msr
     char *variorum_error_msg = malloc(NAME_MAX * sizeof(char));
-    unsigned nsockets, ncores, nthreads;
+    uint16_t nsockets, ncores, nthreads;
 
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_MSR_CORE_IDX);
@@ -498,7 +498,7 @@ int init_msr(void)
     return 0;
 }
 
-int write_msr_by_coord(unsigned socket, unsigned core, unsigned thread,
+int write_msr_by_coord(uint16_t socket, uint16_t core, uint16_t thread,
                        off_t msr, uint64_t val)
 {
     sockets_assert(&socket);
@@ -508,7 +508,7 @@ int write_msr_by_coord(unsigned socket, unsigned core, unsigned thread,
     return write_msr_by_idx(devidx(socket, core, thread), msr, val);
 }
 
-int read_msr_by_coord(unsigned socket, unsigned core, unsigned thread,
+int read_msr_by_coord(uint16_t socket, uint16_t core, uint16_t thread,
                       off_t msr, uint64_t *val)
 {
 #ifdef VARIORUM_DEBUG
@@ -588,7 +588,7 @@ int write_msr_by_idx(int dev_idx, off_t msr, uint64_t val)
 
 int allocate_batch(int batchnum, size_t bsize)
 {
-    unsigned *size = NULL;
+    unsigned int *size = NULL;
     struct msr_batch_array *batch = NULL;
     unsigned int i;
 
@@ -622,8 +622,8 @@ int allocate_batch(int batchnum, size_t bsize)
 
 int load_socket_batch(off_t msr, uint64_t **val, int batchnum)
 {
-    unsigned dev_idx, val_idx;
-    unsigned nsockets, ncores, nthreads;
+    unsigned int dev_idx, val_idx;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_MSR_CORE_IDX);
 #endif
@@ -649,8 +649,8 @@ int load_socket_batch(off_t msr, uint64_t **val, int batchnum)
 
 int load_thread_batch(off_t msr, uint64_t **val, int batchnum)
 {
-    unsigned dev_idx, val_idx;
-    unsigned nsockets, ncores, nthreads;
+    unsigned int dev_idx, val_idx;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_MSR_CORE_IDX);
 #endif
@@ -691,7 +691,7 @@ int create_batch_op(off_t msr, uint64_t cpu, uint64_t **dest,
                     const int batchnum)
 {
     struct msr_batch_array *batch = NULL;
-    unsigned *size = NULL;
+    unsigned int *size = NULL;
 
 #ifdef BATCH_DEBUG
     fprintf(stderr, "BATCH: creating new batch operation\n");

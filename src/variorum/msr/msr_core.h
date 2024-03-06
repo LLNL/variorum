@@ -159,7 +159,7 @@ struct msr_batch_op
 /// @return 0 if successful, else -1 if socket requested is greater than number
 /// of sockets in the platform.
 int sockets_assert(
-    const unsigned *socket
+    const uint16_t *socket
 );
 
 /// @brief Validate specific thread exists in the platform configuration.
@@ -169,7 +169,7 @@ int sockets_assert(
 /// @return 0 if successful, else -1 if thread requested is greater than number
 /// of threads per core in the platform.
 int threads_assert(
-    const unsigned *thread
+    const uint16_t *thread
 );
 
 /// @brief Validate specific core exists in the platform configuration.
@@ -179,7 +179,7 @@ int threads_assert(
 /// @return 0 if successful, else -1 if core requested is greater than number
 /// of cores per socket in the platform.
 int cores_assert(
-    const unsigned *core
+    const uint16_t *core
 );
 
 /// @brief Check status of a file.
@@ -237,9 +237,9 @@ int finalize_msr(
 /// descriptor was NULL or if the number of bytes written was not the size of
 /// uint64_t.
 int write_msr_by_coord(
-    unsigned socket,
-    unsigned core,
-    unsigned thread,
+    uint16_t socket,
+    uint16_t core,
+    uint16_t thread,
     off_t msr,
     uint64_t val
 );
@@ -266,9 +266,9 @@ int write_msr_by_coord(
 /// descriptor was NULL or if the number of bytes read was not the size of
 /// uint64_t.
 int read_msr_by_coord(
-    unsigned socket,
-    unsigned core,
-    unsigned thread,
+    uint16_t socket,
+    uint16_t core,
+    uint16_t thread,
     off_t msr,
     uint64_t *val
 );
@@ -335,9 +335,9 @@ int write_msr_by_idx(
 /// @return 0 if successful, else -1 if file descriptor was NULL or if the
 /// number of bytes read was not the size of uint64_t.
 int write_msr_by_coord(
-    unsigned socket,
-    unsigned core,
-    unsigned thread,
+    uint16_t socket,
+    uint16_t core,
+    uint16_t thread,
     off_t msr,
     uint64_t val
 );

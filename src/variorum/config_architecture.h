@@ -283,15 +283,15 @@ struct platform
     /// @brief Hostname.
     char hostname[1024];
     /// @brief Number of sockets in the node.
-    int num_sockets;
+    uint16_t num_sockets;
     /// @brief Total number of physical cores in the node.
-    int total_cores;
+    uint16_t total_cores;
     /// @brief Total number of logical threads in the node.
-    int total_threads;
+    uint16_t total_threads;
     /// @brief Number of physical cores per socket in the node.
-    int num_cores_per_socket;
+    uint16_t num_cores_per_socket;
     /// @brief Number of logical threads per core.
-    int num_threads_per_core;
+    uint16_t num_threads_per_core;
 };
 
 #if 0 /* To implement later */
@@ -319,9 +319,9 @@ int variorum_exit(
 );
 
 void variorum_get_topology(
-    unsigned *nsockets,
-    unsigned *ncores,
-    unsigned *nthreads,
+    uint16_t *nsockets,
+    uint16_t *ncores,
+    uint16_t *nthreads,
     int idx
 );
 

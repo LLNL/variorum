@@ -24,7 +24,7 @@
 int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **raw_val = NULL;
     int max_non_turbo_ratio;
 
@@ -69,7 +69,7 @@ int get_max_non_turbo_ratio(off_t msr_platform_info, int *val)
 int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **raw_val = NULL;
     int max_efficiency_ratio;
 
@@ -114,7 +114,7 @@ int get_max_efficiency_ratio(off_t msr_platform_info, int *val)
 int get_min_operating_ratio(off_t msr_platform_info, int *val)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **raw_val = NULL;
     int min_operating_ratio;
 
@@ -153,9 +153,10 @@ int get_min_operating_ratio(off_t msr_platform_info, int *val)
 int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **val = NULL;
-    unsigned ncores, nbits;
+    uint16_t ncores;
+    unsigned int nbits;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
@@ -178,7 +179,7 @@ int get_turbo_ratio_limit(off_t msr_turbo_ratio_limit)
         }
     }
 
-    unsigned core = 1;
+    uint16_t core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
 #ifdef LIBJUSTIFY_FOUND
@@ -211,10 +212,11 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
                            off_t msr_turbo_ratio_limit1)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **val = NULL;
     static uint64_t **val2 = NULL;
-    unsigned ncores, nbits;
+    uint16_t ncores;
+    unsigned int nbits;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
@@ -245,7 +247,7 @@ int get_turbo_ratio_limits(off_t msr_turbo_ratio_limit,
         }
     }
 
-    unsigned core = 1;
+    uint16_t core = 1;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
 #ifdef LIBJUSTIFY_FOUND
@@ -286,10 +288,11 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
                                off_t msr_turbo_ratio_limit_cores)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **val = NULL;
     static uint64_t **val2 = NULL;
-    unsigned ncores, nbits;
+    uint16_t ncores;
+    unsigned int nbits;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, NULL, P_INTEL_CPU_IDX);
@@ -317,7 +320,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
         }
     }
 
-    unsigned core;
+    uint16_t core;
     for (nbits = 0; nbits < 64; nbits += 8)
     {
         core = (int)(MASK_VAL(*val2[0], nbits + 7, nbits));
@@ -344,7 +347,7 @@ int get_turbo_ratio_limits_skx(off_t msr_turbo_ratio_limit,
 int config_tdp(int nlevels, off_t msr_config_tdp_level)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **l = NULL;
     int level;
 
@@ -413,7 +416,7 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
                    off_t *msr_config_tdp_l2)
 {
     static int init = 0;
-    static unsigned nsockets = 0;
+    static uint16_t nsockets = 0;
     static uint64_t **val = NULL;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -482,8 +485,8 @@ int get_avx_limits(off_t *msr_platform_info, off_t *msr_config_tdp_l1,
 int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    unsigned socket;
-    unsigned nsockets;
+    uint16_t socket;
+    uint16_t nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
@@ -529,8 +532,8 @@ int set_turbo_on(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 int set_turbo_off(off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    unsigned socket;
-    unsigned nsockets;
+    uint16_t socket;
+    uint16_t nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
@@ -577,8 +580,8 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
                        unsigned int turbo_mode_disable_bit)
 {
     int ret = 0;
-    unsigned socket;
-    unsigned nsockets;
+    uint16_t socket;
+    uint16_t nsockets;
     uint64_t mask = 0;
     uint64_t msr_val = 0;
 
@@ -609,7 +612,7 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
 }
 
 ///// For core level
-//int set_turbo_on_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//int set_turbo_on_core(const uint16_t socket, const uint16_t core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 //{
 //  int ret = 0;
 //  uint64_t mask = 0;
@@ -637,7 +640,7 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
 //  return ret;
 //}
 //
-//int set_turbo_off_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//int set_turbo_off_core(const uint16_t socket, const uint16_t core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 //{
 //  int ret = 0;
 //  uint64_t mask = 0;
@@ -667,7 +670,7 @@ int print_turbo_status(FILE *writedest, off_t msr_misc_enable,
 //  return ret;
 //}
 //
-//int get_turbo_status_core(const unsigned socket, const unsigned core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
+//int get_turbo_status_core(const uint16_t socket, const uint16_t core, off_t msr_misc_enable, unsigned int turbo_mode_disable_bit)
 //{
 //    /// Function returns:
 //    /// 1 if Turbo is enabled
