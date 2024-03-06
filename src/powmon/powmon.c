@@ -393,6 +393,7 @@ int main(int argc, char **argv)
         fprintf(summaryfile, "%s", msg);
         free(msg);
         fclose(summaryfile);
+        fflush(utilfile);
         close(logfd);
         close(logfd_util);
 

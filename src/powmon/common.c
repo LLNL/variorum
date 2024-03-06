@@ -217,7 +217,6 @@ void parse_json_power_obj(char *s, int num_sockets)
 
 void parse_json_util_obj(char *util_str, int num_sockets)
 {
-
     int i, j;
     const char *hostname = NULL;
     char socket_num[11];
@@ -291,8 +290,8 @@ void parse_json_util_obj(char *util_str, int num_sockets)
     }
 
     printf("Writing util values %lf %lf\n", mem_util, cpu_util);
-    fprintf(utilfile, "%ld, ", now_ms());
-    fprintf(utilfile, "%lf, %lf, %lf, %lf, ", mem_util, cpu_util, user_util,
+    fprintf(utilfile, "%ld,", now_ms());
+    fprintf(utilfile, "%lf,%lf,%lf,%lf,", mem_util, cpu_util, user_util,
             sys_util);
 
     for (i = 0; i < num_sockets; ++i)
