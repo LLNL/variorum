@@ -45,16 +45,28 @@ struct sapphire_rapids_6a_offsets
 
 };
 
-int fm_06_8f_get_power_limits(int long_ver);
+int fm_06_8f_get_power_limits(
+    int long_ver
+);
 
-int fm_06_8f_get_power(int long_ver);
+int fm_06_8f_get_power(
+    int long_ver
+);
 
-int fm_06_8f_get_features(void);
+int fm_06_8f_get_features(
+    void
+);
 
-int fm_06_8f_get_power_json(json_t *get_power_obj);
+int fm_06_8f_get_power_json(
+    json_t *get_power_obj
+);
 
-int fm_06_8f_get_node_power_domain_info_json(char **get_domain_obj_str);
+int fm_06_8f_get_node_power_domain_info_json(
+    char **get_domain_obj_str
+);
 
-int fm_06_8f_monitoring(FILE *output);
+int fm_06_8f_monitoring(
+    FILE *output
+);
 
 #endif

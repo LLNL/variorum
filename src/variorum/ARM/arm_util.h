@@ -15,18 +15,18 @@ extern unsigned m_num_package;
 extern char m_hostname[1024];
 
 int read_file_ui64(
-    const int,
-    uint64_t *
+    const int file,
+    uint64_t *val
 );
 
 int write_file_ui64(
-    const int,
-    uint64_t
+    const int file,
+    uint64_t val
 );
 
 int read_array_ui64(
-    const int,
-    uint64_t **
+    const int fd,
+    uint64_t **array
 );
 
 void init_arm(

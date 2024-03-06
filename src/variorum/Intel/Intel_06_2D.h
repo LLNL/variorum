@@ -7,7 +7,6 @@
 #define SANDYBRIDGE_2D_H_INCLUDE
 
 #include <jansson.h>
-
 #include <sys/types.h>
 
 /// @brief List of unique addresses for Sandy Bridge Family/Model 2DH.
