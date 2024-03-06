@@ -284,9 +284,6 @@ int main(int argc, char **argv)
             }
             utilfile = fdopen(logfd_util, "w");
 
-            printf("Here, I opened the utilfile\n");
-            fprintf(utilfile, "%s", "Here, I opened the utilfile\n");
-
             if (utilfile == NULL)
             {
                 fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],

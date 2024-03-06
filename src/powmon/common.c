@@ -222,15 +222,12 @@ void parse_json_util_obj(char *util_str, int num_sockets)
     char socket_num[11];
     size_t size;
     int ndevices;
-
-    json_t *util_obj = NULL;
-
     double cpu_util, mem_util, sys_util, user_util;
     int gpu_util;
     static bool write_util_header = true;
 
     /* Load the string as a JSON object using Jansson */
-    util_obj = json_loads(util_str, JSON_DECODE_ANY, NULL);
+    json_t *util_obj = json_loads(util_str, JSON_DECODE_ANY, NULL);
     void *iter = json_object_iter(util_obj);
     json_t *host_obj = NULL;
 
@@ -261,8 +258,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
 
     if (write_util_header == true)
     {
-        printf("write_util_header is true\n");
-        fprintf(utilfile, "%s,", "Timestamp (ms)");
+        fprintf(utilfile, "%s, %s,", "Hostname", "Timestamp (ms)");
         fprintf(utilfile, "%s,%s,%s,%s,", "Memory_Util (%)",
                 "CPU_Util (%)", "User_Util (%)", "System_Util (%)");
         for (i = 0; i < num_sockets; ++i)
@@ -289,8 +285,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
         }
     }
 
-    printf("Writing util values %lf %lf\n", mem_util, cpu_util);
-    fprintf(utilfile, "%ld,", now_ms());
+    fprintf(utilfile, "%s,%ld,", hostname, now_ms());
     fprintf(utilfile, "%lf,%lf,%lf,%lf,", mem_util, cpu_util, user_util,
             sys_util);
 
@@ -303,7 +298,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
         for (j = 0; j < ndevices; j++)
         {
             char device_id[12];
-            snprintf(device_id, 12, "GPU%d%d_util%", i, j);
+            snprintf(device_id, 12, "GPU_%d_util%", ((i * num_sockets) + j + 1));
             gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
             // Don't write out a comma after the last column name
             if ((i + 1) == num_sockets && (j + 1) == ndevices)
