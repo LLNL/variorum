@@ -26,6 +26,11 @@ seconds:
 
     $ powmon -a "sleep 10"
 
+Powmon also allows sampling of utilization. The example below will sample 
+utilization metrics as well as power while executing a sleep for 10 seconds:
+
+    $ powmon -u -a "sleep 10"
+
 power_wrapper_static
 --------------------
 Before a target execution begins, set a package-level power cap, then
