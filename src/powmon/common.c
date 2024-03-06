@@ -225,6 +225,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
     double cpu_util, mem_util, sys_util, user_util;
     int gpu_util;
     static bool write_util_header = true;
+    uint64_t timestamp;
 
     /* Load the string as a JSON object using Jansson */
     json_t *util_obj = json_loads(util_str, JSON_DECODE_ANY, NULL);
@@ -249,6 +250,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
 
     /* Extract and print values from JSON object */
     // json_t *host_obj = json_object_get(util_obj, hostname);
+    timestamp = json_integer_value(json_object_get(host_obj, "timestamp"));
     mem_util = json_real_value(json_object_get(host_obj, "memory_util%"));
     json_t *cpu_util_obj = json_object_get(host_obj, "CPU");
     cpu_util = json_real_value(json_object_get(cpu_util_obj, "total_util%"));
@@ -269,8 +271,8 @@ void parse_json_util_obj(char *util_str, int num_sockets)
             ndevices  = size;
             for (j = 0; j < ndevices; j++)
             {
-                char device_id[12];
-                snprintf(device_id, 12, "GPU%d%d_util%", i, j);
+                char device_id[20];
+                snprintf(device_id, 20, "GPU%d_Util (%)", (i * num_sockets) + j + 1);
                 // Don't write out a comma after the last column name
                 if ((i + 1) == num_sockets && (j + 1) == ndevices)
                 {
@@ -285,7 +287,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
         }
     }
 
-    fprintf(utilfile, "%s,%ld,", hostname, now_ms());
+    fprintf(utilfile, "%s,%ld,", hostname, timestamp);
     fprintf(utilfile, "%lf,%lf,%lf,%lf,", mem_util, cpu_util, user_util,
             sys_util);
 
@@ -298,7 +300,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
         for (j = 0; j < ndevices; j++)
         {
             char device_id[12];
-            snprintf(device_id, 12, "GPU_%d_util%", ((i * num_sockets) + j + 1));
+            snprintf(device_id, 12, "GPU%d_util%", (i * num_sockets) + j + 1);
             gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
             // Don't write out a comma after the last column name
             if ((i + 1) == num_sockets && (j + 1) == ndevices)

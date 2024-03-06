@@ -416,10 +416,20 @@ int main(int argc, char **argv)
         highlander_wait();
     }
 
+    if( th_args.power_with_util == true)
+    {
     printf("Output Files:\n"
            "  %s\n"
            "  %s\n"
            "  %s\n\n", fname_dat, fname_util, fname_summary);
+    }
+    else
+    {
+    printf("Output Files:\n"
+           "  %s\n"
+           "  %s\n\n", fname_dat, fname_summary);
+    }
+
     highlander_clean();
     free(fname_dat);
     free(fname_util);
