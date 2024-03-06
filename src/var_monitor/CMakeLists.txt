@@ -10,13 +10,13 @@ set(CMAKE_CXX_FLAGS "-pthread")
 
 message(STATUS "Adding variorum demoapps")
 
-set(powmon_sources
+set(var_monitor_sources
   highlander.c
-  powmon.c
+  var_monitor.c
 )
-message(STATUS " [*] Adding demoapp: powmon")
-add_executable(powmon ${powmon_sources})
-target_link_libraries(powmon variorum ${variorum_deps})
+message(STATUS " [*] Adding demoapp: var_monitor")
+add_executable(var_monitor ${var_monitor_sources})
+target_link_libraries(var_monitor variorum ${variorum_deps})
 
 set(power_wrapper_static_sources
   highlander.c
@@ -37,7 +37,7 @@ target_link_libraries(power_wrapper_dynamic variorum ${variorum_deps})
 include_directories(${CMAKE_SOURCE_DIR}/variorum
                     ${CMAKE_SOURCE_DIR}/variorum/Intel)
 
-install(TARGETS powmon power_wrapper_static power_wrapper_dynamic
+install(TARGETS var_monitor power_wrapper_static power_wrapper_dynamic
         DESTINATION bin)
 
 # quick hack

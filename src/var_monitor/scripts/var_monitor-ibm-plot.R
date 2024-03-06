@@ -1,6 +1,6 @@
 #!/usr/bin/env/Rscript
 
-powmon.plot.ibm <- function(fname_skt0, fname_skt1)
+var_monitor.plot.ibm <- function(fname_skt0, fname_skt1)
 {
     d0 <- read.table(fname_skt0,
                      header = T,
@@ -73,8 +73,8 @@ powmon.plot.ibm <- function(fname_skt0, fname_skt1)
 
 args <- commandArgs(trailingOnly = T)
 if (length(args) != 2) {
-    stop("Missing powmon dat files (per socket).")
+    stop("Missing var_monitor dat files (per socket).")
 }
-powmon.plot.ibm(args[1], args[2])
+var_monitor.plot.ibm(args[1], args[2])
 
 #

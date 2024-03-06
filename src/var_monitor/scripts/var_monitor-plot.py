@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script plots power data colloect by 'powmon'. It reads the CSV files of a single
+# This script plots power data colloect by 'var_monitor'. It reads the CSV files of a single
 # run, where each file holds power data of a node run the tasks. It plots power data per
 # node, where there is a figure for each node. It also plots the descriptive stats of
 # the power data of all nodes.
@@ -12,7 +12,7 @@
 #   argparse>=1.4.0
 #
 # How to run the script?
-#   ./powmon-plot.py [options]
+#   ./var_monitor-plot.py [options]
 #
 # Options:
 #   --input or -i: required to specify power data path. Make sure the power data in the
@@ -27,10 +27,10 @@
 #   --description or -d: required to add a title of the figure.
 #
 # Examples:
-#   1. ./powmon-plot.py --input "/path/to/PowerData" --type per-node
+#   1. ./var_monitor-plot.py --input "/path/to/PowerData" --type per-node
 #     To plot power data located in "/path/to/PowerData" per node and save plots in
 #     "/path/to/PowerData".
-#   2. ./powmon-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
+#   2. ./var_monitor-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
 #     To plot descriptive stats of power data located in /path/to/PowerData/, and save the plots in
 #     "/path/where/to/SavePlots".
 
@@ -218,7 +218,7 @@ if __name__ == "__main__":
         sys.exit("Please use Python 3.8+")
 
     parser = argparse.ArgumentParser(
-        prog="powmon-plot", description="Plotting Power Data"
+        prog="var_monitor-plot", description="Plotting Power Data"
     )
     parser.add_argument(
         "--input",
