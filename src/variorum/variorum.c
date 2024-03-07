@@ -1108,11 +1108,9 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    char *gpu_util_str = NULL;
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    int ret;
     char str[100];
     const char d[2] = " ";
     char *token, *s, *p;
@@ -1142,6 +1140,8 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
 
 
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
+    int ret;
+    char *gpu_util_str = NULL;
     // get gpu utilization
     ret = variorum_get_gpu_utilization_json(&gpu_util_str);
     if (ret != 0)
