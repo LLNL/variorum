@@ -1136,7 +1136,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     int strcp;
 
     json_t *get_util_obj = NULL;
-    json_t *get_ cpu_util_obj = NULL;
+    json_t *get_cpu_util_obj = NULL;
 
 
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
