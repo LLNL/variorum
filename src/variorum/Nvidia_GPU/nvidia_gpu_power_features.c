@@ -18,15 +18,15 @@
 #include <cprintf.h>
 #endif
 
-unsigned m_total_unit_devices;
+unsigned int m_total_unit_devices;
 nvmlDevice_t *m_unit_devices_file_desc;
-unsigned m_gpus_per_socket;
+unsigned int m_gpus_per_socket;
 char m_hostname[1024];
 
 void initNVML(void)
 {
     unsigned int d;
-    unsigned m_num_package;
+    unsigned int m_num_package;
     /* Initialize GPU reading */
     m_unit_devices_file_desc = NULL;
     nvmlReturn_t result = nvmlInit();
@@ -123,7 +123,7 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 {
-    unsigned gpu_temp;
+    unsigned int gpu_temp;
     int d;
     static int init_output = 0;
 
@@ -176,7 +176,7 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 {
-    unsigned gpu_temp;
+    unsigned int gpu_temp;
     int d;
 
     char socket_id[12];

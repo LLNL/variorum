@@ -290,7 +290,7 @@ void set_pmc_ctrl_flags(
     uint64_t umask,
     uint64_t eventsel,
     int pmcnum,
-    unsigned thread,
+    uint16_t thread,
     off_t *msrs_perfevtsel_ctrs
 );
 

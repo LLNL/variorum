@@ -48,7 +48,7 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
 {
     static struct fixed_counter c0, c1, c2;
     static int init = 0;
-    static unsigned nthreads;
+    static uint16_t nthreads;
 
     if (!init)
     {
@@ -80,7 +80,7 @@ void fixed_counter_storage(struct fixed_counter **ctr0,
 
 void init_fixed_counter(struct fixed_counter *ctr)
 {
-    unsigned nthreads = 0;
+    uint16_t nthreads = 0;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
 #endif
@@ -99,8 +99,8 @@ void init_fixed_counter(struct fixed_counter *ctr)
 void enable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 {
     struct fixed_counter *c0, *c1, *c2;
-    unsigned i;
-    unsigned nthreads = 0;
+    unsigned int i;
+    uint16_t nthreads = 0;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
@@ -120,8 +120,8 @@ void enable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 void disable_fixed_counters(off_t *msrs_fixed_ctrs, off_t msr1, off_t msr2)
 {
     struct fixed_counter *c0, *c1, *c2;
-    unsigned i;
-    unsigned nthreads = 0;
+    unsigned int i;
+    uint16_t nthreads = 0;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
@@ -144,8 +144,8 @@ void set_fixed_counter_ctrl(struct fixed_counter *ctr0,
     static uint64_t **perf_global_ctrl = NULL;
     static uint64_t **fixed_ctr_ctrl = NULL;
     static int init = 0;
-    unsigned i;
-    unsigned nthreads = 0;
+    unsigned int i;
+    uint16_t nthreads = 0;
 
     if (!init)
     {
@@ -202,7 +202,7 @@ void fixed_counter_ctrl_storage(uint64_t ***perf_ctrl, uint64_t ***fixed_ctrl,
 {
     static uint64_t **perf_global_ctrl = NULL;
     static uint64_t **fixed_ctr_ctrl = NULL;
-    static unsigned nthreads = 0;
+    static uint16_t nthreads = 0;
     static int init = 0;
 
     if (!init)
@@ -253,9 +253,9 @@ void print_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
-    unsigned i;
+    unsigned int i;
     char hostname[1024];
-    unsigned nthreads = 0;
+    uint16_t nthreads = 0;
 
     if (!init)
     {
@@ -297,9 +297,9 @@ void print_perfmon_counter_data(FILE *writedest, off_t *msrs_perfevtsel_ctrs,
 {
     static struct pmc *p = NULL;
     static int init = 0;
-    unsigned i;
+    unsigned int i;
     char hostname[1024];
-    unsigned nthreads;
+    uint16_t nthreads;
     int avail = 0;
 
     gethostname(hostname, 1024);
@@ -508,9 +508,9 @@ void print_verbose_fixed_counter_data(FILE *writedest, off_t *msrs_fixed_ctrs)
 {
     static int init = 0;
     struct fixed_counter *c0, *c1, *c2;
-    unsigned i;
+    unsigned int i;
     char hostname[1024];
-    unsigned nthreads = 0;
+    uint16_t nthreads = 0;
 
     if (!init)
     {
@@ -536,9 +536,9 @@ void print_verbose_perfmon_counter_data(FILE *writedest,
 {
     static struct pmc *p = NULL;
     static int init = 0;
-    unsigned i;
+    unsigned int i;
     char hostname[1024];
-    unsigned nthreads;
+    uint16_t nthreads;
     int avail = 0;
 
     gethostname(hostname, 1024);
@@ -621,7 +621,7 @@ void print_verbose_perfmon_counter_data(FILE *writedest,
 /// counters is less than 1.
 static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
 {
-    unsigned nthreads = 0;
+    uint16_t nthreads = 0;
     int avail = cpuid_num_pmc();
 
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -757,7 +757,7 @@ static int init_pmc(struct pmc *p, off_t *msrs_perfmon_ctrs)
 /// counters is less than 1.
 static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
 {
-    unsigned nthreads;
+    uint16_t nthreads;
     int avail = cpuid_num_pmc();
 
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -886,8 +886,8 @@ static int init_perfevtsel(struct perfevtsel *evt, off_t *msrs_perfevtsel_ctrs)
 void set_all_pmc_ctrl(uint64_t cmask, uint64_t flags, uint64_t umask,
                       uint64_t eventsel, int pmcnum, off_t *msrs_perfevtsel_ctrs)
 {
-    unsigned nthreads;
-    unsigned i;
+    uint16_t nthreads;
+    unsigned int i;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(NULL, NULL, &nthreads, P_INTEL_CPU_IDX);
@@ -925,7 +925,7 @@ int enable_pmc(off_t *msrs_perfevtsel_ctrs, off_t *msrs_perfmon_ctrs)
  * eventsel [7:0]
  */
 void set_pmc_ctrl_flags(uint64_t cmask, uint64_t flags, uint64_t umask,
-                        uint64_t eventsel, int pmcnum, unsigned thread, off_t *msrs_perfevtsel_ctrs)
+                        uint64_t eventsel, int pmcnum, uint16_t thread, off_t *msrs_perfevtsel_ctrs)
 {
     static struct perfevtsel *evt = NULL;
     if (evt == NULL)
@@ -1004,9 +1004,9 @@ void pmc_storage(struct pmc **p, off_t *msrs_perfmon_ctrs)
 void clear_all_pmc(off_t *msrs_perfmon_ctrs)
 {
     static struct pmc *p = NULL;
-    static unsigned nthreads = 0;
+    static uint16_t nthreads = 0;
     static int avail = 0;
-    unsigned i;
+    unsigned int i;
 
     if (p == NULL)
     {
@@ -1090,7 +1090,7 @@ static void init_unc_perfevtsel(struct unc_perfevtsel *uevt,
                                 off_t *msrs_pcu_pmon_evtsel)
 {
     static int init = 0;
-    unsigned nsockets;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
@@ -1121,7 +1121,7 @@ static void init_unc_counters(struct unc_counters *uc,
                               off_t *msrs_pcu_pmon_ctrs)
 {
     static int init = 0;
-    unsigned nsockets;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
@@ -1186,8 +1186,8 @@ void enable_pcu(off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 void clear_all_pcu(off_t *msrs_pcu_pmon_ctrs)
 {
     static struct unc_counters *uc = NULL;
-    unsigned nsockets = 0;
-    unsigned i;
+    uint16_t nsockets = 0;
+    unsigned int i;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
@@ -1211,8 +1211,8 @@ void print_unc_counter_data(FILE *writedest, off_t *msrs_pcu_pmon_evtsel,
 {
     static int init = 0;
     struct unc_counters *uc;
-    unsigned i;
-    unsigned nsockets;
+    unsigned int i;
+    uint16_t nsockets;
     char hostname[1024];
 
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -1254,8 +1254,8 @@ void print_verbose_unc_counter_data(FILE *writedest,
                                     off_t *msrs_pcu_pmon_evtsel, off_t *msrs_pcu_pmon_ctrs)
 {
     struct unc_counters *uc;
-    unsigned i;
-    unsigned nsockets;
+    unsigned int i;
+    uint16_t nsockets;
     char hostname[1024];
 
 #ifdef VARIORUM_WITH_INTEL_CPU
@@ -1286,9 +1286,9 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     static struct fixed_counter *c0, *c1, *c2;
     static struct clocks_data *cd;
     static int init_get_power_data = 0;
-    static unsigned nsockets, nthreads;
+    static uint16_t nsockets, nthreads;
     char hostname[1024];
-    unsigned i;
+    unsigned int i;
     int rlim_idx = 0;
 
 #ifdef VARIORUM_WITH_INTEL_CPU

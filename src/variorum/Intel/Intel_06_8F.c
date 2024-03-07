@@ -36,8 +36,8 @@ static struct sapphire_rapids_6a_offsets msrs =
 
 int fm_06_8f_get_power_limits(int long_ver)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
+    uint16_t socket;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif

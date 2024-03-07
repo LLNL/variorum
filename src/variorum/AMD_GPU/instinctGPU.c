@@ -20,8 +20,8 @@ int amd_gpu_instinct_get_power(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -42,8 +42,8 @@ int amd_gpu_instinct_get_power_limit(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -64,8 +64,8 @@ int amd_gpu_instinct_get_thermals(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -86,8 +86,8 @@ int amd_gpu_instinct_get_thermals_json(json_t *get_thermal_obj)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
@@ -107,8 +107,8 @@ int amd_gpu_instinct_get_clocks(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -129,8 +129,8 @@ int amd_gpu_instinct_get_clocks_json(json_t *get_clock_obj_json)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 
@@ -150,8 +150,8 @@ int amd_gpu_instinct_get_gpu_utilization(int verbose)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -173,8 +173,8 @@ int amd_gpu_instinct_get_gpu_utilization_json(char **get_gpu_util_obj_str)
     }
 
     json_t *get_util_obj = json_object();
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
@@ -198,8 +198,8 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    unsigned int iter = 0;
+    uint16_t nsockets;
 #ifdef VARIORUM_WITH_AMD_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_AMD_GPU_IDX);
 #endif
@@ -213,7 +213,7 @@ int amd_gpu_instinct_cap_each_gpu_power_limit(unsigned int powerlimit)
 int amd_gpu_instinct_get_power_json(json_t *get_power_obj)
 {
     char *val = getenv("VARIORUM_LOG");
-    unsigned nsockets;
+    uint16_t nsockets;
 
     if (val != NULL && atoi(val) == 1)
     {

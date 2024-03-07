@@ -74,8 +74,8 @@ static struct haswell_3f_offsets msrs =
 
 int intel_cpu_fm_06_3f_get_power_limits(int long_ver)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
+    uint16_t socket;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif
@@ -152,8 +152,8 @@ int intel_cpu_fm_06_3f_get_power_limits(int long_ver)
 
 int intel_cpu_fm_06_3f_cap_power_limits(int package_power_limit)
 {
-    unsigned socket;
-    unsigned nsockets, ncores, nthreads;
+    uint16_t socket;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif
@@ -515,7 +515,7 @@ int intel_cpu_fm_06_3f_cap_best_effort_node_power_limit(int node_limit)
      * the floor of the value being taken. So while we will be off by 1W total,
      * we will guarantee that we stay under the specified cap. */
 
-    unsigned nsockets, ncores, nthreads;
+    uint16_t nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif

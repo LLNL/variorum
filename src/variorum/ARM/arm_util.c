@@ -17,7 +17,7 @@
 #include <variorum_error.h>
 #include <variorum_timers.h>
 
-unsigned m_num_package;
+unsigned int m_num_package;
 char m_hostname[1024];
 
 int read_file_ui64(const int file, uint64_t *val)
