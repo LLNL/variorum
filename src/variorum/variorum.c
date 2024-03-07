@@ -1137,6 +1137,11 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     uint64_t sys_time = 0;
     int strcp;
 
+    json_t *get_util_obj = NULL;
+    json_t *get_ cpu_util_obj = NULL;
+
+
+#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
     // get gpu utilization
     ret = variorum_get_gpu_utilization_json(&gpu_util_str);
     if (ret != 0)
@@ -1147,9 +1152,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     }
 
     /* Load the string as a JSON object using Jansson */
-    json_t *get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+    get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+    get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+#endif
 
-    json_t *get_cpu_util_obj = json_object_get(get_util_obj, hostname);
     if (get_cpu_util_obj == NULL)
     {
         get_cpu_util_obj = json_object();
