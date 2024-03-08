@@ -1137,8 +1137,10 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
 
     json_t *get_util_obj = NULL;
     json_t *get_cpu_util_obj = NULL;
+    json_t *get_timestamp_obj = NULL;
+    json_t *cpu_util_obj = NULL;
 
-
+    // If we have a GPU build, obtain the GPU object.
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
     int ret;
     char *gpu_util_str = NULL;
@@ -1151,24 +1153,26 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         return -1;
     }
 
-    /* Load the string as a JSON object using Jansson */
+    /* Load the existing GPU string as a JSON object using Jansson */
     get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
     get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+    get_timestamp_obj = json_object_get(get_cpu_util_obj, "timestamp");
+    cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
 #endif
 
-    if (get_cpu_util_obj == NULL)
+    //CPU-only build will have this object as NULL.
+    if (get_util_obj == NULL)
     {
+        get_util_obj = json_object();
         get_cpu_util_obj = json_object();
         json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
     }
 
-    json_t *get_timestamp_obj = json_object_get(get_util_obj, "timestamp");
     if (get_timestamp_obj == NULL)
     {
         json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
     }
 
-    json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
     if (cpu_util_obj == NULL)
     {
         cpu_util_obj = json_object();
@@ -1243,6 +1247,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     last_sum = sum;
     last_sys_time = sys_time;
     last_idle = sum_idle;
+
     json_object_set_new(cpu_util_obj, "total_util%", json_real(cpu_util));
     json_object_set_new(cpu_util_obj, "user_util%", json_real(user_util));
     json_object_set_new(cpu_util_obj, "system_util%", json_real(sys_util));
