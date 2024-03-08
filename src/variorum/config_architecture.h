@@ -283,15 +283,15 @@ struct platform
     /// @brief Hostname.
     char hostname[1024];
     /// @brief Number of sockets in the node.
-    uint16_t num_sockets;
+    int num_sockets;
     /// @brief Total number of physical cores in the node.
-    uint16_t total_cores;
+    int total_cores;
     /// @brief Total number of logical threads in the node.
-    uint16_t total_threads;
+    int total_threads;
     /// @brief Number of physical cores per socket in the node.
-    uint16_t num_cores_per_socket;
+    int num_cores_per_socket;
     /// @brief Number of logical threads per core.
-    uint16_t num_threads_per_core;
+    int num_threads_per_core;
 };
 
 #if 0 /* To implement later */
