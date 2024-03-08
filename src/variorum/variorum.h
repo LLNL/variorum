@@ -584,7 +584,7 @@ int variorum_get_power_json(char **get_power_obj_str);
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
 /// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
-int variorum_get_node_utilization_json(char **get_util_obj_str);
+int variorum_get_utilization_json(char **get_util_obj_str);
 
 /// @brief Populate a string in JSON format with utilization of each GPU
 ///

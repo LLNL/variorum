@@ -1090,7 +1090,7 @@ int variorum_get_power_json(char **get_power_obj_str)
     return err;
 }
 
-int variorum_get_node_utilization_json(char **get_util_obj_str)
+int variorum_get_utilization_json(char **get_util_obj_str)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);

@@ -52,7 +52,7 @@ int main(int argc, char **argv)
                 return -1;
         }
     }
-    ret = variorum_get_node_utilization_json(&s);
+    ret = variorum_get_utilization_json(&s);
     if (ret != 0)
     {
         printf("First run: JSON get node utilization failed!\n");
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         x += do_work(i);
     }
     printf("Final result: %f\n", x);
-    ret = variorum_get_node_utilization_json(&s);
+    ret = variorum_get_utilization_json(&s);
     if (ret != 0)
     {
         printf("Second run: JSON get node utilization failed!\n");
