@@ -28,8 +28,8 @@ static struct icelake_6a_offsets msrs =
 
 int intel_cpu_fm_06_6a_get_power_limits(int long_ver)
 {
-    uint16_t socket;
-    uint16_t nsockets, ncores, nthreads;
+    int socket;
+    int nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif

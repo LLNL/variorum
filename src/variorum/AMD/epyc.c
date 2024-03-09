@@ -582,7 +582,7 @@ int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit)
 }
 
 /*
-int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, unsigned int boostlimit)
+int amd_cpu_epyc_set_and_verify_core_boostlimit(int core, int boostlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

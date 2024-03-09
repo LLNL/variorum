@@ -191,13 +191,13 @@ void print_verbose_dram_power_limit(FILE *writedest,
                                     off_t msr_rapl_unit,
                                     int socket);
 
-int get_package_rapl_limit(const uint16_t socket,
+int get_package_rapl_limit(const int socket,
                            struct rapl_limit *limit1,
                            struct rapl_limit *limit2,
                            off_t msr_power_limit,
                            off_t msr_rapl_unit);
 
-int get_dram_rapl_limit(const uint16_t socket,
+int get_dram_rapl_limit(const int socket,
                         struct rapl_limit *limit,
                         off_t msr_power_limit,
                         off_t msr_rapl_unit);
@@ -205,11 +205,11 @@ int get_dram_rapl_limit(const uint16_t socket,
 void print_rapl_power_unit(FILE *writedest,
                            off_t msr);
 
-int get_rapl_pkg_power_info(const uint16_t socket,
+int get_rapl_pkg_power_info(const int socket,
                             struct rapl_pkg_power_info *info,
                             off_t msr);
 
-int get_rapl_dram_power_info(const uint16_t socket,
+int get_rapl_dram_power_info(const int socket,
                              struct rapl_dram_power_info *info,
                              off_t msr);
 
@@ -237,7 +237,7 @@ void print_verbose_dram_power_info(FILE *writedest,
                                    off_t msr,
                                    int socket);
 
-int cap_package_power_limit(const uint16_t socket,
+int cap_package_power_limit(const int socket,
                             int package_power_limit,
                             off_t msr_power_limit,
                             off_t msr_rapl_unit);

@@ -38,7 +38,7 @@ int amd_cpu_epyc_set_each_core_boostlimit(
 
 //int amd_cpu_epyc_set_and_verify_core_boostlimit(
 //    int core,
-//    unsigned int boostlimit
+//    int boostlimit
 //);
 
 int amd_cpu_epyc_set_socket_boostlimit(

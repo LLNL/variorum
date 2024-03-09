@@ -75,8 +75,8 @@ static struct broadwell_4f_offsets msrs =
 
 int intel_cpu_fm_06_4f_get_power_limits(int long_ver)
 {
-    uint16_t socket;
-    uint16_t nsockets, ncores, nthreads;
+    int socket;
+    int nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif
@@ -153,8 +153,8 @@ int intel_cpu_fm_06_4f_get_power_limits(int long_ver)
 
 int intel_cpu_fm_06_4f_cap_power_limits(int package_power_limit)
 {
-    uint16_t socket;
-    uint16_t nsockets, ncores, nthreads;
+    int socket;
+    int nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif
@@ -393,7 +393,7 @@ int intel_cpu_fm_06_4f_get_power(int long_ver)
 
 int intel_cpu_fm_06_4f_enable_turbo(void)
 {
-    unsigned int turbo_mode_disable_bit = 38;
+    int turbo_mode_disable_bit = 38;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -408,7 +408,7 @@ int intel_cpu_fm_06_4f_enable_turbo(void)
 
 int intel_cpu_fm_06_4f_disable_turbo(void)
 {
-    unsigned int turbo_mode_disable_bit = 38;
+    int turbo_mode_disable_bit = 38;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -423,7 +423,7 @@ int intel_cpu_fm_06_4f_disable_turbo(void)
 
 int intel_cpu_fm_06_4f_get_turbo_status(void)
 {
-    unsigned int turbo_mode_disable_bit = 38;
+    int turbo_mode_disable_bit = 38;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -537,7 +537,7 @@ int intel_cpu_fm_06_4f_cap_best_effort_node_power_limit(int node_limit)
      * the floor of the value being taken. So while we will be off by 1W total,
      * we will guarantee that we stay under the specified cap. */
 
-    uint16_t nsockets, ncores, nthreads;
+    int nsockets, ncores, nthreads;
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
 #endif

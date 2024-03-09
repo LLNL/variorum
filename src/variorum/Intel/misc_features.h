@@ -68,7 +68,7 @@ int config_tdp(
 /// @return 0 if successful, else non-zero.
 int set_turbo_on(
     off_t msr_misc_enable,
-    unsigned int turbo_mode_disable_bit
+    int turbo_mode_disable_bit
 );
 
 /// @brief Disable Turbo Mode on each socket.
@@ -80,7 +80,7 @@ int set_turbo_on(
 /// @return 0 if successful, else non-zero.
 int set_turbo_off(
     off_t msr_misc_enable,
-    unsigned int turbo_mode_disable_bit
+    int turbo_mode_disable_bit
 );
 
 /// @brief Print status of Turbo Mode on each socket.
@@ -94,32 +94,32 @@ int set_turbo_off(
 int print_turbo_status(
     FILE *writedest,
     off_t msr_misc_enable,
-    unsigned int turbo_mode_disable_bit
+    int turbo_mode_disable_bit
 );
 
 ///// These per core functions seemingly only for Intel Signatures 06_57H (KNL) and
 ///// 06_85H (future Xeon Phi), at the moment.
 ///// Intel Vol. 4 2-287 Documentation
 //int set_turbo_on_core(
-//    uint16_t const socket,
-//    uint16_t const core,
+//    int const socket,
+//    int const core,
 //    off_t msr_misc_enable,
-//    unsigned int turbo_mode_disable_bit
+//    int turbo_mode_disable_bit
 //);
 //int set_turbo_off_core(
-//    uint16_t const socket,
-//    uint16_t const core,
+//    int const socket,
+//    int const core,
 //    off_t msr_misc_enable,
-//    unsigned int turbo_mode_disable_bit
+//    int turbo_mode_disable_bit
 //);
 ///// @brief
 ///// @return -1 if there is an error, 0 if Turbo is DISabled, 1 if Turbo is
 ///// ENabled.
 //int get_turbo_status_core(
-//    uint16_t const socket,
-//    uint16_t const core,
+//    int const socket,
+//    int const core,
 //    off_t msr_misc_enable,
-//    unsigned int turbo_mode_disable_bit
+//    int turbo_mode_disable_bit
 //);
 
 #endif

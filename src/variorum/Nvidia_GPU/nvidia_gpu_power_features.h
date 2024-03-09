@@ -13,9 +13,9 @@
 #include <string.h>
 #include <sys/time.h>
 
-extern unsigned m_total_unit_devices;
+extern int m_total_unit_devices;
 extern nvmlDevice_t *m_unit_devices_file_desc;
-extern unsigned m_gpus_per_socket;
+extern int m_gpus_per_socket;
 extern char m_hostname[1024];
 
 void initNVML(
@@ -58,7 +58,7 @@ void nvidia_gpu_get_gpu_utilization_data(
 
 void cap_each_gpu_power_limit(
     int chipid,
-    unsigned int powerlimit
+    int powerlimit
 );
 
 void nvidia_gpu_get_thermal_json(

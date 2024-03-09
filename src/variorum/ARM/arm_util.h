@@ -11,7 +11,7 @@
 
 #include <config_architecture.h>
 
-extern unsigned int m_num_package;
+extern int m_num_package;
 extern char m_hostname[1024];
 
 int read_file_ui64(

@@ -25,7 +25,7 @@ void clocks_storage(struct clocks_data **cd, off_t msr_aperf, off_t msr_mperf,
 {
     static int init = 0;
     static struct clocks_data d;
-    static uint16_t nthreads = 0;
+    static int nthreads = 0;
 
     if (!init)
     {
@@ -52,7 +52,7 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_ctl,
 {
     static int init = 0;
     static struct perf_data d;
-    uint16_t nsockets, ncores, nthreads;
+    int nsockets, ncores, nthreads;
 
 #ifdef VARIORUM_WITH_INTEL_CPU
     variorum_get_topology(&nsockets, &ncores, &nthreads, P_INTEL_CPU_IDX);
@@ -86,7 +86,7 @@ void perf_storage_temp(struct perf_data **pd, off_t msr_perf_ctl,
 void perf_storage(struct perf_data **pd, off_t msr_perf_status)
 {
     static struct perf_data d;
-    static uint16_t nsockets = 0;
+    static int nsockets = 0;
 
     if (!nsockets)
     {
@@ -113,8 +113,8 @@ int print_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
     static struct clocks_data *cd;
     static struct perf_data *pd;
     static int init = 0;
-    unsigned int i, j, k;
-    uint16_t nsockets, ncores, nthreads;
+    int i, j, k;
+    int nsockets, ncores, nthreads;
     int idx;
     char hostname[1024];
     int max_non_turbo_ratio;
@@ -232,9 +232,9 @@ int print_verbose_clocks_data(FILE *writedest, off_t msr_aperf, off_t msr_mperf,
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
-    unsigned int i, j, k;
+    int i, j, k;
     int idx;
-    uint16_t nsockets, ncores, nthreads;
+    int nsockets, ncores, nthreads;
     char hostname[1024];
     int max_non_turbo_ratio;
     int err;
@@ -320,9 +320,9 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
 {
     static struct clocks_data *cd;
     static struct perf_data *pd;
-    unsigned int i, j, k;
+    int i, j, k;
     int idx;
-    uint16_t nsockets, ncores, nthreads;
+    int nsockets, ncores, nthreads;
     int max_non_turbo_ratio;
     int err;
     float socket_average_freq = 0.0;
@@ -454,8 +454,8 @@ int get_clocks_data_json(json_t *output, off_t msr_aperf, off_t msr_mperf,
 void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
                  off_t msr_perf_status)
 {
-    uint16_t nsockets, ncores, nthreads;
-    unsigned int i;
+    int nsockets, ncores, nthreads;
+    int i;
     static struct perf_data *pd;
     static int init = 0;
 
@@ -499,7 +499,7 @@ void cap_p_state(int cpu_freq_mhz, enum ctl_domains_e domain,
     }
 }
 
-//void set_p_state(uint16_t socket, uint64_t pstate)
+//void set_p_state(int socket, uint64_t pstate)
 //{
 //    static uint64_t procs = 0;
 //    static struct perf_data *cd;

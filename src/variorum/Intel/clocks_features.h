@@ -175,7 +175,7 @@ json_t *make_socket_obj(
 ///// @param [in] socket Unique socket/package identifier.
 /////
 ///// @param [in] pstate Desired p-state.
-//void set_p_state(uint16_t socket,
+//void set_p_state(int socket,
 //                 uint64_t pstate);
 void cap_p_state(
     int cpu_freq_mhz,

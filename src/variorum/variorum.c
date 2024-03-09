@@ -36,7 +36,7 @@ FILE *fp = 0;
 static void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
                            int depth)
 {
-    unsigned i;
+    int i;
 
 #ifdef LIBJUSTIFY_FOUND
     if (depth == 0) //First interation

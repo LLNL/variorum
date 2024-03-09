@@ -22,7 +22,7 @@
 static void create_rapl_data_batch(struct rapl_data *rapl,
                                    off_t msr_core_energy_status)
 {
-    unsigned ncores;
+    int ncores;
 #ifdef VARIORUM_WITH_AMD_CPU
     variorum_get_topology(NULL, &ncores, NULL, P_AMD_CPU_IDX);
 #endif
@@ -37,7 +37,7 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
 static int rapl_storage(struct rapl_data **data)
 {
     static struct rapl_data *rapl = NULL;
-    static unsigned ncores = 0;
+    static int ncores = 0;
     static int init = 0;
 
     if (!init)
@@ -72,7 +72,7 @@ static int read_rapl_data(off_t msr_core_energy_status)
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
-    static unsigned ncores = 0;
+    static int ncores = 0;
     int i;
 
     if (!init)
@@ -121,7 +121,7 @@ int print_energy_data(FILE *writedest, off_t msr_rapl_unit,
 {
     static struct rapl_data *rapl = NULL;
     static int init = 0;
-    unsigned ncores = 0;
+    int ncores = 0;
     // TODO: We can't test this API yet due to privilege issues. We need to
     // update the printing format here to include hostname and prefix
     // _AMDENERGY once we have ability to test.

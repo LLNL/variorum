@@ -17,14 +17,14 @@
 #include <cprintf.h>
 #endif
 
-static unsigned m_total_unit_devices;
-static unsigned m_gpus_per_socket;
+static int m_total_unit_devices;
+static int m_gpus_per_socket;
 static char m_hostname[1024];
 
 void initAPMIDG(void)
 {
     int verbose = 0;
-    unsigned m_num_package;
+    int m_num_package;
     apmidg_init(verbose);
 
     m_total_unit_devices = apmidg_getndevs();
@@ -212,7 +212,7 @@ void get_clocks_data(int chipid, int verbose, FILE *output)
 #endif
 }
 
-void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
+void cap_each_gpu_power_limit(int chipid, int powerlimit)
 {
     int powerlimit_mwatts = powerlimit * 1000;
     int d;

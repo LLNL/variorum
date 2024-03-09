@@ -28,8 +28,8 @@ int ibm_cpu_p9_get_power(int long_ver)
     int fd;
     int rc;
     int bytes;
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -320,9 +320,9 @@ int ibm_cpu_p9_monitoring(FILE *output)
     int fd;
     int rc;
     int bytes;
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
-    static unsigned int count = 0;
+    int iter = 0;
+    int nsockets = 0;
+    static int count = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -405,8 +405,8 @@ int ibm_cpu_p9_get_power_json(json_t *get_power_obj)
     int fd;
     int rc;
     int bytes;
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -468,8 +468,8 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     int fd;
     int rc;
     int bytes;
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -596,8 +596,8 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
     int fd;
     int rc;
     int bytes;
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);

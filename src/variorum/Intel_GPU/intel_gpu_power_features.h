@@ -39,7 +39,7 @@ void get_clocks_data(
 
 void cap_each_gpu_power_limit(
     int chipid,
-    unsigned int powerlimit
+    int powerlimit
 );
 
 void get_power_limit_data(

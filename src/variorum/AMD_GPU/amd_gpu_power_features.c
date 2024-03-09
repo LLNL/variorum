@@ -884,7 +884,7 @@ void get_gpu_utilization_data_json(int chipid, int total_sockets,
 }
 
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
-                              unsigned int powerlimit)
+                              int powerlimit)
 {
     rsmi_status_t ret;
     uint32_t num_devices;
@@ -893,7 +893,7 @@ void cap_each_gpu_power_limit(int chipid, int total_sockets,
     static int init = 0;
     static struct timeval start;
     struct timeval now;
-    unsigned int powerlimit_uwatts = powerlimit * 1000000;
+    int powerlimit_uwatts = powerlimit * 1000000;
 
     gethostname(hostname, 1024);
 

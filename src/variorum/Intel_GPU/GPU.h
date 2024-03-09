@@ -19,7 +19,7 @@ extern int intel_gpu_get_clocks(
 );
 
 extern int intel_gpu_cap_each_gpu_power_limit(
-    unsigned int powerlimit
+    int powerlimit
 );
 
 extern int intel_gpu_get_power_limit(

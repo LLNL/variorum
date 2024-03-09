@@ -18,15 +18,15 @@
 #include <cprintf.h>
 #endif
 
-unsigned int m_total_unit_devices;
+int m_total_unit_devices;
 nvmlDevice_t *m_unit_devices_file_desc;
-unsigned int m_gpus_per_socket;
+int m_gpus_per_socket;
 char m_hostname[1024];
 
 void initNVML(void)
 {
-    unsigned int d;
-    unsigned int m_num_package;
+    int d;
+    int m_num_package;
     /* Initialize GPU reading */
     m_unit_devices_file_desc = NULL;
     nvmlReturn_t result = nvmlInit();
@@ -74,7 +74,7 @@ void shutdownNVML(void)
 //TODO REALLY TEST THIS ONE FOR LIBJUSTIFY
 void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 {
-    unsigned int power;
+    int power;
     double value = 0.0;
     int d;
     static int init_output = 0;
@@ -123,7 +123,7 @@ void nvidia_gpu_get_power_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 {
-    unsigned int gpu_temp;
+    int gpu_temp;
     int d;
     static int init_output = 0;
 
@@ -176,7 +176,7 @@ void nvidia_gpu_get_thermal_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 {
-    unsigned int gpu_temp;
+    int gpu_temp;
     int d;
 
     char socket_id[12];
@@ -209,7 +209,7 @@ void nvidia_gpu_get_thermal_json(int chipid, json_t *output)
 
 void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 {
-    unsigned int power_limit;
+    int power_limit;
     double value = 0.0;
     int d;
     static int init_output = 0;
@@ -275,7 +275,7 @@ void nvidia_gpu_get_power_limits_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
 {
-    unsigned int gpu_clock;
+    int gpu_clock;
     int d;
     static int init_output = 0;
 
@@ -327,8 +327,8 @@ void nvidia_gpu_get_clocks_data(int chipid, int verbose, FILE *output)
 
 void nvidia_gpu_get_clocks_json(int chipid, json_t *output)
 {
-    unsigned int gpu_clock;
-    unsigned int mem_clock;
+    int gpu_clock;
+    int mem_clock;
     int d;
 
     char socket_id[16];
@@ -468,9 +468,9 @@ void nvidia_get_gpu_utilization_json(int chipid, json_t *get_gpu_util_obj)
     }
 }
 
-void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
+void cap_each_gpu_power_limit(int chipid, int powerlimit)
 {
-    unsigned int powerlimit_mwatts = powerlimit * 1000;
+    int powerlimit_mwatts = powerlimit * 1000;
     int d;
 
     //Iterate over all GPU device handles for this socket and print power
@@ -489,7 +489,7 @@ void cap_each_gpu_power_limit(int chipid, unsigned int powerlimit)
 
 void nvidia_gpu_get_power_json(int chipid, json_t *get_power_obj)
 {
-    unsigned int gpu_power;
+    int gpu_power;
     double value = 0.0;
     double total_gpu_power = 0.0;
     int d;

@@ -48,8 +48,8 @@ int arm_neoverse_n1_get_thermals(int long_ver)
 int arm_neoverse_n1_get_clocks(int long_ver)
 {
     int ret = 0;
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -71,7 +71,7 @@ int arm_neoverse_n1_get_clocks(int long_ver)
 int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq)
 {
     int ret = 0;
-    uint16_t nsockets;
+    int nsockets;
 
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)

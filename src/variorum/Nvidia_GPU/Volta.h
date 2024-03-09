@@ -29,7 +29,7 @@ int volta_get_gpu_utilization(
 );
 
 int volta_cap_each_gpu_power_limit(
-    unsigned int powerlimit
+    int powerlimit
 );
 
 int volta_get_power_json(

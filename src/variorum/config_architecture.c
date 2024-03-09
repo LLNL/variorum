@@ -199,8 +199,7 @@ int variorum_detect_arch(void)
     return 0;
 }
 
-void variorum_get_topology(uint16_t *nsockets, uint16_t *ncores,
-                           uint16_t *nthreads, int idx)
+void variorum_get_topology(int *nsockets, int *ncores, int *nthreads, int idx)
 {
     int rc;
 

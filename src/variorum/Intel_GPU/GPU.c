@@ -16,8 +16,8 @@ int intel_gpu_get_power(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_INTEL_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
 #endif
@@ -34,8 +34,8 @@ int intel_gpu_get_thermals(int long_ver)
     printf("Running %s\n", __FUNCTION__);
 #endif
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_INTEL_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
 #endif
@@ -51,8 +51,8 @@ int intel_gpu_get_clocks(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_INTEL_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
 #endif
@@ -63,7 +63,7 @@ int intel_gpu_get_clocks(int long_ver)
     return 0;
 }
 
-int intel_gpu_cap_each_gpu_power_limit(unsigned int powerlimit)
+int intel_gpu_cap_each_gpu_power_limit(int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -71,8 +71,8 @@ int intel_gpu_cap_each_gpu_power_limit(unsigned int powerlimit)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned iter = 0;
-    unsigned nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_INTEL_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
 #endif
@@ -88,8 +88,8 @@ int intel_gpu_get_power_limit(int long_ver)
 #ifdef VARIORUM_LOG
     printf("Running %s\n", __FUNCTION__);
 #endif
-    unsigned iter = 0;
-    unsigned nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_INTEL_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_GPU_IDX);
 #endif

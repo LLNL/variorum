@@ -34,7 +34,7 @@ int amd_gpu_instinct_get_power_json(
 );
 
 int amd_gpu_instinct_cap_each_gpu_power_limit(
-    unsigned int powerlimit
+    int powerlimit
 );
 
 int amd_gpu_instinct_get_thermals_json(

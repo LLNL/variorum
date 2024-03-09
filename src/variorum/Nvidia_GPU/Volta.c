@@ -21,8 +21,8 @@ int volta_get_power(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -41,8 +41,8 @@ int volta_get_thermals(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -61,8 +61,8 @@ int volta_get_thermals_json(json_t *get_thermal_obj)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
@@ -81,8 +81,8 @@ int volta_get_clocks(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -101,8 +101,8 @@ int volta_get_clocks_json(json_t *get_clock_obj_json)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -122,8 +122,8 @@ int volta_get_power_limits(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -142,8 +142,8 @@ int volta_get_gpu_utilization(int long_ver)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -163,8 +163,8 @@ int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str)
     }
 
     json_t *get_util_obj = json_object();
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -178,7 +178,7 @@ int volta_get_gpu_utilization_json(char **get_gpu_util_obj_str)
     return 0;
 }
 
-int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
+int volta_cap_each_gpu_power_limit(int powerlimit)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -186,8 +186,8 @@ int volta_cap_each_gpu_power_limit(unsigned int powerlimit)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets = 0;
+    int iter = 0;
+    int nsockets = 0;
 #ifdef VARIORUM_WITH_NVIDIA_GPU
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 #endif
@@ -206,8 +206,8 @@ int volta_get_power_json(json_t *get_power_obj)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    unsigned int iter = 0;
-    uint16_t nsockets;
+    int iter = 0;
+    int nsockets;
     variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
 
     for (iter = 0; iter < nsockets; iter++)
