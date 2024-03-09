@@ -1326,6 +1326,7 @@ int variorum_get_utilization_json(char **get_util_obj_str)
     return err;
 }
 
+/*
 int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
 {
     int err = 0;
@@ -1373,6 +1374,7 @@ int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
     }
     return err;
 }
+*/
 
 // The variorum_get_node_power_domain_info_json is a node-level API, and cannot
 // be implemented at a per-component (eg CPU, GPU) level. This can only be available

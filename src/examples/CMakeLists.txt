@@ -17,7 +17,6 @@ set(BASIC_EXAMPLES
     variorum-disable-turbo-example
     variorum-enable-turbo-example
     variorum-get-frequency-json-example
-    variorum-get-gpu-utilization-json-example
     variorum-get-node-power-domain-info-json-example
     variorum-get-power-json-example
     variorum-get-thermals-json-example
