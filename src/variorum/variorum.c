@@ -1152,26 +1152,25 @@ int variorum_get_utilization_json(char **get_util_obj_str)
 #endif
     }
 
-    if (idx > -1)
+    // If we have a GPU build, obtain the GPU object first.
+#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
+    int ret;
+    char *gpu_util_str = NULL;
+    // get gpu utilization
+    ret = g_platform[idx].variorum_get_utilization_json(&gpu_util_str);
+    if (ret != 0)
     {
-        // If we have a GPU build, obtain the GPU object first.
-        int ret;
-        char *gpu_util_str = NULL;
-        // get gpu utilization
-        ret = g_platform[idx].variorum_get_utilization_json(&gpu_util_str);
-        if (ret != 0)
-        {
-            printf("JSON get gpu utilization failed. Exiting.\n");
-            free(gpu_util_str);
-            return -1;
-        }
-
-        /* Load the existing GPU string as a JSON object using Jansson */
-        get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
-        get_cpu_util_obj = json_object_get(get_util_obj, hostname);
-        get_timestamp_obj = json_object_get(get_cpu_util_obj, "timestamp");
-        cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
+        printf("JSON get gpu utilization failed. Exiting.\n");
+        free(gpu_util_str);
+        return -1;
     }
+
+    /* Load the existing GPU string as a JSON object using Jansson */
+    get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+    get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+    get_timestamp_obj = json_object_get(get_cpu_util_obj, "timestamp");
+    cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
+#endif
 
     //CPU-only build will have this object as NULL.
     if (get_util_obj == NULL)
@@ -1325,56 +1324,6 @@ int variorum_get_utilization_json(char **get_util_obj_str)
     }
     return err;
 }
-
-/*
-int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
-{
-    int err = 0;
-    int i;
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-
-    for (i = 0; i < P_NUM_PLATFORMS; i++)
-    {
-#ifdef VARIORUM_WITH_INTEL_GPU
-        i = P_INTEL_GPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_NVIDIA_GPU
-        i = P_NVIDIA_GPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_AMD_GPU
-        i = P_AMD_GPU_IDX;
-        break;
-#endif
-    }
-
-    if (g_platform[i].variorum_get_gpu_utilization_json == NULL)
-    {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return -1;
-    }
-    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj_str);
-    if (err)
-    {
-        return -1;
-    }
-
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-    return err;
-}
-*/
 
 // The variorum_get_node_power_domain_info_json is a node-level API, and cannot
 // be implemented at a per-component (eg CPU, GPU) level. This can only be available
