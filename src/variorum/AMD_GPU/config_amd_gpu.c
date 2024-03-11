@@ -35,7 +35,7 @@ int set_amd_gpu_func_ptrs(int idx)
             amd_gpu_instinct_get_gpu_utilization;
         g_platform[idx].variorum_get_thermals_json = amd_gpu_instinct_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json = amd_gpu_instinct_get_clocks_json;
-        g_platform[idx].variorum_get_gpu_utilization_json =
+        g_platform[idx].variorum_get_utilization_json =
             amd_gpu_instinct_get_gpu_utilization_json;
         /* Initialize control interfaces */
         g_platform[idx].variorum_cap_each_gpu_power_limit =
