@@ -206,7 +206,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 
     for (core_iter = 0; core_iter < NUM_CORES; core_iter++)
     {
-        sprintf(freq_fname, "%s%d/scaling_cur_freq", freq_path, core_iter);
+        sprintf(freq_fname, "%s%lu/scaling_cur_freq", freq_path, core_iter);
         int freq_fd = open(freq_fname, O_RDONLY);
         if (!freq_fd)
         {
@@ -274,16 +274,13 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
 
 int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq)
 {
-    static int init_output = 0;
     uint64_t core_iter;
-    uint64_t aggregate_freq = 0;
-
     char freq_fname[4096];
     char *freq_path = "/sys/devices/system/cpu/cpufreq/policy";
 
     for (core_iter = 0; core_iter < NUM_CORES; core_iter++)
     {
-        sprintf(freq_fname, "%s%d/scaling_setspeed", freq_path, core_iter);
+        sprintf(freq_fname, "%s%lu/scaling_setspeed", freq_path, core_iter);
         int freq_fd = open(freq_fname, O_WRONLY);
         if (!freq_fd)
         {
