@@ -122,11 +122,12 @@ The API to obtain node utilization has the following format. It takes a string
 (``char**``) by reference as input, and populates this string with a JSON object
 with total CPU, system CPU, user CPU, total memory, and GPU (when available)
 utilizations. It reports the utilization of each available GPU. GPU utilization
-is obtained using the NVML and RSMI APIs. The total memory utilization is computed
-using ``/proc/meminfo``, and CPU utilizations is computed using ``/proc/stat``.
+is obtained using the NVML and RSMI APIs. The total memory utilization is
+computed using ``/proc/meminfo``, and CPU utilizations is computed using
+``/proc/stat``.
 
-The ``variorum_get_utilization_json(char **get_util_obj_str)`` function
-returns a string type nested JSON object. An example is provided below:
+The ``variorum_get_utilization_json(char **get_util_obj_str)`` function returns
+a string type nested JSON object. An example is provided below:
 
 .. code::
 
@@ -149,8 +150,8 @@ returns a string type nested JSON object. An example is provided below:
 
 The ``*`` here refers to socket ID, and the ``#`` refers to GPU ID.
 
-The ``variorum_get_utilization_json(char **get_util_obj_str)`` function
-returns a string type nested JSON object. An example is provided below:
+The ``variorum_get_utilization_json(char **get_util_obj_str)`` function returns
+a string type nested JSON object. An example is provided below:
 
 .. code::
 
