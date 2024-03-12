@@ -324,15 +324,16 @@ static void create_rapl_data_batch(struct rapl_data *rapl,
     rapl->old_pkg_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->old_pkg_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->pkg_delta_joules = (double *) calloc(nsockets, sizeof(double));
-    rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(double));
+    rapl->pkg_delta_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->pkg_watts = (double *) calloc(nsockets, sizeof(double));
     load_socket_batch(msr_pkg_energy_status, rapl->pkg_bits, RAPL_DATA);
 
     rapl->dram_bits = (uint64_t **) calloc(nsockets, sizeof(uint64_t *));
-    rapl->old_dram_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->dram_joules = (double *) calloc(nsockets, sizeof(double));
+    rapl->old_dram_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->old_dram_joules = (double *) calloc(nsockets, sizeof(double));
     rapl->dram_delta_joules = (double *) calloc(nsockets, sizeof(double));
+    rapl->dram_delta_bits = (uint64_t *) calloc(nsockets, sizeof(uint64_t));
     rapl->dram_watts = (double *) calloc(nsockets, sizeof(double));
     load_socket_batch(msr_dram_energy_status, rapl->dram_bits, RAPL_DATA);
 
@@ -1052,18 +1053,36 @@ int delta_rapl_data(off_t msr_rapl_unit)
         /* This case should not happen. */
         if (rapl->pkg_delta_joules[i] < 0)
         {
-            variorum_error_handler("Energy used since last same is negative",
+            variorum_error_handler("PKG energy used since last same is negative",
                                    VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
         }
-        if (rapl->dram_joules[i] - rapl->old_dram_joules[i] < 0)
+
+        /* Check to see if there was wraparound and use corresponding translation. */
+        if ((double)*rapl->dram_bits[i] - (double)rapl->old_dram_bits[i] < 0)
         {
-            rapl->dram_delta_joules[i] = (rapl->dram_joules[i] + max_joules) -
-                                         rapl->old_dram_joules[i];
+            rapl->dram_delta_bits[i] = (uint64_t)((*rapl->dram_bits[i] +
+                                                   (uint64_t)max_joules) - rapl->old_dram_bits[i]);
+#ifdef VARIORUM_WITH_INTEL_CPU
+            translate(i, &rapl->dram_delta_bits[i], &rapl->dram_delta_joules[i],
+                      BITS_TO_JOULES, msr_rapl_unit, P_INTEL_CPU_IDX);
+#endif
+#ifdef VARIORUM_DEBUG
+            fprintf(stderr, "OVF dram%d new=0x%lx old=0x%lx -> %lf\n", i,
+                    *rapl->dram_bits[i], rapl->old_dram_bits[i],
+                    rapl->dram_delta_joules[i]);
+#endif
         }
         else
         {
             rapl->dram_delta_joules[i] = rapl->dram_joules[i] - rapl->old_dram_joules[i];
         }
+        /* This case should not happen. */
+        if (rapl->dram_delta_joules[i] < 0)
+        {
+            variorum_error_handler("DRAM energy used since last same is negative",
+                                   VARIORUM_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __FUNCTION__, __LINE__);
+        }
+
         /* Get watts. */
         if (rapl->elapsed > 0.0L)
         {
