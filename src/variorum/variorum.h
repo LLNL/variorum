@@ -590,51 +590,13 @@ int variorum_get_power_json(char **get_power_obj_str);
 /// - Intel Cascade Lake
 /// - Intel Cooper Lake
 ///
-/// @param [out] get_util_obj_str String (passed by refrence) that contains node-level
+/// @param [out] get_util_obj_str String (passed by reference) that contains node-level
 /// utilization information.
 ///
 /// @returns 0 if successful, otherwise -1. Note that feature not implemented
-/// returns a -1 for the JSON APIs so that users don't have to explicily
+/// returns a -1 for the JSON APIs so that users don't have to explicitly
 /// check for NULL strings.
-int variorum_get_node_utilization_json(char **get_util_obj_str);
-
-/// @brief Populate a string in JSON format with utilization of each GPU
-///
-/// Format:
-/// {
-///     "hostname": {
-///         "GPU": {
-///             Socket_n : {
-///                 GPUnm_util% : GPU_utilization
-///             },
-///         "timestamp" : timestamp
-/// }
-/// where n is the socket number and m is the GPU ID.
-///
-/// @supparch
-/// - AMD Radeon Instinct GPUs (MI50 onwards)
-/// - NVIDIA Volta
-///
-/// @unsupported
-/// - AMD EPYC Milan
-/// - IBM Power9
-/// - Intel Sandy Bridge
-/// - Intel Ivy Bridge
-/// - Intel Haswell
-/// - Intel Broadwell
-/// - Intel Skylake
-/// - Intel Kaby Lake
-/// - Intel Ice Lake
-/// - Intel Cascade Lake
-/// - Intel Cooper Lake
-///
-/// @param [out] get_gpu_util_obj_str String (passed by refrence) that contains
-/// node-level utilization information.
-///
-/// @returns 0 if successful, otherwise -1. Note that feature not implemented
-/// returns a -1 for the JSON APIs so that users don't have to explicily
-/// check for NULL strings.
-int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str);
+int variorum_get_utilization_json(char **get_util_obj_str);
 
 /// @brief Populate a string in JSON format with measurable and controllable
 /// power domains, along with the ranges.

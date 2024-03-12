@@ -32,15 +32,24 @@ struct icelake_6a_offsets
     off_t msr_dram_power_info;
 };
 
-int intel_cpu_fm_06_6a_get_power_limits(int long_ver);
+int intel_cpu_fm_06_6a_get_power_limits(
+    int long_ver
+);
 
-int intel_cpu_fm_06_6a_get_power(int long_ver);
+int intel_cpu_fm_06_6a_get_power(
+    int long_ver
+);
 
-int intel_cpu_fm_06_6a_get_features(void);
+int intel_cpu_fm_06_6a_get_features(
+    void
+);
 
-int intel_cpu_fm_06_6a_get_power_json(json_t *get_power_obj);
+int intel_cpu_fm_06_6a_get_power_json(
+    json_t *get_power_obj
+);
 
-int intel_cpu_fm_06_6a_get_node_power_domain_info_json(char
-        **get_domain_obj_str);
+int intel_cpu_fm_06_6a_get_node_power_domain_info_json(
+    char **get_domain_obj_str
+);
 
 #endif

@@ -49,6 +49,8 @@ build-lassen-both:
  tags:
    - batch
    - lassen
+ variables:
+    LLNL_LSF_SCHEDULER_PARAMETERS: "-q pci"
  stage: build
  script:
    - export HOSTNAME=`hostname`

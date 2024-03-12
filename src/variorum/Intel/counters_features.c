@@ -1339,10 +1339,10 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
             snprintf(thread_strs[i][4], max_str_len, "TSC%d", i);
         }
 
-        cfprintf(writedest, "%-s %s ", "_POWMON", "time");
+        cfprintf(writedest, "%-s %s ", "_VAR_MONITOR", "time");
 #else
 
-        fprintf(writedest, "_POWMON time");
+        fprintf(writedest, "_VAR_MONITOR time");
 #endif
 
         for (i = 0; i < nsockets; i++)
@@ -1411,9 +1411,9 @@ void get_all_power_data_fixed(FILE *writedest, off_t msr_pkg_power_limit,
     rlim_idx = 0;
 
 #ifdef LIBJUSTIFY_FOUND
-    cfprintf(writedest, "%-s %ld ", "_POWMON", now_ms());
+    cfprintf(writedest, "%-s %ld ", "_VAR_MONITOR", now_ms());
 #else
-    fprintf(writedest, "%s %ld", "_POWMON", now_ms());
+    fprintf(writedest, "%s %ld", "_VAR_MONITOR", now_ms());
 #endif
 
     for (i = 0; i < nsockets; i++)

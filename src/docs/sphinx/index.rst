@@ -84,7 +84,7 @@ the nation's exascale computing imperative.
    VariorumAPI
    Examples
    HWArchitectures
-   Powmon
+   VarMonitor
    Utilities
 
 .. toctree::

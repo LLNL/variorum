@@ -158,7 +158,9 @@ struct msr_batch_op
 ///
 /// @return 0 if successful, else -1 if socket requested is greater than number
 /// of sockets in the platform.
-int sockets_assert(const unsigned *socket);
+int sockets_assert(
+    const unsigned *socket
+);
 
 /// @brief Validate specific thread exists in the platform configuration.
 ///
@@ -166,7 +168,9 @@ int sockets_assert(const unsigned *socket);
 ///
 /// @return 0 if successful, else -1 if thread requested is greater than number
 /// of threads per core in the platform.
-int threads_assert(const unsigned *thread);
+int threads_assert(
+    const unsigned *thread
+);
 
 /// @brief Validate specific core exists in the platform configuration.
 ///
@@ -174,7 +178,9 @@ int threads_assert(const unsigned *thread);
 ///
 /// @return 0 if successful, else -1 if core requested is greater than number
 /// of cores per socket in the platform.
-int cores_assert(const unsigned *core);
+int cores_assert(
+    const unsigned *core
+);
 
 /// @brief Check status of a file.
 ///
@@ -186,22 +192,28 @@ int cores_assert(const unsigned *core);
 ///
 /// @return 0 if successful, else -1 if can't find any msr module with RW
 /// permissions.
-int stat_module(char *filename,
-                int *kerneltype,
-                int *dev_idx);
+int stat_module(
+    char *filename,
+    int *kerneltype,
+    int *dev_idx
+);
 
 /// @brief Open the MSR module file descriptors exposed in the /dev filesystem.
 ///
 /// @return 0 if initialization was a success, else -1 if could not stat file
 /// descriptors or open any msr module.
-int init_msr(void);
+int init_msr(
+    void
+);
 
 /// @brief Close the MSR module file descriptors exposed in the /dev
 /// filesystem.
 ///
 /// @return 0 if finalization was a success, else -1 if could not close file
 /// descriptors.
-int finalize_msr(void);
+int finalize_msr(
+    void
+);
 
 /// @brief Write a new value to an MSR based on the coordinates of a core or
 /// thread.
@@ -224,11 +236,13 @@ int finalize_msr(void);
 /// @return 0 if write_msr_by_idx() was a success, else -1 if the file
 /// descriptor was NULL or if the number of bytes written was not the size of
 /// uint64_t.
-int write_msr_by_coord(unsigned socket,
-                       unsigned core,
-                       unsigned thread,
-                       off_t msr,
-                       uint64_t val);
+int write_msr_by_coord(
+    unsigned socket,
+    unsigned core,
+    unsigned thread,
+    off_t msr,
+    uint64_t val
+);
 
 /// @brief Read current value of an MSR based on the coordinates of a core or
 /// thread.
@@ -251,11 +265,13 @@ int write_msr_by_coord(unsigned socket,
 /// @return 0 if read_msr_by_idx() was a success, else -1 if the file
 /// descriptor was NULL or if the number of bytes read was not the size of
 /// uint64_t.
-int read_msr_by_coord(unsigned socket,
-                      unsigned core,
-                      unsigned thread,
-                      off_t msr,
-                      uint64_t *val);
+int read_msr_by_coord(
+    unsigned socket,
+    unsigned core,
+    unsigned thread,
+    off_t msr,
+    uint64_t *val
+);
 
 /// @brief Read current value of an MSR based on the index of a core or
 /// thread.
@@ -272,9 +288,11 @@ int read_msr_by_coord(unsigned socket,
 ///
 /// @return 0 if successful, else -1 if file descriptor was NULL or if the
 /// number of bytes read was not the size of uint64_t.
-int read_msr_by_idx(int dev_idx,
-                    off_t msr,
-                    uint64_t *val);
+int read_msr_by_idx(
+    int dev_idx,
+    off_t msr,
+    uint64_t *val
+);
 
 /// @brief Write new value to an MSR based on the continuous index of a core
 /// or thread.
@@ -291,9 +309,11 @@ int read_msr_by_idx(int dev_idx,
 ///
 /// @return 0 if successful, else -1 if file descriptor was NULL or if the
 /// number of bytes read was not the size of uint64_t.
-int write_msr_by_idx(int dev_idx,
-                     off_t msr,
-                     uint64_t val);
+int write_msr_by_idx(
+    int dev_idx,
+    off_t msr,
+    uint64_t val
+);
 
 /// @brief Write new value to an MSR based on a tuple of socket, core, and
 /// thread.
@@ -314,11 +334,13 @@ int write_msr_by_idx(int dev_idx,
 ///
 /// @return 0 if successful, else -1 if file descriptor was NULL or if the
 /// number of bytes read was not the size of uint64_t.
-int write_msr_by_coord(unsigned socket,
-                       unsigned core,
-                       unsigned thread,
-                       off_t msr,
-                       uint64_t val);
+int write_msr_by_coord(
+    unsigned socket,
+    unsigned core,
+    unsigned thread,
+    off_t msr,
+    uint64_t val
+);
 
 /// @brief Create a batch for a thread-level MSR.
 ///
@@ -334,9 +356,11 @@ int write_msr_by_coord(unsigned socket,
 /// @param [in] batchnum Identify a unique batch.
 ///
 /// @return 0 if successful, else -1 if val is NULL.
-int load_thread_batch(off_t msr,
-                      uint64_t **val,
-                      int batchnum);
+int load_thread_batch(
+    off_t msr,
+    uint64_t **val,
+    int batchnum
+);
 
 /// @brief Create a batch for a socket-level MSR.
 ///
@@ -352,9 +376,11 @@ int load_thread_batch(off_t msr,
 /// @param [in] batchnum Identify a unique batch.
 ///
 /// @return 0 if successful, else -1 if val is NULL.
-int load_socket_batch(off_t msr,
-                      uint64_t **val,
-                      int batchnum);
+int load_socket_batch(
+    off_t msr,
+    uint64_t **val,
+    int batchnum
+);
 
 /// @brief Allocate a batch handle.
 ///
@@ -366,22 +392,28 @@ int load_socket_batch(off_t msr,
 ///
 /// @return 0 if successful, else -1 if batch handle is NULL or if trying to
 /// reallocate an existing batch.
-int allocate_batch(int batchnum,
-                   size_t bsize);
+int allocate_batch(
+    int batchnum,
+    size_t bsize
+);
 
 /// @brief Read from a batched set of MSRs.
 ///
 /// @param [in] batchnum Identify a unique batch.
 ///
 /// @return 0 if successful, else -1.
-int read_batch(const int batchnum);
+int read_batch(
+    const int batchnum
+);
 
 /// @brief Write to a batched set of MSRs.
 ///
 /// @param [in] batchnum Identify a unique batch.
 ///
 /// @return 0 if successful, else -1.
-int write_batch(const int batchnum);
+int write_batch(
+    const int batchnum
+);
 
 /// @brief Create a batch operation for a given CPU.
 ///
@@ -395,9 +427,11 @@ int write_batch(const int batchnum);
 ///
 /// @return 0 if successful, else -1 if batch handle is NULL or if batched
 /// allocation size does not match.
-int create_batch_op(off_t msr,
-                    uint64_t cpu,
-                    uint64_t **dest,
-                    const int batchnum);
+int create_batch_op(
+    off_t msr,
+    uint64_t cpu,
+    uint64_t **dest,
+    const int batchnum
+);
 
 #endif

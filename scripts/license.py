@@ -33,9 +33,9 @@ licensed_files = [
     r"^src/examples/using-with-cmake/c/.*\.c$",
     r"^src/examples/using-with-cmake/c\+\+/.*\.c$",
     r"^src/examples/using-with-make/c/.*\.c$",
-    # variorum powmon
-    r"^src/powmon/.*CMakeLists.txt$",
-    r"^src/powmon/.*\.[ch]$",
+    # variorum monitoring utility
+    r"^src/var_monitor/.*CMakeLists.txt$",
+    r"^src/var_monitor/.*\.[ch]$",
     # variorum tests
     r"^src/tests/.*CMakeLists.txt$",
     r"^src/tests/.*\.cpp$",

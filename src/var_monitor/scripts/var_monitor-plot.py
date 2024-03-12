@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script plots power data colloect by 'powmon'. It reads the CSV files of a single
+# This script plots power data collected by 'var_monitor'. It reads the CSV files of a single
 # run, where each file holds power data of a node run the tasks. It plots power data per
 # node, where there is a figure for each node. It also plots the descriptive stats of
 # the power data of all nodes.
@@ -12,7 +12,7 @@
 #   argparse>=1.4.0
 #
 # How to run the script?
-#   ./powmon-plot.py [options]
+#   ./var_monitor-plot.py [options]
 #
 # Options:
 #   --input or -i: required to specify power data path. Make sure the power data in the
@@ -22,15 +22,15 @@
 #   --type or -t: optional to select what to plot.
 #     per-node: plot power data per node only. If the app were run on 4 nodes, 4 plots
 #     are created.
-#     aggregate: plot discriptive stats of the power data of all nodes. There should be
+#     aggregate: plot descriptive stats of the power data of all nodes. There should be
 #     four plots, mean, max, min, median.
 #   --description or -d: required to add a title of the figure.
 #
 # Examples:
-#   1. ./powmon-plot.py --input "/path/to/PowerData" --type per-node
+#   1. ./var_monitor-plot.py --input "/path/to/PowerData" --type per-node
 #     To plot power data located in "/path/to/PowerData" per node and save plots in
 #     "/path/to/PowerData".
-#   2. ./powmon-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
+#   2. ./var_monitor-plot.py -i /path/to/PowerData/ -o /path/where/to/SavePlots -t aggregate
 #     To plot descriptive stats of power data located in /path/to/PowerData/, and save the plots in
 #     "/path/where/to/SavePlots".
 
@@ -116,7 +116,7 @@ def plotAggregatedData(aggData, outputPath, dStat):
 # ---------------------------------------------------------------------
 def plotPowData(df, host, outputPath, desc):
     plt.figure(figsize=(11, 7))
-    # compute diff of timstamps
+    # compute diff of timestamps
     # make first row 1 instead of nan
     # them compute the cumulative sum of timestamps
     # TODO: needs to redo in a simplest way
@@ -218,7 +218,7 @@ if __name__ == "__main__":
         sys.exit("Please use Python 3.8+")
 
     parser = argparse.ArgumentParser(
-        prog="powmon-plot", description="Plotting Power Data"
+        prog="var_monitor-plot", description="Plotting Power Data"
     )
     parser.add_argument(
         "--input",

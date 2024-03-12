@@ -1090,7 +1090,7 @@ int variorum_get_power_json(char **get_power_obj_str)
     return err;
 }
 
-int variorum_get_node_utilization_json(char **get_util_obj_str)
+int variorum_get_utilization_json(char **get_util_obj_str)
 {
     int err = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
@@ -1099,20 +1099,12 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         return -1;
     }
 
-    err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-
     char hostname[1024];
     struct timeval tv;
     uint64_t ts;
-    char *gpu_util_str = NULL;
     gethostname(hostname, 1024);
     gettimeofday(&tv, NULL);
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-    int ret;
     char str[100];
     const char d[2] = " ";
     char *token, *s, *p;
@@ -1136,9 +1128,36 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     uint64_t mem_free = 0;
     uint64_t sys_time = 0;
     int strcp;
+    int idx = -1;
 
+    json_t *get_util_obj = NULL;
+    json_t *get_cpu_util_obj = NULL;
+    json_t *get_timestamp_obj = NULL;
+    json_t *cpu_util_obj = NULL;
+
+    // Look for a GPU build and get an ID.
+    for (idx = 0; idx < P_NUM_PLATFORMS; idx++)
+    {
+#ifdef VARIORUM_WITH_INTEL_GPU
+        idx = P_INTEL_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+        idx = P_NVIDIA_GPU_IDX;
+        break;
+#endif
+#ifdef VARIORUM_WITH_AMD_GPU
+        idx = P_AMD_GPU_IDX;
+        break;
+#endif
+    }
+
+    // If we have a GPU build, obtain the GPU object first.
+#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
+    int ret;
+    char *gpu_util_str = NULL;
     // get gpu utilization
-    ret = variorum_get_gpu_utilization_json(&gpu_util_str);
+    ret = g_platform[idx].variorum_get_utilization_json(&gpu_util_str);
     if (ret != 0)
     {
         printf("JSON get gpu utilization failed. Exiting.\n");
@@ -1146,23 +1165,26 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
         return -1;
     }
 
-    /* Load the string as a JSON object using Jansson */
-    json_t *get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+    /* Load the existing GPU string as a JSON object using Jansson */
+    get_util_obj = json_loads(gpu_util_str, JSON_DECODE_ANY, NULL);
+    get_cpu_util_obj = json_object_get(get_util_obj, hostname);
+    get_timestamp_obj = json_object_get(get_cpu_util_obj, "timestamp");
+    cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
+#endif
 
-    json_t *get_cpu_util_obj = json_object_get(get_util_obj, hostname);
-    if (get_cpu_util_obj == NULL)
+    //CPU-only build will have this object as NULL.
+    if (get_util_obj == NULL)
     {
+        get_util_obj = json_object();
         get_cpu_util_obj = json_object();
         json_object_set_new(get_util_obj, hostname, get_cpu_util_obj);
     }
 
-    json_t *get_timestamp_obj = json_object_get(get_util_obj, "timestamp");
     if (get_timestamp_obj == NULL)
     {
         json_object_set_new(get_cpu_util_obj, "timestamp", json_integer(ts));
     }
 
-    json_t *cpu_util_obj = json_object_get(get_cpu_util_obj, "CPU");
     if (cpu_util_obj == NULL)
     {
         cpu_util_obj = json_object();
@@ -1237,6 +1259,7 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     last_sum = sum;
     last_sys_time = sys_time;
     last_idle = sum_idle;
+
     json_object_set_new(cpu_util_obj, "total_util%", json_real(cpu_util));
     json_object_set_new(cpu_util_obj, "user_util%", json_real(user_util));
     json_object_set_new(cpu_util_obj, "system_util%", json_real(sys_util));
@@ -1293,48 +1316,6 @@ int variorum_get_node_utilization_json(char **get_util_obj_str)
     *get_util_obj_str = json_dumps(get_util_obj, JSON_INDENT(4));
     json_decref(get_util_obj);
     state = 1;
-    return 0;
-}
-
-int variorum_get_gpu_utilization_json(char **get_gpu_util_obj_str)
-{
-    int err = 0;
-    int i;
-    err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
-    if (err)
-    {
-        return -1;
-    }
-
-    for (i = 0; i < P_NUM_PLATFORMS; i++)
-    {
-#ifdef VARIORUM_WITH_INTEL_GPU
-        i = P_INTEL_GPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_NVIDIA_GPU
-        i = P_NVIDIA_GPU_IDX;
-        break;
-#endif
-#ifdef VARIORUM_WITH_AMD_GPU
-        i = P_AMD_GPU_IDX;
-        break;
-#endif
-    }
-
-    if (g_platform[i].variorum_get_gpu_utilization_json == NULL)
-    {
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                               getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return -1;
-    }
-    err = g_platform[i].variorum_get_gpu_utilization_json(get_gpu_util_obj_str);
-    if (err)
-    {
-        return -1;
-    }
 
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
