@@ -363,7 +363,7 @@ void take_measurement(bool measure_all, bool power_with_util)
             int ret_util;
             char *util_str = NULL;
 
-            ret_util = variorum_get_node_utilization_json(&util_str);
+            ret_util = variorum_get_utilization_json(&util_str);
             if (ret_util != 0)
             {
                 printf("JSON get node utilization failed. Exiting.\n");
