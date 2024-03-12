@@ -205,7 +205,7 @@ int main(int argc, char **argv)
         if (logpath)
         {
             /* Output trace data into the specified location. */
-            rc = asprintf(&fname_dat, "%s/%s.power.dat", logpath, hostname);
+            rc = asprintf(&fname_dat, "%s/%s.var_monitor.dat", logpath, hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
@@ -229,7 +229,7 @@ int main(int argc, char **argv)
         else
         {
             /* Output trace data into the default location. */
-            rc = asprintf(&fname_dat, "%s.power.dat", hostname);
+            rc = asprintf(&fname_dat, "%s.var_monitor.dat", hostname);
             if (rc == -1)
             {
                 fprintf(stderr,

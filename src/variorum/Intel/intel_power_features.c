@@ -1500,12 +1500,12 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 
         rapl_storage(&rapl);
 #ifdef LIBJUSTIFY_FOUND
-        cfprintf(writedest, "%s %s ", "_POWMON", "time");
+        cfprintf(writedest, "%s %s ", "_VAR_MONITOR", "time");
         int pkglabels = 5;
         int max_str_len = 128;
         char pkg_strs[nsockets][pkglabels][max_str_len];
 #else
-        fprintf(writedest, "_POWMON time");
+        fprintf(writedest, "_VAR_MONITOR time");
 #endif
 
         for (i = 0; i < nsockets; i++)
@@ -1548,11 +1548,11 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 #ifdef LIBJUSTIFY_FOUND
         //cfprintf(writedest, "\n");
         cfprintf(writedest, "\n");
-        cfprintf(writedest, "%s %lf ", "_POWMON", now_ms());
+        cfprintf(writedest, "%s %lf ", "_VAR_MONITOR", now_ms());
         //cflush();
 #else
         fprintf(writedest, "\n");
-        fprintf(writedest, "%s %ld", "_POWMON", now_ms());
+        fprintf(writedest, "%s %ld", "_VAR_MONITOR", now_ms());
 
 #endif
     }
@@ -1574,7 +1574,7 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
     }
 #ifdef LIBJUSTIFY_FOUND
     cfprintf(writedest, "\n");
-    cfprintf(writedest, "%s %lf ", "_POWMON", now_ms());
+    cfprintf(writedest, "%s %lf ", "_VAR_MONITOR", now_ms());
     //cflush();
 #else
     fprintf(writedest, "\n");

@@ -464,7 +464,7 @@ int arm_cpu_juno_r2_json_get_power_data(json_t *get_power_obj)
     json_object_set_new(get_power_obj, "power_node_watts",
                         json_real((double)(sys_power_val) / 1000000.0f));
     // While number of GPUs is 1, it is only resident on the first socket.
-    // Powmon won't print GPU power as a result,
+    // var_monitor won't print GPU power as a result,
     // but GPU power is available in the JSON object.
     json_object_set_new(get_power_obj, "num_gpus_per_socket",
                         json_integer(-1));

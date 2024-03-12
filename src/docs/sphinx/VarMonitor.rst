@@ -35,8 +35,8 @@ The resulting data is written to two files:
 
 .. code:: bash
 
-   hostname.power.dat
-   hostname.power.summary
+   hostname.var_monitor.dat
+   hostname.var_monitor.summary
 
 Here, ``hostname`` will change based on the node where the monitoring is
 occurring. The ``summary`` file contains global information such as execution
@@ -44,7 +44,7 @@ time. The ``dat`` file contains the time sampled data, such as power, thermals,
 and performance counters in a column-delimited format. The output differs on
 each platform based on available counters.
 
-``Powmon`` also supports profiling across multiple nodes with the help of
+``var_monitor`` also supports profiling across multiple nodes with the help of
 resource manager commands (such as ``srun`` or ``jsrun``) or MPI commands (such
 as ``mpirun``). As shown in the example below, the user can specify the number
 of nodes through ``mpirun`` and utilize ``var_monitor`` with their application.

@@ -199,7 +199,7 @@ int main(int argc, char **argv)
         char hostname[64];
         gethostname(hostname, 64);
 
-        rc = asprintf(&fname_dat, "%s.power.dat", hostname);
+        rc = asprintf(&fname_dat, "%s.var_monitor.dat", hostname);
         if (rc == -1)
         {
             fprintf(stderr,

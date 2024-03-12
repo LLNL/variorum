@@ -2,8 +2,8 @@ VAR_MONITOR
 ===========
 This directory contains three Variorum-based power monitors. The resulting
 data is written to two files:
-* hostname.power.dat
-* hostname.power.summary
+* hostname.var_monitor.dat
+* hostname.var_monitor.summary
 
 `hostname` will change based on the node where the monitoring is occurring. The
 `summary` file contains global information such as execution time. The `dat`
@@ -26,10 +26,10 @@ seconds:
 
     $ var_monitor -a "sleep 10"
 
-Powmon also allows sampling of utilization. The example below will sample 
+The var_monitor also allows sampling of utilization. The example below will sample
 utilization metrics as well as power while executing a sleep for 10 seconds:
 
-    $ powmon -u -a "sleep 10"
+    $ var_monitor -u -a "sleep 10"
 
 power_wrapper_static
 --------------------
