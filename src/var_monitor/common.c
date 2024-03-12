@@ -81,7 +81,7 @@ void parse_json_power_obj(char *s, int num_sockets)
     }
 
     // If we're on a CPU-only build, we don't have num_gpus_per_socket.
-    // var-monitor doesn't need to print this, but needs to know this value.
+    // var_monitor doesn't need to print this, but needs to know this value.
     if (json_object_get(node_obj, "num_gpus_per_socket") != NULL)
     {
         num_gpus_per_socket = json_integer_value(json_object_get(node_obj,
