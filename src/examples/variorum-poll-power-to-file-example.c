@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     }
 
     gethostname(hostname, 1024);
-    ret = asprintf(&fname, "%s.powmon.dat", hostname);
+    ret = asprintf(&fname, "%s.var_monitor.dat", hostname);
     if (ret < 0)
     {
         printf("Fatal Error: Cannot allocate memory for fname.\n");

@@ -39,7 +39,6 @@ static unsigned long end;
 static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
-static volatile int poll_dir = 5;
 static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
@@ -50,61 +49,19 @@ static int running = 1;
 
 #include "common.c"
 
-void *power_set_measurement(void *arg)
-{
-    unsigned long poll_num = 0;
-    struct mstimer timer;
-    //set_rapl_power(watt_cap, watt_cap);
-    variorum_cap_each_socket_power_limit(watt_cap);
-    int watts = watt_cap;
-    // According to the Intel docs, the counter wraps a most once per second.
-    // 500 ms should be short enough to always get good information.
-    init_msTimer(&timer, 500);
-    init_data();
-    start = now_ms();
-
-    poll_num++;
-    timer_sleep(&timer);
-    while (running)
-    {
-        // This is intel-specific.
-        // Preseve the original behavior with variorum_monitoring for now, by
-        // providing `true` as input value for the take_measurement function.
-        take_measurement(true, false);
-        if (poll_num % 5 == 0)
-        {
-            if (watts >= watt_cap)
-            {
-                poll_dir = -5;
-            }
-            if (watts <= 30)
-            {
-                poll_dir = 5;
-            }
-            watts += poll_dir;
-            //set_rapl_power(watts, watts);
-            printf("Capping each package power limit to %dW\n", watts);
-            variorum_cap_each_socket_power_limit(watts);
-        }
-        poll_num++;
-        timer_sleep(&timer);
-    }
-    return arg;
-}
-
 int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "    power_wrapper_dynamic - monitor power and dynamically adjust power cap\n"
+                        "    power_wrapper_static - monitor power and statically enforce power cap\n"
                         "\n"
                         "SYNOPSIS\n"
-                        "    power_wrapper_dynamic [--help | -h] [-c] -w pcap -a \"executable [exec-args]\"\n"
+                        "    power_wrapper_static [--help | -h] [-c] -w pcap -a \"executable [exec-args]\"\n"
                         "\n"
                         "OVERVIEW\n"
-                        "    Power_wrapper_dynamic is a utility for dynamically adjusting the power cap\n"
-                        "    stepwise every 500 ms, and sampling and printing the power usage (for\n"
-                        "    package and DRAM) and power limits per socket in a node.\n"
+                        "    Power_wrapper_static is a utility for setting a package-level power cap, and\n"
+                        "    sampling and printing the power usage (for package and DRAM) and power\n"
+                        "    limits per socket in a node.\n"
                         "\n"
                         "OPTIONS\n"
                         "    --help | -h\n"
@@ -113,8 +70,8 @@ int main(int argc, char **argv)
                         "    -a \"executable [exec-args]\"\n"
                         "        Application and arguments surrounded by quotes\n"
                         "\n"
-                        "    -w pcap \n"
-                        "        Package-level  power cap (integer).\n"
+                        "    -w pcap\n"
+                        "        Package-level power cap (integer).\n"
                         "\n"
                         "    -c\n"
                         "        Remove stale shared memory.\n"
@@ -137,7 +94,7 @@ int main(int argc, char **argv)
         {
             case 'c':
                 highlander_clean();
-                printf("Exiting power_wrapper_dynamic...\n");
+                printf("Exiting power_wrapper_static...\n");
                 return 0;
             case 'a':
                 app = optarg;
@@ -159,8 +116,6 @@ int main(int argc, char **argv)
                     fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
                 }
                 fprintf(stderr, "%s", usage);
-                return 1;
-            default:
                 return 1;
         }
     }
@@ -190,8 +145,8 @@ int main(int argc, char **argv)
 #endif
 
     char *fname_dat = NULL;
-    int rc = 0;
     char *fname_summary = NULL;
+    int rc;
     if (highlander())
     {
         /* Start the log file. */
@@ -199,13 +154,12 @@ int main(int argc, char **argv)
         char hostname[64];
         gethostname(hostname, 64);
 
-        rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
+        rc = asprintf(&fname_dat, "%s.var_monitor.dat", hostname);
         if (rc == -1)
         {
             fprintf(stderr,
-                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
                     __FILE__, __LINE__);
-            exit(-1);
         }
 
         logfd = open(fname_dat, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -231,7 +185,9 @@ int main(int argc, char **argv)
 
         /* Set the cap. */
         //set_rapl_power(watt_cap, watt_cap);
-        printf("Capping each package power limit to %dW\n", watt_cap);
+        // ToDo: Intel-specific, needs to move to the best
+        // effort capping technique.
+        printf("Setting each package power limit to %dW\n", watt_cap);
         variorum_cap_each_socket_power_limit(watt_cap);
 
         /* Start power measurement thread. */
@@ -240,7 +196,7 @@ int main(int argc, char **argv)
         pthread_attr_init(&mattr);
         pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
         pthread_mutex_init(&mlock, NULL);
-        pthread_create(&mthread, &mattr, power_set_measurement, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
 
         /* Fork. */
         pid_t app_pid = fork();
@@ -278,9 +234,8 @@ int main(int argc, char **argv)
         if (rc == -1)
         {
             fprintf(stderr,
-                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
                     __FILE__, __LINE__);
-            exit(-1);
         }
 
         logfd = open(fname_summary, O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
@@ -310,9 +265,8 @@ int main(int argc, char **argv)
         if (rc == -1)
         {
             fprintf(stderr,
-                    "%s:%d asprintf failed, perhaps out of memory.  Exiting.\n",
+                    "%s:%d asprintf failed, perhaps out of memory.\n",
                     __FILE__, __LINE__);
-            exit(-1);
         }
 
         fprintf(summaryfile, "%s", msg);
@@ -324,7 +278,6 @@ int main(int argc, char **argv)
         shmdt(shmseg);
 
         pthread_attr_destroy(&mattr);
-        free(fname_summary);
     }
     else
     {
@@ -346,8 +299,7 @@ int main(int argc, char **argv)
     printf("Output Files\n"
            "  %s\n"
            "  %s\n\n", fname_dat, fname_summary);
-
-    free(fname_dat);
     highlander_clean();
+    free(fname_dat);
     return 0;
 }

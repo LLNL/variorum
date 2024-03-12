@@ -1,9 +1,9 @@
-POWMON
-======
+VAR_MONITOR
+===========
 This directory contains three Variorum-based power monitors. The resulting
 data is written to two files:
-* hostname.powmon.dat
-* hostname.powmon.summary
+* hostname.var_monitor.dat
+* hostname.var_monitor.summary
 
 `hostname` will change based on the node where the monitoring is occurring. The
 `summary` file contains global information such as execution time. The `dat`
@@ -16,20 +16,20 @@ All three monitors are wrappers around some other process that will be
 executing on the node and includes logic so that only one power monitor is run
 per node.
 
-powmon
-------
+var_monitor
+-----------
 While a target executable is running, sample power usage and power limits (and
 other performance counters) for all sockets in a node at a regular interval.
 
 The example below will sample the power usage while executing a sleep for 10
 seconds:
 
-    $ powmon -a "sleep 10"
+    $ var_monitor -a "sleep 10"
 
-Powmon also allows sampling of utilization. The example below will sample 
+The var_monitor also allows sampling of utilization. The example below will sample
 utilization metrics as well as power while executing a sleep for 10 seconds:
 
-    $ powmon -u -a "sleep 10"
+    $ var_monitor -u -a "sleep 10"
 
 power_wrapper_static
 --------------------
@@ -61,6 +61,6 @@ If you launch one of the power monitors and it appears to finish successfully,
 but does not produce the result files, launch the power monitoring with the
 `-c` flag. This will remove any semaphores leftover in shared memory.
 
-    $ powmon -c
+    $ var_monitor -c
     $ power_wrapper_static -c
     $ power_wrapper_dynamic -c

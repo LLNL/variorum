@@ -9,8 +9,8 @@
 ###################
 
 Variorum can be built from source with CMake or with ``spack``. Building
-Variorum creates the ``libvariorum`` library, the ``powmon`` monitoring tool,
-and Variorum examples.
+Variorum creates the ``libvariorum`` library, the ``var_monitor`` monitoring
+tool, and Variorum examples.
 
 ********************
  Build Dependencies

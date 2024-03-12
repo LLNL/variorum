@@ -56,13 +56,13 @@ int main(int argc, char **argv)
 {
     const char *usage = "\n"
                         "NAME\n"
-                        "    powmon - Sampler for domain power usage and limits\n"
+                        "    var_monitor - Sampler for domain power usage and limits\n"
                         "\n"
                         "SYNOPSIS\n"
-                        "    powmon [--help | -h] [OPTIONS]... -a \"executable [<exec-args>]\"\n"
+                        "    var_monitor [--help | -h] [OPTIONS]... -a \"executable [<exec-args>]\"\n"
                         "\n"
                         "OVERVIEW\n"
-                        "    Powmon is a utility for sampling and printing domain power usage\n"
+                        "    The var_monitor is a utility for sampling and printing domain power usage\n"
                         "    and power limits.\n"
                         "\n"
                         "REQUIRED\n"
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         {
             case 'c':
                 highlander_clean();
-                printf("Exiting powmon...\n");
+                printf("Exiting var_monitor...\n");
                 return 0;
             case 'a':
                 app = optarg;
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
         if (logpath)
         {
             /* Output trace data into the specified location. */
-            rc = asprintf(&fname_dat, "%s/%s.power.dat", logpath, hostname);
+            rc = asprintf(&fname_dat, "%s/%s.var_monitor.dat", logpath, hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
@@ -229,7 +229,7 @@ int main(int argc, char **argv)
         else
         {
             /* Output trace data into the default location. */
-            rc = asprintf(&fname_dat, "%s.power.dat", hostname);
+            rc = asprintf(&fname_dat, "%s.var_monitor.dat", hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
@@ -339,7 +339,7 @@ int main(int argc, char **argv)
         if (logpath)
         {
             /* Output summary data into the specified location. */
-            rc = asprintf(&fname_summary, "%s/%s.powmon.summary", logpath, hostname);
+            rc = asprintf(&fname_summary, "%s/%s.power.summary", logpath, hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
@@ -350,7 +350,7 @@ int main(int argc, char **argv)
         else
         {
             /* Output summary data into the default location. */
-            rc = asprintf(&fname_summary, "%s.powmon.summary", hostname);
+            rc = asprintf(&fname_summary, "%s.power.summary", hostname);
             if (rc == -1)
             {
                 fprintf(stderr,

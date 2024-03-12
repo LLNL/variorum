@@ -89,8 +89,8 @@ endif()
 ### Add our examples
 add_subdirectory(examples)
 
-### Add powmon sampler
-add_subdirectory(powmon)
+### Add var_monitor sampler
+add_subdirectory(var_monitor)
 
 ### Add config helpers
 add_subdirectory(config)
