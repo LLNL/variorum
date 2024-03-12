@@ -219,7 +219,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
 {
     int i, j;
     const char *hostname = NULL;
-    char socket_num[11];
+    char socket_num[24];
     size_t size;
     int ndevices;
     double cpu_util, mem_util, sys_util, user_util;
@@ -284,8 +284,8 @@ void parse_json_util_obj(char *util_str, int num_sockets)
                 ndevices  = size;
                 for (j = 0; j < ndevices; j++)
                 {
-                    char device_id[20];
-                    snprintf(device_id, 20, "GPU%d_Util (%)", (i * num_sockets) + j + 1);
+                    char device_id[24];
+                    snprintf(device_id, 24, "GPU%d_Util (%%)", (i * num_sockets) + j + 1);
                     // Don't write out a comma after the last column name
                     if ((i + 1) == num_sockets && (j + 1) == ndevices)
                     {
@@ -321,8 +321,8 @@ void parse_json_util_obj(char *util_str, int num_sockets)
             ndevices  = size;
             for (j = 0; j < ndevices; j++)
             {
-                char device_id[12];
-                snprintf(device_id, 12, "GPU%d_util%", (i * num_sockets) + j + 1);
+                char device_id[24];
+                snprintf(device_id, 24, "GPU%d_util%%", (i * num_sockets) + j + 1);
                 gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
                 // Don't write out a comma after the last column name
                 if ((i + 1) == num_sockets && (j + 1) == ndevices)
