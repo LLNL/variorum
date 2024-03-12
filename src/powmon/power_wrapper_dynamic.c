@@ -40,6 +40,7 @@ static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
 static volatile int poll_dir = 5;
+static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;
@@ -69,7 +70,7 @@ void *power_set_measurement(void *arg)
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
         // providing `true` as input value for the take_measurement function.
-        take_measurement(true);
+        take_measurement(true, false);
         if (poll_num % 5 == 0)
         {
             if (watts >= watt_cap)
@@ -269,7 +270,7 @@ int main(int argc, char **argv)
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
         // providing `true` as input value for the take_measurement function.
-        take_measurement(true);
+        take_measurement(true, false);
         end = now_ms();
 
         /* Output summary data. */

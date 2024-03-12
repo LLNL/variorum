@@ -40,6 +40,9 @@ static unsigned long start;
 static unsigned long end;
 static FILE *summaryfile = NULL;
 static FILE *logfile = NULL;
+// Create another file for logging utilization samples
+// At some point, we want this to be a condition/macro
+static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;
@@ -81,7 +84,11 @@ int main(int argc, char **argv)
                         "\n"
                         "    -v\n"
                         "        Verbose output that includes all sensors or registers.\n"
+                        "\n"
+                        "    -u\n"
+                        "        Sampling and printing node utilization \n"
                         "\n";
+
     if (argc == 1 || (argc > 1 && (
                           strncmp(argv[1], "--help", strlen("--help")) == 0 ||
                           strncmp(argv[1], "-h", strlen("-h")) == 0)))
@@ -99,8 +106,9 @@ int main(int argc, char **argv)
     struct thread_args th_args;
     th_args.sample_interval = FASTEST_SAMPLE_INTERVAL_MS;
     th_args.measure_all = false;
+    th_args.power_with_util = false;
 
-    while ((opt = getopt(argc, argv, "ca:p:i:v")) != -1)
+    while ((opt = getopt(argc, argv, "ca:p:i:v:u")) != -1)
     {
         switch (opt)
         {
@@ -126,6 +134,9 @@ int main(int argc, char **argv)
                 break;
             case 'v':
                 th_args.measure_all = true;
+                break;
+            case 'u':
+                th_args.power_with_util = true;
                 break;
             case '?':
                 if (optopt == 'a')
@@ -179,35 +190,64 @@ int main(int argc, char **argv)
 #endif
 
     char *fname_dat = NULL;
+    char *fname_util = NULL;
     char *fname_summary = NULL;
     int rc;
+
     if (highlander())
     {
         /* Start the log file. */
         int logfd;
+        int logfd_util;
         char hostname[64];
         gethostname(hostname, 64);
 
         if (logpath)
         {
             /* Output trace data into the specified location. */
-            rc = asprintf(&fname_dat, "%s/%s.powmon.dat", logpath, hostname);
+            rc = asprintf(&fname_dat, "%s/%s.power.dat", logpath, hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
                         "%s:%d asprintf failed, perhaps out of memory.\n",
                         __FILE__, __LINE__);
             }
+
+            // Also create a utilization logfile if this option is selected.
+            if (th_args.power_with_util)
+            {
+                /* Output trace data into the specified location. */
+                rc = asprintf(&fname_util, "%s/%s.util.dat", logpath, hostname);
+                if (rc == -1)
+                {
+                    fprintf(stderr,
+                            "%s:%d asprintf failed, perhaps out of memory.\n",
+                            __FILE__, __LINE__);
+                }
+            }
         }
         else
         {
             /* Output trace data into the default location. */
-            rc = asprintf(&fname_dat, "%s.powmon.dat", hostname);
+            rc = asprintf(&fname_dat, "%s.power.dat", hostname);
             if (rc == -1)
             {
                 fprintf(stderr,
                         "%s:%d asprintf failed, perhaps out of memory.\n",
                         __FILE__, __LINE__);
+            }
+
+            // Also create a utilization logfile if this option is selected.
+            if (th_args.power_with_util)
+            {
+                /* Output trace data into the specified location. */
+                rc = asprintf(&fname_util, "%s.util.dat", hostname);
+                if (rc == -1)
+                {
+                    fprintf(stderr,
+                            "%s:%d asprintf failed, perhaps out of memory.\n",
+                            __FILE__, __LINE__);
+                }
             }
         }
 
@@ -226,6 +266,30 @@ int main(int argc, char **argv)
             fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
                     hostname, fname_dat, strerror(errno));
             return 1;
+        }
+
+        // Open the utilization file if the option is selected.
+        if (th_args.power_with_util)
+        {
+
+            logfd_util = open(fname_util,
+                              O_WRONLY | O_CREAT | O_EXCL | O_NOATIME | O_NDELAY,
+                              S_IRUSR | S_IWUSR);
+            if (logfd_util < 0)
+            {
+                fprintf(stderr,
+                        "Fatal Error: %s on %s cannot open the appropriate fd for %s -- %s.\n", argv[0],
+                        hostname, fname_util, strerror(errno));
+                return 1;
+            }
+            utilfile = fdopen(logfd_util, "w");
+
+            if (utilfile == NULL)
+            {
+                fprintf(stderr, "Fatal Error: %s on %s fdopen failed for %s -- %s.\n", argv[0],
+                        hostname, fname_util, strerror(errno));
+                return 1;
+            }
         }
 
         if (logpath)
@@ -269,7 +333,7 @@ int main(int argc, char **argv)
 
         /* Stop power measurement thread. */
         running = 0;
-        take_measurement(th_args.measure_all);
+        take_measurement(th_args.measure_all, th_args.power_with_util);
         end = now_ms();
 
         if (logpath)
@@ -326,7 +390,9 @@ int main(int argc, char **argv)
         fprintf(summaryfile, "%s", msg);
         free(msg);
         fclose(summaryfile);
+        fflush(utilfile);
         close(logfd);
+        close(logfd_util);
 
         shmctl(shmid, IPC_RMID, NULL);
         shmdt(shmseg);
@@ -350,11 +416,23 @@ int main(int argc, char **argv)
         highlander_wait();
     }
 
-    printf("Output Files:\n"
-           "  %s\n"
-           "  %s\n\n", fname_dat, fname_summary);
+    if (th_args.power_with_util == true)
+    {
+        printf("Output Files:\n"
+               "  %s\n"
+               "  %s\n"
+               "  %s\n\n", fname_dat, fname_util, fname_summary);
+    }
+    else
+    {
+        printf("Output Files:\n"
+               "  %s\n"
+               "  %s\n\n", fname_dat, fname_summary);
+    }
+
     highlander_clean();
     free(fname_dat);
+    free(fname_util);
     free(fname_summary);
     return 0;
 }

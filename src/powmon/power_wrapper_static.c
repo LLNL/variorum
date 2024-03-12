@@ -39,6 +39,7 @@ static unsigned long end;
 static FILE *logfile = NULL;
 static FILE *summaryfile = NULL;
 static int watt_cap = 0;
+static FILE *utilfile = NULL;
 
 static pthread_mutex_t mlock;
 static int *shmseg;
@@ -225,7 +226,7 @@ int main(int argc, char **argv)
         // This is intel-specific.
         // Preseve the original behavior with variorum_monitoring for now, by
         // providing `true` as input value for the take_measurement function.
-        take_measurement(true);
+        take_measurement(true, false);
         end = now_ms();
 
         /* Output summary data. */
