@@ -256,13 +256,63 @@ void parse_json_util_obj(char *util_str, int num_sockets)
     cpu_util = json_real_value(json_object_get(cpu_util_obj, "total_util%"));
     sys_util = json_real_value(json_object_get(cpu_util_obj, "system_util%"));
     user_util = json_real_value(json_object_get(cpu_util_obj, "user_util%"));
+
+    // On a cpu-only build, this will be NULL.
     json_t *gpu_obj = json_object_get(host_obj, "GPU");
 
     if (write_util_header == true)
     {
         fprintf(utilfile, "%s, %s,", "Hostname", "Timestamp (ms)");
-        fprintf(utilfile, "%s,%s,%s,%s,", "Memory_Util (%)",
-                "CPU_Util (%)", "User_Util (%)", "System_Util (%)");
+
+        if (gpu_obj == NULL)
+        {
+            fprintf(utilfile, "%s,%s,%s,%s", "Memory_Util (%)",
+                    "CPU_Util (%)", "User_Util (%)", "System_Util (%)\n");
+            write_util_header = false;
+        }
+        else
+        {
+            fprintf(utilfile, "%s,%s,%s,%s,", "Memory_Util (%)",
+                    "CPU_Util (%)", "User_Util (%)", "System_Util (%)");
+
+
+            for (i = 0; i < num_sockets; ++i)
+            {
+                sprintf(socket_num, "Socket_%d", i);
+                json_t *socket_obj = json_object_get(gpu_obj, socket_num);
+                size = json_object_size(socket_obj);
+                ndevices  = size;
+                for (j = 0; j < ndevices; j++)
+                {
+                    char device_id[20];
+                    snprintf(device_id, 20, "GPU%d_Util (%)", (i * num_sockets) + j + 1);
+                    // Don't write out a comma after the last column name
+                    if ((i + 1) == num_sockets && (j + 1) == ndevices)
+                    {
+                        fprintf(utilfile, "%s\n", device_id);
+                        write_util_header = false;
+                    }
+                    else
+                    {
+                        fprintf(utilfile, "%s,", device_id);
+                    }
+                }
+            }
+        }
+    }
+
+    fprintf(utilfile, "%s,%ld,", hostname, timestamp);
+
+    if (gpu_obj == NULL)
+    {
+        fprintf(utilfile, "%lf,%lf,%lf,%lf\n", mem_util, cpu_util, user_util,
+                sys_util);
+    }
+    else
+    {
+        fprintf(utilfile, "%lf,%lf,%lf,%lf,", mem_util, cpu_util, user_util,
+                sys_util);
+
         for (i = 0; i < num_sockets; ++i)
         {
             sprintf(socket_num, "Socket_%d", i);
@@ -271,50 +321,22 @@ void parse_json_util_obj(char *util_str, int num_sockets)
             ndevices  = size;
             for (j = 0; j < ndevices; j++)
             {
-                char device_id[20];
-                snprintf(device_id, 20, "GPU%d_Util (%)", (i * num_sockets) + j + 1);
+                char device_id[12];
+                snprintf(device_id, 12, "GPU%d_util%", (i * num_sockets) + j + 1);
+                gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
                 // Don't write out a comma after the last column name
                 if ((i + 1) == num_sockets && (j + 1) == ndevices)
                 {
-                    fprintf(utilfile, "%s\n", device_id);
-                    write_util_header = false;
+                    fprintf(utilfile, "%d", gpu_util);
+                    fprintf(utilfile, "\n");
                 }
                 else
                 {
-                    fprintf(utilfile, "%s,", device_id);
+                    fprintf(utilfile, "%d,", gpu_util);
                 }
             }
         }
     }
-
-    fprintf(utilfile, "%s,%ld,", hostname, timestamp);
-    fprintf(utilfile, "%lf,%lf,%lf,%lf,", mem_util, cpu_util, user_util,
-            sys_util);
-
-    for (i = 0; i < num_sockets; ++i)
-    {
-        sprintf(socket_num, "Socket_%d", i);
-        json_t *socket_obj = json_object_get(gpu_obj, socket_num);
-        size = json_object_size(socket_obj);
-        ndevices  = size;
-        for (j = 0; j < ndevices; j++)
-        {
-            char device_id[12];
-            snprintf(device_id, 12, "GPU%d_util%", (i * num_sockets) + j + 1);
-            gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
-            // Don't write out a comma after the last column name
-            if ((i + 1) == num_sockets && (j + 1) == ndevices)
-            {
-                fprintf(utilfile, "%d", gpu_util);
-                fprintf(utilfile, "\n");
-            }
-            else
-            {
-                fprintf(utilfile, "%d,", gpu_util);
-            }
-        }
-    }
-
     /*Deallocate JSON object*/
     json_decref(util_obj);
 }
