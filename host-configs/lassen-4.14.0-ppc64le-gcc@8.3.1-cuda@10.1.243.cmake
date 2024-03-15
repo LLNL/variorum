@@ -22,9 +22,8 @@ set(VARIORUM_WITH_INTEL_CPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU ON CACHE BOOL "")
 
-# You need to load CUDA 9.2.* to build this on Lassen
-# because hwloc was built with CUDA 9.2.* and not the default CUDA version (10.1.*)
 set(CMAKE_SHARED_LINKER_FLAGS "-L/usr/tce/packages/cuda/cuda-10.1.243/nvidia/targets/ppc64le-linux/lib/stubs/ -lnvidia-ml" CACHE PATH "")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,/usr/tce/packages/cuda/cuda-10.1.243/lib64" CACHE PATH "")
 
 # path to global hwloc install
 set(HWLOC_DIR "/usr/global/tools/hwloc/blueos_3_ppc64le_ib/hwloc-1.11.10-cuda/" CACHE PATH "")
