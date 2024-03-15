@@ -698,9 +698,6 @@ unsigned long take_measurement(int fd)
 {
     unsigned long power_sample = 0;
 
-    int ret;
-    int nsockets = 0;
-
     char *val = ("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
     {
