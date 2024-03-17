@@ -1583,20 +1583,28 @@ int variorum_print_energy(void)
     }
     for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        if (g_platform[i].variorum_print_energy == NULL)
+        // Until we add GPU energy, let's not call the API on GPUs to enable
+        // successful multi-platform builds.
+        // We will remove this if-statement in later releases of Variorum
+        if ((i != P_NVIDIA_GPU_IDX) || (i != P_NVIDIA_GPU_IDX) ||
+            (i != P_NVIDIA_GPU_IDX))
         {
-            variorum_error_handler("Feature not yet implemented or is not supported",
-                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                                   __FUNCTION__, __LINE__);
-            return 0;
-        }
-        err = g_platform[i].variorum_print_energy(0);
-        if (err)
-        {
-            return -1;
+            if (g_platform[i].variorum_print_energy == NULL)
+            {
+                variorum_error_handler("Feature not yet implemented or is not supported",
+                                       VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                                       __FUNCTION__, __LINE__);
+                return 0;
+            }
+            err = g_platform[i].variorum_print_energy(0);
+            if (err)
+            {
+                return -1;
+            }
         }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
+
     if (err)
     {
         return -1;
