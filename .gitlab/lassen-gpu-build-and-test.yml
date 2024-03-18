@@ -73,7 +73,7 @@ build-lassen-gpu:
    - echo -e "PWD:" ${PWD}
    - mkdir _test_build
    - cd _test_build
-   - cmake ../
+   - cmake -DCMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,/usr/tce/packages/cuda/cuda-10.1.243/lib64" ../
    - make VERBOSE=1
    - ./variorum-print-power-example
    - cd ../../../using-with-make/c
