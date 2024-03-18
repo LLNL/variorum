@@ -666,9 +666,17 @@ int ibm_cpu_p9_get_energy(int long_ver)
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
 
-        // /* The first call should print zero as energy. */
-        printf("Accumulated energy before starting the thread is %lu\n",
-               th_args.energy_acc);
+        if (long_ver)
+        {
+            printf("Accumulated energy after stopping the thread is %lu\n",
+                   th_args.energy_acc);
+        }
+        else
+        {
+            // /* The first call should print zero as energy. */
+            printf("Accumulated energy before starting the thread is %lu\n",
+                   th_args.energy_acc);
+        }
 
         /* Start power measurement thread. */
         pthread_attr_init(&mattr);
@@ -685,9 +693,16 @@ int ibm_cpu_p9_get_energy(int long_ver)
         pthread_attr_destroy(&mattr);
 
         pthread_mutex_lock(&mlock);
-        /* Calculate what value to return here */
-        printf("Accumulated energy after stopping the thread is %lu\n",
-               th_args.energy_acc);
+        if (long_ver)
+        {
+            printf("Accumulated energy after stopping the thread is %lu\n",
+                   th_args.energy_acc);
+        }
+        else
+        {
+            printf("Accumulated energy after stopping the thread is %lu\n",
+                   th_args.energy_acc);
+        }
         pthread_mutex_unlock(&mlock);
     }
 
