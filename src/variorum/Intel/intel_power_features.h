@@ -289,6 +289,20 @@ void print_verbose_power_data(
     off_t msr_dram_energy_status
 );
 
+void print_energy_data(
+    FILE *writedest,
+    off_t msr_rapl_unit,
+    off_t msr_pkg_energy_status,
+    off_t msr_dram_energy_status
+);
+
+void print_verbose_energy_data(
+    FILE *writedest,
+    off_t msr_rapl_unit,
+    off_t msr_pkg_energy_status,
+    off_t msr_dram_energy_status
+);
+
 void json_get_power_data(
     json_t *get_power_obj,
     off_t msr_power_limit,
