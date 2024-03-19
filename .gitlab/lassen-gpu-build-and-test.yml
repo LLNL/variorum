@@ -71,6 +71,7 @@ build-lassen-gpu:
    - cmake --version
    - cd install-gitlab-lassen-gpu/examples/using-with-cmake/c
    - echo -e "PWD:" ${PWD}
+   - export LD_LIBRARY_PATH=/usr/tce/packages/cuda/cuda-10.1.243/lib64:${LD_LIBRARY_PATH}  # hack for getting older cuda
    - mkdir _test_build
    - cd _test_build
    - cmake ../
