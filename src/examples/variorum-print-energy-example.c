@@ -41,12 +41,11 @@ int main(int argc, char **argv)
 
     sleep(2);
 
-    //Second call to variorum_print_energy should print a valid value.
+    // Second call to variorum_print_energy should print a valid value.
     ret = variorum_print_energy();
     if (ret != 0)
     {
         printf("Print core and Socket energy failed!\n");
         return ret;
     }
-
 }

@@ -239,8 +239,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_55_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_55_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_55_get_power;
-        g_platform[idx].variorum_print_energy =
-            intel_cpu_fm_06_55_get_energy;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_55_get_energy;
         //g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_55_get_turbo_status;
         //g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_55_enable_turbo;
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_55_disable_turbo;

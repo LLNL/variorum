@@ -558,8 +558,8 @@ int intel_cpu_fm_06_3f_get_energy(int long_ver)
 
     if (long_ver == 0)
     {
-        print_energy_data(stdout, msrs.msr_rapl_power_unit,
-                          msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+        print_energy_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                          msrs.msr_dram_energy_status);
     }
     else if (long_ver == 1)
     {

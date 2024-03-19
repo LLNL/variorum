@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     ret = variorum_print_verbose_energy();
     if (ret != 0)
     {
-        printf("Print core and Socket energy failed!\n");
+        printf("Print core and socket energy failed!\n");
     }
     return ret;
 }

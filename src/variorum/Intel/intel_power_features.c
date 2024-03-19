@@ -1621,8 +1621,7 @@ void print_energy_data(FILE *writedest, off_t msr_rapl_unit,
     if (!init)
     {
         gettimeofday(&start, NULL);
-        fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
         rapl_storage(&rapl);
     }
     gettimeofday(&now, NULL);

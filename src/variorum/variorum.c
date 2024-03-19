@@ -1576,7 +1576,8 @@ int variorum_print_energy(void)
 {
     int err = 0;
     int i;
-    int has_cpu = 0, has_gpu = 0;
+    int has_cpu = 0;
+    int has_gpu = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1631,12 +1632,12 @@ int variorum_print_energy(void)
     return err;
 }
 
-
 int variorum_print_verbose_energy(void)
 {
     int err = 0;
     int i;
-    int has_cpu = 0, has_gpu = 0;
+    int has_cpu = 0;
+    int has_gpu = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
@@ -1694,7 +1695,8 @@ int variorum_get_energy_json(char **get_energy_obj_str)
 {
     int err = 0;
     int i;
-    int has_cpu = 0, has_gpu = 0;
+    int has_cpu = 0;
+    int has_gpu = 0;
     char hostname[1024];
     uint64_t ts;
     struct timeval tv;

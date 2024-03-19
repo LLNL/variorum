@@ -8,6 +8,7 @@
 
 #include <jansson.h>
 #include <pthread.h>
+
 #include <variorum_timers.h>
 
 struct thread_args
@@ -61,9 +62,13 @@ int ibm_cpu_p9_get_node_frequency_json(
 );
 
 /* Sampling functions for get_energy thread implementation */
-void *power_measurement(void *arg);
+void *power_measurement(
+    void *arg
+);
 
-unsigned long take_measurement();
+unsigned long take_measurement(
+    void
+);
 
 int ibm_cpu_p9_get_node_energy_json(
     json_t *get_energy_obj

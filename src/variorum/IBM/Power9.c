@@ -673,7 +673,7 @@ int ibm_cpu_p9_get_energy(int long_ver)
         }
         else
         {
-            // /* The first call should print zero as energy. */
+            /* The first call should print zero as energy. */
             printf("Accumulated energy before starting the thread is %lu\n",
                    th_args.energy_acc);
         }
@@ -792,7 +792,6 @@ void *power_measurement(void *arg)
     return arg;
 }
 
-
 int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
 {
     /* Enter the function the first time */
@@ -809,7 +808,7 @@ int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
         //     printf("Accumulated energy before starting the thread is %lu\n",
         //             th_args.energy_acc);
 
-        /*Only set node_energy for now */
+        /* Only set node_energy for now */
         json_object_set_new(get_energy_obj, "energy_node_joules",
                             json_integer(th_args.energy_acc));
 
@@ -832,7 +831,7 @@ int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
         // printf("Accumulated energy after stopping the thread is %lu\n",
         //       th_args.energy_acc);
 
-        /*Only set node_energy for now */
+        /* Only set node_energy for now */
         json_object_set_new(get_energy_obj, "energy_node_joules",
                             json_integer(th_args.energy_acc));
 
