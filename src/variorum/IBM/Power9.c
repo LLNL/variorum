@@ -478,7 +478,7 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -606,7 +606,7 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -656,11 +656,31 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
 
 int ibm_cpu_p9_get_energy(int long_ver)
 {
+    static int init = 0;
+    char hostname[1024];
+    static struct timeval start;
+    struct timeval now;
+
+    gethostname(hostname, 1024);
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+
+        if (long_ver == 0)
+        {
+            printf("_IBMENERGY Host AccumulatedEnergy_J Timestamp_sec\n");
+        }
+    }
+
     /* Enter the function the first time */
     if (active_sampling == 0)
     {
         active_sampling = 1;
         // printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
+
+        gettimeofday(&now, NULL);
 
         /* Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
@@ -668,14 +688,17 @@ int ibm_cpu_p9_get_energy(int long_ver)
 
         if (long_ver)
         {
-            printf("Accumulated energy before stopping the thread is %lu\n",
-                   th_args.energy_acc);
+            //printf("Accumulated energy before stopping the thread is %lu\n",
+            //       th_args.energy_acc);
+            printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
+                    hostname, th_args.energy_acc, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
             /* The first call should print zero as energy. */
-            printf("Accumulated energy before starting the thread is %lu\n",
-                   th_args.energy_acc);
+            printf("%s %s %lu %lf\n",
+                    "_IBMENERGY", hostname, th_args.energy_acc,
+                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
         /* Start power measurement thread. */
@@ -689,19 +712,22 @@ int ibm_cpu_p9_get_energy(int long_ver)
         /* Stop power measurement thread. */
         active_sampling = 0;
 
+        gettimeofday(&now, NULL);
+
         /* Commenting out for now, results in invalid pointer and stack trace */
         pthread_attr_destroy(&mattr);
 
         pthread_mutex_lock(&mlock);
         if (long_ver)
         {
-            printf("Accumulated energy after stopping the thread is %lu\n",
-                   th_args.energy_acc);
+            printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
+                    hostname, th_args.energy_acc, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
-            printf("Accumulated energy after stopping the thread is %lu\n",
-                   th_args.energy_acc);
+            printf("%s %s %lu %lf\n",
+                    "_IBMENERGY", hostname, th_args.energy_acc,
+                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         pthread_mutex_unlock(&mlock);
     }
