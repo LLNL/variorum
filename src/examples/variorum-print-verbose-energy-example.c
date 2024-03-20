@@ -5,6 +5,7 @@
 
 #include <getopt.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <variorum.h>
 
@@ -34,6 +35,15 @@ int main(int argc, char **argv)
     if (ret != 0)
     {
         printf("Print core and socket energy failed!\n");
+        return ret;
     }
-    return ret;
+
+    sleep(2);
+
+    ret = variorum_print_verbose_energy();
+    if (ret != 0)
+    {
+        printf("Print core and socket energy failed!\n");
+        return ret;
+    }
 }

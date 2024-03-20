@@ -668,7 +668,7 @@ int ibm_cpu_p9_get_energy(int long_ver)
 
         if (long_ver)
         {
-            printf("Accumulated energy after stopping the thread is %lu\n",
+            printf("Accumulated energy before stopping the thread is %lu\n",
                    th_args.energy_acc);
         }
         else
