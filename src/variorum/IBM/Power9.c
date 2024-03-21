@@ -691,14 +691,15 @@ int ibm_cpu_p9_get_energy(int long_ver)
             //printf("Accumulated energy before stopping the thread is %lu\n",
             //       th_args.energy_acc);
             printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
-                    hostname, th_args.energy_acc, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                   hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
             /* The first call should print zero as energy. */
             printf("%s %s %lu %lf\n",
-                    "_IBMENERGY", hostname, th_args.energy_acc,
-                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                   "_IBMENERGY", hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
 
         /* Start power measurement thread. */
@@ -721,13 +722,14 @@ int ibm_cpu_p9_get_energy(int long_ver)
         if (long_ver)
         {
             printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
-                    hostname, th_args.energy_acc, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                   hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         else
         {
             printf("%s %s %lu %lf\n",
-                    "_IBMENERGY", hostname, th_args.energy_acc,
-                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+                   "_IBMENERGY", hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
         }
         pthread_mutex_unlock(&mlock);
     }
