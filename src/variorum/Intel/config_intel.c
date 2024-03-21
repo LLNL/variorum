@@ -193,6 +193,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_3f_get_frequencies;
         g_platform[idx].variorum_get_thermals_json =
             intel_cpu_fm_06_3f_get_thermals_json;
+        g_platform[idx].variorum_get_energy_json =
+            intel_cpu_fm_06_3f_get_energy_json;
     }
     // Broadwell 06_4F
     else if (*g_platform[idx].arch_id == FM_06_4F)
@@ -226,6 +228,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_4f_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json =
             intel_cpu_fm_06_3f_get_clocks_json;
+        g_platform[idx].variorum_get_energy_json =
+            intel_cpu_fm_06_4f_get_energy_json;
     }
     // Skylake 06_55
     else if (*g_platform[idx].arch_id == FM_06_55)
@@ -259,6 +263,8 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_55_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json =
             intel_cpu_fm_06_55_get_clocks_json;
+        g_platform[idx].variorum_get_energy_json =
+            intel_cpu_fm_06_55_get_energy_json;
     }
     // Kaby Lake 06_9E
     else if (*g_platform[idx].arch_id == FM_06_9E)

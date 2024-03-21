@@ -568,3 +568,8 @@ int intel_cpu_fm_06_3f_get_energy(int long_ver)
     }
     return 0;
 }
+
+int intel_cpu_fm_06_3f_get_energy_json(json_t *get_energy_obj)
+{
+    printf("Implement me\n");
+}
