@@ -1665,3 +1665,41 @@ void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
                 1000000.0);
     }
 }
+
+void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    unsigned nsockets = 0;
+    unsigned i;
+    double node_energy = 0.0;
+
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+    if (!init)
+    {
+        rapl_storage(&rapl);
+    }
+
+    for (i = 0; i < nsockets; i++)
+    {
+        char socketid[12];
+        snprintf(socketid, 12, "socket_%d", i);
+
+        json_t *socket_obj = json_object();
+        json_object_set_new(get_energy_obj, socketid, socket_obj);
+
+        json_object_set_new(socket_obj, "energy_cpu_joules",
+                            json_real(rapl->pkg_joules[i]));
+        json_object_set_new(socket_obj, "energy_mem_joules",
+                            json_real(rapl->dram_watts[i]));
+        node_energy += rapl->pkg_joules[i] + rapl->dram_joules[i];
+    }
+
+    // Set the node energy key with pwrnode value.
+    json_object_set_new(get_energy_obj, "energy_node_joules",
+                        json_real(node_energy));
+}
