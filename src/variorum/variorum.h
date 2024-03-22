@@ -478,8 +478,14 @@ int variorum_print_available_frequencies(void);
 /// @supparch
 /// - AMD EPYC Milan
 /// - IBM Power9
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
 /// - Intel Haswell
 /// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -488,7 +494,15 @@ int variorum_print_energy(void);
 /// @brief Print verbose format of core and socket energy if available.
 ///
 /// @supparch
-/// - None
+/// - IBM Power9
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @return 0 if successful or if feature has not been implemented or is
 /// not supported, otherwise -1
@@ -688,6 +702,14 @@ int variorum_get_frequency_json(char **get_frequency_obj_str);
 ///
 /// @supparch
 /// - IBM Power9
+/// - Intel Sandy Bridge
+/// - Intel Ivy Bridge
+/// - Intel Haswell
+/// - Intel Broadwell
+/// - Intel Skylake
+/// - Intel Kaby Lake
+/// - Intel Cascade Lake
+/// - Intel Cooper Lake
 ///
 /// @param [out] get_energy_obj_str String (passed by reference) containing
 /// the node-level energy information.
