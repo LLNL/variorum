@@ -1699,7 +1699,7 @@ void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit, off_t msr
         node_energy += rapl->pkg_joules[i] + rapl->dram_joules[i];
     }
 
-    // Set the node energy key with pwrnode value.
+    // Set the node energy key with energy node value.
     json_object_set_new(get_energy_obj, "energy_node_joules",
                         json_real(node_energy));
 }
