@@ -1696,7 +1696,7 @@ void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit,
         json_object_set_new(socket_obj, "energy_cpu_joules",
                             json_real(rapl->pkg_joules[i]));
         json_object_set_new(socket_obj, "energy_mem_joules",
-                            json_real(rapl->dram_watts[i]));
+                            json_real(rapl->dram_joules[i]));
         node_energy += rapl->pkg_joules[i] + rapl->dram_joules[i];
     }
 
