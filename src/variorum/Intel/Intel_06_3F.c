@@ -14,10 +14,6 @@
 #include <intel_power_features.h>
 #include <thermal_features.h>
 
-#ifdef LIBJUSTIFY_FOUND
-#include <cprintf.h>
-#endif
-
 static struct haswell_3f_offsets msrs =
 {
     .msr_platform_info            = 0xCE,

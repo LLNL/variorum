@@ -53,6 +53,10 @@ int fm_06_8f_get_power(
     int long_ver
 );
 
+int fm_06_8f_get_energy(
+    int long_ver
+);
+
 int fm_06_8f_get_features(
     void
 );

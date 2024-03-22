@@ -40,6 +40,10 @@ int intel_cpu_fm_06_6a_get_power(
     int long_ver
 );
 
+int intel_cpu_fm_06_6a_get_energy(
+    int long_ver
+);
+
 int intel_cpu_fm_06_6a_get_features(
     void
 );
