@@ -187,7 +187,7 @@ int fm_06_8f_monitoring(FILE *output)
     return 0;
 }
 
-int intel_cpu_fm_06_8f_get_energy(int long_ver)
+int fm_06_8f_get_energy(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -208,7 +208,7 @@ int intel_cpu_fm_06_8f_get_energy(int long_ver)
     return 0;
 }
 
-int intel_cpu_fm_06_8f_get_energy_json(json_t *get_energy_obj)
+int fm_06_8f_get_energy_json(json_t *get_energy_obj)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
