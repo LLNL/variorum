@@ -80,6 +80,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_2a_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_2a_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_2a_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_2a_get_energy;
         g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_2a_get_turbo_status;
         g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_2a_enable_turbo;
         g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_2a_disable_turbo;
@@ -111,6 +112,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_2d_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_2d_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_2d_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_2d_get_energy;
         g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_2d_get_turbo_status;
         g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_2d_enable_turbo;
         g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_2d_disable_turbo;
@@ -143,6 +145,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_3e_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_3e_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_3e_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_3e_get_energy;
         g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_3e_get_turbo_status;
         g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_3e_enable_turbo;
         g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_3e_disable_turbo;
@@ -278,6 +281,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_counters = intel_cpu_fm_06_9e_get_counters;
         g_platform[idx].variorum_print_frequency = intel_cpu_fm_06_9e_get_clocks;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_9e_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_9e_get_energy;
         //g_platform[idx].variorum_print_turbo = intel_cpu_fm_06_9e_get_turbo_status;
         //g_platform[idx].variorum_enable_turbo = intel_cpu_fm_06_9e_enable_turbo;
         //g_platform[idx].variorum_disable_turbo = intel_cpu_fm_06_9e_disable_turbo;
@@ -303,6 +307,7 @@ int set_intel_func_ptrs(int idx)
             intel_cpu_fm_06_6a_get_power_limits;
         g_platform[idx].variorum_print_features = intel_cpu_fm_06_6a_get_features;
         g_platform[idx].variorum_print_power = intel_cpu_fm_06_6a_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_6a_get_energy;
     }
     // Sapphire Rapids 06_8F
     else if (*g_platform[idx].arch_id == FM_06_8F)
@@ -310,6 +315,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_print_power_limit = fm_06_8f_get_power_limits;
         g_platform[idx].variorum_print_features = fm_06_8f_get_features;
         g_platform[idx].variorum_print_power = fm_06_8f_get_power;
+        g_platform[idx].variorum_print_energy = intel_cpu_fm_06_8f_get_energy;
         g_platform[idx].variorum_get_power_json =
             fm_06_8f_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =

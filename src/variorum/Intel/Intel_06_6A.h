@@ -52,4 +52,8 @@ int intel_cpu_fm_06_6a_get_node_power_domain_info_json(
     char **get_domain_obj_str
 );
 
+int intel_cpu_fm_06_6a_get_energy_json(
+    json_t *get_energy_obj
+);
+
 #endif
