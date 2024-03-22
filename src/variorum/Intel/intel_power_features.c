@@ -1666,7 +1666,8 @@ void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
     }
 }
 
-void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit, off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit,
+                          off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
 {
     static int init = 0;
     static struct rapl_data *rapl = NULL;

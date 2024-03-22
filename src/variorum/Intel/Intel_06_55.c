@@ -534,7 +534,8 @@ int intel_cpu_fm_06_55_get_energy_json(json_t *get_energy_obj)
         printf("Running %s\n", __FUNCTION__);
     }
 
-    json_get_energy_data(get_energy_obj, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+    json_get_energy_data(get_energy_obj, msrs.msr_rapl_power_unit,
+                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
 
     return 0;
 }
