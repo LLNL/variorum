@@ -1630,6 +1630,17 @@ void print_energy_data(FILE *writedest, off_t msr_rapl_unit,
         fprintf(writedest, "_PACKAGE_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i]);
     }
+
+    if (!init)
+    {
+        fprintf(writedest, "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+        init = 1;
+    }
+    for (i = 0; i < nsockets; i++)
+    {
+        fprintf(writedest, "_DRAM_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i]);
+    }
 }
 
 void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
@@ -1652,6 +1663,7 @@ void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
 
     if (!init)
     {
+        init = 1;
         gettimeofday(&start, NULL);
         rapl_storage(&rapl);
     }
@@ -1659,10 +1671,13 @@ void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
     for (i = 0; i < nsockets; i++)
     {
         fprintf(writedest,
-                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Elapsed: %lf sec, Timestamp: %lf sec\n",
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
-                rapl->elapsed, now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) /
-                1000000.0);
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        fprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
     }
 }
 
