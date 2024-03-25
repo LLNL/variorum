@@ -1,4 +1,4 @@
-# Fri Mar 8 2024 Stephanie Brink <brink2@llnl.gov> v0.8.0
+# Fri Mar 29 2024 Stephanie Brink <brink2@llnl.gov> v0.8.0
 Version 0.8.0 is a major release.
 
 ### New features
