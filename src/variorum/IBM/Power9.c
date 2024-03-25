@@ -687,8 +687,6 @@ int ibm_cpu_p9_get_energy(int long_ver)
 
         if (long_ver)
         {
-            //printf("Accumulated energy before stopping the thread is %lu\n",
-            //       th_args.energy_acc);
             printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
                    hostname, th_args.energy_acc,
                    now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
@@ -714,7 +712,6 @@ int ibm_cpu_p9_get_energy(int long_ver)
 
         gettimeofday(&now, NULL);
 
-        /* Commenting out for now, results in invalid pointer and stack trace */
         pthread_attr_destroy(&mattr);
 
         pthread_mutex_lock(&mlock);

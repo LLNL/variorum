@@ -377,7 +377,7 @@ int amd_cpu_epyc_print_energy(int long_ver)
     }
 
     int ret;
-    if (!esmi_init())
+    if (!esmi_init() && long_ver == 0)
     {
         int i;
         uint64_t energy;
