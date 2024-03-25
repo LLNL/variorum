@@ -1,4 +1,4 @@
-# Fri Mar 29 2024 Stephanie Brink <brink2@llnl.gov> v0.8.0
+# Tue Mar 26 2024 Stephanie Brink <brink2@llnl.gov> v0.8.0
 Version 0.8.0 is a major release.
 
 ### New features
@@ -37,6 +37,7 @@ Version 0.8.0 is a major release.
   for tavern, fix host config for rhetoric and thompson (#447, #457, #458, #478, #508)
 * Report GPU power limit using the correct NVML API (#446)
 * Change return code for variorum_cap_socket_frequency_limit from -1 to 0
+* Fix function pointer for intel model/family 06-4f (#536)
 * Various updates to internal GitLab and external GitHub CI
 
 # Tue Jun 13 2022 Stephanie Brink <brink2@llnl.gov> v0.7.0

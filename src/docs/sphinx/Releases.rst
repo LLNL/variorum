@@ -15,7 +15,7 @@ branch, which contains our latest features.
  v0.8.0
 ********
 
-03/29/2023: Major release adds JSON APIs for GPU, node utilization, energy
+03/26/2023: Major release adds JSON APIs for GPU, node utilization, energy
 usage, frequency, and thermal data, adds print and print verbose APIs for energy
 usage, updates JSON power API to support GPUs and multi-architecture builds,
 renames powmon to var_monitor and extends var_monitor to report utilization,
