@@ -2,16 +2,42 @@
 Version 0.8.0 is a major release.
 
 ### New features
-*
+* Adds energy APIs: Print and JSON (#530)
+* Update powmon to report utilization in addition to power. (#510)
+* Update JSON utilization API to support CPU-only, GPU-only and multi-architecture
+  systems (#525)
+* Support GPUs and multi-architecture builds with new nested variorum_get_power_json API
+* Adds GPU and node utilization JSON APIs (CPU, GPU, Memory) (#431)
+* Add json output for frequency data (#488)
+* Add json output for thermal data (#461)
+* Adds libjustify as an optional build dependency for formatting tabular output (#468)
 
 ### Documentation updates
-* 
+* Update supported architectures (#482)
+* Fix reference to Examples.rst from api/print_functions.rst
 
 ### Bug fixes
-* 
+* Fix Intel DRAM overflow issue (#328)
+* Fix memory leak in Nvidia port
+* Decref json object if unable to access ibm OCC sensor file (#477)
+* Fix extern linkage issues in nvidia_gpu_power_features.h in newer versions of gcc
+  (#464)
 
 ### Internal changes
-* 
+* Rename powmon to var_monitor throughout (#523)
+* Update Variorum AMD GPU port to support ROCm 6.0.2 (#512)
+* Code cleanup: change uint64_t assignments from -1 to 0 (#519)
+* Update the name of variorum_get_thermals_example to match the API (#509)
+* Top-level API: rename variorum_get_node_frequency_json --> variorum_get_frequency_json
+  (#50)
+* Add -example to utilization json example files (#501)
+* Add missing ifdefs for P_*_{CPU,GPU}_IDX variables
+* Format headers, parameters on new lines (#491, #493, #534)
+* Add host config for folsom, alehouse cpu+gpu, alehouse gpu-only, remove host config
+  for tavern, fix host config for rhetoric and thompson (#447, #457, #458, #478, #508)
+* Report GPU power limit using the correct NVML API (#446)
+* Change return code for variorum_cap_socket_frequency_limit from -1 to 0
+* Various updates to internal GitLab and external GitHub CI
 
 # Tue Jun 13 2022 Stephanie Brink <brink2@llnl.gov> v0.7.0
 Version 0.7.0 is a major release.
