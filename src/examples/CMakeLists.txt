@@ -16,6 +16,7 @@ set(BASIC_EXAMPLES
     variorum-cap-socket-power-limit-example
     variorum-disable-turbo-example
     variorum-enable-turbo-example
+    variorum-get-energy-json-example
     variorum-get-frequency-json-example
     variorum-get-node-power-domain-info-json-example
     variorum-get-power-json-example
@@ -39,6 +40,7 @@ set(BASIC_EXAMPLES
     variorum-print-topology-example
     variorum-print-turbo-example
     variorum-print-verbose-counters-example
+    variorum-print-verbose-energy-example
     variorum-print-verbose-frequency-example
     variorum-print-verbose-gpu-utilization-example
     variorum-print-verbose-power-example

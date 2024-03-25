@@ -31,8 +31,7 @@ int main(int argc, char **argv)
         }
     }
 
-    // First call to variorum_print_energy should print zero.
-    ret = variorum_print_energy();
+    ret = variorum_print_verbose_energy();
     if (ret != 0)
     {
         printf("Print core and socket energy failed!\n");
@@ -41,8 +40,7 @@ int main(int argc, char **argv)
 
     sleep(2);
 
-    // Second call to variorum_print_energy should print a valid value.
-    ret = variorum_print_energy();
+    ret = variorum_print_verbose_energy();
     if (ret != 0)
     {
         printf("Print core and socket energy failed!\n");

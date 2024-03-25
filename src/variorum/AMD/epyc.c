@@ -367,7 +367,8 @@ static struct EPYC_19h_offsets msrs =
     .msr_pkg_energy_stat         = 0xC001029B
 };
 
-int amd_cpu_epyc_print_energy()
+
+int amd_cpu_epyc_print_energy(int long_ver)
 {
     char *val = getenv("VARIORUM_LOG");
     if (val != NULL && atoi(val) == 1)
@@ -376,7 +377,7 @@ int amd_cpu_epyc_print_energy()
     }
 
     int ret;
-    if (!esmi_init())
+    if (!esmi_init() && long_ver == 0)
     {
         int i;
         uint64_t energy;

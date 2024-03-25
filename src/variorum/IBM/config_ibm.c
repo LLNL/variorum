@@ -36,9 +36,11 @@ int set_ibm_func_ptrs(int idx)
         g_platform[idx].variorum_get_power_json = ibm_cpu_p9_get_power_json;
         g_platform[idx].variorum_get_node_power_domain_info_json =
             ibm_cpu_p9_get_node_power_domain_info_json;
+        g_platform[idx].variorum_print_energy = ibm_cpu_p9_get_energy;
         g_platform[idx].variorum_get_thermals_json = ibm_cpu_p9_get_node_thermal_json;
         g_platform[idx].variorum_get_frequency_json =
             ibm_cpu_p9_get_node_frequency_json;
+        g_platform[idx].variorum_get_energy_json = ibm_cpu_p9_get_node_energy_json;
     }
     else
     {

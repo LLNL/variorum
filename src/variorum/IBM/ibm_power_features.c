@@ -106,6 +106,37 @@ unsigned long read_sensor(const struct occ_sensor_data_header *hb,
     return 0;
 }
 
+uint64_t get_node_power(const void *buf)
+{
+    int i;
+    struct occ_sensor_data_header *hb;
+    struct occ_sensor_name *md;
+    // Power in watts.
+    uint64_t pwrsys = 0;
+
+    hb = (struct occ_sensor_data_header *)(uint64_t)buf;
+    md = (struct occ_sensor_name *)((uint64_t)hb + be32toh(hb->names_offset));
+
+    for (i = 0; i < be16toh(hb->nr_sensors); i++)
+    {
+        uint32_t offset = be32toh(md[i].reading_offset);
+        uint32_t scale = be32toh(md[i].scale_factor);
+        uint64_t sample = 0;
+
+        // We are not reading counters here because power data doesn't need counter.
+        if (md[i].structure_type == OCC_SENSOR_READING_FULL)
+        {
+            sample = read_sensor(hb, offset, SENSOR_SAMPLE);
+        }
+
+        if (strcmp(md[i].name, "PWRSYS") == 0)
+        {
+            pwrsys = (uint64_t)(sample * TO_FP(scale));
+        }
+    }
+    return (pwrsys);
+}
+
 void print_power_sensors(int chipid, int long_ver, FILE *output,
                          const void *buf)
 {

@@ -1129,6 +1129,18 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
         fprintf(writedest, "pkg%d_bits = %8.4lx   pkg%d_joules= %8.4f\n", i,
                 *rapl->pkg_bits[i], i, rapl->pkg_joules[i]);
 #endif
+#ifdef LIBJUSTIFY_FOUND
+        cprintf(writedest,
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Power: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                rapl->pkg_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        cprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Power: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                rapl->dram_watts[i], rapl->elapsed,
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
         fprintf(writedest,
                 "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Power: %lf W, Elapsed: %lf sec, Timestamp: %lf sec\n",
                 msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
@@ -1139,6 +1151,7 @@ void print_verbose_power_data(FILE *writedest, off_t msr_rapl_unit,
                 msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
                 rapl->dram_watts[i], rapl->elapsed,
                 now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
     }
 }
 
@@ -1598,4 +1611,153 @@ void get_all_power_data(FILE *writedest, off_t msr_pkg_power_limit,
 #else
     fprintf(writedest, "\n");
 #endif
+}
+
+void print_energy_data(FILE *writedest, off_t msr_rapl_unit,
+                       off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    static struct timeval start;
+    unsigned nsockets = 0;
+    struct timeval now;
+    char hostname[1024];
+    unsigned i;
+
+    gethostname(hostname, 1024);
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+
+    if (!init)
+    {
+        gettimeofday(&start, NULL);
+#if LIBJUSTIFY_FOUND
+        cprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+#else
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+#endif
+        rapl_storage(&rapl);
+    }
+    gettimeofday(&now, NULL);
+    for (i = 0; i < nsockets; i++)
+    {
+#if LIBJUSTIFY_FOUND
+        cprintf(writedest, "_PACKAGE_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i]);
+#else
+        fprintf(writedest, "_PACKAGE_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i]);
+#endif
+    }
+
+    if (!init)
+    {
+#if LIBJUSTIFY_FOUND
+        cprintf(writedest, "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+#else
+        fprintf(writedest, "_DRAM_ENERGY_STATUS Offset Host Socket Bits Energy_J\n");
+#endif
+        init = 1;
+    }
+    for (i = 0; i < nsockets; i++)
+    {
+#if LIBJUSTIFY_FOUND
+        cprintf(writedest, "_DRAM_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i]);
+#else
+        fprintf(writedest, "_DRAM_ENERGY_STATUS %lx %s %d 0x%lx %lf\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i]);
+#endif
+    }
+}
+
+void print_verbose_energy_data(FILE *writedest, off_t msr_rapl_unit,
+                               off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    static struct timeval start;
+    unsigned nsockets = 0;
+    struct timeval now;
+    char hostname[1024];
+    unsigned i;
+
+    gethostname(hostname, 1024);
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+        rapl_storage(&rapl);
+    }
+    gettimeofday(&now, NULL);
+    for (i = 0; i < nsockets; i++)
+    {
+#if LIBJUSTIFY_FOUND
+        cprintf(writedest,
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        cprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#else
+        fprintf(writedest,
+                "_PACKAGE_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
+                msr_pkg_energy_status, hostname, i, *rapl->pkg_bits[i], rapl->pkg_joules[i],
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        fprintf(writedest,
+                "_DRAM_ENERGY_STATUS Offset: 0x%lx, Host: %s, Socket: %d, Bits: 0x%lx, Energy: %lf J, Timestamp: %lf sec\n",
+                msr_dram_energy_status, hostname, i, *rapl->dram_bits[i], rapl->dram_joules[i],
+                now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+#endif
+    }
+}
+
+void json_get_energy_data(json_t *get_energy_obj, off_t msr_rapl_unit,
+                          off_t msr_pkg_energy_status, off_t msr_dram_energy_status)
+{
+    static int init = 0;
+    static struct rapl_data *rapl = NULL;
+    unsigned nsockets = 0;
+    unsigned i;
+    double node_energy = 0.0;
+
+#ifdef VARIORUM_WITH_INTEL_CPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_INTEL_CPU_IDX);
+#endif
+
+    get_power(msr_rapl_unit, msr_pkg_energy_status, msr_dram_energy_status);
+    if (!init)
+    {
+        rapl_storage(&rapl);
+    }
+
+    for (i = 0; i < nsockets; i++)
+    {
+        char socketid[12];
+        snprintf(socketid, 12, "socket_%d", i);
+
+        json_t *socket_obj = json_object();
+        json_object_set_new(get_energy_obj, socketid, socket_obj);
+
+        json_object_set_new(socket_obj, "energy_cpu_joules",
+                            json_real(rapl->pkg_joules[i]));
+        json_object_set_new(socket_obj, "energy_mem_joules",
+                            json_real(rapl->dram_joules[i]));
+        node_energy += rapl->pkg_joules[i] + rapl->dram_joules[i];
+    }
+
+    // Set the node energy key with energy node value.
+    json_object_set_new(get_energy_obj, "energy_node_joules",
+                        json_real(node_energy));
 }

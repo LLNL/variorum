@@ -53,6 +53,10 @@ int fm_06_8f_get_power(
     int long_ver
 );
 
+int fm_06_8f_get_energy(
+    int long_ver
+);
+
 int fm_06_8f_get_features(
     void
 );
@@ -67,6 +71,10 @@ int fm_06_8f_get_node_power_domain_info_json(
 
 int fm_06_8f_monitoring(
     FILE *output
+);
+
+int fm_06_8f_get_energy_json(
+    json_t *get_energy_obj
 );
 
 #endif

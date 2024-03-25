@@ -106,6 +106,10 @@ int intel_cpu_fm_06_2a_get_power(
     int long_ver
 );
 
+int intel_cpu_fm_06_2a_get_energy(
+    int long_ver
+);
+
 int intel_cpu_fm_06_2a_enable_turbo(
     void
 );
@@ -148,6 +152,10 @@ int intel_cpu_fm_06_2a_get_thermals_json(
 
 int intel_cpu_fm_06_2a_get_clocks_json(
     json_t *get_clock_obj_json
+);
+
+int intel_cpu_fm_06_2a_get_energy_json(
+    json_t *get_energy_obj
 );
 
 #endif

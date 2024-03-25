@@ -16,6 +16,15 @@
 #include <cprintf.h>
 #endif
 
+/* Figure out the right spot for this at some point */
+pthread_mutex_t mlock;
+struct thread_args th_args;
+pthread_attr_t mattr;
+pthread_t mthread;
+
+/* For the get_energy sampling thread */
+static int active_sampling = 0;
+
 int ibm_cpu_p9_get_power(int long_ver)
 {
     char *val = ("VARIORUM_LOG");
@@ -469,7 +478,7 @@ int ibm_cpu_p9_get_node_thermal_json(json_t *get_thermal_obj)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -597,7 +606,7 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
     int rc;
     int bytes;
     unsigned iter = 0;
-    unsigned nsockets;
+    unsigned nsockets = 0;
 
 #ifdef VARIORUM_WITH_IBM_CPU
     variorum_get_topology(&nsockets, NULL, NULL, P_IBM_CPU_IDX);
@@ -642,5 +651,205 @@ int ibm_cpu_p9_get_node_frequency_json(json_t *get_frequency_obj_json)
     }
 
     close(fd);
+    return 0;
+}
+
+int ibm_cpu_p9_get_energy(int long_ver)
+{
+    static int init = 0;
+    char hostname[1024];
+    static struct timeval start;
+    struct timeval now;
+
+    gethostname(hostname, 1024);
+
+    if (!init)
+    {
+        init = 1;
+        gettimeofday(&start, NULL);
+
+        if (long_ver == 0)
+        {
+            printf("_IBMENERGY Host AccumulatedEnergy_J Timestamp_sec\n");
+        }
+    }
+
+    /* Enter the function the first time */
+    if (active_sampling == 0)
+    {
+        active_sampling = 1;
+
+        gettimeofday(&now, NULL);
+
+        /* Sampling interval is hardcoded at 250ms */
+        th_args.sample_interval = 250;
+        th_args.energy_acc = 0;
+
+        if (long_ver)
+        {
+            printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
+                   hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        }
+        else
+        {
+            /* The first call should print zero as energy. */
+            printf("%s %s %lu %lf\n",
+                   "_IBMENERGY", hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        }
+
+        /* Start power measurement thread. */
+        pthread_attr_init(&mattr);
+        pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
+        pthread_mutex_init(&mlock, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
+    }
+    else
+    {
+        /* Stop power measurement thread. */
+        active_sampling = 0;
+
+        gettimeofday(&now, NULL);
+
+        pthread_attr_destroy(&mattr);
+
+        pthread_mutex_lock(&mlock);
+        if (long_ver)
+        {
+            printf("_IBMENERGY Host: %s, Accumulated Energy: %lu J, Timestamp: %lf sec\n",
+                   hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        }
+        else
+        {
+            printf("%s %s %lu %lf\n",
+                   "_IBMENERGY", hostname, th_args.energy_acc,
+                   now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
+        }
+        pthread_mutex_unlock(&mlock);
+    }
+
+    return 0;
+}
+
+unsigned long take_measurement(int fd)
+{
+    unsigned long power_sample = 0;
+
+    char *val = ("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    void *buf;
+    int rc;
+    int bytes;
+    unsigned iter = 0;
+
+    /* We assume that socket 0 on IBM Power9 reports total system power */
+    lseek(fd, iter * OCC_SENSOR_DATA_BLOCK_SIZE, SEEK_SET);
+
+    buf = malloc(OCC_SENSOR_DATA_BLOCK_SIZE);
+
+    if (!buf)
+    {
+        printf("Failed to allocate\n");
+        return -1;
+    }
+
+    for (rc = bytes = 0; bytes < OCC_SENSOR_DATA_BLOCK_SIZE; bytes += rc)
+    {
+        rc = read(fd, buf + bytes, OCC_SENSOR_DATA_BLOCK_SIZE - bytes);
+        if (!rc || rc < 0)
+        {
+            break;
+        }
+    }
+
+    if (bytes != OCC_SENSOR_DATA_BLOCK_SIZE)
+    {
+        printf("Failed to read data\n");
+        free(buf);
+        return -1;
+    }
+
+    power_sample = get_node_power(buf);
+
+    free(buf);
+    return power_sample;
+}
+
+void *power_measurement(void *arg)
+{
+    struct mstimer timer;
+    unsigned long curr_measurement;
+    int fd;
+
+    /* Open inband_sensors file */
+    fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Failed to open occ_inband_sensors file\n");
+    }
+    else
+    {
+        init_msTimer(&timer, th_args.sample_interval);
+
+        timer_sleep(&timer);
+        while (active_sampling)
+        {
+            /* Accummulate energy */
+            pthread_mutex_lock(&mlock);
+            curr_measurement = take_measurement(fd);
+            th_args.energy_acc += curr_measurement * th_args.sample_interval;
+            pthread_mutex_unlock(&mlock);
+            timer_sleep(&timer);
+        }
+        /* Close inband_sensors file */
+        close(fd);
+    }
+    return arg;
+}
+
+int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
+{
+    /* Enter the function the first time */
+    if (active_sampling == 0)
+    {
+        active_sampling = 1;
+
+        /* Sampling interval is hardcoded at 250ms */
+        th_args.sample_interval = 250;
+        th_args.energy_acc = 0;
+
+        /* Only set node_energy for now */
+        json_object_set_new(get_energy_obj, "energy_node_joules",
+                            json_integer(th_args.energy_acc));
+
+        /* Start power measurement thread. */
+        pthread_attr_init(&mattr);
+        pthread_attr_setdetachstate(&mattr, PTHREAD_CREATE_DETACHED);
+        pthread_mutex_init(&mlock, NULL);
+        pthread_create(&mthread, &mattr, power_measurement, NULL);
+    }
+    else
+    {
+        /* Stop power measurement thread. */
+        active_sampling = 0;
+
+        /* Commenting out for now, results in invalid pointer and stack trace */
+        pthread_attr_destroy(&mattr);
+
+        pthread_mutex_lock(&mlock);
+
+        /* Only set node_energy for now */
+        json_object_set_new(get_energy_obj, "energy_node_joules",
+                            json_integer(th_args.energy_acc));
+
+        pthread_mutex_unlock(&mlock);
+    }
+
     return 0;
 }

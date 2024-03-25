@@ -14,10 +14,6 @@
 #include <intel_power_features.h>
 #include <thermal_features.h>
 
-#ifdef LIBJUSTIFY_FOUND
-#include <cprintf.h>
-#endif
-
 static struct haswell_3f_offsets msrs =
 {
     .msr_platform_info            = 0xCE,
@@ -545,5 +541,40 @@ int intel_cpu_fm_06_3f_get_frequencies(void)
     get_available_frequencies(stdout, &msrs.msr_platform_info,
                               &msrs.msr_turbo_ratio_limit, &msrs.msr_turbo_ratio_limit1,
                               &msrs.msr_config_tdp_level1, &msrs.msr_config_tdp_level2);
+    return 0;
+}
+
+int intel_cpu_fm_06_3f_get_energy(int long_ver)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    if (long_ver == 0)
+    {
+        print_energy_data(stdout, msrs.msr_rapl_power_unit, msrs.msr_pkg_energy_status,
+                          msrs.msr_dram_energy_status);
+    }
+    else if (long_ver == 1)
+    {
+        print_verbose_energy_data(stdout, msrs.msr_rapl_power_unit,
+                                  msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+    }
+    return 0;
+}
+
+int intel_cpu_fm_06_3f_get_energy_json(json_t *get_energy_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    json_get_energy_data(get_energy_obj, msrs.msr_rapl_power_unit,
+                         msrs.msr_pkg_energy_status, msrs.msr_dram_energy_status);
+
     return 0;
 }

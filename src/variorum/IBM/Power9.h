@@ -7,8 +7,21 @@
 #define POWER9_H_INCLUDE
 
 #include <jansson.h>
+#include <pthread.h>
+
+#include <variorum_timers.h>
+
+struct thread_args
+{
+    unsigned long sample_interval;
+    unsigned long energy_acc;
+};
 
 int ibm_cpu_p9_get_power(
+    int long_ver
+);
+
+int ibm_cpu_p9_get_energy(
     int long_ver
 );
 
@@ -46,6 +59,19 @@ int ibm_cpu_p9_get_node_thermal_json(
 
 int ibm_cpu_p9_get_node_frequency_json(
     json_t *get_frequency_obj_json
+);
+
+/* Sampling functions for get_energy thread implementation */
+void *power_measurement(
+    void *arg
+);
+
+unsigned long take_measurement(
+    int fd
+);
+
+int ibm_cpu_p9_get_node_energy_json(
+    json_t *get_energy_obj
 );
 
 #endif
