@@ -22,7 +22,7 @@ struct thread_args th_args;
 pthread_attr_t mattr;
 pthread_t mthread;
 
-/*For the get_energy sampling thread */
+/* For the get_energy sampling thread */
 static int active_sampling = 0;
 
 int ibm_cpu_p9_get_power(int long_ver)
@@ -678,7 +678,6 @@ int ibm_cpu_p9_get_energy(int long_ver)
     if (active_sampling == 0)
     {
         active_sampling = 1;
-        // printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
 
         gettimeofday(&now, NULL);
 
@@ -791,7 +790,6 @@ void *power_measurement(void *arg)
     unsigned long curr_measurement;
     int fd;
 
-    //printf("Using sampling interval of: %ld ms\n", th_args.sample_interval);
     /* Open inband_sensors file */
     fd = open("/sys/firmware/opal/exports/occ_inband_sensors", O_RDONLY);
     if (fd < 0)
@@ -801,8 +799,6 @@ void *power_measurement(void *arg)
     else
     {
         init_msTimer(&timer, th_args.sample_interval);
-
-        //printf("Value of active_sampling is: %d\n", active_sampling);
 
         timer_sleep(&timer);
         while (active_sampling)
@@ -826,15 +822,10 @@ int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
     if (active_sampling == 0)
     {
         active_sampling = 1;
-        // printf("Setting active_sampling to 1, value is %d: \n", active_sampling);
 
         /* Sampling interval is hardcoded at 250ms */
         th_args.sample_interval = 250;
         th_args.energy_acc = 0;
-
-        // /* The first call should print zero as energy. */
-        //     printf("Accumulated energy before starting the thread is %lu\n",
-        //             th_args.energy_acc);
 
         /* Only set node_energy for now */
         json_object_set_new(get_energy_obj, "energy_node_joules",
@@ -855,9 +846,6 @@ int ibm_cpu_p9_get_node_energy_json(json_t *get_energy_obj)
         pthread_attr_destroy(&mattr);
 
         pthread_mutex_lock(&mlock);
-        /* Calculate what value to return here */
-        // printf("Accumulated energy after stopping the thread is %lu\n",
-        //       th_args.energy_acc);
 
         /* Only set node_energy for now */
         json_object_set_new(get_energy_obj, "energy_node_joules",
