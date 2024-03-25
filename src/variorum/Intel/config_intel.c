@@ -230,7 +230,7 @@ int set_intel_func_ptrs(int idx)
         g_platform[idx].variorum_get_thermals_json =
             intel_cpu_fm_06_4f_get_thermals_json;
         g_platform[idx].variorum_get_frequency_json =
-            intel_cpu_fm_06_3f_get_clocks_json;
+            intel_cpu_fm_06_4f_get_clocks_json;
         g_platform[idx].variorum_get_energy_json =
             intel_cpu_fm_06_4f_get_energy_json;
     }
