@@ -15,12 +15,12 @@ branch, which contains our latest features.
  v0.8.0
 ********
 
-03/29/2023: UPDATE HERE Major release adds support for new architectures, ARM Neoverse N1
-platform and Sapphire Rapids, enables heterogeneous build support for two
-architectures, adds power capping API for NVIDIA, AMD and Intel GPUs, adds get
-power limit for Intel GPUs, overhauls powmon utility, updates filenames and
-low-level function names to include architecture, updates logo. `v0.8.0 tarball
-here <https://github.com/LLNL/variorum/archive/v0.8.0.tar.gz>`_.
+03/29/2023: Major release adds JSON APIs for GPU, node utilization, energy
+usage, frequency, and thermal data, adds print and print verbose APIs for energy
+usage, updates JSON power API to support GPUs and multi-architecture builds,
+renames powmon to var_monitor and extends var_monitor to report utilization,
+adds libjustify as an optional build dependency for formatting tabular data.
+`v0.8.0 tarball here <https://github.com/LLNL/variorum/archive/v0.8.0.tar.gz>`_.
 
 ********
  v0.7.0
