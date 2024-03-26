@@ -12,6 +12,17 @@ Variorum is under constant development. So, we recommend using our ``dev``
 branch, which contains our latest features.
 
 ********
+ v0.8.0
+********
+
+03/26/2023: Major release adds JSON APIs for GPU, node utilization, energy
+usage, frequency, and thermal data, adds print and print verbose APIs for energy
+usage, updates JSON power API to support GPUs and multi-architecture builds,
+renames powmon to var_monitor and extends var_monitor to report utilization,
+adds libjustify as an optional build dependency for formatting tabular data.
+`v0.8.0 tarball here <https://github.com/LLNL/variorum/archive/v0.8.0.tar.gz>`_.
+
+********
  v0.7.0
 ********
 

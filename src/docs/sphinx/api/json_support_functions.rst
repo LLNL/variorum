@@ -22,3 +22,4 @@ Defined in ``variorum/variorum.h``.
 
 .. doxygenfunction:: variorum_get_utilization_json
 
+.. doxygenfunction:: variorum_get_energy_json
