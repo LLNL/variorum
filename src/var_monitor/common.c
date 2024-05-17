@@ -322,7 +322,7 @@ void parse_json_util_obj(char *util_str, int num_sockets)
             for (j = 0; j < ndevices; j++)
             {
                 char device_id[24];
-                snprintf(device_id, 24, "GPU%d_util%%", (i * num_sockets) + j + 1);
+                snprintf(device_id, 24, "GPU%d_util%%", (i * num_sockets) + j);
                 gpu_util = json_integer_value(json_object_get(socket_obj, device_id));
                 // Don't write out a comma after the last column name
                 if ((i + 1) == num_sockets && (j + 1) == ndevices)
