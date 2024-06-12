@@ -23,10 +23,14 @@ if(NVML_DIR)
 elseif(NOT NVML_FOUND)
     find_path(NVML_INCLUDE_DIRS
         NAMES nvml.h
+	REQUIRED
+	HINTS ${NVML_ROOT}/include
     )
 
     find_library(NVML_LIBRARY
-        NAMES libnvml.so
+        NAMES nvml nvidia-ml
+	REQUIRED
+	HINTS ${NVML_ROOT}/lib/stubs
     )
 
     if(NVML_INCLUDE_DIRS AND NVML_LIBRARY)
@@ -41,9 +45,4 @@ elseif(NOT NVML_FOUND)
         message(STATUS " [*] NVML_INCLUDE_DIRS = ${NVML_INCLUDE_DIRS}")
         message(STATUS " [*] NVML_LIBRARY = ${NVML_LIBRARY}")
     endif()
-endif()
-
-# Abort if all methods fail
-if(NOT NVML_FOUND)
-    message(FATAL_ERROR "Nvidia support needs explict NVML_DIR")
 endif()
