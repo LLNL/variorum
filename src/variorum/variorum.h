@@ -722,7 +722,6 @@ int variorum_get_energy_json(char **get_energy_obj_str);
 /// @brief Returns Variorum version as a constant string.
 ///
 /// @supparch
-
 /// - All architectures
 ///
 /// @return Returns a constant string containing the
