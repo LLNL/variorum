@@ -508,7 +508,7 @@ int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
         printf("Running %s\n\n", __FUNCTION__);
     }
 
-    int socket, core,  ret;
+    int socket, core,  ret = 0;
     uint32_t boostlimit;
 
     int num_sockets = g_platform[P_AMD_CPU_IDX].num_sockets;
@@ -518,8 +518,8 @@ int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
 
     for (socket = 0; socket < num_sockets; ++socket)
     {
-        char socket_name[16];
-        snprintf(socket_name, 16, "socket_%d", socket);
+        char socket_name[32];
+        snprintf(socket_name, 32, "socket_%d", socket);
         json_t *socket_obj = json_object_get(get_clock_obj_json, socket_name);
         if (socket_obj == NULL)
         {
@@ -536,13 +536,13 @@ int amd_cpu_epyc_get_json_boostlimit(json_t *get_clock_obj_json)
         for (core = 0; core < cores_per_socket; ++core)
         {
             ret = esmi_core_boostlimit_get(current_core, &boostlimit);
-            char core_avg_string[24];
-            snprintf(core_avg_string, 24, "core_%d_avg_freq_mhz", current_core);
+            char core_avg_string[32];
+            snprintf(core_avg_string, 32, "core_%d_avg_freq_mhz", current_core);
             json_object_set_new(core_obj, core_avg_string, json_real(boostlimit));
             current_core++;
         }
     }
-    return 0;
+    return ret;
 }
 
 int amd_cpu_epyc_set_each_core_boostlimit(int boostlimit)
@@ -684,7 +684,7 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
     uint32_t current_power;
     double node_power = 0.0;
     int i, ret = 0;
-    int sockID_len = 12;
+    int sockID_len = 32;
     char sockID[sockID_len];
 
 #ifdef VARIORUM_WITH_AMD_CPU

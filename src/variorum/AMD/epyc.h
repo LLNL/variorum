@@ -25,7 +25,7 @@ int amd_cpu_epyc_set_and_verify_best_effort_node_power_limit(
 );
 
 int amd_cpu_epyc_print_energy(
-    void
+    int long_ver
 );
 
 int amd_cpu_epyc_print_boostlimit(
