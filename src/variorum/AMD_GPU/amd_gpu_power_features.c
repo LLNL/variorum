@@ -76,18 +76,29 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
         double pwr_val_flt = -1.0;
 
         /* Variorum v0.8 will support the new API from ROCm 6.0.2, which
-         * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
-         * If using an older version of ROCm, please use the code segment
-         * with the rsmi_dev_power_ave_get() API below on line 85 and comment
-         * lines 88 and 89. We're not adding backward compatibility checks
-         * at the moment due to lack of resources and time.
-         *
-         *  ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
-         */
+        * adds the RSMI_POWER_TYPE enum and the rsmi_dev_power_get() API.
+        * If using an older version of ROCm, please use the code segment
+        * with the rsmi_dev_power_ave_get() API below on lines 85 instead of
+        * line 89. We're not adding backward compatibility checks
+        * at the moment due to lack of resources and time.
+        *
+        *  ret = rsmi_dev_power_ave_get(i, 0, &pwr_val);
+        */
 
         RSMI_POWER_TYPE pwr_type = RSMI_AVERAGE_POWER;
         ret = rsmi_dev_power_get(i, &pwr_val, &pwr_type);
-        if (ret != RSMI_STATUS_SUCCESS)
+
+        /* On newer MI200+ GPUs, device power is only reported at the GPU-domain
+         * level, and not for all devices. For example, on Tioga, we see power
+         * being reported on GPU device IDs 0,2,4,6 and N/As on 1,3,5,7. This is
+         * an artifact of the newer GPU power reporting mechanism.
+         * As a result, we don't print an error
+         * when the RSMI API here fails with status unsupported on devices
+         * 1,3,5,7 (in this example), as it will report the data correctly on
+         * the other devices. This also allow us to use ROCm 6.0.2+ successfully
+         * on older GPUs, such as MI50. */
+
+        if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
         {
             variorum_error_handler("RSMI API was not successful",
                                    VARIORUM_ERROR_PLATFORM_ENV,
