@@ -218,3 +218,43 @@ int volta_get_power_json(json_t *get_power_obj)
     return 0;
 }
 
+int volta_get_energy(int long_ver)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets = 0;
+#ifdef VARIORUM_WITH_NVIDIA_GPU
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+#endif
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_energy_data(iter, long_ver, stdout);
+    }
+    return 0;
+}
+
+int volta_get_energy_json(json_t *get_energy_obj)
+{
+    char *val = getenv("VARIORUM_LOG");
+    if (val != NULL && atoi(val) == 1)
+    {
+        printf("Running %s\n", __FUNCTION__);
+    }
+
+    unsigned iter = 0;
+    unsigned nsockets;
+    variorum_get_topology(&nsockets, NULL, NULL, P_NVIDIA_GPU_IDX);
+
+    for (iter = 0; iter < nsockets; iter++)
+    {
+        nvidia_gpu_get_energy_json(iter, get_energy_obj);
+    }
+
+    return 0;
+}
+
