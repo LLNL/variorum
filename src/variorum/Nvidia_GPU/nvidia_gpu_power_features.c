@@ -619,11 +619,11 @@ void nvidia_gpu_get_energy_json(int chipid, json_t *get_energy_obj)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        nvmlDeviceGetPowerUsage(m_unit_devices_file_desc[d], &gpu_power);
-        value = (double)gpu_power * 0.001f;
+      nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &gpu_energy);
+        value = (double)gpu_energy * 0.001f;
         snprintf(devID, devIDlen, "GPU_%d", d);
         json_object_set_new(gpu_obj, devID, json_real(value));
-        total_gpu_power += value;
+        total_gpu_energy += value;
     }
 
     // If we have an existing CPU object with power_node_watts, update its value.
@@ -631,13 +631,13 @@ void nvidia_gpu_get_energy_json(int chipid, json_t *get_energy_obj)
     // directly. So we don't need to add in the GPU values separately.
 
 #ifndef VARIORUM_WITH_IBM_CPU
-    if (json_object_get(get_power_obj, "power_node_watts") != NULL)
+    if (json_object_get(get_energy_obj, "energy_node_joules") != NULL)
     {
-        double power_node;
-        power_node = json_real_value(json_object_get(get_power_obj,
-                                     "power_node_watts"));
-        json_object_set(get_power_obj, "power_node_watts",
-                        json_real(power_node + total_gpu_power));
+        double energy_node;
+        energy_node = json_real_value(json_object_get(get_energy_obj,
+                                     "energy_node_joules"));
+        json_object_set(get_energy_obj, "energy_node_joules",
+                        json_real(energy_node + total_gpu_energy));
     }
 #endif
 
