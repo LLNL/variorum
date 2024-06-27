@@ -619,7 +619,7 @@ void nvidia_gpu_get_energy_json(int chipid, json_t *get_energy_obj)
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-      nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &gpu_energy);
+        nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &gpu_energy);
         value = (double)gpu_energy * 0.001f;
         snprintf(devID, devIDlen, "GPU_%d", d);
         json_object_set_new(gpu_obj, devID, json_real(value));
@@ -635,7 +635,7 @@ void nvidia_gpu_get_energy_json(int chipid, json_t *get_energy_obj)
     {
         double energy_node;
         energy_node = json_real_value(json_object_get(get_energy_obj,
-                                     "energy_node_joules"));
+                                      "energy_node_joules"));
         json_object_set(get_energy_obj, "energy_node_joules",
                         json_real(energy_node + total_gpu_energy));
     }
