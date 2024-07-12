@@ -3,8 +3,21 @@
 #
 # SPDX-License-Identifier: MIT
 
-# First check for user-specified NVML_DIR
-if(NVML_DIR)
+# First try finding CUDAToolkit
+find_package(CUDAToolkit)
+
+if(CUDAToolkit_FOUND)
+    set(NVML_FOUND TRUE CACHE INTERNAL "")
+
+    find_path(NVML_INCLUDE_DIRS
+        NAMES nvml.h
+        REQUIRED
+        HINTS ${CUDAToolkit_INCLUDE_DIRS})
+    set(NVML_INCLUDE_DIRS ${NVML_INCLUDE_DIRS} CACHE PATH "" FORCE)
+
+    set(NVML_LIBRARY CUDA::nvml CACHE PATH "" FORCE)
+# If CUDAToolkit wasn't found, check for user-specified NVML_DIR
+elseif(NVML_DIR)
     message(STATUS "Looking for NVML using NVML_DIR = ${NVML_DIR}")
 
     set(NVML_FOUND TRUE CACHE INTERNAL "")
