@@ -164,6 +164,9 @@ int main(void)
     puts(s);
     parse_json_power_obj(s, num_sockets);
 
+    /* Deallocate the string */
+    free(s);
+
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
     {
