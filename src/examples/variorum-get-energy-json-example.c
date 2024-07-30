@@ -64,6 +64,9 @@ int main(int argc, char **argv)
     /* Print the entire JSON object */
     puts(s);
 
+    /* Deallocate the string */
+    free(s);
+
 #ifdef SECOND_RUN
     for (i = 0; i < size; i++)
     {
