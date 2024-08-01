@@ -17,7 +17,7 @@
 #endif
 
 /* Figure out the right spot for this at some point */
-pthread_mutex_t mlock;
+static pthread_mutex_t mlock;
 struct thread_args th_args;
 pthread_attr_t mattr;
 pthread_t mthread;
