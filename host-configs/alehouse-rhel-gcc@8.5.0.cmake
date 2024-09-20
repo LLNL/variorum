@@ -30,3 +30,5 @@ set(HWLOC_DIR "/usr/local/share/hwloc-1.11.7-install" CACHE PATH "")
 
 # path to global jansson install
 set(JANSSON_DIR "/usr/local/share/jansson-2.6-install" CACHE PATH "")
+
+set(CMAKE_SHARED_LINKER_FLAGS "-lpthread" CACHE PATH "")
