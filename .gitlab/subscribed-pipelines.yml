@@ -6,11 +6,11 @@ dane-build-and-test:
     CI_MACHINE: "dane"
   extends: [.build]
 
-#corona-gpu-build-and-test:
-#  variables:
-#    CI_MACHINE: "corona-gpu"
-#  extends: [.build]
-#
+corona-gpu-build-and-test:
+  variables:
+    CI_MACHINE: "corona-gpu"
+  extends: [.build]
+
 #lassen-gpu-build-and-test:
 #  variables:
 #    CI_MACHINE: "lassen-gpu"
