@@ -5,10 +5,10 @@ stages:
   - build
   - status_update
 
-.on_quartz:
+.on_dane:
   tags:
     - shell
-    - quartz
+    - dane
   rules:
     # Only report failure if the pipeline failed.
     - if: '$CI_JOB_NAME =~ /status_failure/'
@@ -17,7 +17,7 @@ stages:
     - when: on_success
 
 .status_report: &status_report
-    - export context="quartz"
+    - export context="dane"
     - |
       curl --url "https://api.github.com/repos/llnl/${CI_PROJECT_NAME}/statuses/${CI_COMMIT_SHA}" \
            --header 'Content-Type: application/json' \
@@ -25,7 +25,7 @@ stages:
            --data "{ \"state\": \"${pipeline_status}\", \"target_url\": \"${CI_PIPELINE_URL}\", \"description\": \"GitLab ${context} pipeline\", \"context\": \"ci/gitlab/${context}\" }"
 
 status_pending:
-  extends: [.on_quartz]
+  extends: [.on_dane]
   stage: status_initiate
   id_tokens:
     CI_JOB_JWT:
@@ -35,7 +35,7 @@ status_pending:
     - *status_report
 
 status_success:
-  extends: [.on_quartz]
+  extends: [.on_dane]
   stage: status_update
   script:
     - export pipeline_status="success"
@@ -43,18 +43,18 @@ status_success:
   when: on_success
 
 status_failure:
-  extends: [.on_quartz]
+  extends: [.on_dane]
   stage: status_update
   script:
     - export pipeline_status="failure"
     - *status_report
   when: on_failure
 
-# no access to msr-safe on quartz
-build-quartz:
+# no access to msr-safe on dane
+build-dane:
  tags:
    - batch
-   - quartz
+   - dane
  stage: build
  script:
    # Build and install rankstr dependency
@@ -69,12 +69,12 @@ build-quartz:
    - export HOSTNAME=`hostname`
    - echo -e "Hostname:" ${HOSTNAME}
    - groups
-   - mkdir build-gitlab-quartz && mkdir install-gitlab-quartz
-   - cd build-gitlab-quartz
-   - export HOST_CONFIG=`ls ../host-configs/quartz-toss_4_x86_64_ib-gcc@10.3.1.cmake`
+   - mkdir build-gitlab-dane && mkdir install-gitlab-dane
+   - cd build-gitlab-dane
+   - export HOST_CONFIG=`ls ../host-configs/dane-toss_4_x86_64_ib-gcc@10.3.1.cmake`
    - echo -e "HOST_CONFIG:" ${HOST_CONFIG}
    - echo -e "PWD:" ${PWD}
-   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-quartz -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
+   - cmake -C ${HOST_CONFIG} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install-gitlab-dane -DBUILD_TESTS=ON -DENABLE_WARNINGS=ON -DRANKSTR_DIR=${RANKSTR_INSTALL} ../src
    - make VERBOSE=1
    - make install
    #- env CTEST_OUTPUT_ON_FAILURE=1 make test
@@ -82,7 +82,7 @@ build-quartz:
    - echo -e "PWD:" ${PWD}
    - which cmake
    - cmake --version
-   - cd install-gitlab-quartz/examples/using-with-cmake/c
+   - cd install-gitlab-dane/examples/using-with-cmake/c
    - echo -e "PWD:" ${PWD}
    - mkdir _test_build
    - cd _test_build
