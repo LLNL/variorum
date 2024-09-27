@@ -26,7 +26,7 @@ lassen-cpu-and-gpu-build-and-test:
     CI_MACHINE: "lassen-cpugpu"
   extends: [.build]
 
-#cztb2-build-and-test:
-#  variables:
-#    CI_MACHINE: "cztb2"
-#  extends: [.build]
+cztb3-build-and-test:
+  variables:
+    CI_MACHINE: "cztb3"
+  extends: [.build]
