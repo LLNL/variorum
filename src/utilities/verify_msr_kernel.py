@@ -305,8 +305,9 @@ if __name__ == "__main__":
     err = check_msr_kernel_loaded(verbose)
     if err == 0:
         err = check_msr_files_character_devices(
+            verbose) or check_msr_files_access(
             verbose
-        ) or check_msr_files_access(verbose)
+        )
         if err == 0:
             print("-- Valid kernel loaded: msr")
             found_valid_kernel = 1
