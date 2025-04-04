@@ -6,9 +6,9 @@
 # avoid warnings for project commands w/o VERSION
 cmake_policy(SET CMP0048 NEW)
 
-project(variorum VERSION "0.8.0" LANGUAGES C CXX)
-
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+
+project(variorum VERSION "0.8.0" LANGUAGES C CXX)
 
 option(USE_MSR_SAFE_BEFORE_1_5_0 "Build for msr-safe whitelist interface" OFF)
 
