@@ -106,7 +106,7 @@ jobs:
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Install deps on ubuntu
         run: |
@@ -170,7 +170,7 @@ jobs:
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Check license headers
         run: |
