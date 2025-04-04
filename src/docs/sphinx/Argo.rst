@@ -39,7 +39,11 @@ and node-local mechanisms and policies. This includes developing and enabling
 power management in HPC schedulers (such as SLURM and Flux), large-scale system
 monitoring frameworks (LDMS), application profilers (such as Caliper), runtime
 system frameworks (such as Kokkos, GEOPM), and similar system- and
-application-level frameworks.
+application-level frameworks. Variorum has been integrated with GEOPM through
+a GEOPM `PlatformIO plugin for Variorum
+https://github.com/amarathe84/geopm/pull/2>`_ named VariorumIO.
+Using VariorumIO, GEOPM leverages Variorum's platform-agnostic API to query
+power usage on the target system.
 
 `Hardware co-design` involves working closely with our vendors to continuously
 explore emerging new hardware trends and devices, and look for how best to
