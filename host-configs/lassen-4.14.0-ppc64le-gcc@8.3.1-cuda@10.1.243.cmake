@@ -28,4 +28,4 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,/usr/tce/pa
 # path to global hwloc install
 set(HWLOC_DIR "/usr/global/tools/hwloc/blueos_3_ppc64le_ib/hwloc-1.11.10-cuda/" CACHE PATH "")
 
-set(NVML_DIR "/usr/tce/packages/cuda/cuda-10.1.243" CACHE PATH "")
+set(NVML_ROOT "/usr/tce/packages/cuda/cuda-10.1.243" CACHE PATH "")
