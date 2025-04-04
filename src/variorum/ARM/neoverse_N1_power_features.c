@@ -272,7 +272,7 @@ int arm_cpu_neoverse_n1_get_clocks_data(int chipid, int verbose, FILE *output)
     return 0;
 }
 
-int arm_cpu_neoverse_n1_cap_socket_frequency(int socketid, int new_freq)
+int arm_cpu_neoverse_n1_cap_socket_frequency(int new_freq)
 {
     uint64_t core_iter;
     char freq_fname[4096];
