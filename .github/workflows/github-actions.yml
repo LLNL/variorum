@@ -194,7 +194,7 @@ jobs:
       - name: Update Black
         run: |
           pip install black==21.12b0
-          pip install flake8==4.0.1
+          pip install flake8==7.1.2
 
       - name: Style check python files
         run: |
