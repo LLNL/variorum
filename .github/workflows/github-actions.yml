@@ -166,7 +166,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.9]
+        python-version: [3.11]
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
