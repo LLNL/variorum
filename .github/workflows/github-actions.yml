@@ -166,7 +166,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.7]
+        python-version: [3.11]
 
     steps:
       # Checkout variorum repository under $GITHUB_WORKSPACE
@@ -193,8 +193,8 @@ jobs:
 
       - name: Update Black
         run: |
-          pip install black==21.12b0
-          pip install flake8==4.0.1
+          pip install black==25.1.0
+          pip install flake8==7.1.2
 
       - name: Style check python files
         run: |
