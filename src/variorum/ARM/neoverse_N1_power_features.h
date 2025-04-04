@@ -31,7 +31,6 @@ int arm_cpu_neoverse_n1_get_clocks_data(
 );
 
 int arm_cpu_neoverse_n1_cap_socket_frequency(
-    int socketid,
     int new_freq
 );
 

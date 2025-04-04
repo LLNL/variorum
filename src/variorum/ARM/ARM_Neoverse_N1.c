@@ -87,7 +87,7 @@ int arm_neoverse_n1_cap_socket_frequency(int cpuid, int freq)
         fprintf(stdout, "The specified CPU ID does not exist\n");
         return -1;
     }
-    ret = arm_cpu_neoverse_n1_cap_socket_frequency(cpuid, freq);
+    ret = arm_cpu_neoverse_n1_cap_socket_frequency(freq);
 
     return ret;
 }
