@@ -546,14 +546,32 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
     double value = 0.0;
     int d;
     static int init_output = 0;
+    /* First call to the get_energy function should return a zero.
+     * that way, we are only reporting the energy consumed with respect to
+     * the function call. Similar to IBM and Intel, we assume delta from
+     * the first call. We'll support a bool for first/prev in the future.*/
+    static int offset_flag = 0;
+    static double energy_offset_value = 0.0;
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
          d < (chipid + 1) * (int)m_gpus_per_socket; ++d)
     {
-        nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &energy);
-        // Convert from milliJoules to Joules
-        value = (double)energy * 0.001f;
+        /* This is the first call, so we store the offset but don't update the value.
+         * So value will stay at 0.0J.*/
+        if (!offset_flag)
+        {
+            nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &energy);
+            // Convert from milliJoules to Joules
+            energy_offset_value = (double)energy * 0.001f;
+            offset_flag = 1;
+        }
+        else
+        {
+            nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &energy);
+            // Convert from milliJoules to Joules
+            value = (double)energy * 0.001f ;
+        }
 
         if (verbose)
         {
@@ -561,7 +579,7 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
             fprintf(output, "%s: %s, %s: %d, %s: %d, %s: %lf W\n",
                     "_NVIDIA_GPU_ENERGY_USAGE Host", m_hostname,
                     "Socket", chipid,
-                    "DeviceID", d, "Energy", value);
+                    "DeviceID", d, "Energy_J", value);
         }
         else
         {
@@ -570,11 +588,11 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
 #ifdef LIBJUSTIFY_FOUND
                 cfprintf(output, "%s %s %s %s %s\n",
                          "_NVIDIA_GPU_ENERGY_USAGE", "Host",
-                         "Socket", "DeviceID", "Energy");
+                         "Socket", "DeviceID", "Energy_J");
 #else
                 fprintf(output, "%s %s %s %s %s\n",
                         "_NVIDIA_GPU_ENERGY_USAGE", "Host",
-                        "Socket", "DeviceID", "Energy");
+                        "Socket", "DeviceID", "Energy_J");
 #endif
                 init_output = 1;
             }
