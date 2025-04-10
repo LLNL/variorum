@@ -549,9 +549,11 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
     /* First call to the get_energy function should return a zero.
      * that way, we are only reporting the energy consumed with respect to
      * the function call. Similar to IBM and Intel, we assume delta from
-     * the first call. We'll support a bool for first/prev in the future.*/
-    static int offset_flag = 0;
-    static double energy_offset_value = 0.0;
+     * the first call. We'll support a bool for first/prev in the future.
+     * We assume a max of 6 GPUs per socket to faciliate static allocation.
+     * By default, these are initialized to zero. */
+    static uint8_t offset_flag[6] ;
+    static double energy_offset_value[6];
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
@@ -559,18 +561,19 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
     {
         /* This is the first call, so we store the offset but don't update the value.
          * So value will stay at 0.0J.*/
-        if (!offset_flag)
+        if (!offset_flag[d])
         {
             nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &energy);
             // Convert from milliJoules to Joules
-            energy_offset_value = (double)energy * 0.001f;
-            offset_flag = 1;
+            energy_offset_value[d] = (double)energy * 0.001f;
+            value = 0.0;
+            offset_flag[d] = 1;
         }
         else
         {
             nvmlDeviceGetTotalEnergyConsumption(m_unit_devices_file_desc[d], &energy);
-            // Convert from milliJoules to Joules
-            value = (double)energy * 0.001f ;
+            // Convert from milliJoules to Joules and subtract the corresponding offset.
+            value = ((double)energy * 0.001f) - energy_offset_value[d];
         }
 
         if (verbose)
