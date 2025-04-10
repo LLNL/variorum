@@ -84,4 +84,4 @@ variorum.pc.in
 ${CMAKE_CURRENT_BINARY_DIR}/variorum.pc)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/variorum.pc
-        DESTINATION share)
+        DESTINATION share/pkgconfig)
