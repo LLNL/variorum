@@ -550,10 +550,10 @@ void nvidia_gpu_get_energy_data(int chipid, int verbose, FILE *output)
      * that way, we are only reporting the energy consumed with respect to
      * the function call. Similar to IBM and Intel, we assume delta from
      * the first call. We'll support a bool for first/prev in the future.
-     * We assume a max of 6 GPUs per socket to faciliate static allocation.
+     * We assume a max of 12 GPUs per node to faciliate static allocation.
      * By default, these are initialized to zero. */
-    static uint8_t offset_flag[6] ;
-    static double energy_offset_value[6];
+    static uint8_t offset_flag[12] ;
+    static double energy_offset_value[12];
 
     //Iterate over all GPU device handles for this socket and print power
     for (d = chipid * (int)m_gpus_per_socket;
