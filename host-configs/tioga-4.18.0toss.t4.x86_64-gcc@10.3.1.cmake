@@ -14,7 +14,7 @@ set(CMAKE_Fortran_COMPILER "/usr/tce/packages/gcc/gcc-10.3.1/bin/gfortran" CACHE
 
 set(ENABLE_MPI OFF CACHE BOOL "")
 set(ENABLE_OPENMP ON CACHE BOOL "")
-set(ENABLE_FORTAN OFF CACHE BOOL "")
+set(ENABLE_FORTRAN OFF CACHE BOOL "")
 
 set(BUILD_TESTS OFF CACHE BOOL "")
 
