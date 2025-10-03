@@ -96,4 +96,4 @@ add_subdirectory(var_monitor)
 add_subdirectory(config)
 
 ### Create CMake importable exports
-install(EXPORT variorum DESTINATION lib/cmake)
+install(EXPORT variorum DESTINATION lib/cmake/Variorum)
