@@ -28,4 +28,4 @@ set(VARIORUM_WITH_INTEL_GPU OFF CACHE BOOL "")
 set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 
 # path to e_smi_library install
-set(ESMI_DIR "/usr/workspace/msr/tioga_common_setup/esmi_install/e_smi" CACHE PATH "")
+set(ESMI_DIR "/usr/workspace/msr/tuo_common_setup/esmi_install" CACHE PATH "")

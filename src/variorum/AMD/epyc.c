@@ -63,7 +63,7 @@ int amd_cpu_epyc_get_power(int long_ver)
         gettimeofday(&now, NULL);
 
         current_power = 0;
-        ret = esmi_socket_power_get(i, &current_power);
+        ret = esmi_read_ccd_power(i, &current_power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, "
@@ -150,7 +150,7 @@ int amd_cpu_epyc_get_power_limits(int long_ver)
         power = 0;
         pcap_current = 0;
         pcap_max = 0;
-        ret = esmi_socket_power_get(i, &power);
+        ret = esmi_read_ccd_power(i, &power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, Err[%d]:%s\n",
@@ -696,7 +696,7 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
         json_object_set_new(get_power_obj, sockID, socket_obj);
 
         current_power = 0;
-        ret = esmi_socket_power_get(i, &current_power);
+        ret = esmi_read_ccd_power(i, &current_power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, "
