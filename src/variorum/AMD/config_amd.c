@@ -49,6 +49,7 @@ int set_amd_func_ptrs(int idx)
         {
             case 0x0 ... 0xF:
             case 0x30 ... 0x3F:
+            case 0x90:
                 break;
             default:
                 return VARIORUM_ERROR_UNSUPPORTED_PLATFORM;

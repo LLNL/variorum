@@ -31,6 +31,7 @@ int amd_cpu_epyc_get_power(int long_ver)
 
     int i, ret;
     uint32_t current_power;
+    uint32_t ccd_power;
 
     static int initial = 0;
     static struct timeval start;
@@ -63,7 +64,9 @@ int amd_cpu_epyc_get_power(int long_ver)
         gettimeofday(&now, NULL);
 
         current_power = 0;
+        ccd_power = 0;
         ret = esmi_socket_power_get(i, &current_power);
+        //ret = esmi_read_ccd_power(i, &current_power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, "
@@ -101,6 +104,25 @@ int amd_cpu_epyc_get_power(int long_ver)
                         hostname, i, (double)current_power / 1000,
                         now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
+            }
+        }
+
+#ifdef VARIORUM_WITH_AMD_CPU
+        for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
+#endif
+        {
+            ret = esmi_read_ccd_power(i, &ccd_power);
+            if (ret != 0)
+            {
+                fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
+                        i, ret, esmi_get_err_msg(ret));
+                continue;
+            }
+            else
+            {
+                fprintf(stdout, "RRR _AMDPOWER %s %d %f %lf\n",
+                        hostname, i, (double)ccd_power / 1000,
+                        now.tv_sec - start.tv_sec + (now.tv_usec - start.tv_usec) / 1000000.0);
             }
         }
     }
@@ -151,6 +173,7 @@ int amd_cpu_epyc_get_power_limits(int long_ver)
         pcap_current = 0;
         pcap_max = 0;
         ret = esmi_socket_power_get(i, &power);
+        //ret = esmi_read_ccd_power(i, &power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, Err[%d]:%s\n",
@@ -682,6 +705,7 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
     /* AMD authors declared this as uint32_t and typecast it to double,
      * not sure why. Just following their lead from the get_power function*/
     uint32_t current_power;
+    uint32_t ccd_power;
     double node_power = 0.0;
     int i, ret = 0;
     int sockID_len = 32;
@@ -696,7 +720,9 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
         json_object_set_new(get_power_obj, sockID, socket_obj);
 
         current_power = 0;
+        ccd_power = 0;
         ret = esmi_socket_power_get(i, &current_power);
+        //ret = esmi_read_ccd_power(i, &current_power);
         if (ret != 0)
         {
             fprintf(stdout, "Failed to get socket[%d] _POWER, "
@@ -714,6 +740,23 @@ int amd_cpu_epyc_get_power_json(json_t *get_power_obj)
         json_object_set_new(socket_obj, "power_mem_watts", json_real(-1.0));
 
         node_power += ((double)current_power / 1000);
+
+#ifdef VARIORUM_WITH_AMD_CPU
+        for (i = 0; i < g_platform[P_AMD_CPU_IDX].total_cores; i++)
+#endif
+        {
+            ret = esmi_read_ccd_power(i, &ccd_power);
+            if (ret != 0)
+            {
+                fprintf(stdout, "Failed to get core[%d] _COREENERGY, Err[%d]:%s\n",
+                        i, ret, esmi_get_err_msg(ret));
+                continue;
+            }
+            else
+            {
+                fprintf(stdout, "RRR _AMDPOWER %d %f\n", i, (double)ccd_power / 1000);
+            }
+        }
     }
 
     // Set the node power key with pwrnode value.

@@ -36,6 +36,7 @@ set(variorum_includes
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${HWLOC_INCLUDE_DIRS}
     ${ESMI_INCLUDE_DIRS}
+    ${HSMP_INCLUDE_DIRS}
 )
 
 if(VARIORUM_WITH_INTEL_CPU)
