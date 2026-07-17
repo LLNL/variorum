@@ -13,54 +13,92 @@
 #include <mi300aAPU.h>
 #include <variorum_error.h>
 
-#include <rocm_smi/rocm_smi.h>
+#include <amd_smi/amdsmi.h>
 
 uint64_t *detect_amd_apu_arch(void)
 {
-    rsmi_status_t ret;
-    uint32_t num_devices;
+    amdsmi_status_t ret;
+    uint32_t socket_count = 0;
+    uint32_t device_count = 0;
     uint64_t *model = (uint64_t *) malloc(sizeof(uint64_t));
 
     // Default to MI300A
     *model = AMD_MI300A;
 
-    ret = rsmi_init(0);
-    if (ret != RSMI_STATUS_SUCCESS)
+    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
+    if (ret != AMDSMI_STATUS_SUCCESS)
     {
-        // If RSMI fails, return MI300A as default
+        // If AMDSMI fails, return MI300A as default
         return model;
     }
 
-    ret = rsmi_num_monitor_devices(&num_devices);
-    if (ret != RSMI_STATUS_SUCCESS || num_devices == 0)
+    ret = amdsmi_get_socket_handles(&socket_count, NULL);
+    if (ret != AMDSMI_STATUS_SUCCESS || socket_count == 0)
     {
-        rsmi_shut_down();
+        amdsmi_shut_down();
         return model;
     }
 
-    // Check first device for MI300A identification
-    char name[256];
-    ret = rsmi_dev_name_get(0, name, 256);
-
-    if (ret == RSMI_STATUS_SUCCESS)
+    amdsmi_socket_handle *sockets =
+        (amdsmi_socket_handle *) malloc(socket_count * sizeof(
+                                             amdsmi_socket_handle));
+    if (sockets == NULL)
     {
-        // Check if device name contains "MI300A" or "MI300"
-        // Convert to uppercase for case-insensitive comparison
-        char name_upper[256];
-        for (int i = 0; name[i] && i < 255; i++)
-        {
-            name_upper[i] = (name[i] >= 'a' && name[i] <= 'z') ?
-                            name[i] - 32 : name[i];
-            name_upper[i + 1] = '\0';
-        }
+        amdsmi_shut_down();
+        return model;
+    }
 
-        if (strstr(name_upper, "MI300A") != NULL || strstr(name_upper, "MI300") != NULL)
+    ret = amdsmi_get_socket_handles(&socket_count, sockets);
+    if (ret != AMDSMI_STATUS_SUCCESS)
+    {
+        free(sockets);
+        amdsmi_shut_down();
+        return model;
+    }
+
+    ret = amdsmi_get_processor_handles(sockets[0], &device_count, NULL);
+    if (ret != AMDSMI_STATUS_SUCCESS || device_count == 0)
+    {
+        free(sockets);
+        amdsmi_shut_down();
+        return model;
+    }
+
+    amdsmi_processor_handle first_device;
+    device_count = 1;
+    ret = amdsmi_get_processor_handles(sockets[0], &device_count, &first_device);
+
+    if (ret == AMDSMI_STATUS_SUCCESS)
+    {
+        // Check first device's board info for MI300A identification
+        amdsmi_board_info_t board_info;
+        ret = amdsmi_get_gpu_board_info(first_device, &board_info);
+
+        if (ret == AMDSMI_STATUS_SUCCESS)
         {
-            *model = AMD_MI300A;
+            // Check if product name contains "MI300A" or "MI300"
+            // Convert to uppercase for case-insensitive comparison
+            char name_upper[256];
+            int i;
+            for (i = 0; board_info.product_name[i] && i < 255; i++)
+            {
+                name_upper[i] = (board_info.product_name[i] >= 'a' &&
+                                board_info.product_name[i] <= 'z') ?
+                                board_info.product_name[i] - 32 :
+                                board_info.product_name[i];
+            }
+            name_upper[i] = '\0';
+
+            if (strstr(name_upper, "MI300A") != NULL ||
+                strstr(name_upper, "MI300") != NULL)
+            {
+                *model = AMD_MI300A;
+            }
         }
     }
 
-    rsmi_shut_down();
+    free(sockets);
+    amdsmi_shut_down();
     return model;
 }
 

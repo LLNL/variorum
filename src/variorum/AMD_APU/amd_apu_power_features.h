@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <jansson.h>
-#include <rocm_smi/rocm_smi.h>
+#include <amd_smi/amdsmi.h>
 
 // Energy monitoring functions
 void get_energy_data(
