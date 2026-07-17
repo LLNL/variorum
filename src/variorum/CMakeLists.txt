@@ -100,10 +100,10 @@ if(VARIORUM_WITH_AMD_GPU)
 endif()
 
 if(VARIORUM_WITH_AMD_APU)
-    list(APPEND variorum_headers AMD_APU/config_amd_apu.h ${variorum_amd_apu_headers} ${ROCM_INCLUDE_DIRS}/rocm_smi/rocm_smi.h)
+    list(APPEND variorum_headers AMD_APU/config_amd_apu.h ${variorum_amd_apu_headers} ${AMDSMI_INCLUDE_DIRS}/amd_smi/amdsmi.h)
     list(APPEND variorum_sources AMD_APU/config_amd_apu.c)
     list(APPEND variorum_deps $<TARGET_OBJECTS:variorum_amd_apu>)
-    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/AMD_APU ${ROCM_INCLUDE_DIRS})
+    list(APPEND variorum_includes ${CMAKE_CURRENT_SOURCE_DIR}/AMD_APU ${AMDSMI_INCLUDE_DIRS})
     add_subdirectory(AMD_APU)
 endif()
 
@@ -150,6 +150,9 @@ target_link_libraries(variorum PUBLIC ${ESMI_LIBRARY})
 endif()
 if(VARIORUM_WITH_AMD_GPU)
 target_link_libraries(variorum PUBLIC ${ROCM_LIBRARY})
+endif()
+if(VARIORUM_WITH_AMD_APU)
+target_link_libraries(variorum PUBLIC ${AMDSMI_LIBRARY})
 endif()
 
 install(TARGETS variorum
