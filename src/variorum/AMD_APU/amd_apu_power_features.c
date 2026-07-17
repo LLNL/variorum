@@ -447,6 +447,17 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     static struct timeval start;
     struct timeval now;
 
+    // Sensors to sample per device, mirroring hello_rsmi.c's print_temp()
+    // coverage (Edge, Junction, HBM/Mem) instead of Edge alone.
+    static const rsmi_temperature_type_t sensor_types[] =
+    {
+        RSMI_TEMP_TYPE_EDGE,
+        RSMI_TEMP_TYPE_JUNCTION,
+        RSMI_TEMP_TYPE_MEMORY
+    };
+    static const char *sensor_labels[] = { "Edge", "Junction", "HBM" };
+    static const int num_sensors = 3;
+
     gethostname(hostname, 1024);
 
     ret = rsmi_init(0);
@@ -477,12 +488,12 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         if (verbose == 0)
         {
 #ifdef LIBJUSTIFY_FOUND
-            cfprintf(output, "%s %s %s %s %s %s\n",
+            cfprintf(output, "%s %s %s %s %s %s %s\n",
                      "_AMD_APU_TEMPERATURE", "Host", "Socket", "DeviceID",
-                     "Temperature", "Timestamp_sec");
+                     "Sensor", "Temperature", "Timestamp_sec");
 #else
             fprintf(output,
-                    "_AMD_APU_TEMPERATURE Host Socket DeviceID Temperature Timestamp_sec\n");
+                    "_AMD_APU_TEMPERATURE Host Socket DeviceID Sensor Temperature Timestamp_sec\n");
 #endif
         }
     }
@@ -492,52 +503,65 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     int i;
     for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
-        int64_t temp_val = -1;
-        double temp_val_flt = -1.0;
-
-        // Get edge temperature (die edge temperature)
-        ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
-                                       &temp_val);
-        if (ret != RSMI_STATUS_SUCCESS)
+        for (int s = 0; s < num_sensors; s++)
         {
-            variorum_error_handler("RSMI temp API was not successful",
-                                   VARIORUM_ERROR_PLATFORM_ENV,
-                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                                   __LINE__);
-        }
+            int64_t temp_val = -1;
+            double temp_val_flt = -1.0;
 
-        temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
+            // Get temperature for this sensor (edge/junction/HBM die temperature)
+            ret = rsmi_dev_temp_metric_get(i, sensor_types[s], RSMI_TEMP_CURRENT,
+                                           &temp_val);
 
-        if (verbose == 1)
-        {
+            // Not every sensor is present on every device/partition -- treat
+            // RSMI_STATUS_NOT_SUPPORTED as expected and skip it, same as the
+            // energy/power paths already do elsewhere in this file.
+            if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
+            {
+                variorum_error_handler("RSMI temp API was not successful",
+                                       VARIORUM_ERROR_PLATFORM_ENV,
+                                       getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                       __LINE__);
+            }
+
+            if (ret != RSMI_STATUS_SUCCESS)
+            {
+                continue;
+            }
+
+            temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
+
+            if (verbose == 1)
+            {
 #ifdef LIBJUSTIFY_FOUND
-            cfprintf(output,
-                     "%s: %s, %s: %d, %s: %d, %s: %0.2lf, %s: %lf sec\n",
-                     "_AMD_APU_TEMPERATURE", hostname,
-                     "Socket", chipid,
-                     "DeviceID", i,
-                     "Temperature", temp_val_flt,
-                     "Timestamp", (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) /
-                     1000000.0);
+                cfprintf(output,
+                         "%s: %s, %s: %d, %s: %d, %s: %s, %s: %0.2lf, %s: %lf sec\n",
+                         "_AMD_APU_TEMPERATURE", hostname,
+                         "Socket", chipid,
+                         "DeviceID", i,
+                         "Sensor", sensor_labels[s],
+                         "Temperature", temp_val_flt,
+                         "Timestamp", (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) /
+                         1000000.0);
 #else
-            fprintf(output,
-                    "_AMD_APU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d,"
-                    " Temperature: %0.2lf C, Timestamp: %lf sec\n",
-                    hostname, chipid, i, temp_val_flt,
-                    (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
+                fprintf(output,
+                        "_AMD_APU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d,"
+                        " Sensor: %s, Temperature: %0.2lf C, Timestamp: %lf sec\n",
+                        hostname, chipid, i, sensor_labels[s], temp_val_flt,
+                        (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
-        }
-        else
-        {
+            }
+            else
+            {
 #ifdef LIBJUSTIFY_FOUND
-            cfprintf(output, "_AMD_APU_TEMPERATURE %s %d %d %0.2lf %lf\n",
-                     hostname, chipid, i, temp_val_flt,
-                     (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
+                cfprintf(output, "_AMD_APU_TEMPERATURE %s %d %d %s %0.2lf %lf\n",
+                         hostname, chipid, i, sensor_labels[s], temp_val_flt,
+                         (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
 #else
-            fprintf(output, "_AMD_APU_TEMPERATURE %s %d %d %0.2lf %lf\n",
-                    hostname, chipid, i, temp_val_flt,
-                    (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
+                fprintf(output, "_AMD_APU_TEMPERATURE %s %d %d %s %0.2lf %lf\n",
+                        hostname, chipid, i, sensor_labels[s], temp_val_flt,
+                        (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
 #endif
+            }
         }
     }
 
@@ -561,6 +585,17 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
     uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
+
+    // Sensors to sample per device, mirroring hello_rsmi.c's print_temp()
+    // coverage (Edge, Junction, HBM/Mem) instead of Edge alone.
+    static const rsmi_temperature_type_t sensor_types[] =
+    {
+        RSMI_TEMP_TYPE_EDGE,
+        RSMI_TEMP_TYPE_JUNCTION,
+        RSMI_TEMP_TYPE_MEMORY
+    };
+    static const char *sensor_labels[] = { "edge", "junction", "hbm" };
+    static const int num_sensors = 3;
 
     gethostname(hostname, 1024);
 
@@ -603,25 +638,36 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
     int i;
     for (i = chipid * gpus_per_socket; i < (chipid + 1) * gpus_per_socket; i++)
     {
-        int64_t temp_val = -1;
-        double temp_val_flt = -1.0;
-
-        ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
-                                       &temp_val);
-        if (ret != RSMI_STATUS_SUCCESS)
+        for (int s = 0; s < num_sensors; s++)
         {
-            variorum_error_handler("RSMI temp API was not successful",
-                                   VARIORUM_ERROR_PLATFORM_ENV,
-                                   getenv("HOSTNAME"), __FILE__, __FUNCTION__,
-                                   __LINE__);
+            int64_t temp_val = -1;
+            double temp_val_flt = -1.0;
+
+            ret = rsmi_dev_temp_metric_get(i, sensor_types[s], RSMI_TEMP_CURRENT,
+                                           &temp_val);
+
+            // Not every sensor is present on every device/partition -- treat
+            // RSMI_STATUS_NOT_SUPPORTED as expected and skip it.
+            if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
+            {
+                variorum_error_handler("RSMI temp API was not successful",
+                                       VARIORUM_ERROR_PLATFORM_ENV,
+                                       getenv("HOSTNAME"), __FILE__, __FUNCTION__,
+                                       __LINE__);
+            }
+
+            if (ret != RSMI_STATUS_SUCCESS)
+            {
+                continue;
+            }
+
+            temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
+
+            // APU temperature entry, one per sensor
+            char apuid[48];
+            snprintf(apuid, 48, "temp_celsius_%s_apu_%d", sensor_labels[s], i);
+            json_object_set_new(apu_obj, apuid, json_real(temp_val_flt));
         }
-
-        temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
-
-        // APU temperature entry
-        char apuid[32];
-        snprintf(apuid, 32, "temp_celsius_apu_%d", i);
-        json_object_set_new(apu_obj, apuid, json_real(temp_val_flt));
     }
 
     ret = rsmi_shut_down();
