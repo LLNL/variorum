@@ -17,85 +17,10 @@
 #include <cprintf.h>
 #endif
 
-// Helper: enumerate all AMD SMI processor (device) handles across every
-// socket, in socket order. Mirrors the flat device-index space that
-// rsmi_num_monitor_devices()/rsmi_dev_* used, so the existing
-// chipid/gpus_per_socket slicing logic below still applies.
-// Caller must free() the returned array. Returns NULL on failure and
-// writes the flat device count to *out_count.
-static amdsmi_processor_handle *amd_apu_get_all_processor_handles(
-    uint32_t *out_count)
-{
-    amdsmi_status_t ret;
-    uint32_t socket_count = 0;
-
-    *out_count = 0;
-
-    ret = amdsmi_get_socket_handles(&socket_count, NULL);
-    if (ret != AMDSMI_STATUS_SUCCESS || socket_count == 0)
-    {
-        return NULL;
-    }
-
-    amdsmi_socket_handle *sockets =
-        (amdsmi_socket_handle *) malloc(socket_count * sizeof(
-                                             amdsmi_socket_handle));
-    if (sockets == NULL)
-    {
-        return NULL;
-    }
-
-    ret = amdsmi_get_socket_handles(&socket_count, sockets);
-    if (ret != AMDSMI_STATUS_SUCCESS)
-    {
-        free(sockets);
-        return NULL;
-    }
-
-    // First pass: total device count across all sockets.
-    uint32_t total_devices = 0;
-    for (uint32_t s = 0; s < socket_count; s++)
-    {
-        uint32_t dev_count = 0;
-        amdsmi_get_processor_handles(sockets[s], &dev_count, NULL);
-        total_devices += dev_count;
-    }
-
-    if (total_devices == 0)
-    {
-        free(sockets);
-        return NULL;
-    }
-
-    amdsmi_processor_handle *devices =
-        (amdsmi_processor_handle *) malloc(total_devices * sizeof(
-                                                amdsmi_processor_handle));
-    if (devices == NULL)
-    {
-        free(sockets);
-        return NULL;
-    }
-
-    // Second pass: fill flat array in socket order.
-    uint32_t idx = 0;
-    for (uint32_t s = 0; s < socket_count; s++)
-    {
-        uint32_t dev_count = 0;
-        amdsmi_get_processor_handles(sockets[s], &dev_count, NULL);
-        amdsmi_get_processor_handles(sockets[s], &dev_count, &devices[idx]);
-        idx += dev_count;
-    }
-
-    free(sockets);
-    *out_count = total_devices;
-    return devices;
-}
-
 void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
-    amdsmi_status_t ret;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    rsmi_status_t ret;
+    uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
     static int init = 0;
@@ -104,25 +29,23 @@ void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     gethostname(hostname, 1024);
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of GPU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
-        return;
     }
 
     gpus_per_socket = num_devices / total_sockets;
@@ -153,24 +76,24 @@ void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
         float counter_resolution = 0.0;
         uint64_t energy_timestamp = 0;
 
-        // Get cumulative energy counter via AMD SMI
+        // Get cumulative energy counter
         // energy_counter: accumulated energy in microjoules
         // counter_resolution: resolution in microjoules
         // energy_timestamp: timestamp in nanoseconds
-        ret = amdsmi_get_energy_count(devices[i], &energy_counter,
-                                      &counter_resolution, &energy_timestamp);
+        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution,
+                                        &energy_timestamp);
 
         // Handle case where energy is not supported on some devices
-        if ((ret != AMDSMI_STATUS_SUCCESS) && (ret != AMDSMI_STATUS_NOT_SUPPORTED))
+        if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
         {
-            variorum_error_handler("AMDSMI energy API was not successful",
+            variorum_error_handler("RSMI energy API was not successful",
                                    VARIORUM_ERROR_PLATFORM_ENV,
                                    getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
         }
 
         // Only print if we got valid data
-        if (ret == AMDSMI_STATUS_SUCCESS)
+        if (ret == RSMI_STATUS_SUCCESS)
         {
             if (verbose == 1)
             {
@@ -206,12 +129,10 @@ void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
     cflush();
 #endif
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
@@ -220,34 +141,30 @@ void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
 
 void get_energy_json(int chipid, int total_sockets, json_t *output)
 {
-    amdsmi_status_t ret;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    rsmi_status_t ret;
+    uint32_t num_devices;
     int gpus_per_socket;
     char socketID[16];
     char deviceID[32];
 
     snprintf(socketID, 16, "socket_%d", chipid);
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        return;
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of GPU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
-        return;
     }
 
     gpus_per_socket = num_devices / total_sockets;
@@ -269,11 +186,11 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
         float counter_resolution = 0.0;
         uint64_t energy_timestamp = 0;
 
-        ret = amdsmi_get_energy_count(devices[i], &energy_counter,
-                                      &counter_resolution, &energy_timestamp);
+        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution,
+                                        &energy_timestamp);
 
         // Only add to JSON if we got valid data
-        if (ret == AMDSMI_STATUS_SUCCESS)
+        if (ret == RSMI_STATUS_SUCCESS)
         {
             snprintf(deviceID, 32, "device_%d_energy_uJ", i);
             json_object_set_new(gpu_obj, deviceID, json_integer(energy_counter));
@@ -282,18 +199,16 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
             snprintf(deviceID, 32, "device_%d_counter_resolution_uJ", i);
             json_object_set_new(gpu_obj, deviceID, json_real(counter_resolution));
 
-            // Also store the timestamp from AMD SMI (in nanoseconds)
+            // Also store the timestamp from RSMI (in nanoseconds)
             snprintf(deviceID, 32, "device_%d_energy_timestamp_ns", i);
             json_object_set_new(gpu_obj, deviceID, json_integer(energy_timestamp));
         }
     }
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
@@ -303,9 +218,8 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
 // Power monitoring
 void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
-    amdsmi_status_t ret;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    rsmi_status_t ret;
+    uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
     static int init = 0;
@@ -314,25 +228,23 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     gethostname(hostname, 1024);
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of APU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
-        return;
     }
 
     gpus_per_socket = num_devices / total_sockets;
@@ -359,27 +271,27 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
     {
-        amdsmi_power_info_t power_info;
+        uint64_t pwr_val = 0;
         double pwr_val_flt = -1.0;
+        RSMI_POWER_TYPE pwr_type = RSMI_INVALID_POWER;
 
-        // amdsmi_get_power_info() reports current_socket_power directly in
-        // Watts (unlike rsmi_dev_power_get(), which returned microwatts),
-        // so no unit conversion is needed here.
-        ret = amdsmi_get_power_info(devices[i], &power_info);
+        // Use rsmi_dev_power_get() - recommended for ROCm 7+
+        // Attempts current power first, falls back to average power
+        ret = rsmi_dev_power_get(i, &pwr_val, &pwr_type);
 
         // On newer APUs, device power may only be reported at certain device IDs
         // Handle gracefully if not supported on some devices
-        if ((ret != AMDSMI_STATUS_SUCCESS) && (ret != AMDSMI_STATUS_NOT_SUPPORTED))
+        if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
         {
-            variorum_error_handler("AMDSMI power API was not successful",
+            variorum_error_handler("RSMI power API was not successful",
                                    VARIORUM_ERROR_PLATFORM_ENV,
                                    getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
         }
 
-        if (ret == AMDSMI_STATUS_SUCCESS)
+        if (ret == RSMI_STATUS_SUCCESS)
         {
-            pwr_val_flt = (double)power_info.current_socket_power;
+            pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts.
 
             if (verbose == 1)
             {
@@ -415,12 +327,10 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
     cflush();
 #endif
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
@@ -430,37 +340,36 @@ void get_power_data(int chipid, int total_sockets, int verbose, FILE *output)
 void get_json_power_data(json_t *get_power_obj, int total_sockets)
 {
     int chipid;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    uint32_t num_devices;
     int gpus_per_socket;
+    uint64_t pwr_val = 0;
     double pwr_val_flt = 0.0;
     double total_apu_power = 0.0;
     int d;
 
-    amdsmi_status_t ret;
+    rsmi_status_t ret;
 
     static size_t devIDlen = 24;
     char devID[devIDlen];
     char socketID[24];
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of APU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
         exit(-1);
     }
 
@@ -487,14 +396,14 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
         for (d = chipid * gpus_per_socket;
              d < (chipid + 1) * gpus_per_socket; ++d)
         {
-            amdsmi_power_info_t power_info;
+            RSMI_POWER_TYPE pwr_type = RSMI_INVALID_POWER;
 
-            ret = amdsmi_get_power_info(devices[d], &power_info);
+            // Use rsmi_dev_power_get() - recommended for ROCm 7+
+            ret = rsmi_dev_power_get(d, &pwr_val, &pwr_type);
 
-            if (ret == AMDSMI_STATUS_SUCCESS)
+            if (ret == RSMI_STATUS_SUCCESS)
             {
-                // Already in Watts; no conversion needed (unlike RSMI's microwatts)
-                pwr_val_flt = (double)power_info.current_socket_power;
+                pwr_val_flt = (double)(pwr_val / (1000 * 1000)); // Convert to Watts
                 snprintf(devID, devIDlen, "APU_%d", d);
                 json_object_set_new(apu_obj, devID, json_real(pwr_val_flt));
                 total_apu_power += pwr_val_flt;
@@ -518,12 +427,10 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
                             json_real(total_apu_power));
     }
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
@@ -532,9 +439,8 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
 void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 {
-    amdsmi_status_t ret;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    rsmi_status_t ret;
+    uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
     static int init = 0;
@@ -543,25 +449,23 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 
     gethostname(hostname, 1024);
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of APU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
-        return;
     }
 
     gpus_per_socket = num_devices / total_sockets;
@@ -592,11 +496,11 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
         double temp_val_flt = -1.0;
 
         // Get edge temperature (die edge temperature)
-        ret = amdsmi_get_temp_metric(devices[i], AMDSMI_TEMPERATURE_TYPE_EDGE,
-                                     AMDSMI_TEMP_CURRENT, &temp_val);
-        if (ret != AMDSMI_STATUS_SUCCESS)
+        ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
+                                       &temp_val);
+        if (ret != RSMI_STATUS_SUCCESS)
         {
-            variorum_error_handler("AMDSMI temp API was not successful",
+            variorum_error_handler("RSMI temp API was not successful",
                                    VARIORUM_ERROR_PLATFORM_ENV,
                                    getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
@@ -641,12 +545,10 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
     cflush();
 #endif
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
@@ -655,33 +557,30 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
 
 void get_thermals_json(int chipid, int total_sockets, json_t *output)
 {
-    amdsmi_status_t ret;
-    uint32_t num_devices = 0;
-    amdsmi_processor_handle *devices = NULL;
+    rsmi_status_t ret;
+    uint32_t num_devices;
     int gpus_per_socket;
     char hostname[1024];
 
     gethostname(hostname, 1024);
 
-    ret = amdsmi_init(AMDSMI_INIT_AMD_GPUS);
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_init(0);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not initialize AMDSMI",
+        variorum_error_handler("Could not initialize RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
         exit(-1);
     }
 
-    devices = amd_apu_get_all_processor_handles(&num_devices);
-    if (devices == NULL || num_devices == 0)
+    ret = rsmi_num_monitor_devices(&num_devices);
+    if (ret != RSMI_STATUS_SUCCESS)
     {
         variorum_error_handler("Could not get number of APU devices",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
-        amdsmi_shut_down();
-        return;
     }
 
     gpus_per_socket = num_devices / total_sockets;
@@ -707,11 +606,11 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
         int64_t temp_val = -1;
         double temp_val_flt = -1.0;
 
-        ret = amdsmi_get_temp_metric(devices[i], AMDSMI_TEMPERATURE_TYPE_EDGE,
-                                     AMDSMI_TEMP_CURRENT, &temp_val);
-        if (ret != AMDSMI_STATUS_SUCCESS)
+        ret = rsmi_dev_temp_metric_get(i, RSMI_TEMP_TYPE_EDGE, RSMI_TEMP_CURRENT,
+                                       &temp_val);
+        if (ret != RSMI_STATUS_SUCCESS)
         {
-            variorum_error_handler("AMDSMI temp API was not successful",
+            variorum_error_handler("RSMI temp API was not successful",
                                    VARIORUM_ERROR_PLATFORM_ENV,
                                    getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                    __LINE__);
@@ -725,12 +624,10 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
         json_object_set_new(apu_obj, apuid, json_real(temp_val_flt));
     }
 
-    free(devices);
-
-    ret = amdsmi_shut_down();
-    if (ret != AMDSMI_STATUS_SUCCESS)
+    ret = rsmi_shut_down();
+    if (ret != RSMI_STATUS_SUCCESS)
     {
-        variorum_error_handler("Could not shutdown AMDSMI",
+        variorum_error_handler("Could not shutdown RSMI",
                                VARIORUM_ERROR_PLATFORM_ENV,
                                getenv("HOSTNAME"), __FILE__, __FUNCTION__,
                                __LINE__);
