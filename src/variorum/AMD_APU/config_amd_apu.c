@@ -50,8 +50,8 @@ uint64_t *detect_amd_apu_arch(void)
         for (int i = 0; name[i] && i < 255; i++)
         {
             name_upper[i] = (name[i] >= 'a' && name[i] <= 'z') ?
-                           name[i] - 32 : name[i];
-            name_upper[i+1] = '\0';
+                            name[i] - 32 : name[i];
+            name_upper[i + 1] = '\0';
         }
 
         if (strstr(name_upper, "MI300A") != NULL || strstr(name_upper, "MI300") != NULL)

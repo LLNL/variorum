@@ -80,7 +80,8 @@ void get_energy_data(int chipid, int total_sockets, int verbose, FILE *output)
         // energy_counter: accumulated energy in microjoules
         // counter_resolution: resolution in microjoules
         // energy_timestamp: timestamp in nanoseconds
-        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution, &energy_timestamp);
+        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution,
+                                        &energy_timestamp);
 
         // Handle case where energy is not supported on some devices
         if ((ret != RSMI_STATUS_SUCCESS) && (ret != RSMI_STATUS_NOT_SUPPORTED))
@@ -185,7 +186,8 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
         float counter_resolution = 0.0;
         uint64_t energy_timestamp = 0;
 
-        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution, &energy_timestamp);
+        ret = rsmi_dev_energy_count_get(i, &energy_counter, &counter_resolution,
+                                        &energy_timestamp);
 
         // Only add to JSON if we got valid data
         if (ret == RSMI_STATUS_SUCCESS)
@@ -417,12 +419,12 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
                                      "power_node_watts"));
         power_node += total_apu_power;
         json_object_set_new(get_power_obj, "power_node_watts",
-                           json_real(power_node));
+                            json_real(power_node));
     }
     else
     {
         json_object_set_new(get_power_obj, "power_node_watts",
-                           json_real(total_apu_power));
+                            json_real(total_apu_power));
     }
 
     ret = rsmi_shut_down();
@@ -515,7 +517,8 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
                      "Socket", chipid,
                      "DeviceID", i,
                      "Temperature", temp_val_flt,
-                     "Timestamp", (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) / 1000000.0);
+                     "Timestamp", (now.tv_sec - start.tv_sec) + (now.tv_usec - start.tv_usec) /
+                     1000000.0);
 #else
             fprintf(output,
                     "_AMD_APU_TEMPERATURE Host: %s, Socket: %d, DeviceID: %d,"
@@ -648,18 +651,19 @@ void get_power_limit_data(int chipid, int total_sockets, int verbose,
 }
 
 void cap_each_gpu_power_limit(int chipid, int total_sockets,
-                               unsigned int powerlimit)
+                              unsigned int powerlimit)
 {
     // Placeholder - implementation would mirror AMD_GPU power cap setting
 }
 
 void get_gpu_utilization_data(int chipid, int total_sockets, int verbose,
-                               FILE *output)
+                              FILE *output)
 {
     // Placeholder - implementation would mirror AMD_GPU utilization monitoring
 }
 
-void get_gpu_utilization_data_json(int chipid, int total_sockets, json_t *output)
+void get_gpu_utilization_data_json(int chipid, int total_sockets,
+                                   json_t *output)
 {
     // Placeholder - implementation would mirror AMD_GPU utilization monitoring
 }
