@@ -54,7 +54,7 @@
 
 // Current support is for CPU + GPU + APU multi-platform builds,
 // but can be extended to include other accelerators in the future.
-#define MAX_PLATFORMS 3
+#define MAX_PLATFORMS 2
 
 #ifdef VARIORUM_WITH_AMD_CPU
 int P_MSR_CORE_IDX;
