@@ -31,3 +31,4 @@ set(VARIORUM_WITH_NVIDIA_GPU OFF CACHE BOOL "")
 # path to e_smi_library install
 #set(ESMI_DIR "/usr/workspace/msr/tuo_common_setup/esmi_install" CACHE PATH "")
 set(ROCM_DIR "/opt/rocm-7.2.0" CACHE PATH "")
+set(HWLOC_DIR "/usr/workspace/variorum/2026-variorum-hwloc-test/hwloc-2.13.0-install-no-rsmi" CACHE PATH "")
