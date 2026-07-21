@@ -17,6 +17,25 @@
 #include <cprintf.h>
 #endif
 
+// AMD SMI's documented unit for amdsmi_get_temp_metric() has changed across
+// ROCm releases: millidegrees Celsius on older releases, whole-degree
+// Celsius on newer ones (confirmed empirically: this ASIC/driver/library
+// combination returns whole-degree Celsius directly, which is why the
+// previous "/ 1000" conversion here silently zeroed out every real reading
+// -- e.g. 46 / 1000 == 0 under integer division). Rather than hardcode one
+// assumption that breaks again on the next API revision, detect it from
+// the magnitude of the raw value: no real GPU/HBM operating temperature
+// exceeds a few hundred degrees C, so any raw value above 1000 must be
+// millidegrees.
+static double amd_apu_temp_to_celsius(int64_t raw)
+{
+    if (raw > 1000)
+    {
+        return (double)raw / 1000.0;
+    }
+    return (double)raw;
+}
+
 // Helper: enumerate all AMD SMI processor (device) handles across every
 // socket, in socket order. Mirrors the flat device-index space that
 // rsmi_num_monitor_devices()/rsmi_dev_* used, so the existing
@@ -625,7 +644,7 @@ void get_thermals_data(int chipid, int total_sockets, int verbose, FILE *output)
                 continue;
             }
 
-            temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
+            temp_val_flt = amd_apu_temp_to_celsius(temp_val);
 
             if (verbose == 1)
             {
@@ -763,7 +782,7 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
                 continue;
             }
 
-            temp_val_flt = (double)(temp_val / 1000); // Convert millidegrees to Celsius
+            temp_val_flt = amd_apu_temp_to_celsius(temp_val);
 
             // APU temperature entry, one per sensor
             char apuid[48];
