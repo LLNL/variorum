@@ -58,7 +58,7 @@ static amdsmi_processor_handle *amd_apu_get_all_processor_handles(
 
     amdsmi_socket_handle *sockets =
         (amdsmi_socket_handle *) malloc(socket_count * sizeof(
-                                             amdsmi_socket_handle));
+                                            amdsmi_socket_handle));
     if (sockets == NULL)
     {
         return NULL;
@@ -88,7 +88,7 @@ static amdsmi_processor_handle *amd_apu_get_all_processor_handles(
 
     amdsmi_processor_handle *devices =
         (amdsmi_processor_handle *) malloc(total_devices * sizeof(
-                                                amdsmi_processor_handle));
+                amdsmi_processor_handle));
     if (devices == NULL)
     {
         free(sockets);
@@ -243,6 +243,7 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
     uint32_t num_devices = 0;
     amdsmi_processor_handle *devices = NULL;
     int gpus_per_socket;
+    double total_apu_energy = 0.0;
     char socketID[16];
     char deviceID[32];
 
@@ -271,6 +272,17 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
 
     gpus_per_socket = num_devices / total_sockets;
 
+    // num_gpus_per_socket: XCDs/GCDs per APU socket, from AMD SMI's
+    // processor-handle count -- this varies by compute partition mode
+    // (e.g. SPX/TPX/CPX), not a fixed constant. 6 on Tuolumne's current
+    // (SPX) partitioning of MI300A's 6 XCDs; a differently-partitioned
+    // node will correctly report a different value here.
+    // num_apus_per_node: physical APU sockets in the node (4 on Tuolumne).
+    json_object_set_new(output, "num_gpus_per_socket",
+                        json_integer(gpus_per_socket));
+    json_object_set_new(output, "num_apus_per_node",
+                        json_integer(total_sockets));
+
     json_t *socket_obj = json_object_get(output, socketID);
     if (socket_obj == NULL)
     {
@@ -278,8 +290,19 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
         json_object_set_new(output, socketID, socket_obj);
     }
 
+    // Primary field, matching the established GPU energy JSON convention
+    // from Nvidia_GPU (energy_gpu_joules / GPU_%d): a single real-valued
+    // Joules reading per device, so external tools consuming energy JSON
+    // across platforms see the same shape regardless of vendor.
     json_t *gpu_obj = json_object();
-    json_object_set_new(socket_obj, "energy_apu_uJ", gpu_obj);
+    json_object_set_new(socket_obj, "energy_apu_joules", gpu_obj);
+
+    // Empirically confirmed on a CPX-partitioned node (same test as the
+    // power path): only one device handle per socket returns
+    // AMDSMI_STATUS_SUCCESS for amdsmi_get_energy_count(); the rest return
+    // AMDSMI_STATUS_NOT_SUPPORTED. Add the first successful reading per
+    // socket, not a specific index.
+    int socket_energy_counted = 0;
 
     for (int i = chipid * gpus_per_socket;
          i < (chipid + 1) * gpus_per_socket; i++)
@@ -294,17 +317,41 @@ void get_energy_json(int chipid, int total_sockets, json_t *output)
         // Only add to JSON if we got valid data
         if (ret == AMDSMI_STATUS_SUCCESS)
         {
-            snprintf(deviceID, 32, "device_%d_energy_uJ", i);
-            json_object_set_new(gpu_obj, deviceID, json_integer(energy_counter));
+            // energy_counter is a raw hardware tick count, not Joules;
+            // counter_resolution is microjoules per tick (AMD SMI reports
+            // it rather than us hardcoding it, since it can vary by
+            // ASIC/firmware). Convert ticks -> uJ -> J here so the JSON
+            // API only ever exposes the final Joules value.
+            double energy_joules = (double)energy_counter *
+                                   (double)counter_resolution / 1e6;
 
-            // Also store the counter resolution
-            snprintf(deviceID, 32, "device_%d_counter_resolution_uJ", i);
-            json_object_set_new(gpu_obj, deviceID, json_real(counter_resolution));
+            snprintf(deviceID, 32, "APU_%d", i);
+            json_object_set_new(gpu_obj, deviceID, json_real(energy_joules));
 
-            // Also store the timestamp from AMD SMI (in nanoseconds)
-            snprintf(deviceID, 32, "device_%d_energy_timestamp_ns", i);
-            json_object_set_new(gpu_obj, deviceID, json_integer(energy_timestamp));
+            if (!socket_energy_counted)
+            {
+                total_apu_energy += energy_joules;
+                socket_energy_counted = 1;
+            }
         }
+    }
+
+    // Mirrors this file's own power_node_watts rollup in get_json_power_data:
+    // always ensure energy_node_joules exists, adding to it if a CPU-side
+    // object already set one.
+    if (json_object_get(output, "energy_node_joules") != NULL)
+    {
+        double energy_node;
+        energy_node = json_real_value(json_object_get(output,
+                                      "energy_node_joules"));
+        energy_node += total_apu_energy;
+        json_object_set_new(output, "energy_node_joules",
+                            json_real(energy_node));
+    }
+    else
+    {
+        json_object_set_new(output, "energy_node_joules",
+                            json_real(total_apu_energy));
     }
 
     free(devices);
@@ -485,8 +532,16 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
 
     gpus_per_socket = num_devices / total_sockets;
 
-    json_object_set_new(get_power_obj, "num_apus_per_socket",
+    // num_gpus_per_socket: XCDs/GCDs per APU socket, from AMD SMI's
+    // processor-handle count -- this varies by compute partition mode
+    // (e.g. SPX/TPX/CPX), not a fixed constant. 6 on Tuolumne's current
+    // (SPX) partitioning of MI300A's 6 XCDs; a differently-partitioned
+    // node will correctly report a different value here.
+    // num_apus_per_node: physical APU sockets in the node (4 on Tuolumne).
+    json_object_set_new(get_power_obj, "num_gpus_per_socket",
                         json_integer(gpus_per_socket));
+    json_object_set_new(get_power_obj, "num_apus_per_node",
+                        json_integer(total_sockets));
 
     for (chipid = 0; chipid < total_sockets; chipid++)
     {
@@ -502,6 +557,15 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
         json_t *apu_obj = json_object();
         json_object_set_new(socket_obj, "power_apu_watts", apu_obj);
 
+        // Empirically confirmed on a CPX-partitioned node: only one device
+        // handle per socket returns AMDSMI_STATUS_SUCCESS for power; the
+        // other XCD handles return AMDSMI_STATUS_NOT_SUPPORTED (status 2)
+        // rather than a duplicated value. So the correct rollup is "add the
+        // first successful reading in this socket", not "add the reading
+        // from a specific index" -- which device succeeds isn't guaranteed
+        // to be positionally first, so gate on success, not index.
+        int socket_power_counted = 0;
+
         // Iterate over all APU device handles for this socket
         for (d = chipid * gpus_per_socket;
              d < (chipid + 1) * gpus_per_socket; ++d)
@@ -516,7 +580,12 @@ void get_json_power_data(json_t *get_power_obj, int total_sockets)
                 pwr_val_flt = (double)power_info.current_socket_power;
                 snprintf(devID, devIDlen, "APU_%d", d);
                 json_object_set_new(apu_obj, devID, json_real(pwr_val_flt));
-                total_apu_power += pwr_val_flt;
+
+                if (!socket_power_counted)
+                {
+                    total_apu_power += pwr_val_flt;
+                    socket_power_counted = 1;
+                }
             }
         }
     }
@@ -741,6 +810,17 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
     gpus_per_socket = num_devices / total_sockets;
 
+    // num_gpus_per_socket: XCDs/GCDs per APU socket, from AMD SMI's
+    // processor-handle count -- this varies by compute partition mode
+    // (e.g. SPX/TPX/CPX), not a fixed constant. 6 on Tuolumne's current
+    // (SPX) partitioning of MI300A's 6 XCDs; a differently-partitioned
+    // node will correctly report a different value here.
+    // num_apus_per_node: physical APU sockets in the node (4 on Tuolumne).
+    json_object_set_new(output, "num_gpus_per_socket",
+                        json_integer(gpus_per_socket));
+    json_object_set_new(output, "num_apus_per_node",
+                        json_integer(total_sockets));
+
     char socketid[12];
     snprintf(socketid, 12, "socket_%d", chipid);
 
@@ -786,7 +866,7 @@ void get_thermals_json(int chipid, int total_sockets, json_t *output)
 
             // APU temperature entry, one per sensor
             char apuid[48];
-            snprintf(apuid, 48, "temp_celsius_%s_apu_%d", sensor_labels[s], i);
+            snprintf(apuid, 48, "temp_celsius_apu_%d_%s", i, sensor_labels[s]);
             json_object_set_new(apu_obj, apuid, json_real(temp_val_flt));
         }
     }
