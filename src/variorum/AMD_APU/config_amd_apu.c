@@ -41,7 +41,7 @@ uint64_t *detect_amd_apu_arch(void)
 
     amdsmi_socket_handle *sockets =
         (amdsmi_socket_handle *) malloc(socket_count * sizeof(
-                                             amdsmi_socket_handle));
+                                            amdsmi_socket_handle));
     if (sockets == NULL)
     {
         amdsmi_shut_down();
@@ -83,7 +83,7 @@ uint64_t *detect_amd_apu_arch(void)
             for (i = 0; board_info.product_name[i] && i < 255; i++)
             {
                 name_upper[i] = (board_info.product_name[i] >= 'a' &&
-                                board_info.product_name[i] <= 'z') ?
+                                 board_info.product_name[i] <= 'z') ?
                                 board_info.product_name[i] - 32 :
                                 board_info.product_name[i];
             }
