@@ -89,27 +89,28 @@ well.
 
 Variorum also supports AMD's Accelerated Processing Units (APUs), which combine
 CPU and GPU compute on a single package, starting with the MI300A. This port
-uses the `AMD SMI library <https://rocm.docs.amd.com/projects/amdsmi/en/latest/>`_
-(``amd_smi``), the successor to ROCm-SMI, to query power, energy, and thermal
-telemetry from the device.
+uses the `AMD SMI library
+<https://rocm.docs.amd.com/projects/amdsmi/en/latest/>`_ (``amd_smi``), the
+successor to ROCm-SMI, to query power, energy, and thermal telemetry from the
+device.
 
 Building the AMD APU port requires a ROCm install that provides the AMD SMI
 library and headers (``amd_smi/amdsmi.h`` and ``libamd_smi.so``), which can be
 pointed to with the ``ROCM_DIR`` CMake variable, or auto-detected if AMD SMI is
 already on the system's include and library paths.
 
-Architecture detection queries the board information of the first GPU/APU
-device through the AMD SMI API and identifies MI300A-class hardware by its
-product name; if AMD SMI cannot be queried, Variorum defaults to treating the
-device as an MI300A.
+Architecture detection queries the board information of the first GPU/APU device
+through the AMD SMI API and identifies MI300A-class hardware by its product
+name; if AMD SMI cannot be queried, Variorum defaults to treating the device as
+an MI300A.
 
 Currently, the AMD APU port implements monitoring for energy, power, and
 thermals. Support for clock frequency, power capping, and GPU utilization
 queries is stubbed out and planned for a future release.
 
-*********************************************
+********************************************
  Monitoring and Control Through AMD SMI API
-*********************************************
+********************************************
 
 Variorum interfaces with AMD's AMD SMI library for obtaining power, energy, and
 thermal information for APUs. These AMD SMI APIs are described below.
@@ -117,8 +118,8 @@ thermal information for APUs. These AMD SMI APIs are described below.
 -  ``amdsmi_init``/``amdsmi_shut_down``: Initialize and tear down the AMD SMI
    library for the AMD GPU/APU device class.
 
--  ``amdsmi_get_socket_handles``: Get the number of sockets and their handles
-   on the system.
+-  ``amdsmi_get_socket_handles``: Get the number of sockets and their handles on
+   the system.
 
 -  ``amdsmi_get_processor_handles``: Get the handles of the processors (GPU or
    APU devices) attached to a given socket.
@@ -126,8 +127,8 @@ thermal information for APUs. These AMD SMI APIs are described below.
 -  ``amdsmi_get_gpu_board_info``: Get board-level information for a device,
    including product name, used by Variorum to identify MI300A hardware.
 
--  ``amdsmi_get_power_info``: Get the current power consumption of an APU
-   device in microwatts.
+-  ``amdsmi_get_power_info``: Get the current power consumption of an APU device
+   in microwatts.
 
 -  ``amdsmi_get_energy_count``: Get the accumulated energy counter for an APU
    device in microjoules, along with its counter resolution and a timestamp in
