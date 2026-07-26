@@ -1359,6 +1359,10 @@ int variorum_get_node_power_domain_info_json(char **get_domain_obj_str)
         i = P_ARM_CPU_IDX;
         break;
 #endif
+#ifdef VARIORUM_WITH_AMD_APU
+        i = P_AMD_APU_IDX;
+        break;
+#endif
     }
 
     if (g_platform[i].variorum_get_node_power_domain_info_json == NULL)
@@ -1586,7 +1590,7 @@ int variorum_print_energy(void)
     // the node-level energy.
     // First check if we have a CPU platform, then check for a GPU platform
 
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
+#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU) || defined(VARIORUM_WITH_AMD_APU)
     has_cpu = 1;
 #endif
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
@@ -1646,7 +1650,7 @@ int variorum_print_verbose_energy(void)
     // the node-level energy.
     // First check if we have a CPU platform, then check for a GPU platform
 
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
+#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU) || defined(VARIORUM_WITH_AMD_APU)
     has_cpu = 1;
 #endif
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
@@ -1718,7 +1722,7 @@ int variorum_get_energy_json(char **get_energy_obj_str)
     // the node-level energy.
     // First check if we have a CPU platform, then check for a GPU platform
 
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
+#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU) || defined(VARIORUM_WITH_AMD_APU)
     has_cpu = 1;
 #endif
 #if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
