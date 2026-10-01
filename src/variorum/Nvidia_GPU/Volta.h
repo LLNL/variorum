@@ -48,4 +48,11 @@ int volta_get_gpu_utilization_json(
     char **get_gpu_util_obj_str
 );
 
+int volta_get_energy(
+    int long_ver
+);
+
+int volta_get_energy_json(
+    json_t *get_energy_obj_str
+);
 #endif

@@ -82,4 +82,15 @@ void nvidia_gpu_get_power_json(
     json_t *output
 );
 
+void nvidia_gpu_get_energy_data(
+    int chipid,
+    int verbose,
+    FILE *output
+);
+
+void nvidia_gpu_get_energy_json(
+    int chipid,
+    json_t *output
+);
+
 #endif
