@@ -29,6 +29,8 @@ int set_intel_gpu_func_ptrs(int idx)
         g_platform[idx].variorum_cap_each_gpu_power_limit =
             intel_gpu_cap_each_gpu_power_limit;
         g_platform[idx].variorum_print_power_limit = intel_gpu_get_power_limit;
+        g_platform[idx].variorum_print_energy = intel_gpu_get_energy;
+        g_platform[idx].variorum_get_energy_json = intel_gpu_get_energy_json;
     }
     else
     {

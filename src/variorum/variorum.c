@@ -1573,52 +1573,26 @@ int variorum_print_energy(void)
 {
     int err = 0;
     int i;
-    int has_cpu = 0;
-    int has_gpu = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
 
-    // If we have a GPU-only build, we should exit with a helpful message.
-    // If we have a CPU-only or CPU+GPU multi-platform build, we should print
-    // the node-level energy.
-    // First check if we have a CPU platform, then check for a GPU platform
-
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
-    has_cpu = 1;
-#endif
-#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
-    has_gpu = 1;
-#endif
-
-    // CPU-only or multi-platform build
-    if ((has_cpu && has_gpu) || (has_cpu))
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        for (i = 0; i < P_NUM_PLATFORMS; i++)
+        if (g_platform[i].variorum_print_energy == NULL)
         {
-            if (g_platform[i].variorum_print_energy == NULL)
-            {
-                variorum_error_handler("Feature not yet implemented or is not supported",
-                                       VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                                       __FUNCTION__, __LINE__);
-                return 0;
-            }
-            err = g_platform[i].variorum_print_energy(0);
-            if (err)
-            {
-                return -1;
-            }
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
         }
-    }
-    else
-    {
-        // We have a GPU-only build, currently doesn't support get_energy
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return 0;
+        err = g_platform[i].variorum_print_energy(0);
+        if (err)
+        {
+            return -1;
+        }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
 
@@ -1633,52 +1607,26 @@ int variorum_print_verbose_energy(void)
 {
     int err = 0;
     int i;
-    int has_cpu = 0;
-    int has_gpu = 0;
     err = variorum_enter(__FILE__, __FUNCTION__, __LINE__);
     if (err)
     {
         return -1;
     }
 
-    // If we have a GPU-only build, we should exit with a helpful message.
-    // If we have a CPU-only or CPU+GPU multi-platform build, we should print
-    // the node-level energy.
-    // First check if we have a CPU platform, then check for a GPU platform
-
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
-    has_cpu = 1;
-#endif
-#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
-    has_gpu = 1;
-#endif
-
-    // CPU-only or multi-platform build
-    if ((has_cpu && has_gpu) || (has_cpu))
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        for (i = 0; i < P_NUM_PLATFORMS; i++)
+        if (g_platform[i].variorum_print_energy == NULL)
         {
-            if (g_platform[i].variorum_print_energy == NULL)
-            {
-                variorum_error_handler("Feature not yet implemented or is not supported",
-                                       VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                                       __FUNCTION__, __LINE__);
-                return 0;
-            }
-            err = g_platform[i].variorum_print_energy(1);
-            if (err)
-            {
-                return -1;
-            }
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
         }
-    }
-    else
-    {
-        // We have a GPU-only build, currently doesn't support get_energy
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
-        return 0;
+        err = g_platform[i].variorum_print_energy(1);
+        if (err)
+        {
+            return -1;
+        }
     }
     err = variorum_exit(__FILE__, __FUNCTION__, __LINE__);
     if (err)
@@ -1692,8 +1640,6 @@ int variorum_get_energy_json(char **get_energy_obj_str)
 {
     int err = 0;
     int i;
-    int has_cpu = 0;
-    int has_gpu = 0;
     char hostname[1024];
     uint64_t ts;
     struct timeval tv;
@@ -1713,47 +1659,22 @@ int variorum_get_energy_json(char **get_energy_obj_str)
     ts = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
     json_object_set_new(node_obj, "timestamp", json_integer(ts));
 
-    // If we have a GPU-only build, we should exit with a helpful message.
-    // If we have a CPU-only or CPU+GPU multi-platform build, we should print
-    // the node-level energy.
-    // First check if we have a CPU platform, then check for a GPU platform
-
-#if defined(VARIORUM_WITH_INTEL_CPU) || defined(VARIORUM_WITH_AMD_CPU) || defined(VARIORUM_WITH_IBM_CPU)
-    has_cpu = 1;
-#endif
-#if defined(VARIORUM_WITH_NVIDIA_GPU) || defined(VARIORUM_WITH_AMD_GPU) || defined(VARIORUM_WITH_INTEL_GPU)
-    has_gpu = 1;
-#endif
-
-    // CPU-only or multi-platform build
-    if ((has_cpu && has_gpu) || (has_cpu))
+    for (i = 0; i < P_NUM_PLATFORMS; i++)
     {
-        for (i = 0; i < P_NUM_PLATFORMS; i++)
+        if (g_platform[i].variorum_get_energy_json == NULL)
         {
-            if (g_platform[i].variorum_get_energy_json == NULL)
-            {
-                variorum_error_handler("Feature not yet implemented or is not supported",
-                                       VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
-                                       getenv("HOSTNAME"), __FILE__,
-                                       __FUNCTION__, __LINE__);
-                return 0;
-            }
-            err = g_platform[i].variorum_get_energy_json(node_obj);
-            if (err)
-            {
-                printf("Error with variorum get frequency json platform %d\n", i);
-            }
-            *get_energy_obj_str = json_dumps(get_energy_obj, JSON_INDENT(4));
+            variorum_error_handler("Feature not yet implemented or is not supported",
+                                   VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED,
+                                   getenv("HOSTNAME"), __FILE__,
+                                   __FUNCTION__, __LINE__);
+            return 0;
         }
-    }
-    else
-    {
-        // We have a GPU-only build, currently doesn't support get_energy
-        variorum_error_handler("Feature not yet implemented or is not supported",
-                               VARIORUM_ERROR_FEATURE_NOT_IMPLEMENTED, getenv("HOSTNAME"), __FILE__,
-                               __FUNCTION__, __LINE__);
+        err = g_platform[i].variorum_get_energy_json(node_obj);
+        if (err)
+        {
+            printf("Error with variorum get frequency json platform %d\n", i);
+        }
         *get_energy_obj_str = json_dumps(get_energy_obj, JSON_INDENT(4));
-        return 0;
     }
 
     json_decref(get_energy_obj);

@@ -9,6 +9,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include <jansson.h>
+
 #include <libapmidg.h>
 
 void initAPMIDG(
@@ -46,6 +48,17 @@ void get_power_limit_data(
     int chipid,
     int verbose,
     FILE *output
+);
+
+void get_energy_data(
+    int chipid,
+    int verbose,
+    FILE *output
+);
+
+void get_energy_json(
+    int chipid,
+    json_t *output
 );
 
 #endif
