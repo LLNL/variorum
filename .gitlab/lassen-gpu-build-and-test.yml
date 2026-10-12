@@ -1,3 +1,5 @@
+include: [component: $CI_SERVER_FQDN/lc-components/id_tokens/id_tokens-component@main]
+
 stages:
   - status_initiate
   - build
@@ -25,6 +27,9 @@ stages:
 status_pending:
   extends: [.on_lassen_gpu]
   stage: status_initiate
+  id_tokens:
+    CI_JOB_JWT:
+      aud: https://lc.llnl.gov/gitlab
   script:
     - export pipeline_status="pending"
     - *status_report

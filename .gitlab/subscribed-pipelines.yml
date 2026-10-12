@@ -1,7 +1,9 @@
+include: [component: $CI_SERVER_FQDN/lc-components/id_tokens/id_tokens-component@main]
+
 # Trigger a build pipeline for the following systems
-quartz-build-and-test:
+dane-build-and-test:
   variables:
-    CI_MACHINE: "quartz"
+    CI_MACHINE: "dane"
   extends: [.build]
 
 corona-gpu-build-and-test:
@@ -24,7 +26,7 @@ lassen-cpu-and-gpu-build-and-test:
     CI_MACHINE: "lassen-cpugpu"
   extends: [.build]
 
-cztb2-build-and-test:
+cztb3-build-and-test:
   variables:
-    CI_MACHINE: "cztb2"
+    CI_MACHINE: "cztb3"
   extends: [.build]
