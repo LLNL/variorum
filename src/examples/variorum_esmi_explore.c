@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include <variorum.h>
+#include <variorum_topology.h>
 
 void print_usage(const char *prog)
 {
@@ -52,7 +53,7 @@ int main(int argc, char **argv)
     }
 
     // Initialize variorum
-    int ret = variorum_init();
+    int ret = variorum_init_topology();
     if (ret != 0)
     {
         fprintf(stderr, "Error: Failed to initialize variorum\n");

@@ -1802,7 +1802,8 @@ int variorum_get_amd_esmi_metrics_json(char **metrics_json_str)
 
     // Get the number of sockets
     int *nsockets = NULL;
-    variorum_get_topology(&nsockets, NULL, NULL);
+    // Testing for AMD APU so setting the P_AMD_APU_IDX
+    variorum_get_topology(nsockets, NULL, NULL, P_AMD_APU_IDX);
     int total_sockets = (nsockets != NULL) ? *nsockets : 1;
 
     // Use the ESMI metrics table interface to get all metrics
